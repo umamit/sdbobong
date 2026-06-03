@@ -134,6 +134,68 @@ def load_local_statuses():
             print(f"Error loading local statuses: {e}")
     return local_statuses
 
+def sync_local_to_supabase():
+    if not supabase_client:
+        return
+        
+    json_file = "pendaftaran.json"
+    if not os.path.exists(json_file):
+        return
+        
+    try:
+        # 1. Fetch existing NIKs from Supabase to prevent duplicates
+        response = supabase_client.table("ppdb_sdn_bobong").select("nik_siswa").execute()
+        db_niks = set()
+        if response.data:
+            for row in response.data:
+                nik = row.get("nik_siswa")
+                if nik:
+                    db_niks.add(str(nik).strip())
+                    
+        # 2. Read local records
+        with open(json_file, 'r', encoding='utf-8') as f:
+            local_data = json.load(f)
+            
+        # 3. Find records that are not in Supabase and insert them
+        synced_count = 0
+        for r in local_data:
+            nik = str(r.get("nik", r.get("nik_siswa", ""))).strip()
+            if nik and nik not in db_niks:
+                # Sync this record to Supabase
+                supabase_data = {
+                    "nama_lengkap": r.get("nama_lengkap", ""),
+                    "nik_siswa": nik,
+                    "tempat_lahir": r.get("tempat_lahir", ""),
+                    "tanggal_lahir": r.get("tanggal_lahir", ""),
+                    "jenis_kelamin": r.get("jenis_kelamin", ""),
+                    "nama_ibu_kandung": r.get("nama_ibu") or r.get("nama_ibu_kandung", ""),
+                    "alamat_domisili": r.get("alamat") or r.get("alamat_domisili", ""),
+                    "nomor_hp_orangtua": r.get("no_hp") or r.get("nomor_hp_orangtua", ""),
+                    "jalur_ppdb": r.get("jalur_ppdb", "Zonasi"),
+                    "waktu_daftar": r.get("waktu_daftar", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                    "status": r.get("status", "Diterima Sistem")
+                }
+                try:
+                    # Write to DB
+                    supabase_client.table("ppdb_sdn_bobong").insert(supabase_data).execute()
+                    synced_count += 1
+                    db_niks.add(nik)
+                except Exception as e:
+                    print(f"Failed syncing local record NIK {nik} to Supabase: {e}")
+                    if "status" in supabase_data:
+                        del supabase_data["status"]
+                    try:
+                        supabase_client.table("ppdb_sdn_bobong").insert(supabase_data).execute()
+                        synced_count += 1
+                        db_niks.add(nik)
+                    except Exception as e2:
+                        print(f"Failed syncing local record NIK {nik} to Supabase completely: {e2}")
+                        
+        if synced_count > 0:
+            print(f"Berhasil mensinkronisasi {synced_count} data pendaftaran dari lokal ke Supabase.")
+    except Exception as e:
+        print(f"Error in sync_local_to_supabase: {e}")
+
 # --- Global Context Processor ---
 
 @app.context_processor
@@ -174,6 +236,7 @@ def formulir_offline():
 
 @app.route('/ppdb')
 def ppdb_dashboard():
+    sync_local_to_supabase()
     records = []
     
     # 1. Fetch from Supabase
@@ -367,6 +430,7 @@ def admin_logout():
 @app.route('/admin/dashboard')
 @login_required
 def admin_dashboard():
+    sync_local_to_supabase()
     records = []
     db_status = False
     
