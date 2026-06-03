@@ -20,7 +20,7 @@ export default async function AdminDashboardPage() {
   if (supabase) {
     try {
       const { data, error } = await supabase
-        .table("ppdb_sdn_bobong")
+        .from("ppdb_sdn_bobong")
         .select("*")
         .order("waktu_daftar", { ascending: false });
       

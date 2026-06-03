@@ -34,7 +34,7 @@ export async function GET(request) {
     // Fetch records
     if (supabase) {
       try {
-        const { data, error } = await supabase.table("ppdb_sdn_bobong").select("*").order("waktu_daftar", { ascending: false });
+        const { data, error } = await supabase.from("ppdb_sdn_bobong").select("*").order("waktu_daftar", { ascending: false });
         if (error) throw error;
         if (data) records = data;
       } catch (e) {
@@ -169,12 +169,12 @@ export async function PUT(request) {
     // 2. Update Supabase
     if (supabase) {
       try {
-        const { data, error } = await supabase.table("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", id).select();
+        const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", id).select();
         if (data && data.length > 0) {
           updatedOk = true;
         } else {
           // Try NIK if ID mismatch
-          const { data: dataNik } = await supabase.table("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", id).select();
+          const { data: dataNik } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", id).select();
           if (dataNik && dataNik.length > 0) {
             updatedOk = true;
           }
@@ -233,12 +233,12 @@ export async function DELETE(request) {
     // 2. Delete from Supabase
     if (supabase) {
       try {
-        const { data, error } = await supabase.table("ppdb_sdn_bobong").delete().eq("id", id).select();
+        const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("id", id).select();
         if (data && data.length > 0) {
           deletedOk = true;
         } else {
           // Try NIK if ID mismatch
-          const { data: dataNik } = await supabase.table("ppdb_sdn_bobong").delete().eq("nik_siswa", id).select();
+          const { data: dataNik } = await supabase.from("ppdb_sdn_bobong").delete().eq("nik_siswa", id).select();
           if (dataNik && dataNik.length > 0) {
             deletedOk = true;
           }

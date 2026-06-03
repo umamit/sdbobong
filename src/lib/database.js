@@ -224,14 +224,14 @@ export async function loadNews() {
   if (!supabase) return localNews;
 
   try {
-    const { data: supabaseNews, error } = await supabase.table("news_sdn_bobong").select("*");
+    const { data: supabaseNews, error } = await supabase.from("news_sdn_bobong").select("*");
     if (error) throw error;
 
     // Seeding if Supabase is empty
     if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0) {
       console.log("Supabase news table is empty. Seeding from local JSON...");
       for (const article of localNews) {
-        await supabase.table("news_sdn_bobong").insert({
+        await supabase.from("news_sdn_bobong").insert({
           id: article.id,
           title: article.title,
           date: article.date,
@@ -282,7 +282,7 @@ export async function saveNews(newsList) {
   if (supabase) {
     try {
       for (const article of newsList) {
-        await supabase.table("news_sdn_bobong").upsert({
+        await supabase.from("news_sdn_bobong").upsert({
           id: article.id,
           title: article.title,
           date: article.date,
@@ -293,12 +293,12 @@ export async function saveNews(newsList) {
       }
 
       const localIds = new Set(newsList.map(n => n.id));
-      const { data: supabaseNews } = await supabase.table("news_sdn_bobong").select("id");
+      const { data: supabaseNews } = await supabase.from("news_sdn_bobong").select("id");
       if (supabaseNews) {
         const supabaseIds = new Set(supabaseNews.map(row => row.id));
         for (const deleteId of supabaseIds) {
           if (!localIds.has(deleteId)) {
-            await supabase.table("news_sdn_bobong").delete().eq("id", deleteId);
+            await supabase.from("news_sdn_bobong").delete().eq("id", deleteId);
           }
         }
       }
@@ -322,13 +322,13 @@ export async function loadTeachers() {
   if (!supabase) return localTeachers;
 
   try {
-    const { data: supabaseTeachers, error } = await supabase.table("teachers_sdn_bobong").select("*");
+    const { data: supabaseTeachers, error } = await supabase.from("teachers_sdn_bobong").select("*");
     if (error) throw error;
 
     if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0) {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
       for (const t of localTeachers) {
-        await supabase.table("teachers_sdn_bobong").insert({
+        await supabase.from("teachers_sdn_bobong").insert({
           id: t.id,
           name: t.name,
           role: t.role,
@@ -391,7 +391,7 @@ export async function saveTeachers(teachersList) {
   if (supabase) {
     try {
       for (const t of teachersList) {
-        await supabase.table("teachers_sdn_bobong").upsert({
+        await supabase.from("teachers_sdn_bobong").upsert({
           id: t.id,
           name: t.name,
           role: t.role,
@@ -402,12 +402,12 @@ export async function saveTeachers(teachersList) {
       }
 
       const localIds = new Set(teachersList.map(t => t.id));
-      const { data: supabaseTeachers } = await supabase.table("teachers_sdn_bobong").select("id");
+      const { data: supabaseTeachers } = await supabase.from("teachers_sdn_bobong").select("id");
       if (supabaseTeachers) {
         const supabaseIds = new Set(supabaseTeachers.map(row => row.id));
         for (const deleteId of supabaseIds) {
           if (!localIds.has(deleteId)) {
-            await supabase.table("teachers_sdn_bobong").delete().eq("id", deleteId);
+            await supabase.from("teachers_sdn_bobong").delete().eq("id", deleteId);
           }
         }
       }
@@ -455,7 +455,7 @@ export async function syncLocalToSupabase() {
   }
 
   try {
-    const { data: supabaseRecords, error } = await supabase.table("ppdb_sdn_bobong").select("*");
+    const { data: supabaseRecords, error } = await supabase.from("ppdb_sdn_bobong").select("*");
     if (error) throw error;
 
     const supabaseByNik = {};
@@ -482,12 +482,12 @@ export async function syncLocalToSupabase() {
           status: localR.status || "Diterima Sistem"
         };
         try {
-          await supabase.table("ppdb_sdn_bobong").insert(supabaseData);
+          await supabase.from("ppdb_sdn_bobong").insert(supabaseData);
           syncedToSupabaseCount++;
         } catch (e) {
           if (supabaseData.status) delete supabaseData.status;
           try {
-            await supabase.table("ppdb_sdn_bobong").insert(supabaseData);
+            await supabase.from("ppdb_sdn_bobong").insert(supabaseData);
             syncedToSupabaseCount++;
           } catch (e2) {
             console.error(`Failed syncing local record NIK ${nik} to Supabase:`, e2.message || e2);
@@ -500,7 +500,7 @@ export async function syncLocalToSupabase() {
         if (localStatus !== supabaseStatus) {
           if (["Terverifikasi", "Ditolak"].includes(localStatus) && !["Terverifikasi", "Ditolak"].includes(supabaseStatus)) {
             try {
-              await supabase.table("ppdb_sdn_bobong").update({ status: localStatus }).eq("nik_siswa", nik);
+              await supabase.from("ppdb_sdn_bobong").update({ status: localStatus }).eq("nik_siswa", nik);
             } catch (e) {
               console.error(`Error updating status in Supabase for NIK ${nik}:`, e.message || e);
             }

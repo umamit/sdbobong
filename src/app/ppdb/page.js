@@ -18,7 +18,7 @@ export default async function PPDBPage() {
   if (supabase) {
     try {
       const { data, error } = await supabase
-        .table("ppdb_sdn_bobong")
+        .from("ppdb_sdn_bobong")
         .select("nama_lengkap, jalur_ppdb, alamat_domisili, waktu_daftar, nik_siswa, status");
       if (error) throw error;
       if (data) records = data;
@@ -26,7 +26,7 @@ export default async function PPDBPage() {
       console.warn("Supabase query with status failed, attempting without status column:", e.message || e);
       try {
         const { data, error } = await supabase
-          .table("ppdb_sdn_bobong")
+          .from("ppdb_sdn_bobong")
           .select("nama_lengkap, jalur_ppdb, alamat_domisili, waktu_daftar, nik_siswa");
         if (error) throw error;
         if (data) records = data;
