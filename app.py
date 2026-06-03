@@ -14,7 +14,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 supabase_client = None
-if SUPABASE_URL and SUPABASE_KEY and "your-project-id" not in SUPABASE_URL:
+if SUPABASE_URL and SUPABASE_KEY and "your-project-id" not in SUPABASE_URL and "your-supabase-anon-key" not in SUPABASE_KEY:
     try:
         supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     except Exception as e:
@@ -42,24 +42,41 @@ def ppdb_form():
             flash("NIK harus terdiri dari 16 digit angka!", "error")
             return render_template('form_ppdb.html', form_data=request.form)
 
-        # Database insertion
+        data = {
+            "nama_lengkap": nama_lengkap,
+            "nik": nik,
+            "tempat_lahir": tempat_lahir,
+            "tanggal_lahir": tanggal_lahir,
+            "jenis_kelamin": jenis_kelamin,
+            "nama_ibu": nama_ibu,
+            "no_hp": no_hp,
+            "alamat": alamat,
+            "jalur_ppdb": jalur_ppdb
+        }
+
+        # Database insertion / Fallback to local storage
         if not supabase_client:
-            # Fallback error if Supabase is not configured yet
-            flash("Sistem penyimpanan basis data sedang dalam konfigurasi. Silakan hubungi admin sekolah.", "error")
-            return render_template('form_ppdb.html', form_data=request.form)
+            # Fallback to local JSON storage for development/testing
+            import json
+            json_file = "pendaftaran.json"
+            records = []
+            if os.path.exists(json_file):
+                try:
+                    with open(json_file, 'r', encoding='utf-8') as f:
+                        records = json.load(f)
+                except Exception as e:
+                    print(f"Error reading JSON: {e}")
+            records.append(data)
+            try:
+                with open(json_file, 'w', encoding='utf-8') as f:
+                    json.dump(records, f, indent=4, ensure_ascii=False)
+                print("Data disimpan secara lokal di pendaftaran.json (Supabase belum terkonfigurasi)")
+                return redirect(url_for('ppdb_sukses'))
+            except Exception as e:
+                flash(f"Gagal menyimpan data secara lokal: {str(e)}", "error")
+                return render_template('form_ppdb.html', form_data=request.form)
 
         try:
-            data = {
-                "nama_lengkap": nama_lengkap,
-                "nik": nik,
-                "tempat_lahir": tempat_lahir,
-                "tanggal_lahir": tanggal_lahir,
-                "jenis_kelamin": jenis_kelamin,
-                "nama_ibu": nama_ibu,
-                "no_hp": no_hp,
-                "alamat": alamat,
-                "jalur_ppdb": jalur_ppdb
-            }
             response = supabase_client.table("ppdb_sdn_bobong").insert(data).execute()
             
             # Check if execution inserted data successfully
