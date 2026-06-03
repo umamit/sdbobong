@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Berhasil - SD Negeri Bobong</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: var(--space-xl) auto;
+            background: #ffffff;
+            padding: var(--space-lg) var(--space-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-top: 5px solid #20BA5A; /* Success Green */
+        }
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-sm);
+            display: inline-block;
+            animation: pop 0.4s ease-out;
+        }
+        .success-title {
+            color: #20BA5A;
+            font-size: 1.6rem;
+            margin-bottom: var(--space-xs);
+        }
+        .success-message {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: var(--space-md);
+        }
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container navbar">
+            <a href="/index.html" class="logo-container">
+                <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" class="school-logo">
+                <div class="logo-text">
+                    <span class="logo-title">SD NEGERI BOBONG</span>
+                    <span class="logo-subtitle">Pulau Taliabu</span>
+                </div>
+            </a>
+
+            <button class="hamburger" aria-label="Buka Menu Navigasi" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="nav-menu-wrapper">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/index.html" class="nav-link">Beranda</a></li>
+                    <li class="nav-item"><a href="/profil.html" class="nav-link">Profil</a></li>
+                    <li class="nav-item"><a href="/akademik.html" class="nav-link">Akademik</a></li>
+                    <li class="nav-item"><a href="/kesiswaan.html" class="nav-link">Kesiswaan</a></li>
+                    <li class="nav-item"><a href="/ppdb.html" class="nav-link">PPDB</a></li>
+                    <li class="nav-item"><a href="/berita.html" class="nav-link">Berita</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Success Message Section -->
+    <main class="container">
+        <div class="success-container">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">Pendaftaran Berhasil!</h2>
+            <p class="success-message">
+                Data Anda sudah tersimpan di sistem PPDB SDN Bobong. Silakan tunggu konfirmasi panitia melalui WhatsApp.
+            </p>
+            <div style="margin-top: var(--space-md); display: flex; gap: var(--space-xs); justify-content: center; flex-wrap: wrap;">
+                <a href="/ppdb.html" class="btn btn-primary">Kembali ke Portal PPDB</a>
+                <a href="/index.html" class="btn btn-outline">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-widget">
+                <a href="/index.html" class="logo-container" style="margin-bottom: var(--space-xs);">
+                    <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" class="school-logo">
+                    <span class="logo-title" style="color: white;">SD NEGERI BOBONG</span>
+                </a>
+                <p style="color: #9CA3AF; font-size: 0.9rem; margin-top: 1rem;">SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.</p>
+            </div>
+            <div class="footer-widget">
+                <h3>Navigasi Cepat</h3>
+                <ul class="footer-links">
+                    <li><a href="/index.html">Beranda</a></li>
+                    <li><a href="/profil.html">Profil Sekolah</a></li>
+                    <li><a href="/akademik.html">Informasi Akademik</a></li>
+                    <li><a href="/kesiswaan.html">Kesiswaan & Ekskul</a></li>
+                    <li><a href="/ppdb.html">Portal PPDB</a></li>
+                    <li><a href="/berita.html">Berita & Galeri</a></li>
+                </ul>
+            </div>
+            <div class="footer-widget">
+                <h3>Kontak Sekolah</h3>
+                <div class="footer-contact-info">
+                    <a href="https://maps.google.com/?q=SD+Negeri+Bobong+Pulau+Taliabu" target="_blank" class="footer-contact-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <span>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara, 97791</span>
+                    </a>
+                    <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/20537440-2AF5-E011-B59C-D593D31F215F" target="_blank" class="footer-contact-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <span>NPSN: 60200589 (Sekolah Kita)</span>
+                    </a>
+                    <a href="mailto:anhreko@gmail.com" class="footer-contact-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <span>anhreko@gmail.com</span>
+                    </a>
+                    <a href="https://wa.me/6281234567890?text=Halo%20SD%20Negeri%20Bobong" target="_blank" class="footer-contact-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                        <span>+62 812-3456-7890 (Humas WA)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

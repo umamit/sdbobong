@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran PPDB Online - SD Negeri Bobong</title>
+    <meta name="description" content="Pendaftaran online siswa baru SD Negeri Bobong. Isi formulir pendaftaran resmi di sini secara daring.">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Form-specific styling following formal school theme (merah hati/biru tua & putih) */
+        :root {
+            /* We can introduce a primary-red/maroon variable for the formal red theme option, or stick to deep navy */
+            --formal-red: #800020; /* Burgundy / Merah Hati */
+            --formal-blue: #0B3C5D; /* Biru Tua */
+        }
+        .form-container {
+            max-width: 750px;
+            margin: var(--space-md) auto;
+            background: #ffffff;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            border-top: 5px solid var(--formal-blue); /* Can be switched to burgundy if desired, we will use a refined deep navy/burgundy border */
+        }
+        .form-title-section {
+            text-align: center;
+            margin-bottom: var(--space-md);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: var(--space-sm);
+        }
+        .form-title-section h2 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+        .form-title-section p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+        .form-group {
+            margin-bottom: var(--space-sm);
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem var(--space-xs);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            background-color: var(--bg-main);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.1);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xs);
+        }
+        .radio-group {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: 0.25rem;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .alert-danger {
+            background-color: #FDF2F2;
+            color: #9B1C1C;
+            border: 1px solid #FBD5D5;
+        }
+        @media (min-width: 600px) {
+            .form-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container navbar">
+            <a href="/index.html" class="logo-container">
+                <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" class="school-logo">
+                <div class="logo-text">
+                    <span class="logo-title">SD NEGERI BOBONG</span>
+                    <span class="logo-subtitle">Pulau Taliabu</span>
+                </div>
+            </a>
+
+            <!-- Hamburger Button for Mobile -->
+            <button class="hamburger" aria-label="Buka Menu Navigasi" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu-wrapper">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/index.html" class="nav-link">Beranda</a></li>
+                    <li class="nav-item"><a href="/profil.html" class="nav-link">Profil</a></li>
+                    <li class="nav-item"><a href="/akademik.html" class="nav-link">Akademik</a></li>
+                    <li class="nav-item"><a href="/kesiswaan.html" class="nav-link">Kesiswaan</a></li>
+                    <li class="nav-item"><a href="/ppdb.html" class="nav-link">PPDB</a></li>
+                    <li class="nav-item"><a href="/berita.html" class="nav-link">Berita</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <main class="container section-padding">
+        <div class="form-container">
+            <div class="form-title-section">
+                <h2>FORMULIR PPDB ONLINE 2026/2027</h2>
+                <p>Silakan isi data calon siswa baru dengan lengkap dan benar sesuai berkas Kartu Keluarga asli.</p>
+            </div>
+
+            <!-- Flash Error Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            ⚠️ {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/ppdb-online" method="POST">
+                
+                <!-- Nama Lengkap & NIK -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nama_lengkap">Nama Lengkap Calon Siswa *</label>
+                        <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" value="{{ form_data.get('nama_lengkap', '') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nik">Nomor Induk Kependudukan (NIK) *</label>
+                        <input type="text" id="nik" name="nik" class="form-control" placeholder="Harus 16 digit angka" minlength="16" maxlength="16" pattern="[0-9]{16}" value="{{ form_data.get('nik', '') }}" required>
+                    </div>
+                </div>
+
+                <!-- Tempat & Tanggal Lahir -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tempat_lahir">Tempat Lahir *</label>
+                        <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control" placeholder="Contoh: Bobong" value="{{ form_data.get('tempat_lahir', '') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal_lahir">Tanggal Lahir *</label>
+                        <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" value="{{ form_data.get('tanggal_lahir', '') }}" required>
+                    </div>
+                </div>
+
+                <!-- Jenis Kelamin & Nama Ibu Kandung -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenis Kelamin *</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="jenis_kelamin" value="Laki-laki" {% if form_data.get('jenis_kelamin') == 'Laki-laki' %}checked{% endif %} required>
+                                Laki-laki
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="jenis_kelamin" value="Perempuan" {% if form_data.get('jenis_kelamin') == 'Perempuan' %}checked{% endif %} required>
+                                Perempuan
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_ibu">Nama Ibu Kandung *</label>
+                        <input type="text" id="nama_ibu" name="nama_ibu" class="form-control" placeholder="Nama lengkap ibu kandung" value="{{ form_data.get('nama_ibu', '') }}" required>
+                    </div>
+                </div>
+
+                <!-- No HP/WhatsApp & Jalur PPDB -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="no_hp">No. HP / WhatsApp Wali *</label>
+                        <input type="tel" id="no_hp" name="no_hp" class="form-control" placeholder="Contoh: 081234567890" pattern="^08[0-9]{8,12}$" value="{{ form_data.get('no_hp', '') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jalur_ppdb">Pilihan Jalur PPDB *</label>
+                        <select id="jalur_ppdb" name="jalur_ppdb" class="form-control" required>
+                            <option value="" disabled selected>-- Pilih Jalur Pendaftaran --</option>
+                            <option value="Zonasi" {% if form_data.get('jalur_ppdb') == 'Zonasi' %}selected{% endif %}>Zonasi (Kedekatan Tempat Tinggal)</option>
+                            <option value="Afirmasi" {% if form_data.get('jalur_ppdb') == 'Afirmasi' %}selected{% endif %}>Afirmasi (Keluarga Ekonomi Kurang Mampu)</option>
+                            <option value="Perpindahan Tugas Orang Tua" {% if form_data.get('jalur_ppdb') == 'Perpindahan Tugas Orang Tua' %}selected{% endif %}>Perpindahan Tugas Orang Tua / Wali</option>
+                            <option value="Prestasi" {% if form_data.get('jalur_ppdb') == 'Prestasi' %}selected{% endif %}>Prestasi (Akademik / Non-Akademik)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Alamat Lengkap -->
+                <div class="form-group">
+                    <label for="alamat">Alamat Tinggal di Bobong *</label>
+                    <textarea id="alamat" name="alamat" rows="3" class="form-control" placeholder="Contoh: RT 03/RW 02, Desa Wayo, Kecamatan Taliabu Barat" required>{{ form_data.get('alamat', '') }}</textarea>
+                </div>
+
+                <div style="margin-top: var(--space-md); text-align: center;">
+                    <button type="submit" class="btn btn-primary" style="min-width: 250px; font-size: 1.05rem;">
+                        ✉️ Kirim Pendaftaran Online
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-widget">
+                <a href="/index.html" class="logo-container" style="margin-bottom: var(--space-xs);">
+                    <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" class="school-logo">
+                    <span class="logo-title" style="color: white;">SD NEGERI BOBONG</span>
+                </a>
+                <p style="color: #9CA3AF; font-size: 0.9rem; margin-top: 1rem;">SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.</p>
+            </div>
+            <div class="footer-widget">
+                <h3>Navigasi Cepat</h3>
+                <ul class="footer-links">
+                    <li><a href="/index.html">Beranda</a></li>
+                    <li><a href="/profil.html">Profil Sekolah</a></li>
+                    <li><a href="/akademik.html">Informasi Akademik</a></li>
+                    <li><a href="/kesiswaan.html">Kesiswaan & Ekskul</a></li>
+                    <li><a href="/ppdb.html">Portal PPDB</a></li>
+                    <li><a href="/berita.html">Berita & Galeri</a></li>
+                </ul>
+            </div>
+            <div class="footer-widget">
+                <h3>Kontak Sekolah</h3>
+                <div class="footer-contact-info">
+                    <a href="https://maps.google.com/?q=SD+Negeri+Bobong+Pulau+Taliabu" target="_blank" class="footer-contact-item">
+                        <!-- Location Icon -->
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <span>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara, 97791</span>
+                    </a>
+                    <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/20537440-2AF5-E011-B59C-D593D31F215F" target="_blank" class="footer-contact-item">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <span>NPSN: 60200589 (Sekolah Kita)</span>
+                    </a>
+                    <a href="mailto:anhreko@gmail.com" class="footer-contact-item">
+                        <!-- Email Icon -->
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <span>anhreko@gmail.com</span>
+                    </a>
+                    <a href="https://wa.me/6281234567890?text=Halo%20SD%20Negeri%20Bobong" target="_blank" class="footer-contact-item">
+                        <!-- WA Icon -->
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="color: var(--secondary); flex-shrink: 0;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                        <span>+62 812-3456-7890 (Humas WA)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Mobile Navbar Toggle -->
+    <script src="/js/script.js"></script>
+</body>
+</html>
