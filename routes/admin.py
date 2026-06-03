@@ -6,8 +6,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from database import (
-    supabase_client, load_web_config, load_news, load_teachers, save_teachers,
-    sync_local_to_supabase, load_local_statuses, PENDAFTARAN_JSON, WEBSITE_CONFIG_JSON, NEWS_JSON
+    supabase_client, load_web_config, load_news, save_news, load_teachers, save_teachers,
+    sync_local_to_supabase, load_local_statuses, PENDAFTARAN_JSON, WEBSITE_CONFIG_JSON
 )
 from auth import login_required
 
@@ -393,14 +393,11 @@ def admin_news_add():
     }
     news_list.insert(0, new_article)
     
-    json_file = NEWS_JSON
-    try:
-        with open(json_file, 'w', encoding='utf-8') as f:
-            json.dump(news_list, f, indent=4, ensure_ascii=False)
+    if save_news(news_list):
         flash("Berita baru berhasil diterbitkan!", "success")
-    except Exception as e:
-        print(f"Error saving news: {e}")
+    else:
         flash("Gagal menyimpan berita baru.", "error")
+        
         
     return redirect(url_for('admin.admin_dashboard') + '?tab=news')
 
@@ -410,14 +407,11 @@ def admin_news_delete(news_id):
     news_list = load_news()
     new_list = [n for n in news_list if n.get("id") != news_id]
     
-    json_file = NEWS_JSON
-    try:
-        with open(json_file, 'w', encoding='utf-8') as f:
-            json.dump(new_list, f, indent=4, ensure_ascii=False)
+    if save_news(new_list):
         flash("Artikel berita berhasil dihapus.", "success")
-    except Exception as e:
-        print(f"Error deleting news: {e}")
+    else:
         flash("Gagal menghapus artikel berita.", "error")
+        
         
     return redirect(url_for('admin.admin_dashboard'))
 
