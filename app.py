@@ -76,8 +76,20 @@ def ppdb_form():
                 flash(f"Gagal menyimpan data secara lokal: {str(e)}", "error")
                 return render_template('form_ppdb.html', form_data=request.form)
 
+        # Map to actual Supabase database columns
+        supabase_data = {
+            "nama_lengkap": nama_lengkap,
+            "nik_siswa": nik,
+            "tempat_lahir": tempat_lahir,
+            "tanggal_lahir": tanggal_lahir,
+            "jenis_kelamin": jenis_kelamin,
+            "nama_ibu_kandung": nama_ibu,
+            "alamat_domisili": f"{alamat} (WhatsApp: {no_hp})",
+            "jalur_ppdb": jalur_ppdb
+        }
+
         try:
-            response = supabase_client.table("ppdb_sdn_bobong").insert(data).execute()
+            response = supabase_client.table("ppdb_sdn_bobong").insert(supabase_data).execute()
             
             # Check if execution inserted data successfully
             if response.data:
