@@ -25,3 +25,9 @@ scratch/
 # Local databases (Sensitive info)
 data/pendaftaran.json
 
+# Next.js build and dependencies
+.next/
+node_modules/
+
+# Local portable Node runtime
+node-local/

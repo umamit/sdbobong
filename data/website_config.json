@@ -1,13 +1,13 @@
 {
     "marquee_announcements": [
-        "📢 PENGUMUMAN EDIT: PPDB SD Negeri Bobong Baru!",
-        "📅 INFO EDIT: Rapor Baru 2026",
-        "🌟 PRESTASI EDIT: Juara Baru!"
+        "📢 PENGUMUMAN BARU: PPDB 2026/2027 Telah Aktif!",
+        "📅 INFO: Ujian Akhir Semester Genap dilaksanakan Juni 2026.",
+        "🌟 PRESTASI: SDN Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
     ],
     "stats": {
-        "siswa_aktif": 205,
-        "guru_staf": 14,
-        "ruang_kelas": 9,
-        "akreditasi": "B"
+        "siswa_aktif": 210,
+        "guru_staf": 15,
+        "ruang_kelas": 10,
+        "akreditasi": "A"
     }
 }
