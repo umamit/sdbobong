@@ -533,9 +533,9 @@ def admin_dashboard():
     if supabase_client:
         try:
             response = supabase_client.table("ppdb_sdn_bobong").select("*").order("waktu_daftar", desc=True).execute()
+            db_status = True
             if response.data:
                 records = response.data
-                db_status = True
         except Exception as e:
             print(f"Error querying Supabase for admin dashboard: {e}")
             
