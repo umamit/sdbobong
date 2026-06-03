@@ -8,10 +8,15 @@ export async function updateSession(request) {
     },
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-    {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    return { supabase: null, user: null, response };
+  }
+
+  try {
+    const supabase = createServerClient(url, key, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -26,11 +31,14 @@ export async function updateSession(request) {
           );
         },
       },
-    }
-  );
+    });
 
-  // Refresh session if expired
-  const { data: { user } } = await supabase.auth.getUser();
+    // Refresh session if expired
+    const { data: { user } } = await supabase.auth.getUser();
 
-  return { supabase, user, response };
+    return { supabase, user, response };
+  } catch (error) {
+    console.error("Middleware updateSession error:", error);
+    return { supabase: null, user: null, response };
+  }
 }
