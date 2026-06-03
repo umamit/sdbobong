@@ -152,59 +152,127 @@ def sync_local_to_supabase():
         return
         
     json_file = PENDAFTARAN_JSON
-    if not os.path.exists(json_file):
-        return
-        
-    try:
-        # 1. Fetch existing NIKs from Supabase to prevent duplicates
-        response = supabase_client.table("ppdb_sdn_bobong").select("nik_siswa").execute()
-        db_niks = set()
-        if response.data:
-            for row in response.data:
-                nik = row.get("nik_siswa")
-                if nik:
-                    db_niks.add(str(nik).strip())
-                    
-        # 2. Read local records
-        with open(json_file, 'r', encoding='utf-8') as f:
-            local_data = json.load(f)
+    local_records = []
+    
+    # 1. Read local records
+    if os.path.exists(json_file):
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                local_records = json.load(f)
+        except Exception as e:
+            print(f"Error reading local file: {e}")
             
-        # 3. Find records that are not in Supabase and insert them
-        synced_count = 0
-        for r in local_data:
-            nik = str(r.get("nik", r.get("nik_siswa", ""))).strip()
-            if nik and nik not in db_niks:
-                # Sync this record to Supabase
+    # Normalize local records into a dictionary indexed by NIK
+    local_by_nik = {}
+    for r in local_records:
+        nik = str(r.get("nik") or r.get("nik_siswa") or "").strip()
+        if nik:
+            local_by_nik[nik] = r
+
+    try:
+        # 2. Fetch all records from Supabase
+        response = supabase_client.table("ppdb_sdn_bobong").select("*").execute()
+        supabase_records = response.data or []
+        
+        supabase_by_nik = {}
+        for r in supabase_records:
+            nik = str(r.get("nik_siswa") or r.get("nik") or "").strip()
+            if nik:
+                supabase_by_nik[nik] = r
+
+        # 3. Perform two-way synchronization
+        synced_to_supabase_count = 0
+        
+        # A. Sync from Local to Supabase (Insert missing local records to Supabase)
+        for nik, local_r in local_by_nik.items():
+            if nik not in supabase_by_nik:
+                # Sync new local record to Supabase
                 supabase_data = {
-                    "nama_lengkap": r.get("nama_lengkap", ""),
+                    "nama_lengkap": local_r.get("nama_lengkap", ""),
                     "nik_siswa": nik,
-                    "tempat_lahir": r.get("tempat_lahir", ""),
-                    "tanggal_lahir": r.get("tanggal_lahir", ""),
-                    "jenis_kelamin": r.get("jenis_kelamin", ""),
-                    "nama_ibu_kandung": r.get("nama_ibu") or r.get("nama_ibu_kandung", ""),
-                    "alamat_domisili": r.get("alamat") or r.get("alamat_domisili", ""),
-                    "nomor_hp_orangtua": r.get("no_hp") or r.get("nomor_hp_orangtua", ""),
-                    "jalur_ppdb": r.get("jalur_ppdb", "Zonasi"),
-                    "waktu_daftar": r.get("waktu_daftar", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-                    "status": r.get("status", "Diterima Sistem")
+                    "tempat_lahir": local_r.get("tempat_lahir", ""),
+                    "tanggal_lahir": local_r.get("tanggal_lahir", ""),
+                    "jenis_kelamin": local_r.get("jenis_kelamin", ""),
+                    "nama_ibu_kandung": local_r.get("nama_ibu") or local_r.get("nama_ibu_kandung", ""),
+                    "alamat_domisili": local_r.get("alamat") or local_r.get("alamat_domisili", ""),
+                    "nomor_hp_orangtua": local_r.get("no_hp") or local_r.get("nomor_hp_orangtua", ""),
+                    "jalur_ppdb": local_r.get("jalur_ppdb", "Zonasi"),
+                    "waktu_daftar": local_r.get("waktu_daftar", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                    "status": local_r.get("status", "Diterima Sistem")
                 }
                 try:
-                    # Write to DB
                     supabase_client.table("ppdb_sdn_bobong").insert(supabase_data).execute()
-                    synced_count += 1
-                    db_niks.add(nik)
+                    synced_to_supabase_count += 1
                 except Exception as e:
-                    print(f"Failed syncing local record NIK {nik} to Supabase: {e}")
+                    # Retry without status column in case of schema discrepancy
                     if "status" in supabase_data:
                         del supabase_data["status"]
                     try:
                         supabase_client.table("ppdb_sdn_bobong").insert(supabase_data).execute()
-                        synced_count += 1
-                        db_niks.add(nik)
+                        synced_to_supabase_count += 1
                     except Exception as e2:
-                        print(f"Failed syncing local record NIK {nik} to Supabase completely: {e2}")
-                        
-        if synced_count > 0:
-            print(f"Berhasil mensinkronisasi {synced_count} data pendaftaran dari lokal ke Supabase.")
+                        print(f"Failed syncing local record NIK {nik} to Supabase: {e2}")
+            else:
+                # Resolve status discrepancies
+                supabase_r = supabase_by_nik[nik]
+                local_status = local_r.get("status")
+                supabase_status = supabase_r.get("status")
+                
+                if local_status != supabase_status:
+                    # If local has been updated by admin to a terminal status, update Supabase
+                    if local_status in ["Terverifikasi", "Ditolak"] and supabase_status not in ["Terverifikasi", "Ditolak"]:
+                        try:
+                            supabase_client.table("ppdb_sdn_bobong").update({"status": local_status}).eq("nik_siswa", nik).execute()
+                        except Exception as e:
+                            print(f"Error updating status in Supabase for NIK {nik}: {e}")
+                    # If Supabase has been updated, propagate to local
+                    elif supabase_status in ["Terverifikasi", "Ditolak"] and local_status not in ["Terverifikasi", "Ditolak"]:
+                        local_r["status"] = supabase_status
+
+        # B. Sync from Supabase to Local (Pull missing Supabase records or updates down to Local)
+        for nik, supabase_r in supabase_by_nik.items():
+            local_format = {
+                "id": str(supabase_r.get("id")),
+                "nama_lengkap": supabase_r.get("nama_lengkap", ""),
+                "nik": nik,
+                "tempat_lahir": supabase_r.get("tempat_lahir", ""),
+                "tanggal_lahir": supabase_r.get("tanggal_lahir", ""),
+                "jenis_kelamin": supabase_r.get("jenis_kelamin", ""),
+                "nama_ibu": supabase_r.get("nama_ibu_kandung", ""),
+                "no_hp": supabase_r.get("nomor_hp_orangtua", ""),
+                "alamat": supabase_r.get("alamat_domisili", ""),
+                "jalur_ppdb": supabase_r.get("jalur_ppdb", "Zonasi"),
+                "waktu_daftar": supabase_r.get("waktu_daftar", ""),
+                "status": supabase_r.get("status", "Diterima Sistem")
+            }
+            # Normalize waktu_daftar format to strip timezone offset
+            if local_format["waktu_daftar"] and 'T' in local_format["waktu_daftar"]:
+                try:
+                    clean_time = local_format["waktu_daftar"].replace('T', ' ').split('+')[0].split('.')[0]
+                    local_format["waktu_daftar"] = clean_time
+                except Exception:
+                    pass
+            
+            if nik in local_by_nik:
+                # Merge local data with Supabase data, preserving admin-updated terminal status
+                existing_local = local_by_nik[nik]
+                if existing_local.get("status") in ["Terverifikasi", "Ditolak"]:
+                    local_format["status"] = existing_local["status"]
+                local_by_nik[nik] = local_format
+            else:
+                local_by_nik[nik] = local_format
+
+        # Write merged records back to local JSON
+        merged_records = list(local_by_nik.values())
+        merged_records.sort(key=lambda x: x.get("waktu_daftar") or "", reverse=True)
+        
+        try:
+            with open(json_file, 'w', encoding='utf-8') as f:
+                json.dump(merged_records, f, indent=4, ensure_ascii=False)
+            if synced_to_supabase_count > 0:
+                print(f"Sync: {synced_to_supabase_count} local records uploaded to Supabase.")
+        except Exception as e:
+            print(f"Error saving merged records locally: {e}")
+
     except Exception as e:
-        print(f"Error in sync_local_to_supabase: {e}")
+        print(f"Error during Supabase sync check: {e}")
