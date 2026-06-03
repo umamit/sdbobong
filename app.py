@@ -2,7 +2,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
 
 
 # Load environment variables from .env file
@@ -89,7 +90,7 @@ def ppdb_form():
             "alamat_domisili": alamat,
             "nomor_hp_orangtua": no_hp,
             "jalur_ppdb": jalur_ppdb,
-            "waktu_daftar": datetime.now().isoformat()
+            "waktu_daftar": datetime.now(timezone(timedelta(hours=9))).isoformat()
         }
 
         try:
