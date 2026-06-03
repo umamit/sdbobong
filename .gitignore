@@ -14,3 +14,11 @@ __pycache__/
 
 # macOS files
 .DS_Store
+
+# Local uploads
+images/uploads/*
+!images/uploads/.gitkeep
+
+# Scratch files
+scratch/
+
