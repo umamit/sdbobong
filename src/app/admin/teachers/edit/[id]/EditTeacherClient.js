@@ -311,7 +311,7 @@ export default function EditTeacherClient({ teacher }) {
             <div className="form-group" style={{ marginBottom: 'var(--space-lg)' }}>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Foto / Avatar *</label>
               <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', marginBottom: 'var(--space-sm)' }}>
-                <div style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justify(content): 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
+                <div style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
                   <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ flex: 1 }}>
