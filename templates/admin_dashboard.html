@@ -728,7 +728,7 @@
                             Isi formulir untuk menerbitkan artikel berita terbaru mengenai aktivitas sekolah di halaman utama.
                         </p>
                         
-                        <form action="/admin/news/add" method="POST">
+                        <form action="/admin/news/add" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="news_title">Judul Berita *</label>
                                 <input type="text" id="news_title" name="title" class="form-control" placeholder="Contoh: Pembagian Rapor Semester Genap" required>
@@ -746,13 +746,17 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="news_image">Pilih Ilustrasi Gambar *</label>
+                                <label for="news_image">Pilih Ilustrasi Bawaan *</label>
                                 <select id="news_image" name="image" class="form-control" required>
                                     <option value="/images/news_hari_guru.svg">Hari Guru Nasional (Merah/Gold)</option>
                                     <option value="/images/news_imunisasi.svg">Program Imunisasi / BIAS (Biru Medis)</option>
                                     <option value="/images/news_kerja_bakti.svg">Sabtu Bersih / Lingkungan (Hijau Alam)</option>
                                     <option value="/images/news_rapat_komite.svg">Musyawarah / Komite (Biru/Orange)</option>
                                 </select>
+                                <div style="margin-top: 10px;">
+                                    <label for="news_photo">Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB):</label>
+                                    <input type="file" id="news_photo" name="photo" class="form-control" accept="image/png, image/jpeg, image/jpg" onchange="validateNewsPhoto(this)">
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -1024,6 +1028,28 @@
                     preview.src = e.target.result;
                 }
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function validateNewsPhoto(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // 1. Client-side file size check (1MB)
+                if (file.size > 1024 * 1024) {
+                    alert("Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.");
+                    input.value = ""; // Reset file input
+                    return;
+                }
+                
+                // 2. Client-side file type check (PNG, JPG, JPEG)
+                const extension = file.name.split('.').pop().toLowerCase();
+                const allowed = ["png", "jpg", "jpeg"];
+                if (!allowed.includes(extension)) {
+                    alert("Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.");
+                    input.value = ""; // Reset file input
+                    return;
+                }
             }
         }
 

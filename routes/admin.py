@@ -18,14 +18,14 @@ UPLOAD_FOLDER = 'images/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 ALLOWED_EXTENSIONS = {'png'}
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
-def handle_photo_upload(file_obj):
+def handle_photo_upload(file_obj, bucket_name='teachers', allowed_exts={'png'}):
     if not file_obj or file_obj.filename == '':
         return "NO_FILE"
         
-    if allowed_file(file_obj.filename):
+    if allowed_file(file_obj.filename, allowed_exts):
         filename = secure_filename(file_obj.filename)
         # Generate a unique prefix to avoid caching and collision issues
         unique_prefix = str(int(datetime.now().timestamp()))
@@ -39,17 +39,17 @@ def handle_photo_upload(file_obj):
                 file_bytes = file_obj.read()
                 
                 # Upload using Python SDK
-                supabase_client.storage.from_('teachers').upload(
+                supabase_client.storage.from_(bucket_name).upload(
                     path=unique_filename,
                     file=file_bytes,
                     file_options={"content-type": file_obj.content_type}
                 )
                 # Get public URL
-                public_url = supabase_client.storage.from_('teachers').get_public_url(unique_filename)
+                public_url = supabase_client.storage.from_(bucket_name).get_public_url(unique_filename)
                 print(f"File uploaded to Supabase Storage: {public_url}")
                 return public_url
             except Exception as e:
-                print(f"Supabase Storage upload failed: {e}. Falling back to local file upload.")
+                print(f"Supabase Storage upload to {bucket_name} failed: {e}. Falling back to local file upload.")
         
         # 2. Local Fallback
         file_obj.seek(0)
@@ -369,9 +369,18 @@ def admin_news_add():
     image = request.form.get('image', '').strip()
     content = request.form.get('content', '').strip()
     
+    # Process uploaded file if any
+    photo_file = request.files.get('photo')
+    uploaded_url = handle_photo_upload(photo_file, bucket_name='news', allowed_exts={'png', 'jpg', 'jpeg'})
+    if uploaded_url == "INVALID_TYPE":
+        flash("Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan.", "error")
+        return redirect(url_for('admin.admin_dashboard') + '?tab=news')
+    elif uploaded_url and uploaded_url != "NO_FILE":
+        image = uploaded_url
+        
     if not all([title, date, category, image, content]):
         flash("Semua kolom berita wajib diisi!", "error")
-        return redirect(url_for('admin.admin_dashboard'))
+        return redirect(url_for('admin.admin_dashboard') + '?tab=news')
         
     news_list = load_news()
     new_article = {
@@ -393,7 +402,7 @@ def admin_news_add():
         print(f"Error saving news: {e}")
         flash("Gagal menyimpan berita baru.", "error")
         
-    return redirect(url_for('admin.admin_dashboard'))
+    return redirect(url_for('admin.admin_dashboard') + '?tab=news')
 
 @admin_bp.route('/admin/news/delete/<news_id>', methods=['POST'])
 @login_required
