@@ -1,17 +1,20 @@
 import { NextResponse } from 'next/server';
-import { decrypt } from '../../../lib/session';
+import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, WEBSITE_CONFIG_JSON } from '../../../lib/database';
 import fs from 'fs';
 
-async function checkAuth(request) {
-  const sessionCookie = request.cookies.get('admin_session')?.value;
-  if (!sessionCookie) return false;
-  const session = await decrypt(sessionCookie);
-  return !!(session && session.admin);
+async function checkAuth() {
+  try {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    return !!user;
+  } catch {
+    return false;
+  }
 }
 
 export async function POST(request) {
-  if (!(await checkAuth(request))) {
+  if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

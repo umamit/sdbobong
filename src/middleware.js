@@ -1,20 +1,22 @@
 import { NextResponse } from 'next/server';
-import { decrypt } from './lib/session';
+import { updateSession } from './lib/supabase/middleware';
 
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
 
   // Protect administrative dashboard routes
   if (path.startsWith('/admin') && path !== '/admin/login') {
-    const sessionCookie = request.cookies.get('admin_session')?.value;
-    const session = await decrypt(sessionCookie);
+    const { user, response } = await updateSession(request);
 
-    if (!session || !session.admin) {
+    if (!user) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
+    return response;
   }
 
-  return NextResponse.next();
+  // Refresh session for non-guarded routes
+  const { response } = await updateSession(request);
+  return response;
 }
 
 export const config = {

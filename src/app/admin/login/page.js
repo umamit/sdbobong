@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function AdminLogin() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,12 +22,12 @@ export default function AdminLogin() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
       });
 
       const resData = await response.json();
       if (!response.ok) {
-        throw new Error(resData.error || "Username atau password salah!");
+        throw new Error(resData.error || "Email atau password salah!");
       }
 
       // Refresh and redirect to dashboard
@@ -102,19 +102,19 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ textAlign: 'left', marginBottom: 'var(--space-sm)' }}>
-            <label htmlFor="username" style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: 'var(--primary-dark)', marginBottom: '0.35rem' }}>
-              Username
+            <label htmlFor="email" style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: 'var(--primary-dark)', marginBottom: '0.35rem' }}>
+              Alamat Email
             </label>
             <input
-              type="text"
-              id="username"
+              type="email"
+              id="email"
               className="form-control"
-              placeholder="Masukkan username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Masukkan email admin"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               autoFocus
-              autoComplete="username"
+              autoComplete="email"
               style={{
                 width: '100%',
                 padding: '0.75rem var(--space-xs)',
