@@ -39,7 +39,7 @@ def test_teachers_flow():
     assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
     
     # Read teachers.json directly to check
-    with open("teachers.json", "r", encoding="utf-8") as f:
+    with open("data/teachers.json", "r", encoding="utf-8") as f:
         teachers = json.load(f)
     added_teacher = next((t for t in teachers if t["name"] == "Budi Hartono, M.Pd."), None)
     assert added_teacher is not None, "Teacher Budi Hartono was not found in teachers.json"
@@ -84,7 +84,7 @@ def test_teachers_flow():
     assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
 
     # Read teachers.json directly to check
-    with open("teachers.json", "r", encoding="utf-8") as f:
+    with open("data/teachers.json", "r", encoding="utf-8") as f:
         teachers = json.load(f)
     edited_teacher = next((t for t in teachers if t["id"] == teacher_id), None)
     assert edited_teacher is not None, "Teacher not found after edit"
@@ -125,7 +125,7 @@ def test_teachers_flow():
     )
     assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
     
-    with open("teachers.json", "r", encoding="utf-8") as f:
+    with open("data/teachers.json", "r", encoding="utf-8") as f:
         teachers = json.load(f)
     assert not any(t["name"] == "Budi Invalid Ext, M.Pd." for t in teachers), "Teacher with invalid extension was added!"
     print("   [PASSED] Non-PNG file upload rejected.")
@@ -149,7 +149,7 @@ def test_teachers_flow():
     )
     assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
     
-    with open("teachers.json", "r", encoding="utf-8") as f:
+    with open("data/teachers.json", "r", encoding="utf-8") as f:
         teachers = json.load(f)
     assert not any(t["name"] == "Budi Too Large, M.Pd." for t in teachers), "Teacher with too large file was added!"
     print("   [PASSED] File size >1MB rejected successfully.")
@@ -160,7 +160,7 @@ def test_teachers_flow():
     assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
 
     # Read teachers.json directly to check
-    with open("teachers.json", "r", encoding="utf-8") as f:
+    with open("data/teachers.json", "r", encoding="utf-8") as f:
         teachers = json.load(f)
     deleted_teacher = next((t for t in teachers if t["id"] == teacher_id), None)
     assert deleted_teacher is None, "Teacher was not deleted from teachers.json"

@@ -56,11 +56,11 @@
         "image": "/images/teacher_7.jpg"
     },
     {
-        "id": "teacher-1780482875",
-        "name": "samsul",
-        "role": "wali kelas 3",
-        "details": "",
-        "status": "PNS",
-        "image": "/images/teacher_3.svg"
+        "id": "teacher-1780484073",
+        "name": "Samsuddin, P.hD",
+        "role": "Wali kelas 6",
+        "details": "guru kelas atas",
+        "status": "Honorer Sekolah",
+        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780484072_email_6244438.png?"
     }
 ]

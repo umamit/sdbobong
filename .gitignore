@@ -22,3 +22,6 @@ images/uploads/*
 # Scratch files
 scratch/
 
+# Local databases (Sensitive info)
+data/pendaftaran.json
+
