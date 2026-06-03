@@ -24,6 +24,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            /* Looping heartbeat pulse starts after the entry animation completes (1.2s) */
+            animation: heartbeat 2s ease-in-out 1.2s infinite;
         }
         .checkmark {
             width: 80px;
@@ -79,6 +81,23 @@
         @keyframes fill {
             100% {
                 box-shadow: inset 0px 0px 0px 40px #22C55E;
+            }
+        }
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            14% {
+                transform: scale(1.08);
+            }
+            28% {
+                transform: scale(1);
+            }
+            42% {
+                transform: scale(1.08);
+            }
+            70% {
+                transform: scale(1);
             }
         }
     </style>
