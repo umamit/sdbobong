@@ -319,18 +319,19 @@ export default function AdminDashboardClient({
   };
 
   return (
-    <>
+    <div className="admin-dashboard-layout">
       <style dangerouslySetInnerHTML={{ __html: `
         :root {
             --sidebar-width: 260px;
-            --admin-bg: #f8fafc;
-            --primary-gradient: linear-gradient(135deg, #0b3c5d 0%, #07253b 100%);
+            --admin-bg: #f1f5f9;
+            --primary-gradient: linear-gradient(180deg, #091e30 0%, #061521 100%);
             --accent-gradient: linear-gradient(135deg, #f5a623 0%, #d48408 100%);
-            --teal-gradient: linear-gradient(135deg, #329d9c 0%, #205e5d 100%);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
-            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -6px rgba(0, 0, 0, 0.04);
+            --teal-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        body {
+        .admin-dashboard-layout {
             background-color: var(--admin-bg);
             margin: 0;
             padding: 0;
@@ -338,6 +339,7 @@ export default function AdminDashboardClient({
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
+            width: 100%;
         }
         .sidebar {
             width: var(--sidebar-width);
@@ -350,27 +352,28 @@ export default function AdminDashboardClient({
             z-index: 100;
             display: flex;
             flex-direction: column;
-            box-shadow: 4px 0 20px rgba(7, 37, 59, 0.15);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+            transition: var(--transition-smooth);
         }
         .sidebar-brand {
-            padding: 1.5rem var(--space-sm);
+            padding: 1.75rem 1.25rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
         }
         .sidebar-brand img {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
         }
         .sidebar-brand span {
             font-family: var(--font-heading);
             font-weight: 800;
-            font-size: 1.15rem;
-            letter-spacing: 0.03em;
-            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -381,38 +384,39 @@ export default function AdminDashboardClient({
             flex: 1;
         }
         .sidebar-item {
-            margin-bottom: 4px;
-            padding: 0 10px;
+            margin-bottom: 6px;
+            padding: 0 12px;
         }
         .sidebar-link {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.8rem 1rem;
-            color: #a0aec0;
+            gap: 0.85rem;
+            padding: 0.85rem 1rem;
+            color: rgba(255, 255, 255, 0.65);
             text-decoration: none;
             font-weight: 500;
             font-size: 0.95rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: var(--radius-sm);
+            transition: var(--transition-smooth);
+            border-radius: 10px;
             cursor: pointer;
         }
         .sidebar-link:hover {
             color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.06);
+            transform: translateX(4px);
         }
         .sidebar-link.active {
             color: #ffffff;
-            background: linear-gradient(90deg, rgba(245, 166, 35, 0.15) 0%, rgba(245, 166, 35, 0.02) 100%);
-            font-weight: 600;
-            box-shadow: inset 3px 0 0 0 var(--secondary);
-            border-left: none;
+            background: linear-gradient(135deg, rgba(245, 166, 35, 0.2) 0%, rgba(245, 166, 35, 0.05) 100%);
+            font-weight: 700;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(245, 166, 35, 0.05);
         }
         .sidebar-link.active span:first-child {
-            filter: drop-shadow(0 0 5px var(--secondary));
+            filter: drop-shadow(0 0 8px var(--secondary));
         }
         .sidebar-footer {
-            padding: var(--space-sm);
+            padding: 1.25rem;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .btn-logout {
@@ -421,20 +425,20 @@ export default function AdminDashboardClient({
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.75rem;
+            padding: 0.8rem;
             background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
             color: white;
             border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-smooth);
             font-size: 0.9rem;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 4px 12 rgba(239, 68, 68, 0.15);
         }
         .btn-logout:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
         }
         .main-wrapper {
             margin-left: var(--sidebar-width);
@@ -442,25 +446,25 @@ export default function AdminDashboardClient({
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-color: var(--admin-bg);
         }
         .top-navbar {
             height: 75px;
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 var(--space-md);
+            padding: 0 2rem;
             position: sticky;
             top: 0;
             z-index: 90;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.01);
         }
         .top-title h1 {
             font-family: var(--font-heading);
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: var(--primary-dark);
             margin: 0;
@@ -485,34 +489,51 @@ export default function AdminDashboardClient({
             justify-content: center;
             font-weight: 700;
             box-shadow: 0 4px 10px rgba(245, 166, 35, 0.25);
+            position: relative;
+        }
+        .user-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            width: 9px;
+            height: 9px;
+            background-color: #10b981;
+            border: 2px solid white;
+            border-radius: 50%;
         }
         .content-body {
-            padding: var(--space-md) var(--space-md);
+            padding: 2rem;
             flex: 1;
         }
         .alert-toast {
-            padding: 0.85rem 1.25rem;
-            border-radius: var(--radius-md);
-            margin-bottom: var(--space-md);
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            animation: slideDown 0.3s ease-out;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 400px;
+            backdrop-filter: blur(8px);
         }
-        @keyframes slideDown {
-            from { transform: translateY(-10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes slideInRight {
+            from { transform: translateX(120%) scale(0.9); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
         }
         .alert-toast-success {
-            background-color: #ECFDF5;
+            background-color: rgba(236, 253, 245, 0.95);
             color: #065F46;
             border: 1px solid #A7F3D0;
         }
         .alert-toast-danger {
-            background-color: #FEF2F2;
+            background-color: rgba(254, 242, 242, 0.95);
             color: #991B1B;
             border: 1px solid #FCA5A5;
         }
@@ -530,25 +551,26 @@ export default function AdminDashboardClient({
         .stats-overview-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         .overview-card {
             background-color: #ffffff;
-            border-radius: var(--radius-md);
-            padding: var(--space-md);
+            border-radius: 16px;
+            padding: 1.5rem;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(229, 231, 235, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition-smooth);
         }
         .overview-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             box-shadow: var(--card-shadow-hover);
+            border-color: rgba(11, 60, 93, 0.15);
         }
         .overview-card::after {
             content: '';
@@ -566,9 +588,10 @@ export default function AdminDashboardClient({
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            color: var(--text-muted);
+            color: #64748b;
             margin-bottom: 0.5rem;
             letter-spacing: 0.05em;
+            display: block;
         }
         .overview-card-value {
             font-size: 2.25rem;
@@ -579,39 +602,73 @@ export default function AdminDashboardClient({
         }
         .admin-table {
             background: white;
-            border-radius: var(--radius-md);
+            border-radius: 16px;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(229, 231, 235, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             overflow: hidden;
-            margin-bottom: var(--space-md);
+            margin-bottom: 2rem;
         }
         .table-toolbar {
-            padding: var(--space-md);
+            padding: 1.5rem;
             background-color: #ffffff;
-            border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: var(--space-sm);
+            gap: 1rem;
         }
         .table-toolbar h3 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: var(--primary-dark);
             font-family: var(--font-heading);
             letter-spacing: -0.02em;
         }
+        .table-custom {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #ffffff;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+        .table-custom th {
+            background-color: #f8fafc;
+            color: #475569;
+            padding: 1rem 1.25rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .table-custom td {
+            padding: 1.1rem 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #64748b;
+            vertical-align: middle;
+        }
+        .table-custom tr:hover td {
+            background-color: #f8fafc;
+        }
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+        .table-responsive {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+        }
         .status-badge-select {
-            padding: 0.4rem var(--space-xs);
+            padding: 0.45rem var(--space-xs);
             font-size: 0.8rem;
             font-weight: 700;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
             cursor: pointer;
             outline: none;
-            transition: all 0.2s ease;
+            transition: var(--transition-smooth);
         }
         .status-badge-select.pending {
             background-color: #FFFBEB;
@@ -629,12 +686,12 @@ export default function AdminDashboardClient({
             border-color: #FCA5A5;
         }
         .status-badge-select:focus {
-            box-shadow: 0 0 0 2px rgba(11, 60, 93, 0.1);
+            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.12);
         }
         .settings-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: var(--space-md);
+            gap: 1.5rem;
         }
         @media (min-width: 950px) {
             .settings-grid {
@@ -643,27 +700,27 @@ export default function AdminDashboardClient({
         }
         .settings-card {
             background: white;
-            padding: var(--space-lg);
-            border-radius: var(--radius-md);
+            padding: 2rem;
+            border-radius: 16px;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(229, 231, 235, 0.6);
-            margin-bottom: var(--space-md);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            margin-bottom: 1.5rem;
         }
         .settings-card h3 {
             margin-top: 0;
-            border-bottom: 2px solid rgba(229, 231, 235, 0.4);
+            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
             padding-bottom: var(--space-xs);
             margin-bottom: var(--space-md);
             color: var(--primary-dark);
             font-weight: 800;
             font-family: var(--font-heading);
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             letter-spacing: -0.02em;
         }
         .news-cms-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: var(--space-md);
+            gap: 1.5rem;
         }
         @media (min-width: 950px) {
             .news-cms-grid {
@@ -671,27 +728,27 @@ export default function AdminDashboardClient({
             }
         }
         .btn {
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            border: none;
         }
         .btn:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         .btn-primary {
             background: var(--primary-gradient);
             color: white;
-            border: none;
             box-shadow: 0 4px 10px rgba(11, 60, 93, 0.15);
         }
         .btn-primary:hover {
-            box-shadow: 0 6px 15px rgba(11, 60, 93, 0.25);
+            box-shadow: 0 8px 20px rgba(11, 60, 93, 0.25);
         }
         .btn-secondary {
             background-color: #f1f5f9;
@@ -706,31 +763,41 @@ export default function AdminDashboardClient({
             background-color: #FEF2F2;
             color: #DC2626;
             border: 1px solid #FCA5A5;
-            padding: 0.35rem 0.65rem;
-            border-radius: var(--radius-sm);
+            padding: 0.45rem 0.8rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-smooth);
             font-size: 0.8rem;
             font-weight: 700;
         }
         .btn-action-delete:hover {
             background-color: #DC2626;
             color: white;
-            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+            transform: translateY(-1px);
         }
         .form-control {
-            border-radius: var(--radius-sm);
+            border-radius: 10px;
             border: 1.5px solid #cbd5e1;
-            padding: 0.65rem 0.85rem;
+            padding: 0.75rem 1rem;
             font-family: var(--font-body);
-            transition: all 0.25s ease;
+            transition: var(--transition-smooth);
             outline: none;
             font-size: 0.9rem;
             box-sizing: border-box;
+            background: #ffffff;
+            width: 100%;
         }
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.12);
+            box-shadow: 0 0 0 4px rgba(11, 60, 93, 0.12);
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #1e293b;
         }
         @media (max-width: 768px) {
             .sidebar {
@@ -825,26 +892,54 @@ export default function AdminDashboardClient({
           <section id="tab-overview" className={`tab-pane ${activeTab === 'overview' ? 'active' : ''}`}>
             <div className="stats-overview-grid">
               <div className="overview-card">
-                <span className="overview-card-title">Total Pendaftar PPDB</span>
-                <span className="overview-card-value">{records.length}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Total Pendaftar PPDB</span>
+                    <span className="overview-card-value">{records.length}</span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(9, 30, 48, 0.08)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    📝
+                  </div>
+                </div>
               </div>
               <div className="overview-card accent">
-                <span className="overview-card-title">Pendaftar Terverifikasi</span>
-                <span className="overview-card-value">
-                  {records.filter(r => r.status === 'Terverifikasi').length}
-                </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Pendaftar Terverifikasi</span>
+                    <span className="overview-card-value">
+                      {records.filter(r => r.status === 'Terverifikasi').length}
+                    </span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    ✅
+                  </div>
+                </div>
               </div>
               <div className="overview-card">
-                <span className="overview-card-title">Jalur Zonasi</span>
-                <span className="overview-card-value">
-                  {records.filter(r => r.jalur_ppdb === 'Zonasi').length}
-                </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Jalur Zonasi</span>
+                    <span className="overview-card-value">
+                      {records.filter(r => r.jalur_ppdb === 'Zonasi').length}
+                    </span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(245, 166, 35, 0.1)', color: '#f5a623', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🗺️
+                  </div>
+                </div>
               </div>
               <div className="overview-card">
-                <span className="overview-card-title">Jalur Afirmasi / Prestasi</span>
-                <span className="overview-card-value">
-                  {records.filter(r => r.jalur_ppdb === 'Afirmasi' || r.jalur_ppdb === 'Prestasi').length}
-                </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Jalur Afirmasi / Prestasi</span>
+                    <span className="overview-card-value">
+                      {records.filter(r => r.jalur_ppdb === 'Afirmasi' || r.jalur_ppdb === 'Prestasi').length}
+                    </span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🏆
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1373,6 +1468,6 @@ export default function AdminDashboardClient({
           </section>
         </main>
       </div>
-    </>
+    </div>
   );
 }
