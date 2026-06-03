@@ -90,7 +90,7 @@ def ppdb_form():
             "alamat_domisili": alamat,
             "nomor_hp_orangtua": no_hp,
             "jalur_ppdb": jalur_ppdb,
-            "waktu_daftar": datetime.now(timezone(timedelta(hours=9))).isoformat()
+            "waktu_daftar": datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M:%S")
         }
 
         try:
