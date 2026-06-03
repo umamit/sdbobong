@@ -2,6 +2,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from datetime import datetime
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -84,8 +86,10 @@ def ppdb_form():
             "tanggal_lahir": tanggal_lahir,
             "jenis_kelamin": jenis_kelamin,
             "nama_ibu_kandung": nama_ibu,
-            "alamat_domisili": f"{alamat} (WhatsApp: {no_hp})",
-            "jalur_ppdb": jalur_ppdb
+            "alamat_domisili": alamat,
+            "nomor_hp_orangtua": no_hp,
+            "jalur_ppdb": jalur_ppdb,
+            "waktu_daftar": datetime.now().isoformat()
         }
 
         try:
