@@ -396,6 +396,12 @@
                     <span>Kelola Berita</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" onclick="switchTab('teachers', this)">
+                    <span>👨‍🏫</span>
+                    <span>Kelola Guru & Staf</span>
+                </a>
+            </li>
         </ul>
         <div class="sidebar-footer">
             <form action="/admin/logout" method="POST">
@@ -692,6 +698,138 @@
                 </div>
             </section>
 
+            <!-- ================= TAB: TEACHERS MANAGEMENT ================= -->
+            <section id="tab-teachers" class="tab-pane">
+                <div class="news-cms-grid">
+                    <!-- Table List of Teachers -->
+                    <div class="settings-card" style="overflow-x: auto;">
+                        <h3>Daftar Guru & Staf Saat Ini</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">
+                            Daftar pendidik yang terbit di halaman profil publik. Klik tombol **Edit** untuk memuat datanya ke form di samping.
+                        </p>
+                        
+                        <div class="table-responsive" style="border: none; border-radius: 0; box-shadow: none; margin-bottom: 0;">
+                            <table class="table-custom" style="font-size: 0.85rem; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px; text-align: center;">Foto</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Jabatan</th>
+                                        <th>Status</th>
+                                        <th style="width: 110px; text-align: center;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if teachers %}
+                                        {% for t in teachers %}
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <img src="{{ t.image }}" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);">
+                                                </td>
+                                                <td>
+                                                    <strong style="color: var(--primary-dark); font-size: 0.9rem;">{{ t.name }}</strong>
+                                                    {% if t.details %}
+                                                        <br><span style="font-size: 0.75rem; color: var(--text-muted);">{{ t.details }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ t.role }}</td>
+                                                <td>
+                                                    <span class="badge" style="{% if t.status == 'PNS' %}background-color: var(--primary); color: white;{% elif t.status == 'PPPK' %}background-color: #E8FAF0; color: #20BA5A; font-weight: 600;{% else %}background-color: #FFF8E6; color: #D48408; font-weight: 600;{% endif %} padding: 0.2rem 0.4rem; font-size: 0.75rem; border-radius: 4px;">
+                                                        {{ t.status }}
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <div style="display: flex; gap: var(--space-xs); justify-content: center;">
+                                                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
+                                                                onclick="editTeacher({{ t | tojson | safe }})">
+                                                            Edit
+                                                        </button>
+                                                        <form action="/admin/teachers/delete/{{ t.id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data guru ini?')">
+                                                            <button type="submit" class="btn-action-delete" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: var(--space-md); color: var(--text-muted); font-style: italic;">
+                                                Belum ada data guru.
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Form Add / Edit Teacher -->
+                    <div class="settings-card">
+                        <h3 id="form-teacher-title">Tambah Guru / Staf Baru</h3>
+                        <p id="form-teacher-desc" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-sm);">
+                            Isi formulir berikut untuk menambahkan data pendidik baru ke halaman profil.
+                        </p>
+                        
+                        <form id="form-teacher" action="/admin/teachers/add" method="POST">
+                            <div class="form-group">
+                                <label for="teacher_name">Nama Lengkap & Gelar *</label>
+                                <input type="text" id="teacher_name" name="name" class="form-control" placeholder="Contoh: Fatimah, S.Pd.SD." required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="teacher_role">Jabatan / Peran *</label>
+                                    <input type="text" id="teacher_role" name="role" class="form-control" placeholder="Contoh: Wali Kelas 1, Guru Agama" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacher_status">Status Kepegawaian *</label>
+                                    <select id="teacher_status" name="status" class="form-control" required>
+                                        <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
+                                        <option value="PPPK">PPPK</option>
+                                        <option value="Honorer Daerah">Honorer Daerah</option>
+                                        <option value="Honorer Sekolah">Honorer Sekolah</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="teacher_details">Pangkat / Keterangan Lain (Opsional)</label>
+                                <input type="text" id="teacher_details" name="details" class="form-control" placeholder="Contoh: Pembina Tk. I / IV-b, Guru Kelas Bawah">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Foto / Avatar *</label>
+                                <div style="display: flex; gap: var(--space-sm); align-items: center;">
+                                    <div style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; background-color: var(--bg-main);">
+                                        <img id="avatar-preview" src="/images/teacher_1.svg" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <select id="teacher_image_select" class="form-control" onchange="updateAvatarPreview()" style="margin-bottom: 5px;">
+                                            <option value="/images/teacher_1.svg">Ilustrasi Guru Laki-laki 1</option>
+                                            <option value="/images/teacher_2.svg">Ilustrasi Guru Perempuan 1</option>
+                                            <option value="/images/teacher_3.svg">Ilustrasi Guru Laki-laki 2</option>
+                                            <option value="/images/teacher_4.svg">Ilustrasi Guru Perempuan 2</option>
+                                            <option value="/images/teacher_5.svg">Ilustrasi Guru Laki-laki 3</option>
+                                            <option value="/images/teacher_6.svg">Ilustrasi Guru Perempuan 3</option>
+                                            <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
+                                            <option value="/images/principal.svg">Ilustrasi Kepala Sekolah (principal.svg)</option>
+                                            <option value="custom">-- Input URL Gambar Kustom --</option>
+                                        </select>
+                                        
+                                        <input type="text" id="teacher_image_url" name="image" class="form-control" value="/images/teacher_1.svg" placeholder="Masukkan URL / path gambar custom" style="display: none;" oninput="updateAvatarPreviewFromText()">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: var(--space-xs); margin-top: var(--space-sm);">
+                                <button type="submit" id="btn-submit-teacher" class="btn btn-primary" style="flex: 1;">💾 Simpan Data Guru</button>
+                                <button type="button" id="btn-cancel-teacher" class="btn btn-secondary" style="display: none;" onclick="cancelEditTeacher()">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -707,7 +845,14 @@
             });
             
             // Add active classes to current selection
-            el.classList.add('active');
+            if (el) {
+                el.classList.add('active');
+            } else {
+                const targetLink = document.querySelector(`.sidebar-link[onclick*="'${tabId}'"]`);
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                }
+            }
             document.getElementById('tab-' + tabId).classList.add('active');
             
             // Set Page Title
@@ -715,9 +860,10 @@
                 'overview': 'Ringkasan Dashboard',
                 'ppdb': 'Manajemen Data PPDB',
                 'content': 'Pengumuman & Statistik',
-                'news': 'Manajemen Berita Sekolah'
+                'news': 'Manajemen Berita Sekolah',
+                'teachers': 'Manajemen Guru & Kepala Sekolah'
             };
-            document.getElementById('page-title').textContent = titles[tabId];
+            document.getElementById('page-title').textContent = titles[tabId] || 'Dashboard Admin';
         }
 
         // Helper trigger to switch tabs from card buttons
@@ -727,6 +873,88 @@
                 links[index].click();
             }
         }
+
+        // Avatar preview helpers
+        function updateAvatarPreview() {
+            const select = document.getElementById('teacher_image_select');
+            const preview = document.getElementById('avatar-preview');
+            const inputUrl = document.getElementById('teacher_image_url');
+            
+            if (select.value === 'custom') {
+                inputUrl.style.display = 'block';
+                preview.src = inputUrl.value;
+            } else {
+                inputUrl.style.display = 'none';
+                inputUrl.value = select.value;
+                preview.src = select.value;
+            }
+        }
+        
+        function updateAvatarPreviewFromText() {
+            const inputUrl = document.getElementById('teacher_image_url');
+            const preview = document.getElementById('avatar-preview');
+            preview.src = inputUrl.value;
+        }
+
+        // Edit mode helpers
+        function editTeacher(teacher) {
+            document.getElementById('form-teacher-title').textContent = 'Edit Data Guru & Staf';
+            document.getElementById('form-teacher-desc').textContent = 'Ubah detail data guru berikut lalu simpan perubahan.';
+            document.getElementById('form-teacher').action = '/admin/teachers/edit/' + teacher.id;
+            
+            document.getElementById('teacher_name').value = teacher.name;
+            document.getElementById('teacher_role').value = teacher.role;
+            document.getElementById('teacher_status').value = teacher.status;
+            document.getElementById('teacher_details').value = teacher.details || '';
+            document.getElementById('teacher_image_url').value = teacher.image;
+            
+            const select = document.getElementById('teacher_image_select');
+            let matched = false;
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === teacher.image) {
+                    select.selectedIndex = i;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                select.value = 'custom';
+            }
+            
+            updateAvatarPreview();
+            
+            document.getElementById('btn-cancel-teacher').style.display = 'block';
+            document.getElementById('btn-submit-teacher').textContent = '💾 Simpan Perubahan';
+            
+            document.getElementById('form-teacher').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function cancelEditTeacher() {
+            document.getElementById('form-teacher-title').textContent = 'Tambah Guru / Staf Baru';
+            document.getElementById('form-teacher-desc').textContent = 'Isi formulir berikut untuk menambahkan data pendidik baru ke halaman profil.';
+            document.getElementById('form-teacher').action = '/admin/teachers/add';
+            
+            document.getElementById('teacher_name').value = '';
+            document.getElementById('teacher_role').value = '';
+            document.getElementById('teacher_status').selectedIndex = 0;
+            document.getElementById('teacher_details').value = '';
+            document.getElementById('teacher_image_url').value = '/images/teacher_1.svg';
+            document.getElementById('teacher_image_select').selectedIndex = 0;
+            
+            updateAvatarPreview();
+            
+            document.getElementById('btn-cancel-teacher').style.display = 'none';
+            document.getElementById('btn-submit-teacher').textContent = '💾 Simpan Data Guru';
+        }
+
+        // Auto-activate tab from query param
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam) {
+                switchTab(tabParam, null);
+            }
+        });
     </script>
 </body>
 </html>

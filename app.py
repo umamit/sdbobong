@@ -70,6 +70,26 @@ def load_news():
             print(f"Error loading news: {e}")
     return []
 
+def load_teachers():
+    json_file = "teachers.json"
+    if os.path.exists(json_file):
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading teachers: {e}")
+    return []
+
+def save_teachers(teachers):
+    json_file = "teachers.json"
+    try:
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(teachers, f, indent=4, ensure_ascii=False)
+        return True
+    except Exception as e:
+        print(f"Error saving teachers: {e}")
+        return False
+
 def anonymize_name(name):
     if not name:
         return "***"
@@ -215,7 +235,19 @@ def home():
 
 @app.route('/profil')
 def profil():
-    return render_template('profil.html')
+    teachers = load_teachers()
+    
+    # Dynamically extract Kepala Sekolah and Koordinator Tata Usaha for the organizational chart
+    kepala_sekolah = next((t for t in teachers if 'kepala sekolah' in t.get('role', '').lower()), None)
+    tata_usaha = next((t for t in teachers if 'tata usaha' in t.get('role', '').lower() or 'koordinator tu' in t.get('role', '').lower()), None)
+    
+    # Set default structures if not found
+    if not kepala_sekolah:
+        kepala_sekolah = {"name": "Abdul Kadir", "role": "Kepala Sekolah"}
+    if not tata_usaha:
+        tata_usaha = {"name": "Sitti Rahma, A.Ma.Pd.", "role": "Koordinator Tata Usaha"}
+        
+    return render_template('profil.html', teachers=teachers, kepala_sekolah=kepala_sekolah, tata_usaha=tata_usaha)
 
 @app.route('/akademik')
 def akademik():
@@ -497,12 +529,14 @@ def admin_dashboard():
         
     config = load_web_config()
     news_list = load_news()
+    teachers = load_teachers()
     
     return render_template(
         'admin_dashboard.html',
         pendaftar_records=records,
         config=config,
         news_list=news_list,
+        teachers=teachers,
         db_status=db_status
     )
 
@@ -753,6 +787,92 @@ def admin_news_delete(news_id):
         flash("Gagal menghapus artikel berita.", "error")
         
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/teachers/add', methods=['POST'])
+@login_required
+def admin_teacher_add():
+    name = request.form.get('name', '').strip()
+    role = request.form.get('role', '').strip()
+    details = request.form.get('details', '').strip()
+    status = request.form.get('status', '').strip()
+    image = request.form.get('image', '').strip()
+    
+    if not all([name, role, status, image]):
+        flash("Kolom Nama, Jabatan, Status, dan Foto wajib diisi!", "error")
+        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+        
+    teachers = load_teachers()
+    new_teacher = {
+        "id": f"teacher-{int(datetime.now().timestamp())}",
+        "name": name,
+        "role": role,
+        "details": details,
+        "status": status,
+        "image": image
+    }
+    
+    if 'kepala sekolah' in role.lower():
+        teachers.insert(0, new_teacher)
+    else:
+        teachers.append(new_teacher)
+        
+    if save_teachers(teachers):
+        flash("Data guru berhasil ditambahkan!", "success")
+    else:
+        flash("Gagal menyimpan data guru baru.", "error")
+        
+    return redirect(url_for('admin_dashboard') + '?tab=teachers')
+
+@app.route('/admin/teachers/edit/<teacher_id>', methods=['POST'])
+@login_required
+def admin_teacher_edit(teacher_id):
+    name = request.form.get('name', '').strip()
+    role = request.form.get('role', '').strip()
+    details = request.form.get('details', '').strip()
+    status = request.form.get('status', '').strip()
+    image = request.form.get('image', '').strip()
+    
+    if not all([name, role, status, image]):
+        flash("Kolom Nama, Jabatan, Status, dan Foto wajib diisi!", "error")
+        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+        
+    teachers = load_teachers()
+    found = False
+    for t in teachers:
+        if t.get('id') == teacher_id:
+            t['name'] = name
+            t['role'] = role
+            t['details'] = details
+            t['status'] = status
+            t['image'] = image
+            found = True
+            break
+            
+    if found:
+        if save_teachers(teachers):
+            flash("Data guru berhasil diperbarui!", "success")
+        else:
+            flash("Gagal menyimpan perubahan data guru.", "error")
+    else:
+        flash("Data guru tidak ditemukan.", "error")
+        
+    return redirect(url_for('admin_dashboard') + '?tab=teachers')
+
+@app.route('/admin/teachers/delete/<teacher_id>', methods=['POST'])
+@login_required
+def admin_teacher_delete(teacher_id):
+    teachers = load_teachers()
+    new_teachers = [t for t in teachers if t.get('id') != teacher_id]
+    
+    if len(new_teachers) < len(teachers):
+        if save_teachers(new_teachers):
+            flash("Data guru berhasil dihapus.", "success")
+        else:
+            flash("Gagal menyimpan perubahan setelah penghapusan.", "error")
+    else:
+        flash("Data guru tidak ditemukan.", "error")
+        
+    return redirect(url_for('admin_dashboard') + '?tab=teachers')
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 5001))

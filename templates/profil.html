@@ -164,7 +164,7 @@
                 <div style="min-width: 600px; display: flex; flex-direction: column; align-items: center; gap: var(--space-sm);">
                     <!-- Kepala Sekolah -->
                     <div style="background-color: var(--primary); color: white; padding: 0.75rem var(--space-md); border-radius: var(--radius-md); text-align: center; width: 280px; box-shadow: var(--shadow-md);">
-                        <div style="font-weight: 700; font-family: var(--font-heading);">Abdul Kadir</div>
+                        <div style="font-weight: 700; font-family: var(--font-heading);">{{ kepala_sekolah.name }}</div>
                         <div style="font-size: 0.8rem; opacity: 0.9;">Kepala Sekolah</div>
                     </div>
                     
@@ -183,7 +183,7 @@
                         <!-- Right Box: Tata Usaha -->
                         <div style="background-color: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-md); text-align: center; width: 180px; z-index: 2; margin-top: 18px; box-shadow: var(--shadow-sm); position: relative;">
                             <div style="position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background-color: var(--primary);"></div>
-                            <div style="font-weight: 600; font-size: 0.9rem;">Sitti Rahma, A.Ma.Pd.</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">{{ tata_usaha.name }}</div>
                             <div style="font-size: 0.75rem; opacity: 0.9;">Koordinator Tata Usaha</div>
                         </div>
                     </div>
@@ -209,96 +209,30 @@
             </div>
             
             <div class="teachers-grid">
-                <!-- Teacher 1 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_1.svg" alt="Foto Abdul Kadir" class="teacher-img">
+                {% if teachers %}
+                    {% for teacher in teachers %}
+                        <div class="teacher-card">
+                            <div class="teacher-img-container">
+                                <img src="{{ teacher.image }}" alt="Foto {{ teacher.name }}" class="teacher-img" onerror="this.src='/images/teacher_1.svg'">
+                            </div>
+                            <div class="teacher-info">
+                                <div class="teacher-role">{{ teacher.role }}</div>
+                                <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">{{ teacher.name }}</h3>
+                                {% if teacher.details %}
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">{{ teacher.details }}</p>
+                                {% endif %}
+                                <span class="teacher-status {% if teacher.status == 'PNS' %}badge-primary{% endif %}" 
+                                      style="{% if teacher.status == 'PNS' %}color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;{% elif teacher.status == 'PPPK' %}background-color: #E8FAF0; color: #20BA5A; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem; font-weight: 600;{% else %}background-color: #FFF8E6; color: #D48408; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem; font-weight: 600;{% endif %} display: inline-block; margin-top: 0.5rem;">
+                                    {{ teacher.status }}
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-lg); color: var(--text-muted); font-style: italic;">
+                        Belum ada data pendidik dan staf.
                     </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Kepala Sekolah</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Abdul Kadir</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Pembina Tk. I / IV-b</p>
-                        <span class="teacher-status badge-primary" style="color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">PNS</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 2 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_2.svg" alt="Foto Fatimah, S.Pd.SD." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Wali Kelas 1 & 2</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Fatimah, S.Pd.SD.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Guru Kelas Bawah</p>
-                        <span class="teacher-status badge-primary" style="color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">PNS</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 3 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_3.svg" alt="Foto Ahmad Salim, S.Pd." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Wali Kelas 5 & 6</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Ahmad Salim, S.Pd.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Guru Kelas Atas</p>
-                        <span class="teacher-status" style="background-color: #E8FAF0; color: #20BA5A; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem; font-weight: 600;">PPPK</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 4 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_4.svg" alt="Foto Nurul Hidayah, S.Pd.I." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Guru Agama Islam</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Nurul Hidayah, S.Pd.I.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Pendidikan Agama</p>
-                        <span class="teacher-status badge-primary" style="color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">PNS</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 5 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_5.svg" alt="Foto Ridwan Kamarudin, S.Pd." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Guru PJOK & Kesenian</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Ridwan Kamarudin, S.Pd.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Penjas & Seni Budaya</p>
-                        <span class="teacher-status" style="background-color: #FFF8E6; color: #D48408; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem; font-weight: 600;">Honorer Daerah</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 6 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_6.svg" alt="Foto Sitti Rahma, A.Ma.Pd." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Staf Administrasi & TU</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Sitti Rahma, A.Ma.Pd.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Koordinator Tata Usaha</p>
-                        <span class="teacher-status badge-primary" style="color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">PNS</span>
-                    </div>
-                </div>
-                
-                <!-- Teacher 7 -->
-                <div class="teacher-card">
-                    <div class="teacher-img-container">
-                        <img src="/images/teacher_7.jpg" alt="Foto Husnita Usman, M.Pd." class="teacher-img">
-                    </div>
-                    <div class="teacher-info">
-                        <div class="teacher-role">Guru Bahasa Inggris</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Husnita Usman, M.Pd.</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0;">Pendidik Bidang Studi</p>
-                        <span class="teacher-status badge-primary" style="color:white; padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">PNS</span>
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </section>

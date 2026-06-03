@@ -1,0 +1,58 @@
+[
+    {
+        "id": "teacher-1",
+        "name": "Abdul Kadir",
+        "role": "Kepala Sekolah",
+        "details": "Pembina Tk. I / IV-b",
+        "status": "PNS",
+        "image": "/images/teacher_1.svg"
+    },
+    {
+        "id": "teacher-2",
+        "name": "Fatimah, S.Pd.SD.",
+        "role": "Wali Kelas 1 & 2",
+        "details": "Guru Kelas Bawah",
+        "status": "PNS",
+        "image": "/images/teacher_2.svg"
+    },
+    {
+        "id": "teacher-3",
+        "name": "Ahmad Salim, S.Pd.",
+        "role": "Wali Kelas 5 & 6",
+        "details": "Guru Kelas Atas",
+        "status": "PPPK",
+        "image": "/images/teacher_3.svg"
+    },
+    {
+        "id": "teacher-4",
+        "name": "Nurul Hidayah, S.Pd.I.",
+        "role": "Guru Agama Islam",
+        "details": "Pendidikan Agama",
+        "status": "PNS",
+        "image": "/images/teacher_4.svg"
+    },
+    {
+        "id": "teacher-5",
+        "name": "Ridwan Kamarudin, S.Pd.",
+        "role": "Guru PJOK & Kesenian",
+        "details": "Penjas & Seni Budaya",
+        "status": "Honorer Daerah",
+        "image": "/images/teacher_5.svg"
+    },
+    {
+        "id": "teacher-6",
+        "name": "Sitti Rahma, A.Ma.Pd.",
+        "role": "Staf Administrasi & TU",
+        "details": "Koordinator Tata Usaha",
+        "status": "PNS",
+        "image": "/images/teacher_6.svg"
+    },
+    {
+        "id": "teacher-7",
+        "name": "Husnita Usman, M.Pd.",
+        "role": "Guru Bahasa Inggris",
+        "details": "Pendidik Bidang Studi",
+        "status": "PNS",
+        "image": "/images/teacher_7.jpg"
+    }
+]
