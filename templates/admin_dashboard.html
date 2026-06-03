@@ -770,7 +770,7 @@
                             Isi formulir berikut untuk menambahkan data pendidik baru ke halaman profil.
                         </p>
                         
-                        <form id="form-teacher" action="/admin/teachers/add" method="POST">
+                        <form id="form-teacher" action="/admin/teachers/add" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="teacher_name">Nama Lengkap & Gelar *</label>
                                 <input type="text" id="teacher_name" name="name" class="form-control" placeholder="Contoh: Fatimah, S.Pd.SD." required>
@@ -818,6 +818,10 @@
                                         
                                         <input type="text" id="teacher_image_url" name="image" class="form-control" value="/images/teacher_1.svg" placeholder="Masukkan URL / path gambar custom" style="display: none;" oninput="updateAvatarPreviewFromText()">
                                     </div>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <label for="teacher_photo">Atau Unggah Foto Baru (.png, .jpg, .jpeg, .gif, .svg):</label>
+                                    <input type="file" id="teacher_photo" name="photo" class="form-control" accept="image/*" onchange="previewUploadedFile(this)">
                                 </div>
                             </div>
                             
@@ -880,6 +884,9 @@
             const preview = document.getElementById('avatar-preview');
             const inputUrl = document.getElementById('teacher_image_url');
             
+            // Clear file upload input when template avatar is selected
+            document.getElementById('teacher_photo').value = "";
+            
             if (select.value === 'custom') {
                 inputUrl.style.display = 'block';
                 preview.src = inputUrl.value;
@@ -896,6 +903,18 @@
             preview.src = inputUrl.value;
         }
 
+        // Live preview for uploaded photo file
+        function previewUploadedFile(input) {
+            const preview = document.getElementById('avatar-preview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         // Edit mode helpers
         function editTeacher(teacher) {
             document.getElementById('form-teacher-title').textContent = 'Edit Data Guru & Staf';
@@ -907,6 +926,9 @@
             document.getElementById('teacher_status').value = teacher.status;
             document.getElementById('teacher_details').value = teacher.details || '';
             document.getElementById('teacher_image_url').value = teacher.image;
+            
+            // Clear any previously selected file in input
+            document.getElementById('teacher_photo').value = "";
             
             const select = document.getElementById('teacher_image_select');
             let matched = false;
@@ -922,6 +944,12 @@
             }
             
             updateAvatarPreview();
+            
+            // If the image is not one of the presets, show it directly in preview
+            if (!matched) {
+                const preview = document.getElementById('avatar-preview');
+                preview.src = teacher.image;
+            }
             
             document.getElementById('btn-cancel-teacher').style.display = 'block';
             document.getElementById('btn-submit-teacher').textContent = '💾 Simpan Perubahan';
@@ -940,6 +968,9 @@
             document.getElementById('teacher_details').value = '';
             document.getElementById('teacher_image_url').value = '/images/teacher_1.svg';
             document.getElementById('teacher_image_select').selectedIndex = 0;
+            
+            // Clear file upload input
+            document.getElementById('teacher_photo').value = "";
             
             updateAvatarPreview();
             

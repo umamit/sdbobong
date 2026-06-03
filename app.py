@@ -5,6 +5,7 @@ import csv
 import io
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from datetime import datetime, timezone, timedelta
@@ -14,6 +15,53 @@ load_dotenv()
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "super-secret-key-sdn-bobong")
+
+# Upload configurations
+UPLOAD_FOLDER = 'images/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def handle_photo_upload(file_obj):
+    if not file_obj or file_obj.filename == '':
+        return None
+        
+    if allowed_file(file_obj.filename):
+        filename = secure_filename(file_obj.filename)
+        # Generate a unique prefix to avoid caching and collision issues
+        unique_prefix = str(int(datetime.now().timestamp()))
+        unique_filename = f"{unique_prefix}_{filename}"
+        
+        # 1. Try to upload to Supabase Storage
+        if supabase_client:
+            try:
+                # Seek to start
+                file_obj.seek(0)
+                file_bytes = file_obj.read()
+                
+                # Upload using Python SDK
+                supabase_client.storage.from_('teachers').upload(
+                    path=unique_filename,
+                    file=file_bytes,
+                    file_options={"content-type": file_obj.content_type}
+                )
+                # Get public URL
+                public_url = supabase_client.storage.from_('teachers').get_public_url(unique_filename)
+                print(f"File uploaded to Supabase Storage: {public_url}")
+                return public_url
+            except Exception as e:
+                print(f"Supabase Storage upload failed: {e}. Falling back to local file upload.")
+        
+        # 2. Local Fallback
+        file_obj.seek(0)
+        local_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+        file_obj.save(local_path)
+        # Return path relative to webroot
+        return f"/images/uploads/{unique_filename}"
+        
+    return None
 
 # Initialize Supabase Client
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -797,6 +845,12 @@ def admin_teacher_add():
     status = request.form.get('status', '').strip()
     image = request.form.get('image', '').strip()
     
+    # Process uploaded file if any
+    photo_file = request.files.get('photo')
+    uploaded_url = handle_photo_upload(photo_file)
+    if uploaded_url:
+        image = uploaded_url
+        
     if not all([name, role, status, image]):
         flash("Kolom Nama, Jabatan, Status, dan Foto wajib diisi!", "error")
         return redirect(url_for('admin_dashboard') + '?tab=teachers')
@@ -832,6 +886,12 @@ def admin_teacher_edit(teacher_id):
     status = request.form.get('status', '').strip()
     image = request.form.get('image', '').strip()
     
+    # Process uploaded file if any
+    photo_file = request.files.get('photo')
+    uploaded_url = handle_photo_upload(photo_file)
+    if uploaded_url:
+        image = uploaded_url
+        
     if not all([name, role, status, image]):
         flash("Kolom Nama, Jabatan, Status, dan Foto wajib diisi!", "error")
         return redirect(url_for('admin_dashboard') + '?tab=teachers')
