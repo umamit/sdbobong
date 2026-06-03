@@ -242,11 +242,19 @@ def ppdb_dashboard():
     # 1. Fetch from Supabase
     if supabase_client:
         try:
+            # Try with status column first
             response = supabase_client.table("ppdb_sdn_bobong").select("nama_lengkap, jalur_ppdb, alamat_domisili, waktu_daftar, nik_siswa, status").order("waktu_daftar", desc=True).execute()
             if response.data:
                 records = response.data
         except Exception as e:
-            print(f"Error querying Supabase: {e}")
+            print(f"Supabase query with status failed, attempting without status: {e}")
+            try:
+                # Fallback without status column
+                response = supabase_client.table("ppdb_sdn_bobong").select("nama_lengkap, jalur_ppdb, alamat_domisili, waktu_daftar, nik_siswa").order("waktu_daftar", desc=True).execute()
+                if response.data:
+                    records = response.data
+            except Exception as e2:
+                print(f"Error querying Supabase completely: {e2}")
             
     # 2. Fallback to local JSON file if empty or Supabase query failed
     if not records:
