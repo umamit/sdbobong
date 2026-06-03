@@ -107,6 +107,53 @@ def test_teachers_flow():
     assert "Budi Hartono Agung, M.Pd." in r.text, "Edited teacher name not found on public page"
     print("   [PASSED] Dynamic bagan organisasi updated to show the new Kepala Sekolah.")
 
+    # Test uploading file with invalid extension
+    print("4b. Testing file upload rejection of invalid extensions (non-PNG)...")
+    invalid_ext_data = {
+        "name": "Budi Invalid Ext, M.Pd.",
+        "role": "Guru Matematika & IPA",
+        "details": "Pendidik Kelas Atas",
+        "status": "PPPK",
+        "image": "/images/teacher_3.svg"
+    }
+    mock_file_jpg = ('test_photo.jpg', b'dummy jpg data', 'image/jpeg')
+    r = session.post(
+        f"{base_url}/admin/teachers/add", 
+        data=invalid_ext_data, 
+        files={"photo": mock_file_jpg},
+        allow_redirects=False
+    )
+    assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
+    
+    with open("teachers.json", "r", encoding="utf-8") as f:
+        teachers = json.load(f)
+    assert not any(t["name"] == "Budi Invalid Ext, M.Pd." for t in teachers), "Teacher with invalid extension was added!"
+    print("   [PASSED] Non-PNG file upload rejected.")
+
+    # Test uploading file > 1MB
+    print("4c. Testing file upload rejection of too large files (>1MB)...")
+    too_large_data = {
+        "name": "Budi Too Large, M.Pd.",
+        "role": "Guru Matematika & IPA",
+        "details": "Pendidik Kelas Atas",
+        "status": "PPPK",
+        "image": "/images/teacher_3.svg"
+    }
+    large_bytes = b'X' * (1024 * 1024 + 100 * 1024) # 1.1 MB
+    mock_file_large = ('test_photo_large.png', large_bytes, 'image/png')
+    r = session.post(
+        f"{base_url}/admin/teachers/add", 
+        data=too_large_data, 
+        files={"photo": mock_file_large},
+        allow_redirects=False
+    )
+    assert r.status_code == 302, f"Expected 302 redirect, got {r.status_code}"
+    
+    with open("teachers.json", "r", encoding="utf-8") as f:
+        teachers = json.load(f)
+    assert not any(t["name"] == "Budi Too Large, M.Pd." for t in teachers), "Teacher with too large file was added!"
+    print("   [PASSED] File size >1MB rejected successfully.")
+
     # Test deleting the teacher
     print("5. Testing deleting the teacher...")
     r = session.post(f"{base_url}/admin/teachers/delete/{teacher_id}", allow_redirects=False)

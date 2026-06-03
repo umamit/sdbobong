@@ -6,6 +6,7 @@ import io
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from datetime import datetime, timezone, timedelta
@@ -15,18 +16,24 @@ load_dotenv()
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "super-secret-key-sdn-bobong")
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024  # Limit size to 1MB
+
+@app.errorhandler(RequestEntityTooLarge)
+def handle_large_file(e):
+    flash("Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.", "error")
+    return redirect(url_for('admin_dashboard') + '?tab=teachers')
 
 # Upload configurations
 UPLOAD_FOLDER = 'images/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'svg'}
+ALLOWED_EXTENSIONS = {'png'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def handle_photo_upload(file_obj):
     if not file_obj or file_obj.filename == '':
-        return None
+        return "NO_FILE"
         
     if allowed_file(file_obj.filename):
         filename = secure_filename(file_obj.filename)
@@ -61,7 +68,7 @@ def handle_photo_upload(file_obj):
         # Return path relative to webroot
         return f"/images/uploads/{unique_filename}"
         
-    return None
+    return "INVALID_TYPE"
 
 # Initialize Supabase Client
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -848,7 +855,10 @@ def admin_teacher_add():
     # Process uploaded file if any
     photo_file = request.files.get('photo')
     uploaded_url = handle_photo_upload(photo_file)
-    if uploaded_url:
+    if uploaded_url == "INVALID_TYPE":
+        flash("Jenis file tidak valid! Hanya file PNG yang diperbolehkan.", "error")
+        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+    elif uploaded_url and uploaded_url != "NO_FILE":
         image = uploaded_url
         
     if not all([name, role, status, image]):
@@ -889,7 +899,10 @@ def admin_teacher_edit(teacher_id):
     # Process uploaded file if any
     photo_file = request.files.get('photo')
     uploaded_url = handle_photo_upload(photo_file)
-    if uploaded_url:
+    if uploaded_url == "INVALID_TYPE":
+        flash("Jenis file tidak valid! Hanya file PNG yang diperbolehkan.", "error")
+        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+    elif uploaded_url and uploaded_url != "NO_FILE":
         image = uploaded_url
         
     if not all([name, role, status, image]):

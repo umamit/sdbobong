@@ -820,8 +820,8 @@
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px;">
-                                    <label for="teacher_photo">Atau Unggah Foto Baru (.png, .jpg, .jpeg, .gif, .svg):</label>
-                                    <input type="file" id="teacher_photo" name="photo" class="form-control" accept="image/*" onchange="previewUploadedFile(this)">
+                                    <label for="teacher_photo">Atau Unggah Foto Baru (.png, maks 1MB):</label>
+                                    <input type="file" id="teacher_photo" name="photo" class="form-control" accept="image/png" onchange="previewUploadedFile(this)">
                                 </div>
                             </div>
                             
@@ -903,15 +903,32 @@
             preview.src = inputUrl.value;
         }
 
-        // Live preview for uploaded photo file
+        // Live preview for uploaded photo file with client-side checks
         function previewUploadedFile(input) {
             const preview = document.getElementById('avatar-preview');
             if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // 1. Client-side file size check (1MB = 1,048,576 bytes)
+                if (file.size > 1024 * 1024) {
+                    alert("Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.");
+                    input.value = ""; // Reset file input
+                    return;
+                }
+                
+                // 2. Client-side file type check (PNG only)
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (extension !== "png" && file.type !== "image/png") {
+                    alert("Jenis file tidak valid! Hanya berkas PNG (.png) yang diperbolehkan.");
+                    input.value = ""; // Reset file input
+                    return;
+                }
+                
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                 }
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(file);
             }
         }
 
