@@ -887,9 +887,19 @@ def admin_teacher_add():
         
     return redirect(url_for('admin_dashboard') + '?tab=teachers')
 
-@app.route('/admin/teachers/edit/<teacher_id>', methods=['POST'])
+@app.route('/admin/teachers/edit/<teacher_id>', methods=['GET', 'POST'])
 @login_required
 def admin_teacher_edit(teacher_id):
+    teachers = load_teachers()
+    teacher = next((t for t in teachers if t.get('id') == teacher_id), None)
+    
+    if not teacher:
+        flash("Data guru tidak ditemukan.", "error")
+        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+        
+    if request.method == 'GET':
+        return render_template('edit_teacher.html', teacher=teacher)
+        
     name = request.form.get('name', '').strip()
     role = request.form.get('role', '').strip()
     details = request.form.get('details', '').strip()
@@ -901,33 +911,25 @@ def admin_teacher_edit(teacher_id):
     uploaded_url = handle_photo_upload(photo_file)
     if uploaded_url == "INVALID_TYPE":
         flash("Jenis file tidak valid! Hanya file PNG yang diperbolehkan.", "error")
-        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+        return render_template('edit_teacher.html', teacher=teacher)
     elif uploaded_url and uploaded_url != "NO_FILE":
         image = uploaded_url
         
     if not all([name, role, status, image]):
         flash("Kolom Nama, Jabatan, Status, dan Foto wajib diisi!", "error")
-        return redirect(url_for('admin_dashboard') + '?tab=teachers')
+        return render_template('edit_teacher.html', teacher=teacher)
         
-    teachers = load_teachers()
-    found = False
-    for t in teachers:
-        if t.get('id') == teacher_id:
-            t['name'] = name
-            t['role'] = role
-            t['details'] = details
-            t['status'] = status
-            t['image'] = image
-            found = True
-            break
+    # Update details
+    teacher['name'] = name
+    teacher['role'] = role
+    teacher['details'] = details
+    teacher['status'] = status
+    teacher['image'] = image
             
-    if found:
-        if save_teachers(teachers):
-            flash("Data guru berhasil diperbarui!", "success")
-        else:
-            flash("Gagal menyimpan perubahan data guru.", "error")
+    if save_teachers(teachers):
+        flash("Data guru berhasil diperbarui!", "success")
     else:
-        flash("Data guru tidak ditemukan.", "error")
+        flash("Gagal menyimpan perubahan data guru.", "error")
         
     return redirect(url_for('admin_dashboard') + '?tab=teachers')
 

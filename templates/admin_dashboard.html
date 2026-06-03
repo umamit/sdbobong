@@ -361,76 +361,6 @@
                 margin-left: 70px;
             }
         }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-container {
-            background-color: white;
-            border-radius: var(--radius-md);
-            width: 100%;
-            max-width: 550px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-color);
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-        }
-        .modal-overlay.active .modal-container {
-            transform: scale(1);
-        }
-        .modal-header {
-            padding: var(--space-md);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--primary-dark);
-            color: white;
-        }
-        .modal-header h3 {
-            margin: 0;
-            font-size: 1.15rem;
-            font-family: var(--font-heading);
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition-fast);
-            line-height: 1;
-        }
-        .modal-close:hover {
-            color: white;
-            transform: scale(1.1);
-        }
-        .modal-body {
-            padding: var(--space-md);
-            overflow-y: auto;
-        }
     </style>
 </head>
 <body>
@@ -810,10 +740,9 @@
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <div style="display: flex; gap: var(--space-xs); justify-content: center;">
-                                                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
-                                                                onclick="openEditModal({{ t | tojson | safe }})">
+                                                        <a href="/admin/teachers/edit/{{ t.id }}" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; text-decoration: none; display: inline-block; line-height: 1.5;">
                                                             Edit
-                                                        </button>
+                                                        </a>
                                                         <form action="/admin/teachers/delete/{{ t.id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data guru ini?')">
                                                             <button type="submit" class="btn-action-delete" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Hapus</button>
                                                         </form>
@@ -1001,99 +930,6 @@
             }
         }
 
-        // Edit Modal helpers
-        function openEditModal(teacher) {
-            document.getElementById('form-edit-teacher').action = '/admin/teachers/edit/' + teacher.id;
-            
-            document.getElementById('edit_teacher_name').value = teacher.name;
-            document.getElementById('edit_teacher_role').value = teacher.role;
-            document.getElementById('edit_teacher_status').value = teacher.status;
-            document.getElementById('edit_teacher_details').value = teacher.details || '';
-            document.getElementById('edit_teacher_image_url').value = teacher.image;
-            
-            // Clear file upload input
-            document.getElementById('edit_teacher_photo').value = "";
-            
-            const select = document.getElementById('edit_teacher_image_select');
-            let matched = false;
-            for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].value === teacher.image) {
-                    select.selectedIndex = i;
-                    matched = true;
-                    break;
-                }
-            }
-            if (!matched) {
-                select.value = 'custom';
-            }
-            
-            updateEditAvatarPreview();
-            
-            // If the image is not one of the presets, show it directly in preview
-            if (!matched) {
-                const preview = document.getElementById('edit-avatar-preview');
-                preview.src = teacher.image;
-            }
-            
-            document.getElementById('edit-teacher-modal').classList.add('active');
-        }
-        
-        function closeEditModal() {
-            document.getElementById('edit-teacher-modal').classList.remove('active');
-        }
-        
-        function updateEditAvatarPreview() {
-            const select = document.getElementById('edit_teacher_image_select');
-            const preview = document.getElementById('edit-avatar-preview');
-            const inputUrl = document.getElementById('edit_teacher_image_url');
-            
-            // Clear file upload input when template avatar is selected
-            document.getElementById('edit_teacher_photo').value = "";
-            
-            if (select.value === 'custom') {
-                inputUrl.style.display = 'block';
-                preview.src = inputUrl.value;
-            } else {
-                inputUrl.style.display = 'none';
-                inputUrl.value = select.value;
-                preview.src = select.value;
-            }
-        }
-        
-        function updateEditAvatarPreviewFromText() {
-            const inputUrl = document.getElementById('edit_teacher_image_url');
-            const preview = document.getElementById('edit-avatar-preview');
-            preview.src = inputUrl.value;
-        }
-        
-        function previewEditUploadedFile(input) {
-            const preview = document.getElementById('edit-avatar-preview');
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                
-                // 1. Client-side file size check (1MB = 1,048,576 bytes)
-                if (file.size > 1024 * 1024) {
-                    alert("Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.");
-                    input.value = ""; // Reset file input
-                    return;
-                }
-                
-                // 2. Client-side file type check (PNG only)
-                const extension = file.name.split('.').pop().toLowerCase();
-                if (extension !== "png" && file.type !== "image/png") {
-                    alert("Jenis file tidak valid! Hanya berkas PNG (.png) yang diperbolehkan.");
-                    input.value = ""; // Reset file input
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
         // Auto-activate tab from query param
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1103,77 +939,5 @@
             }
         });
     </script>
-
-    <!-- ================= EDIT TEACHER MODAL ================= -->
-    <div id="edit-teacher-modal" class="modal-overlay">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3>✏️ Edit Data Guru / Staf</h3>
-                <button type="button" class="modal-close" onclick="closeEditModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="form-edit-teacher" action="" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="edit_teacher_name">Nama Lengkap & Gelar *</label>
-                        <input type="text" id="edit_teacher_name" name="name" class="form-control" placeholder="Contoh: Fatimah, S.Pd.SD." required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="edit_teacher_role">Jabatan / Peran *</label>
-                            <input type="text" id="edit_teacher_role" name="role" class="form-control" placeholder="Contoh: Wali Kelas 1, Guru Agama" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_teacher_status">Status Kepegawaian *</label>
-                            <select id="edit_teacher_status" name="status" class="form-control" required>
-                                <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
-                                <option value="PPPK">PPPK</option>
-                                <option value="Honorer Daerah">Honorer Daerah</option>
-                                <option value="Honorer Sekolah">Honorer Sekolah</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="edit_teacher_details">Pangkat / Keterangan Lain (Opsional)</label>
-                        <input type="text" id="edit_teacher_details" name="details" class="form-control" placeholder="Contoh: Pembina Tk. I / IV-b, Guru Kelas Bawah">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Foto / Avatar *</label>
-                        <div style="display: flex; gap: var(--space-sm); align-items: center;">
-                            <div style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; background-color: var(--bg-main);">
-                                <img id="edit-avatar-preview" src="/images/teacher_1.svg" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
-                            <div style="flex: 1;">
-                                <select id="edit_teacher_image_select" class="form-control" onchange="updateEditAvatarPreview()" style="margin-bottom: 5px;">
-                                    <option value="/images/teacher_1.svg">Ilustrasi Guru Laki-laki 1</option>
-                                    <option value="/images/teacher_2.svg">Ilustrasi Guru Perempuan 1</option>
-                                    <option value="/images/teacher_3.svg">Ilustrasi Guru Laki-laki 2</option>
-                                    <option value="/images/teacher_4.svg">Ilustrasi Guru Perempuan 2</option>
-                                    <option value="/images/teacher_5.svg">Ilustrasi Guru Laki-laki 3</option>
-                                    <option value="/images/teacher_6.svg">Ilustrasi Guru Perempuan 3</option>
-                                    <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
-                                    <option value="/images/principal.svg">Ilustrasi Kepala Sekolah (principal.svg)</option>
-                                    <option value="custom">-- Input URL Gambar Kustom --</option>
-                                </select>
-                                
-                                <input type="text" id="edit_teacher_image_url" name="image" class="form-control" value="/images/teacher_1.svg" placeholder="Masukkan URL / path gambar custom" style="display: none;" oninput="updateEditAvatarPreviewFromText()">
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <label for="edit_teacher_photo">Atau Unggah Foto Baru (.png, maks 1MB):</label>
-                            <input type="file" id="edit_teacher_photo" name="photo" class="form-control" accept="image/png" onchange="previewEditUploadedFile(this)">
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: var(--space-xs); margin-top: var(--space-md);">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Simpan Perubahan</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="flex: 1;">Batal</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
