@@ -6,8 +6,13 @@
     <title>Edit Data Guru - SD Negeri Bobong</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0b3c5d 0%, #07253b 100%);
+            --accent-gradient: linear-gradient(135deg, #f5a623 0%, #d48408 100%);
+            --card-shadow: 0 15px 35px rgba(7, 37, 59, 0.08), 0 5px 15px rgba(0, 0, 0, 0.04);
+        }
         body {
-            background-color: #f4f6f9;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             margin: 0;
             padding: var(--space-md);
             font-family: var(--font-body);
@@ -27,29 +32,74 @@
             gap: 0.5rem;
             color: var(--primary-dark);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: var(--space-md);
-            transition: var(--transition-fast);
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
         }
         .btn-back:hover {
             color: var(--primary);
-            transform: translateX(-3px);
+            transform: translateX(-4px);
         }
         .settings-card {
             background: white;
             padding: var(--space-lg);
             border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(229, 231, 235, 0.6);
         }
         .settings-card h2 {
             margin-top: 0;
             color: var(--primary-dark);
             font-family: var(--font-heading);
             font-size: 1.5rem;
-            border-bottom: 2px solid var(--border-color);
+            font-weight: 800;
+            border-bottom: 2px solid rgba(229, 231, 235, 0.4);
             padding-bottom: var(--space-sm);
             margin-bottom: var(--space-md);
+            letter-spacing: -0.02em;
+        }
+        .form-control {
+            border-radius: var(--radius-sm);
+            border: 1.5px solid #cbd5e1;
+            padding: 0.65rem 0.85rem;
+            font-family: var(--font-body);
+            transition: all 0.25s ease;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.12);
+        }
+        .btn {
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-decoration: none;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(11, 60, 93, 0.15);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(11, 60, 93, 0.25);
+        }
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
         }
     </style>
 </head>
