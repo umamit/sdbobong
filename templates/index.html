@@ -81,19 +81,19 @@
     <section class="section-padding stats-section">
         <div class="container stats-grid">
             <div class="stat-item">
-                <div class="stat-number">205</div>
+                <div class="stat-number">{{ global_stats.siswa_aktif }}</div>
                 <div class="stat-label">Siswa Aktif</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">14</div>
+                <div class="stat-number">{{ global_stats.guru_staf }}</div>
                 <div class="stat-label">Guru & Staf</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">9</div>
+                <div class="stat-number">{{ global_stats.ruang_kelas }}</div>
                 <div class="stat-label">Ruang Kelas</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">B</div>
+                <div class="stat-number">{{ global_stats.akreditasi }}</div>
                 <div class="stat-label">Akreditasi Sekolah</div>
             </div>
         </div>
@@ -108,45 +108,24 @@
             </div>
             
             <div class="grid-3">
-                <!-- News 1 -->
-                <article class="card">
-                    <img src="/images/news_hari_guru.svg" alt="Perayaan Hari Guru SD Negeri Bobong" class="card-img">
-                    <div class="card-body">
-                        <div class="card-meta">
-                            <span>📅 25 Nov 2025</span>
-                            <span>•</span>
-                            <span>🏷️ Kegiatan</span>
-                        </div>
-                        <h3 class="card-title"><a href="/berita">Kemeriahan Hari Guru Nasional Ke-80 di SD Negeri Bobong</a></h3>
-                        <p class="card-text">Siswa-siswi SD Negeri Bobong mempersembahkan pementasan seni tradisi dan puisi khusus untuk para pendidik...</p>
-                    </div>
-                </article>
-                <!-- News 2 -->
-                <article class="card">
-                    <img src="/images/news_imunisasi.svg" alt="Pelaksanaan Imunisasi Anak" class="card-img">
-                    <div class="card-body">
-                        <div class="card-meta">
-                            <span>📅 12 Okt 2025</span>
-                            <span>•</span>
-                            <span>🏷️ Kesehatan</span>
-                        </div>
-                        <h3 class="card-title"><a href="/berita">Pelaksanaan Program Imunisasi Anak Sekolah (BIAS)</a></h3>
-                        <p class="card-text">Bekerja sama dengan Puskesmas Bobong, sekolah menyelenggarakan pemberian imunisasi berkala bagi siswa kelas 1 dan 2...</p>
-                    </div>
-                </article>
-                <!-- News 3 -->
-                <article class="card">
-                    <img src="/images/news_kerja_bakti.svg" alt="Kegiatan Kerja Bakti Lingkungan" class="card-img">
-                    <div class="card-body">
-                        <div class="card-meta">
-                            <span>📅 04 Sep 2025</span>
-                            <span>•</span>
-                            <span>🏷️ Kebersihan</span>
-                        </div>
-                        <h3 class="card-title"><a href="/berita">Aksi Sabtu Bersih: Menanamkan Cinta Lingkungan</a></h3>
-                        <p class="card-text">Guru, siswa, dan komite orang tua murid berkolaborasi membersihkan area pekarangan sekolah dan merawat kebun kelas...</p>
-                    </div>
-                </article>
+                {% if news_list %}
+                    {% for news in news_list %}
+                        <article class="card">
+                            <img src="{{ news.image }}" alt="{{ news.title }}" class="card-img">
+                            <div class="card-body">
+                                <div class="card-meta">
+                                    <span>📅 {{ news.date }}</span>
+                                    <span>•</span>
+                                    <span>🏷️ {{ news.category }}</span>
+                                </div>
+                                <h3 class="card-title"><a href="/berita">{{ news.title }}</a></h3>
+                                <p class="card-text">{{ news.content[:100] }}...</p>
+                            </div>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <p style="grid-column: span 3; text-align: center; color: var(--text-muted); font-style: italic;">Belum ada berita kegiatan terbaru.</p>
+                {% endif %}
             </div>
             
             <div class="text-center" style="margin-top: var(--space-md);">

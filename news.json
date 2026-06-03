@@ -1,0 +1,34 @@
+[
+  {
+    "id": "news-1",
+    "title": "Kemeriahan Hari Guru Nasional Ke-80 di SD Negeri Bobong",
+    "date": "25 Nov 2025",
+    "category": "Kegiatan",
+    "image": "/images/news_hari_guru.svg",
+    "content": "Dalam rangka memperingati Hari Guru Nasional ke-80, siswa-siswi SD Negeri Bobong menyelenggarakan acara kejutan khusus untuk dewan guru. Acara diisi dengan pembacaan puisi berantai, pemberian buket bunga daur ulang buatan siswa, dan pertunjukan tarian daerah. Kepala Sekolah Abdul Kadir, menyampaikan apresiasi mendalam bagi semangat kebersamaan seluruh wali murid dan komite yang turut menyukseskan acara penuh khidmat ini."
+  },
+  {
+    "id": "news-2",
+    "title": "Pelaksanaan Program Imunisasi Anak Sekolah (BIAS)",
+    "date": "12 Okt 2025",
+    "category": "Kesehatan",
+    "image": "/images/news_imunisasi.svg",
+    "content": "SD Negeri Bobong bekerja sama dengan tim medis Puskesmas Bobong sukses menyelenggarakan kegiatan Bulan Imunisasi Anak Sekolah (BIAS). Imunisasi menyasar siswa kelas 1, 2, dan 5 guna memberikan perlindungan terhadap penyakit campak, difteri, dan tetanus. Proses imunisasi didampingi langsung oleh guru kelas masing-masing untuk meredakan ketegangan siswa, dan seluruh proses berjalan tertib dengan dukungan penuh orang tua murid."
+  },
+  {
+    "id": "news-3",
+    "title": "Aksi Sabtu Bersih: Menanamkan Cinta Lingkungan",
+    "date": "04 Sep 2025",
+    "category": "Kebersihan",
+    "image": "/images/news_kerja_bakti.svg",
+    "content": "Guru, murid, dan perwakilan komite sekolah berkolaborasi melaksanakan aksi kerja bakti di lingkungan sekolah. Kegiatan difokuskan pada penataan kebun kelas, pembersihan saluran drainase, serta pembilahan sampah plastik. Aksi ini bertujuan membiasakan murid mempraktikkan gaya hidup ramah lingkungan sejak dini di daerah pesisir Pulau Taliabu."
+  },
+  {
+    "id": "news-4",
+    "title": "Rapat Koordinasi Komite: Sinergi Program Sekolah",
+    "date": "15 Jul 2025",
+    "category": "Musyawarah",
+    "image": "/images/news_rapat_komite.svg",
+    "content": "Sekolah menggelar rapat tahunan bersama komite orang tua murid di ruang kelas besar. Agenda rapat membahas kolaborasi peningkatan fasilitas sanitasi sekolah, perluasan kegiatan ekstrakurikuler seni daerah, serta persiapan penyusunan program PPDB digital. Kemitraan yang terjalin erat ini menjadi kunci kemajuan SD Negeri Bobong ke depan."
+  }
+]

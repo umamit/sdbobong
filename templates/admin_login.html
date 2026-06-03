@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - SD Negeri Bobong</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #061e30 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            margin: 0;
+            font-family: var(--font-body);
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 420px;
+            padding: var(--space-lg) var(--space-md);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-logo {
+            width: 70px;
+            height: 70px;
+            margin-bottom: var(--space-xs);
+        }
+        .login-header h2 {
+            font-family: var(--font-heading);
+            color: var(--primary-dark);
+            font-size: 1.35rem;
+            margin-bottom: 0.25rem;
+        }
+        .login-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: var(--space-md);
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: var(--space-sm);
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.35rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem var(--space-xs);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-size: 1rem;
+            margin-top: var(--space-xs);
+        }
+        .btn-login:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .alert {
+            background-color: #FDF2F2;
+            color: #9B1C1C;
+            border: 1px solid #FBD5D5;
+            padding: 0.65rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: var(--space-sm);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: var(--space-md);
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+        .back-link:hover {
+            text-decoration: underline;
+            color: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <img src="/images/logo_sekolah.png" alt="Logo SDN Bobong" class="login-logo">
+        <div class="login-header">
+            <h2>Panel Admin SDN Bobong</h2>
+            <p>Silakan login untuk mengelola isi website</p>
+        </div>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">
+                        <span>⚠️ {{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/admin/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Masukkan username" required autofocus autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn-login">Masuk ke Dashboard</button>
+        </form>
+
+        <a href="/" class="back-link">← Kembali ke Website Utama</a>
+    </div>
+
+</body>
+</html>

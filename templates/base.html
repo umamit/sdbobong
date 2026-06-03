@@ -13,9 +13,9 @@
     <!-- Running Announcement Banner -->
     <div class="announcement-banner">
         <div class="marquee-content">
-            <span>📢 PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka! Silakan daftar online pada portal PPDB.</span>
-            <span>📅 INFO: Jadwal Pembagian Rapor Semester Genap dilaksanakan pada 20 Juni 2026.</span>
-            <span>🌟 PRESTASI: Selamat kepada Tim Pramuka SD Negeri Bobong meraih Juara Harapan 1 Lomba Tingkat Kabupaten!</span>
+            {% for ann in global_announcements %}
+                <span>{{ ann }}</span>
+            {% endfor %}
         </div>
     </div>
 

@@ -20,69 +20,26 @@
             </div>
             
             <div class="grid-2" style="margin-bottom: var(--space-lg);">
-                <!-- Article 1 -->
-                <article class="card" style="display: flex; flex-direction: column;">
-                    <img src="/images/news_hari_guru.svg" alt="Hari Guru Nasional" class="card-img" style="height: 240px;">
-                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div class="card-meta">
-                                <span>📅 25 Nov 2025</span>
-                                <span>•</span>
-                                <span>🏷️ Kegiatan</span>
+                {% if news_list %}
+                    {% for news in news_list %}
+                        <article class="card" style="display: flex; flex-direction: column;">
+                            <img src="{{ news.image }}" alt="{{ news.title }}" class="card-img" style="height: 240px;">
+                            <div class="card-body" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <div class="card-meta">
+                                        <span>📅 {{ news.date }}</span>
+                                        <span>•</span>
+                                        <span>🏷️ {{ news.category }}</span>
+                                    </div>
+                                    <h3 class="card-title" style="font-size: 1.3rem;">{{ news.title }}</h3>
+                                    <p class="card-text">{{ news.content }}</p>
+                                </div>
                             </div>
-                            <h3 class="card-title" style="font-size: 1.3rem;">Kemeriahan Hari Guru Nasional Ke-80 di SD Negeri Bobong</h3>
-                            <p class="card-text">Dalam rangka memperingati Hari Guru Nasional ke-80, siswa-siswi SD Negeri Bobong menyelenggarakan acara kejutan khusus untuk dewan guru. Acara diisi dengan pembacaan puisi berantai, pemberian buket bunga daur ulang buatan siswa, dan pertunjukan tarian daerah. Kepala Sekolah Abdul Kadir, menyampaikan apresiasi mendalam bagi semangat kebersamaan seluruh wali murid dan komite yang turut menyukseskan acara penuh khidmat ini.</p>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 2 -->
-                <article class="card" style="display: flex; flex-direction: column;">
-                    <img src="/images/news_imunisasi.svg" alt="BIAS Puskesmas Bobong" class="card-img" style="height: 240px;">
-                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div class="card-meta">
-                                <span>📅 12 Okt 2025</span>
-                                <span>•</span>
-                                <span>🏷️ Kesehatan</span>
-                            </div>
-                            <h3 class="card-title" style="font-size: 1.3rem;">Pelaksanaan Program Imunisasi Anak Sekolah (BIAS)</h3>
-                            <p class="card-text">SD Negeri Bobong bekerja sama dengan tim medis Puskesmas Bobong sukses menyelenggarakan kegiatan Bulan Imunisasi Anak Sekolah (BIAS). Imunisasi menyasar siswa kelas 1, 2, dan 5 guna memberikan perlindungan terhadap penyakit campak, difteri, dan tetanus. Proses imunisasi didampingi langsung oleh guru kelas masing-masing untuk meredakan ketegangan siswa, dan seluruh proses berjalan tertib dengan dukungan penuh orang tua murid.</p>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 3 -->
-                <article class="card" style="display: flex; flex-direction: column;">
-                    <img src="/images/news_kerja_bakti.svg" alt="Aksi Sabtu Bersih" class="card-img" style="height: 240px;">
-                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div class="card-meta">
-                                <span>📅 04 Sep 2025</span>
-                                <span>•</span>
-                                <span>🏷️ Kebersihan</span>
-                            </div>
-                            <h3 class="card-title" style="font-size: 1.3rem;">Aksi Sabtu Bersih: Menanamkan Cinta Lingkungan</h3>
-                            <p class="card-text">Guru, murid, dan perwakilan komite sekolah berkolaborasi melaksanakan aksi kerja bakti di lingkungan sekolah. Kegiatan difokuskan pada penataan kebun kelas, pembersihan saluran drainase, serta pembilahan sampah plastik. Aksi ini bertujuan membiasakan murid mempraktikkan gaya hidup ramah lingkungan sejak dini di daerah pesisir Pulau Taliabu.</p>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 4 -->
-                <article class="card" style="display: flex; flex-direction: column;">
-                    <img src="/images/news_rapat_komite.svg" alt="Rapat Komite Orang Tua" class="card-img" style="height: 240px;">
-                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div class="card-meta">
-                                <span>📅 15 Jul 2025</span>
-                                <span>•</span>
-                                <span>🏷️ Musyawarah</span>
-                            </div>
-                            <h3 class="card-title" style="font-size: 1.3rem;">Rapat Koordinasi Komite: Sinergi Program Sekolah</h3>
-                            <p class="card-text">Sekolah menggelar rapat tahunan bersama komite orang tua murid di ruang kelas besar. Agenda rapat membahas kolaborasi peningkatan fasilitas sanitasi sekolah, perluasan kegiatan ekstrakurikuler seni daerah, serta persiapan penyusunan program PPDB digital. Kemitraan yang terjalin erat ini menjadi kunci kemajuan SD Negeri Bobong ke depan.</p>
-                        </div>
-                    </div>
-                </article>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <p style="grid-column: span 2; text-align: center; color: var(--text-muted); font-style: italic; padding: var(--space-md);">Belum ada berita kegiatan yang diunggah.</p>
+                {% endif %}
             </div>
         </div>
     </section>
