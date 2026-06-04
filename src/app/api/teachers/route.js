@@ -36,10 +36,10 @@ export async function POST(request) {
 
     // Process photo upload
     const photoFile = formData.get('photo');
-    const uploadedUrl = await handlePhotoUpload(photoFile, 'teachers', ['png']);
+    const uploadedUrl = await handlePhotoUpload(photoFile, 'teachers', ['png', 'jpg', 'jpeg']);
 
     if (uploadedUrl === 'INVALID_TYPE') {
-      return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG yang diperbolehkan." }, { status: 400 });
+      return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
     } else if (uploadedUrl === 'ERROR') {
       return NextResponse.json({ error: "Gagal mengunggah foto." }, { status: 500 });
     } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
@@ -105,10 +105,10 @@ export async function PUT(request) {
 
     // Process photo upload if any
     const photoFile = formData.get('photo');
-    const uploadedUrl = await handlePhotoUpload(photoFile, 'teachers', ['png']);
+    const uploadedUrl = await handlePhotoUpload(photoFile, 'teachers', ['png', 'jpg', 'jpeg']);
 
     if (uploadedUrl === 'INVALID_TYPE') {
-      return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG yang diperbolehkan." }, { status: 400 });
+      return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
     } else if (uploadedUrl === 'ERROR') {
       return NextResponse.json({ error: "Gagal mengunggah foto." }, { status: 500 });
     } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {

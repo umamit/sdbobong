@@ -303,8 +303,9 @@ export default function AdminDashboardClient({
         return;
       }
       const extension = file.name.split('.').pop().toLowerCase();
-      if (extension !== 'png' && file.type !== 'image/png') {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png) yang diperbolehkan.');
+      const allowed = ['png', 'jpg', 'jpeg'];
+      if (!allowed.includes(extension)) {
+        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
         e.target.value = '';
         return;
       }
@@ -1731,13 +1732,13 @@ export default function AdminDashboardClient({
                       </div>
                     </div>
                     <div style={{ marginTop: '10px' }}>
-                      <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, maks 1MB):</label>
+                      <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB):</label>
                       <input
                         type="file"
                         id="teacher_photo"
                         name="photo"
                         className="form-control"
-                        accept="image/png"
+                        accept="image/png, image/jpeg, image/jpg"
                         onChange={handleTeacherPhotoChange}
                         style={{ width: '100%' }}
                       />
