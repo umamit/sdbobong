@@ -119,6 +119,31 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleDeleteAllPPDB = async () => {
+    const confirmation = prompt('⚠️ WARNING: Apakah Anda yakin ingin menghapus SEMUA data pendaftar? Tindakan ini akan mengosongkan database pendaftaran di Supabase dan lokal secara permanen.\n\nKetik kata kunci "HAPUS SEMUA" di bawah untuk mengonfirmasi:');
+    if (confirmation !== 'HAPUS SEMUA') {
+      if (confirmation !== null) {
+        alert('Konfirmasi dibatalkan atau kata kunci salah.');
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/ppdb?all=true', {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Semua data pendaftar berhasil dihapus secara permanen.');
+        setRecords([]);
+      } else {
+        showToast('danger', data.error || 'Gagal menghapus semua data pendaftaran.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleAnnouncementsUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -1210,6 +1235,15 @@ export default function AdminDashboardClient({
             background-color: #e2e8f0;
             color: #0f172a;
         }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
         .btn-action-delete {
             background-color: #fee2e2;
             color: #ef4444;
@@ -1526,11 +1560,22 @@ export default function AdminDashboardClient({
           {/* ================= TAB: PPDB MANAGEMENT ================= */}
           <section id="tab-ppdb" class={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
             <div className="admin-table">
-              <div className="table-toolbar">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <h3>Daftar Lengkap Formulir Masuk</h3>
-                <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                  📥 Ekspor Data ke Excel/CSV
-                </a>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                    📥 Ekspor Data ke Excel/CSV
+                  </a>
+                  {records.length > 0 && (
+                    <button 
+                      onClick={handleDeleteAllPPDB} 
+                      className="btn btn-danger" 
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      🗑️ Hapus Semua Data
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>

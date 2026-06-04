@@ -240,6 +240,42 @@ export async function DELETE(request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const nik = searchParams.get('nik');
+    const clearAll = searchParams.get('all') === 'true';
+
+    if (clearAll) {
+      let deletedOk = false;
+      try {
+        fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify([], null, 4), 'utf-8');
+        deletedOk = true;
+      } catch (e) {
+        console.error("Error clearing local JSON:", e);
+      }
+
+      const supabaseActive = isSupabaseEnabled();
+      let supabaseDeleted = false;
+
+      if (supabaseActive) {
+        try {
+          const { error } = await supabase.from("ppdb_sdn_bobong").delete().neq("id", 0);
+          if (error) throw error;
+          supabaseDeleted = true;
+        } catch (e) {
+          console.error("Error clearing Supabase:", e);
+          return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
+        }
+      }
+
+      if (deletedOk || supabaseDeleted) {
+        try {
+          revalidatePath('/', 'layout');
+        } catch (cacheErr) {
+          console.error("Cache revalidation failed in ppdb DELETE all:", cacheErr);
+        }
+        return NextResponse.json({ success: true });
+      } else {
+        return NextResponse.json({ error: "Gagal mengosongkan data." }, { status: 500 });
+      }
+    }
 
     if (!id) {
       return NextResponse.json({ error: "ID pendaftar tidak ditentukan." }, { status: 400 });
