@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
-import { PENDAFTARAN_JSON, loadLocalStatuses, supabase } from '../../../lib/database';
+import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled } from '../../../lib/database';
 import fs from 'fs';
 import path from 'path';
 
@@ -179,30 +179,36 @@ export async function PUT(request) {
     }
 
     // 2. Update Supabase
-    if (supabase) {
+    const supabaseActive = isSupabaseEnabled();
+    let supabaseUpdated = false;
+
+    if (supabaseActive) {
       try {
         // Try updating by NIK first (since NIK is unique and stable)
         const targetNik = nik || id;
         if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
           const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", String(targetNik).trim()).select();
+          if (error) throw error;
           if (data && data.length > 0) {
-            updatedOk = true;
+            supabaseUpdated = true;
           }
         }
 
         // Try updating by integer ID next if not updated yet
-        if (!updatedOk && id && /^\d+$/.test(String(id).trim())) {
+        if (!supabaseUpdated && id && /^\d+$/.test(String(id).trim())) {
           const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", parseInt(id, 10)).select();
+          if (error) throw error;
           if (data && data.length > 0) {
-            updatedOk = true;
+            supabaseUpdated = true;
           }
         }
       } catch (e) {
         console.error("Error updating status in Supabase:", e);
+        return NextResponse.json({ error: "Gagal menyinkronkan status ke Supabase: " + e.message }, { status: 500 });
       }
     }
 
-    if (updatedOk) {
+    if (supabaseActive ? supabaseUpdated : updatedOk) {
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -210,7 +216,7 @@ export async function PUT(request) {
       }
       return NextResponse.json({ success: true });
     } else {
-      return NextResponse.json({ error: "Gagal memperbarui status pendaftaran." }, { status: 500 });
+      return NextResponse.json({ error: "Gagal memperbarui status pendaftaran di database." }, { status: 500 });
     }
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
@@ -261,30 +267,36 @@ export async function DELETE(request) {
     }
 
     // 2. Delete from Supabase
-    if (supabase) {
+    const supabaseActive = isSupabaseEnabled();
+    let supabaseDeleted = false;
+
+    if (supabaseActive) {
       try {
         // Try deleting by NIK first (since NIK is unique and stable)
         const targetNik = nik || id;
         if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
           const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("nik_siswa", String(targetNik).trim()).select();
+          if (error) throw error;
           if (data && data.length > 0) {
-            deletedOk = true;
+            supabaseDeleted = true;
           }
         }
 
         // Try deleting by integer ID next if not deleted yet
-        if (!deletedOk && id && /^\d+$/.test(String(id).trim())) {
+        if (!supabaseDeleted && id && /^\d+$/.test(String(id).trim())) {
           const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("id", parseInt(id, 10)).select();
+          if (error) throw error;
           if (data && data.length > 0) {
-            deletedOk = true;
+            supabaseDeleted = true;
           }
         }
       } catch (e) {
         console.error("Error deleting from Supabase:", e);
+        return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
       }
     }
 
-    if (deletedOk) {
+    if (supabaseActive ? supabaseDeleted : deletedOk) {
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -292,7 +304,7 @@ export async function DELETE(request) {
       }
       return NextResponse.json({ success: true });
     } else {
-      return NextResponse.json({ error: "Gagal menghapus data pendaftar." }, { status: 500 });
+      return NextResponse.json({ error: "Gagal menghapus data pendaftar di database." }, { status: 500 });
     }
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });

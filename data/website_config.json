@@ -1,5 +1,6 @@
 {
     "marquee_announcements": [
+        "📢 DYNAMISM TEST ANNOUNCEMENT - 1780581622897",
         "📢 PENGUMUMAN BARU: PPDB 2026/2027 Telah Aktif!",
         "📅 INFO: Ujian Akhir Semester Genap dilaksanakan Juni 2026.",
         "🌟 PRESTASI: SDN Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
@@ -8,7 +9,8 @@
         "guru_staf": 14,
         "akreditasi": "B",
         "ruang_kelas": 9,
-        "siswa_aktif": 205
+        "siswa_aktif": 205,
+        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg"
     },
     "ppdb_contacts": {
         "wa_humas": "6281340123456",

@@ -292,7 +292,7 @@ export async function saveWebConfig(config) {
     console.error("Error saving config locally:", e);
   }
 
-  if (supabase) {
+  if (isSupabaseEnabled()) {
     try {
       const { error } = await supabase.from("config_sdn_bobong").upsert({
         id: "global_config",
@@ -305,7 +305,7 @@ export async function saveWebConfig(config) {
       return true;
     } catch (e) {
       console.error("Error saving config to Supabase:", e.message || e);
-      return localSaved; // Fallback to local save status so missing tables do not crash the UI
+      return false; // Strict synchronization: fail if Supabase is enabled but fails
     }
   }
   return localSaved;
