@@ -196,10 +196,10 @@ export default async function Profil() {
 
               <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
 
-              <div style={{ display: 'flex', gap: 'var(--space-lg)', justifyContent: 'center', width: '100%', position: 'relative', alignItems: 'flex-start' }}>
-                <div style={{ position: 'absolute', top: 0, left: '25%', right: '25%', height: '2px', backgroundColor: 'var(--primary)', zIndex: 1 }}></div>
+              <div style={{ display: 'flex', gap: 'var(--space-lg)', justifyContent: 'center', width: '100%', position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 0, left: '18%', right: '18%', height: '2px', backgroundColor: 'var(--primary)', zIndex: 1 }}></div>
 
-                {/* Left Column: Komite */}
+                {/* Left Box: Komite */}
                 {komite ? (
                   <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
@@ -214,41 +214,35 @@ export default async function Profil() {
                   </div>
                 )}
 
-                {/* Right Column: Tata Usaha & Bendahara Group */}
-                <div style={{ display: 'flex', gap: 'var(--space-md)', justifyContent: 'center', zIndex: 2, position: 'relative', marginTop: '18px', alignItems: 'flex-start' }}>
-                  <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                  <div style={{ position: 'absolute', top: 0, left: '25%', right: '25%', height: '2px', backgroundColor: 'var(--primary)' }}></div>
+                {/* Center Box: Tata Usaha */}
+                {tataUsaha ? (
+                  <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{tataUsaha.name}</div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{tataUsaha.role}</div>
+                  </div>
+                ) : (
+                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
+                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Tata Usaha</div>
+                  </div>
+                )}
 
-                  {/* Tata Usaha */}
-                  {tataUsaha ? (
-                    <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                      <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{tataUsaha.name}</div>
-                      <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{tataUsaha.role}</div>
-                    </div>
-                  ) : (
-                    <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                      <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
-                      <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Tata Usaha</div>
-                    </div>
-                  )}
-
-                  {/* Bendahara */}
-                  {bendahara ? (
-                    <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                      <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
-                      <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
-                    </div>
-                  ) : (
-                    <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                      <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                      <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
-                      <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Bendahara</div>
-                    </div>
-                  )}
-                </div>
+                {/* Right Box: Bendahara */}
+                {bendahara ? (
+                  <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
+                  </div>
+                ) : (
+                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
+                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Bendahara</div>
+                  </div>
+                )}
               </div>
 
               <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)', marginTop: '10px' }}></div>
