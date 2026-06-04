@@ -25,6 +25,7 @@ export async function POST(request) {
     let force_local_cache;
     let nama_humas, wa_humas, jabatan_humas;
     let nama_operator, wa_operator, jabatan_operator;
+    let parsedFormData = null;
 
     if (contentType.includes('application/json')) {
       const body = await request.json();
@@ -44,6 +45,7 @@ export async function POST(request) {
       jabatan_operator = body.jabatan_operator;
     } else {
       const formData = await request.formData();
+      parsedFormData = formData;
       actionType = formData.get('action_type');
       if (actionType === 'announcements') {
         announcements = formData.getAll('announcements[]');
@@ -92,8 +94,7 @@ export async function POST(request) {
         jabatan_operator: jabatan_operator || ''
       };
     } else if (actionType === 'hero_bg') {
-      const formData = await request.formData();
-      const file = formData.get('hero_bg_image');
+      const file = parsedFormData ? parsedFormData.get('hero_bg_image') : null;
       if (file && file.size > 0) {
         const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg']);
         if (uploadedUrl === 'INVALID_TYPE') {
