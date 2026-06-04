@@ -363,7 +363,7 @@ export default function AdminDashboardClient({
             background: linear-gradient(180deg, #0b0f19 0%, #0f172a 100%);
             color: #ffffff;
             position: fixed;
-            top: 0;
+            top: 80px;
             bottom: 0;
             left: 0;
             z-index: 100;
@@ -487,10 +487,11 @@ export default function AdminDashboardClient({
         }
         .main-wrapper {
             margin-left: var(--sidebar-width);
+            margin-top: 80px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: calc(100vh - 80px);
             overflow: hidden;
             background-color: var(--admin-bg);
         }
@@ -504,9 +505,14 @@ export default function AdminDashboardClient({
             align-items: center;
             justify-content: space-between;
             padding: 0 2.5rem;
-            position: sticky;
+            padding-left: calc(var(--sidebar-width) + 2.5rem);
+            position: fixed;
             top: 0;
-            z-index: 90;
+            left: 0;
+            width: 100%;
+            z-index: 110;
+            box-sizing: border-box;
+            transition: var(--transition-smooth);
         }
         .top-title h1 {
             font-size: 1.35rem;
@@ -932,6 +938,7 @@ export default function AdminDashboardClient({
         @media (max-width: 768px) {
             .sidebar {
                 width: 80px;
+                top: 80px;
             }
             .sidebar-brand span, .sidebar-link span:last-child, .sidebar-footer button span:last-child {
                 display: none;
@@ -946,6 +953,12 @@ export default function AdminDashboardClient({
             }
             .main-wrapper {
                 margin-left: 80px;
+                margin-top: 80px;
+                height: calc(100vh - 80px);
+            }
+            .top-navbar {
+                padding-left: calc(80px + 1.5rem);
+                padding-right: 1.5rem;
             }
         }
       `}} />
