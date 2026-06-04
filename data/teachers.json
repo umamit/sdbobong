@@ -1,1 +1,42 @@
-[]
+[
+    {
+        "id": "teacher-1780558122",
+        "name": "Abdul Kadir",
+        "role": "Kepala Sekolah",
+        "details": "Penata Tk. I/ IIId",
+        "status": "PNS",
+        "image": "/images/teacher_1.png"
+    },
+    {
+        "id": "teacher-1780564209",
+        "name": "Wa Sutini Idris",
+        "role": "Tata Usaha",
+        "details": "belum tahu",
+        "status": "PNS",
+        "image": "/images/teacher_2.jpg"
+    },
+    {
+        "id": "teacher-7",
+        "name": "Husnita Usman, M.Pd.",
+        "role": "Guru Bahasa Inggris",
+        "details": "Pendidik Bidang Studi",
+        "status": "PNS",
+        "image": "/images/teacher_7.jpg"
+    },
+    {
+        "id": "teacher-1780552815",
+        "name": "Ami Wambes, S.Pd",
+        "role": "Guru Kelas 4a",
+        "details": "Guru Kelas Atas",
+        "status": "Honorer Daerah",
+        "image": "/images/teacher_4.svg"
+    },
+    {
+        "id": "teacher-1780563447",
+        "name": "Yuni, S.Pd",
+        "role": "Bendahara",
+        "details": "belum tahu",
+        "status": "PPPK",
+        "image": "/images/teacher_2.jpg"
+    }
+]
