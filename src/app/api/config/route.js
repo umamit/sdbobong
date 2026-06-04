@@ -70,7 +70,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }
 
-    fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8');
+    try {
+      fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8');
+    } catch (err) {
+      console.warn("Failed to write config locally (expected in read-only environments like Vercel):", err.message);
+    }
     return NextResponse.json({ success: true, config });
   } catch (e) {
     return NextResponse.json({ error: 'Terjadi kesalahan server: ' + e.message }, { status: 500 });

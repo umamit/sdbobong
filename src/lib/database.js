@@ -315,8 +315,10 @@ export async function saveNews(newsList) {
           }
         }
       }
+      return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving news to Supabase:", e.message || e);
+      return localSaved;
     }
   }
   return localSaved;
@@ -424,8 +426,10 @@ export async function saveTeachers(teachersList) {
           }
         }
       }
+      return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving teachers to Supabase:", e.message || e);
+      return localSaved;
     }
   }
   return localSaved;
