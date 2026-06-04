@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload } from '../../../lib/database';
 
 async function checkAuth() {
   try {
+    const cookieStore = cookies();
+    const token = cookieStore.get('admin_session_token')?.value;
+    if (token && token === process.env.SUPABASE_KEY) {
+      return true;
+    }
+
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     return !!user;

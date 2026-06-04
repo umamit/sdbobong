@@ -47,6 +47,15 @@ export async function middleware(request) {
 
   // 2. Protect administrative dashboard routes
   if (path.startsWith('/admin') && path !== '/admin/login') {
+    // Check if the service role key cookie exists and is valid
+    const adminToken = request.cookies.get('admin_session_token')?.value;
+    const serviceRoleKey = process.env.SUPABASE_KEY || '';
+    const isValidToken = adminToken && serviceRoleKey && adminToken === serviceRoleKey;
+
+    if (isValidToken) {
+      return NextResponse.next();
+    }
+
     const { user, response } = await updateSession(request);
 
     if (!user) {
