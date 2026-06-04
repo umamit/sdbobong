@@ -3,6 +3,9 @@ import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
   title: 'SD Negeri Bobong - Cerdas, Berkarakter, dan Berbudaya',
   description: 'Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.',

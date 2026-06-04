@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
 import { loadTeachers, saveTeachers, handlePhotoUpload, supabase, isSupabaseEnabled } from '../../../lib/database';
 
@@ -114,6 +115,11 @@ export async function POST(request) {
     const saved = await saveTeachers(teachersList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in teachers POST:", cacheErr);
+      }
       return NextResponse.json({ success: true, teacher: newTeacher });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan data guru ke database." }, { status: 500 });
@@ -216,6 +222,11 @@ export async function PUT(request) {
     const saved = await saveTeachers(teachersList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in teachers PUT:", cacheErr);
+      }
       return NextResponse.json({ success: true, teacher: teachersList[teacherIndex] });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan perubahan data guru." }, { status: 500 });
@@ -255,6 +266,11 @@ export async function DELETE(request) {
     const saved = await saveTeachers(filteredList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in teachers DELETE:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menghapus data guru." }, { status: 500 });

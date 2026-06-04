@@ -2,6 +2,7 @@ import { supabase, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, ano
 import fs from 'fs';
 import PPDBPortal from '../../components/PPDBPortal';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Dynamic server page
 
 export default async function PPDBPage() {

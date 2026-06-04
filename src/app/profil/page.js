@@ -1,5 +1,6 @@
 import { loadTeachers, loadAchievements } from '../../lib/database';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
 
 export default async function Profil() {

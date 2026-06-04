@@ -1,6 +1,7 @@
 import { loadNews } from '../../lib/database';
 import Gallery from '../../components/Gallery';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
 
 export default async function Berita() {

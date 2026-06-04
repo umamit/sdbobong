@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
 
 export default async function Home() {

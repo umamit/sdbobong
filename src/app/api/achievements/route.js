@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
 import { loadAchievements, saveAchievements, supabase, isSupabaseEnabled } from '../../../lib/database';
 
@@ -54,6 +55,11 @@ export async function POST(request) {
     const saved = await saveAchievements(achievementsList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in achievements POST:", cacheErr);
+      }
       return NextResponse.json({ success: true, achievement: newAchievement });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan data prestasi ke database." }, { status: 500 });
@@ -99,6 +105,11 @@ export async function PUT(request) {
     const saved = await saveAchievements(achievementsList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in achievements PUT:", cacheErr);
+      }
       return NextResponse.json({ success: true, achievement: achievementsList[achIndex] });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan perubahan data prestasi." }, { status: 500 });
@@ -138,6 +149,11 @@ export async function DELETE(request) {
     const saved = await saveAchievements(filteredList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in achievements DELETE:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menghapus data prestasi." }, { status: 500 });

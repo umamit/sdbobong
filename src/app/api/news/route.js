@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
 import { loadNews, saveNews, handlePhotoUpload } from '../../../lib/database';
 
@@ -71,6 +72,11 @@ export async function POST(request) {
     const saved = await saveNews(newsList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in news POST:", cacheErr);
+      }
       return NextResponse.json({ success: true, article: newArticle });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan berita baru ke database." }, { status: 500 });
@@ -103,6 +109,11 @@ export async function DELETE(request) {
     const saved = await saveNews(filteredList);
 
     if (saved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in news DELETE:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menghapus berita." }, { status: 500 });

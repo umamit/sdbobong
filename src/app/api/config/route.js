@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload } from '../../../lib/database';
 
@@ -116,6 +117,12 @@ export async function POST(request) {
     const saved = await saveWebConfig(config);
     if (!saved) {
       return NextResponse.json({ error: "Gagal menyimpan konfigurasi ke database." }, { status: 500 });
+    }
+
+    try {
+      revalidatePath('/', 'layout');
+    } catch (cacheErr) {
+      console.error("Cache revalidation failed in config route:", cacheErr);
     }
 
     return NextResponse.json({ success: true, config });

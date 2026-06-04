@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '../../../lib/supabase/server';
 import { PENDAFTARAN_JSON, loadLocalStatuses, supabase } from '../../../lib/database';
 import fs from 'fs';
@@ -202,6 +203,11 @@ export async function PUT(request) {
     }
 
     if (updatedOk) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in ppdb PUT:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal memperbarui status pendaftaran." }, { status: 500 });
@@ -279,6 +285,11 @@ export async function DELETE(request) {
     }
 
     if (deletedOk) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in ppdb DELETE:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menghapus data pendaftar." }, { status: 500 });
@@ -375,6 +386,11 @@ export async function POST(request) {
     }
 
     if (savedToSupabase || localSaved) {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in ppdb POST:", cacheErr);
+      }
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menyimpan data pendaftaran." }, { status: 500 });
