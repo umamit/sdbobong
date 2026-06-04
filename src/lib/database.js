@@ -295,7 +295,7 @@ export async function saveNews(newsList) {
   if (isSupabaseEnabled()) {
     try {
       for (const article of newsList) {
-        await supabase.from("news_sdn_bobong").upsert({
+        const { error } = await supabase.from("news_sdn_bobong").upsert({
           id: article.id,
           title: article.title,
           date: article.date,
@@ -303,22 +303,26 @@ export async function saveNews(newsList) {
           image: article.image,
           content: article.content
         });
+        if (error) throw error;
       }
 
       const localIds = new Set(newsList.map(n => n.id));
-      const { data: supabaseNews } = await supabase.from("news_sdn_bobong").select("id");
+      const { data: supabaseNews, error: selectError } = await supabase.from("news_sdn_bobong").select("id");
+      if (selectError) throw selectError;
+
       if (supabaseNews) {
         const supabaseIds = new Set(supabaseNews.map(row => row.id));
         for (const deleteId of supabaseIds) {
           if (!localIds.has(deleteId)) {
-            await supabase.from("news_sdn_bobong").delete().eq("id", deleteId);
+            const { error: deleteError } = await supabase.from("news_sdn_bobong").delete().eq("id", deleteId);
+            if (deleteError) throw deleteError;
           }
         }
       }
       return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving news to Supabase:", e.message || e);
-      return localSaved;
+      return false;
     }
   }
   return localSaved;
@@ -406,7 +410,7 @@ export async function saveTeachers(teachersList) {
   if (isSupabaseEnabled()) {
     try {
       for (const t of teachersList) {
-        await supabase.from("teachers_sdn_bobong").upsert({
+        const { error } = await supabase.from("teachers_sdn_bobong").upsert({
           id: t.id,
           name: t.name,
           role: t.role,
@@ -414,22 +418,26 @@ export async function saveTeachers(teachersList) {
           status: t.status,
           image: t.image
         });
+        if (error) throw error;
       }
 
       const localIds = new Set(teachersList.map(t => t.id));
-      const { data: supabaseTeachers } = await supabase.from("teachers_sdn_bobong").select("id");
+      const { data: supabaseTeachers, error: selectError } = await supabase.from("teachers_sdn_bobong").select("id");
+      if (selectError) throw selectError;
+
       if (supabaseTeachers) {
         const supabaseIds = new Set(supabaseTeachers.map(row => row.id));
         for (const deleteId of supabaseIds) {
           if (!localIds.has(deleteId)) {
-            await supabase.from("teachers_sdn_bobong").delete().eq("id", deleteId);
+            const { error: deleteError } = await supabase.from("teachers_sdn_bobong").delete().eq("id", deleteId);
+            if (deleteError) throw deleteError;
           }
         }
       }
       return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving teachers to Supabase:", e.message || e);
-      return localSaved;
+      return false;
     }
   }
   return localSaved;
