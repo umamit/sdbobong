@@ -15,9 +15,45 @@ export const supabase = (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.includes(
   : null;
 
 // Paths to local JSON configuration and caching databases
-const DATA_DIR = path.join(process.cwd(), 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+const BUNDLED_DATA_DIR = path.join(process.cwd(), 'data');
+let DATA_DIR = BUNDLED_DATA_DIR;
+
+// Detect read-only serverless environment (Vercel, Netlify, AWS Lambda)
+const isServerless = !!(
+  process.env.VERCEL ||
+  process.env.NOW_BUILDER ||
+  process.env.LAMBDA_TASK_ROOT ||
+  process.env.AWS_EXECUTION_ENV ||
+  process.env.NETLIFY
+);
+
+if (isServerless) {
+  DATA_DIR = '/tmp/sdn-bobong-data';
+}
+
+// Ensure the directory exists and copy initial files if in serverless /tmp env
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+
+  if (isServerless) {
+    const filesToCopy = ['website_config.json', 'news.json', 'teachers.json', 'pendaftaran.json', 'achievements.json'];
+    filesToCopy.forEach(file => {
+      const srcPath = path.join(BUNDLED_DATA_DIR, file);
+      const destPath = path.join(DATA_DIR, file);
+      if (!fs.existsSync(destPath) && fs.existsSync(srcPath)) {
+        try {
+          fs.copyFileSync(srcPath, destPath);
+          console.log(`Copied bundled ${file} to serverless temp directory: ${destPath}`);
+        } catch (copyErr) {
+          console.error(`Failed to copy ${file} to /tmp:`, copyErr);
+        }
+      }
+    });
+  }
+} catch (err) {
+  console.error("Error initializing database data directory:", err);
 }
 
 export const WEBSITE_CONFIG_JSON = path.join(DATA_DIR, 'website_config.json');
