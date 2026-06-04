@@ -49,6 +49,18 @@ export default function AdminDashboardClient({
   const [teacherImageUrl, setTeacherImageUrl] = useState('/images/teacher_1.png');
   const [avatarPreview, setAvatarPreview] = useState('/images/teacher_1.png');
 
+  // States for Edit Teacher Modal
+  const [editTeacherModalOpen, setEditTeacherModalOpen] = useState(false);
+  const [editTeacherId, setEditTeacherId] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editRole, setEditRole] = useState('');
+  const [editStatus, setEditStatus] = useState('PNS');
+  const [editDetails, setEditDetails] = useState('');
+  const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
+  const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
+  const [editAvatarPreview, setEditAvatarPreview] = useState('');
+
+
   // Load active tab from URL query param if present
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -598,6 +610,112 @@ export default function AdminDashboardClient({
       reader.readAsDataURL(file);
     }
   };
+
+  // Edit teacher helpers
+  const handleTeacherEditClick = (t) => {
+    setEditTeacherId(t.id);
+    setEditName(t.name || '');
+    setEditRole(t.role || '');
+    setEditStatus(t.status || 'PNS');
+    setEditDetails(t.details || '');
+    
+    const defaultAvatars = [
+      '/images/teacher_1.png',
+      '/images/teacher_2.jpg',
+      '/images/teacher_3.png',
+      '/images/teacher_4.jpg',
+      '/images/teacher_5.png',
+      '/images/teacher_7.jpg',
+      '/images/principal.svg'
+    ];
+
+    if (defaultAvatars.includes(t.image)) {
+      setEditTeacherImageSelect(t.image);
+      setEditTeacherImageUrl(t.image);
+    } else {
+      setEditTeacherImageSelect('custom');
+      setEditTeacherImageUrl(t.image || '');
+    }
+    setEditAvatarPreview(t.image || '');
+    setEditTeacherModalOpen(true);
+  };
+
+  const handleEditTeacherImageSelectChange = (e) => {
+    const val = e.target.value;
+    setEditTeacherImageSelect(val);
+
+    const fileInput = document.getElementById('edit_teacher_photo');
+    if (fileInput) fileInput.value = '';
+
+    if (val === 'custom') {
+      setEditAvatarPreview(editTeacherImageUrl);
+    } else {
+      setEditTeacherImageUrl(val);
+      setEditAvatarPreview(val);
+    }
+  };
+
+  const handleEditTeacherImageUrlChange = (e) => {
+    const val = e.target.value;
+    setEditTeacherImageUrl(val);
+    setEditAvatarPreview(val);
+  };
+
+  const handleEditTeacherPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        e.target.value = '';
+        return;
+      }
+      const extension = file.name.split('.').pop().toLowerCase();
+      const allowed = ['png', 'jpg', 'jpeg'];
+      if (!allowed.includes(extension)) {
+        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        e.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setEditAvatarPreview(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTeacherUpdateSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    formData.set('id', editTeacherId);
+
+    if (editTeacherImageSelect !== 'custom') {
+      formData.set('image', editTeacherImageSelect);
+    } else {
+      formData.set('image', editTeacherImageUrl);
+    }
+
+    try {
+      const res = await fetch('/api/teachers', {
+        method: 'PUT',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Data guru berhasil diperbarui!');
+        // Update the teachers local state
+        setTeachers(prev => prev.map(t => t.id === editTeacherId ? data.teacher : t));
+        setEditTeacherModalOpen(false);
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui data guru.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
 
   const handleNewsPhotoChange = (e) => {
     const file = e.target.files[0];
@@ -2140,9 +2258,14 @@ export default function AdminDashboardClient({
                                   <option value="humas" style={{ backgroundColor: 'white', color: 'var(--text-main)' }}>Jadikan Humas</option>
                                   <option value="operator" style={{ backgroundColor: 'white', color: 'var(--text-main)' }}>Jadikan Operator</option>
                                 </select>
-                                <Link href={`/admin/teachers/edit/${t.id}`} className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', lineHeight: '1.5' }}>
+                                <button 
+                                  onClick={() => handleTeacherEditClick(t)} 
+                                  type="button" 
+                                  className="btn btn-secondary" 
+                                  style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', lineHeight: '1.5' }}
+                                >
                                   Edit
-                                </Link>
+                                </button>
                                 <button onClick={() => handleTeacherDelete(t.id)} type="button" className="btn-action-delete" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}>Hapus</button>
                               </div>
                             </td>
@@ -2645,6 +2768,201 @@ export default function AdminDashboardClient({
                   style={{ flex: 1, padding: '0.65rem' }}
                 >
                   💾 Simpan Data Guru
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* CUSTOM EDIT TEACHER MODAL */}
+      {editTeacherModalOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          animation: 'fadeIn 0.2s ease-out'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            padding: '2rem',
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            border: '1px solid #e2e8f0',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
+                ✏️ Edit Data Guru / Staf
+              </h3>
+              <button 
+                onClick={() => setEditTeacherModalOpen(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '1.5rem',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                  lineHeight: 1,
+                  padding: '4px'
+                }}
+                aria-label="Tutup"
+              >
+                &times;
+              </button>
+            </div>
+            
+            <p style={{ color: '#64748b', fontSize: '0.85rem', margin: 0 }}>
+              Perbarui informasi guru di bawah ini. Tekan tombol Simpan Perubahan jika sudah selesai.
+            </p>
+
+            <form id="form-edit-teacher" onSubmit={handleTeacherUpdateSubmit} encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="form-group">
+                <label htmlFor="edit_teacher_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Lengkap & Gelar *</label>
+                <input
+                  type="text"
+                  id="edit_teacher_name"
+                  name="name"
+                  className="form-control"
+                  placeholder="Contoh: Fatimah, S.Pd.SD."
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label htmlFor="edit_teacher_role" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Jabatan / Peran *</label>
+                  <input
+                    type="text"
+                    id="edit_teacher_role"
+                    name="role"
+                    className="form-control"
+                    placeholder="Contoh: Wali Kelas 1, Guru Agama"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    value={editRole}
+                    onChange={(e) => setEditRole(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_teacher_status" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Status Kepegawaian *</label>
+                  <select 
+                    id="edit_teacher_status" 
+                    name="status" 
+                    className="form-control" 
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    value={editStatus}
+                    onChange={(e) => setEditStatus(e.target.value)}
+                    required
+                  >
+                    <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
+                    <option value="PPPK">PPPK</option>
+                    <option value="Honorer Daerah">Honorer Daerah</option>
+                    <option value="Honorer Sekolah">Honorer Sekolah</option>
+                    <option value="Komite Sekolah">Komite Sekolah</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_teacher_details" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Pangkat / Keterangan Lain (Opsional)</label>
+                <input
+                  type="text"
+                  id="edit_teacher_details"
+                  name="details"
+                  className="form-control"
+                  placeholder="Contoh: Pembina Tk. I / IV-b, Guru Kelas Bawah"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={editDetails}
+                  onChange={(e) => setEditDetails(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Foto / Avatar (Pilih Stok / Unggah)</label>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
+                    <img id="edit-avatar-preview" src={editAvatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <select
+                      id="edit_teacher_image_select"
+                      value={editTeacherImageSelect}
+                      className="form-control"
+                      onChange={handleEditTeacherImageSelectChange}
+                      style={{ marginBottom: '5px', width: '100%', boxSizing: 'border-box' }}
+                    >
+                      <option value="/images/teacher_1.png">Stok Ilustrasi Pria (Default)</option>
+                      <option value="/images/teacher_2.jpg">Stok Ilustrasi Wanita Berhijab (Default)</option>
+                      <option value="/images/teacher_3.png">Stok Ilustrasi Wanita (Tanpa Hijab)</option>
+                      <option value="/images/teacher_4.jpg">Template Pas Foto Hijab (Merah)</option>
+                      <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
+                      <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
+                      <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
+                      <option value="custom">-- Input URL Gambar Kustom --</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      id="edit_teacher_image_url"
+                      name="image"
+                      className="form-control"
+                      value={editTeacherImageUrl}
+                      placeholder="Masukkan URL / path gambar custom"
+                      style={{ display: editTeacherImageSelect === 'custom' ? 'block' : 'none', width: '100%', boxSizing: 'border-box' }}
+                      onChange={handleEditTeacherImageUrlChange}
+                    />
+                  </div>
+                </div>
+                <div style={{ marginTop: '10px' }}>
+                  <label htmlFor="edit_teacher_photo" style={{ display: 'block', marginBottom: '6px', fontWeight: 500, fontSize: '0.85rem', color: '#64748b' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB - Opsional):</label>
+                  <input
+                    type="file"
+                    id="edit_teacher_photo"
+                    name="photo"
+                    className="form-control"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handleEditTeacherPhotoChange}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem', borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => setEditTeacherModalOpen(false)}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  id="btn-edit-submit-teacher" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Perubahan
                 </button>
               </div>
             </form>
