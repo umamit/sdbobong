@@ -67,6 +67,14 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
+/* Prevent text selection on public pages to prevent copying and template cloning */
+html:not(.is-admin) {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--bg-main);

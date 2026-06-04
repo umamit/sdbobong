@@ -18,9 +18,58 @@ export default async function RootLayout({ children }) {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
         <script dangerouslySetInnerHTML={{ __html: `
           if (window.location.pathname.startsWith('/admin')) {
             document.documentElement.classList.add('is-admin');
+          }
+
+          // Anti-cloning protection script for public pages
+          if (!window.location.pathname.startsWith('/admin')) {
+            // 1. Prevent Right-Click
+            document.addEventListener('contextmenu', function(e) {
+              e.preventDefault();
+            });
+
+            // 2. Prevent keyboard shortcuts for inspection, view-source, saving, copy, pasting, and printing
+            document.addEventListener('keydown', function(e) {
+              // Disable Ctrl+S / Cmd+S (Save)
+              if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+              }
+              // Disable Ctrl+U / Cmd+U (View Source)
+              if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                e.preventDefault();
+              }
+              // Disable Ctrl+P / Cmd+P (Print)
+              if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+              }
+              // Disable F12
+              if (e.key === 'F12') {
+                e.preventDefault();
+              }
+              // Disable Ctrl+Shift+I / Cmd+Opt+I (Inspect Element)
+              if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+                e.preventDefault();
+              }
+              // Disable Ctrl+Shift+C / Cmd+Opt+C (Inspect Element selection)
+              if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+              }
+              // Disable Ctrl+C / Cmd+C (Copy)
+              if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                e.preventDefault();
+              }
+            });
+
+            // 3. Prevent dragging and dropping images (prevents saving images by dragging)
+            document.addEventListener('dragstart', function(e) {
+              if (e.target.nodeName === 'IMG') {
+                e.preventDefault();
+              }
+            });
           }
         `}} />
       </head>
