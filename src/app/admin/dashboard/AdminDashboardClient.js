@@ -765,9 +765,10 @@ export default function AdminDashboardClient({
         }
         .table-responsive {
             border-radius: var(--radius-md);
-            overflow: hidden;
+            overflow-x: auto;
             border: 1px solid #e2e8f0;
             margin: 0 1.5rem 1.5rem 1.5rem;
+            -webkit-overflow-scrolling: touch;
         }
         .status-badge-select {
             padding: 0.4rem 0.75rem;
@@ -1158,7 +1159,7 @@ export default function AdminDashboardClient({
                       <th>Alamat Lengkap</th>
                       <th>Tanggal Daftar</th>
                       <th style={{ width: '140px' }}>Status</th>
-                      <th style={{ width: '80px', textAlign: 'center' }}>Aksi</th>
+                      <th style={{ width: '100px', textAlign: 'center' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1466,7 +1467,7 @@ export default function AdminDashboardClient({
                         <th>Nama Lengkap</th>
                         <th>Jabatan</th>
                         <th>Status</th>
-                        <th style={{ width: '110px', textAlign: 'center' }}>Aksi</th>
+                        <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
