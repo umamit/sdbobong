@@ -245,6 +245,27 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "ID pendaftar tidak ditentukan." }, { status: 400 });
     }
 
+    let targetNik = nik || '';
+    let targetName = '';
+
+    // Find the record details from local JSON before deleting
+    if (fs.existsSync(PENDAFTARAN_JSON)) {
+      try {
+        const records = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
+        const record = records.find((r, idx) => {
+          const rId = r.id || r.nik || r.nik_siswa || String(idx + 1);
+          const rNik = r.nik || r.nik_siswa;
+          return String(rId) === String(id) || String(rNik) === String(nik);
+        });
+        if (record) {
+          if (!targetNik) targetNik = record.nik || record.nik_siswa || '';
+          targetName = record.nama_lengkap || '';
+        }
+      } catch (e) {
+        console.error("Error reading record details from local JSON:", e);
+      }
+    }
+
     let deletedOk = false;
 
     // 1. Delete from local JSON
@@ -280,31 +301,45 @@ export async function DELETE(request) {
 
     if (supabaseActive) {
       try {
-        // Try deleting by NIK first (since NIK is unique and stable)
-        const targetNik = nik || id;
-        if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
-          const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("nik_siswa", String(targetNik).trim()).select();
+        // Try deleting by NIK first
+        if (targetNik && targetNik.trim() !== '') {
+          const { error } = await supabase
+            .from("ppdb_sdn_bobong")
+            .delete()
+            .eq("nik_siswa", String(targetNik).trim());
           if (error) throw error;
-          if (data && data.length > 0) {
-            supabaseDeleted = true;
-          }
+          supabaseDeleted = true;
         }
 
-        // Try deleting by integer ID next if not deleted yet
-        if (!supabaseDeleted && id && /^\d+$/.test(String(id).trim())) {
-          const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("id", parseInt(id, 10)).select();
+        // Try deleting by integer ID next
+        if (id && /^\d+$/.test(String(id).trim())) {
+          const { error } = await supabase
+            .from("ppdb_sdn_bobong")
+            .delete()
+            .eq("id", parseInt(id, 10));
           if (error) throw error;
-          if (data && data.length > 0) {
-            supabaseDeleted = true;
-          }
+          supabaseDeleted = true;
         }
+
+        // Fallback to name if not deleted yet
+        if (!supabaseDeleted && targetName && targetName.trim() !== '') {
+          const { error } = await supabase
+            .from("ppdb_sdn_bobong")
+            .delete()
+            .eq("nama_lengkap", targetName.trim());
+          if (error) throw error;
+          supabaseDeleted = true;
+        }
+        
+        // If we reached here without error, we consider it deleted from Supabase
+        supabaseDeleted = true;
       } catch (e) {
         console.error("Error deleting from Supabase:", e);
         return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
       }
     }
 
-    if (supabaseActive ? supabaseDeleted : deletedOk) {
+    if (deletedOk || supabaseDeleted) {
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -318,6 +353,7 @@ export async function DELETE(request) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }
 }
+
 
 export async function POST(request) {
   try {
