@@ -231,8 +231,88 @@ export default async function Profil() {
               {/* Dewan Guru */}
               <div style={{ backgroundColor: 'var(--secondary)', color: 'var(--primary-dark)', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '400px', boxShadow: 'var(--shadow-sm)' }}>
                 <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Dewan Guru & Pendidik</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 500 }}>Guru Kelas 1 s/d 6 & Guru Bidang Studi (Agama, PJOK, B. Inggris)</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 500 }}>Jajaran Tenaga Pendidik Sekolah</div>
               </div>
+
+              <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
+
+              {/* Grid of Teachers under Dewan Guru */}
+              {teachers.filter(t => {
+                const r = (t.role || "").toLowerCase();
+                return !r.includes("kepala sekolah") &&
+                       !r.includes("tata usaha") &&
+                       !r.includes("koordinator tu") &&
+                       !r.includes("komite");
+              }).length > 0 ? (
+                <div style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '15px', 
+                  justifyContent: 'center', 
+                  maxWidth: '850px', 
+                  width: '100%',
+                  padding: '15px',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px dashed #cbd5e1',
+                  boxSizing: 'border-box'
+                }}>
+                  {teachers.filter(t => {
+                    const r = (t.role || "").toLowerCase();
+                    return !r.includes("kepala sekolah") &&
+                           !r.includes("tata usaha") &&
+                           !r.includes("koordinator tu") &&
+                           !r.includes("komite");
+                  }).map((guru) => (
+                    <div 
+                      key={guru.id} 
+                      style={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid var(--border-color)', 
+                        borderRadius: 'var(--radius-sm)', 
+                        padding: '12px 10px', 
+                        width: '180px', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        textAlign: 'center', 
+                        boxShadow: 'var(--shadow-sm)',
+                        boxSizing: 'border-box'
+                      }}
+                    >
+                      <div style={{ 
+                        width: '50px', 
+                        height: '50px', 
+                        borderRadius: '50%', 
+                        overflow: 'hidden', 
+                        marginBottom: '8px', 
+                        border: '2px solid var(--primary-light)',
+                        backgroundColor: 'var(--bg-main)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <img 
+                          src={guru.image || '/images/teacher_1.png'} 
+                          alt={guru.name} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.2, minHeight: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {guru.name}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 600 }}>
+                        {guru.role}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-sm)' }}>
+                  <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: '#e53e3e' }}>Tidak Ada</div>
+                  <div style={{ fontSize: '0.8rem', color: '#c53030' }}>Guru & Pendidik</div>
+                </div>
+              )}
             </div>
           </div>
         </div>
