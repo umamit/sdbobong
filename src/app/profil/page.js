@@ -18,6 +18,13 @@ export default async function Profil() {
     role: "Koordinator Tata Usaha"
   };
 
+  const komite = teachers.find(t =>
+    (t.role || "").toLowerCase().includes("komite")
+  ) || {
+    name: "Hasanudin, S.E.",
+    role: "Ketua Komite Sekolah"
+  };
+
   return (
     <>
       {/* Page Banner */}
@@ -193,8 +200,8 @@ export default async function Profil() {
                 {/* Left Box: Komite */}
                 <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                   <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Hasanudin, S.E.</div>
-                  <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>Ketua Komite Sekolah</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{komite.name}</div>
+                  <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{komite.role}</div>
                 </div>
 
                 {/* Right Box: Tata Usaha */}
