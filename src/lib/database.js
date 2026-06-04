@@ -190,7 +190,6 @@ export function formatWaktuDaftar(rawWaktu) {
 let cachedConfig = null;
 
 export async function loadWebConfig() {
-  if (cachedConfig) return cachedConfig;
 
   let localConfig = {
     marquee_announcements: [
