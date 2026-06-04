@@ -1695,7 +1695,7 @@ export default function AdminDashboardClient({
                   </div>
 
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Foto / Avatar *</label>
+                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Foto / Avatar (Pilih Stok / Unggah)</label>
                     <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
                       <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
                         <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -1708,14 +1708,14 @@ export default function AdminDashboardClient({
                           onChange={handleTeacherImageSelectChange}
                           style={{ marginBottom: '5px', width: '100%' }}
                         >
-                          <option value="/images/teacher_1.svg">Ilustrasi Guru Laki-laki 1</option>
-                          <option value="/images/teacher_2.svg">Ilustrasi Guru Perempuan 1</option>
-                          <option value="/images/teacher_3.svg">Ilustrasi Guru Laki-laki 2</option>
-                          <option value="/images/teacher_4.svg">Ilustrasi Guru Perempuan 2</option>
-                          <option value="/images/teacher_5.svg">Ilustrasi Guru Laki-laki 3</option>
-                          <option value="/images/teacher_6.svg">Ilustrasi Guru Perempuan 3</option>
+                          <option value="/images/teacher_1.svg">Stok Ilustrasi Pria (Default)</option>
+                          <option value="/images/teacher_2.svg">Stok Ilustrasi Wanita (Default)</option>
+                          <option value="/images/teacher_3.svg">Stok Ilustrasi Pria 2</option>
+                          <option value="/images/teacher_4.svg">Stok Ilustrasi Wanita 2</option>
+                          <option value="/images/teacher_5.svg">Stok Ilustrasi Pria 3</option>
+                          <option value="/images/teacher_6.svg">Stok Ilustrasi Wanita 3</option>
                           <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
-                          <option value="/images/principal.svg">Ilustrasi Kepala Sekolah (principal.svg)</option>
+                          <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
                           <option value="custom">-- Input URL Gambar Kustom --</option>
                         </select>
 
@@ -1732,7 +1732,7 @@ export default function AdminDashboardClient({
                       </div>
                     </div>
                     <div style={{ marginTop: '10px' }}>
-                      <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB):</label>
+                      <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB - Opsional):</label>
                       <input
                         type="file"
                         id="teacher_photo"

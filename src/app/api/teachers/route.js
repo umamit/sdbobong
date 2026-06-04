@@ -46,8 +46,12 @@ export async function POST(request) {
       image = uploadedUrl;
     }
 
-    if (!name || !role || !status || !image) {
-      return NextResponse.json({ error: "Kolom Nama, Jabatan, Status, dan Foto wajib diisi!" }, { status: 400 });
+    if (!image) {
+      image = "/images/teacher_1.svg"; // Fallback default illustration
+    }
+
+    if (!name || !role || !status) {
+      return NextResponse.json({ error: "Kolom Nama, Jabatan, dan Status wajib diisi!" }, { status: 400 });
     }
 
     const teachersList = await loadTeachers();
@@ -115,8 +119,12 @@ export async function PUT(request) {
       image = uploadedUrl;
     }
 
-    if (!name || !role || !status || !image) {
-      return NextResponse.json({ error: "Kolom Nama, Jabatan, Status, dan Foto wajib diisi!" }, { status: 400 });
+    if (!image) {
+      image = "/images/teacher_1.svg"; // Fallback default illustration
+    }
+
+    if (!name || !role || !status) {
+      return NextResponse.json({ error: "Kolom Nama, Jabatan, dan Status wajib diisi!" }, { status: 400 });
     }
 
     // Update details

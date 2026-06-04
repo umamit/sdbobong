@@ -69,8 +69,9 @@ export default function EditTeacherClient({ teacher }) {
         return;
       }
       const extension = file.name.split('.').pop().toLowerCase();
-      if (extension !== 'png' && file.type !== 'image/png') {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png) yang diperbolehkan.');
+      const allowed = ['png', 'jpg', 'jpeg'];
+      if (!allowed.includes(extension)) {
+        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
         e.target.value = '';
         return;
       }
@@ -320,7 +321,7 @@ export default function EditTeacherClient({ teacher }) {
             </div>
             
             <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Foto / Avatar *</label>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Foto / Avatar (Pilih Stok / Unggah)</label>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
                 <div style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
                   <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -333,14 +334,14 @@ export default function EditTeacherClient({ teacher }) {
                     onChange={handleImageSelectChange}
                     style={{ width: '100%', marginBottom: '5px' }}
                   >
-                    <option value="/images/teacher_1.svg">Ilustrasi Guru Laki-laki 1</option>
-                    <option value="/images/teacher_2.svg">Ilustrasi Guru Perempuan 1</option>
-                    <option value="/images/teacher_3.svg">Ilustrasi Guru Laki-laki 2</option>
-                    <option value="/images/teacher_4.svg">Ilustrasi Guru Perempuan 2</option>
-                    <option value="/images/teacher_5.svg">Ilustrasi Guru Laki-laki 3</option>
-                    <option value="/images/teacher_6.svg">Ilustrasi Guru Perempuan 3</option>
+                    <option value="/images/teacher_1.svg">Stok Ilustrasi Pria (Default)</option>
+                    <option value="/images/teacher_2.svg">Stok Ilustrasi Wanita (Default)</option>
+                    <option value="/images/teacher_3.svg">Stok Ilustrasi Pria 2</option>
+                    <option value="/images/teacher_4.svg">Stok Ilustrasi Wanita 2</option>
+                    <option value="/images/teacher_5.svg">Stok Ilustrasi Pria 3</option>
+                    <option value="/images/teacher_6.svg">Stok Ilustrasi Wanita 3</option>
                     <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
-                    <option value="/images/principal.svg">Ilustrasi Kepala Sekolah (principal.svg)</option>
+                    <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
                     <option value="custom">-- Input URL Gambar Kustom --</option>
                   </select>
                   
@@ -356,13 +357,13 @@ export default function EditTeacherClient({ teacher }) {
                 </div>
               </div>
               <div style={{ marginTop: '10px' }}>
-                <label htmlFor="teacher_photo" style={{ display: 'block', fontWeight: 500, fontSize: '0.9rem', marginBottom: '0.25rem' }}>Atau Unggah Foto Baru (.png, maks 1MB):</label>
+                <label htmlFor="teacher_photo" style={{ display: 'block', fontWeight: 500, fontSize: '0.9rem', marginBottom: '0.25rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB - Opsional):</label>
                 <input
                   type="file"
                   id="teacher_photo"
                   name="photo"
                   className="form-control"
-                  accept="image/png"
+                  accept="image/png, image/jpeg, image/jpg"
                   onChange={handlePhotoChange}
                   style={{ width: '100%' }}
                 />
