@@ -241,6 +241,9 @@ header {
 
 /* Mobile Nav Styles Default */
 @media (max-width: 768px) {
+    .mobile-scroll-hint {
+        display: flex !important;
+    }
     .nav-menu {
         position: fixed;
         left: -100%;

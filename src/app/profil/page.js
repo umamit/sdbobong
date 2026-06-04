@@ -183,6 +183,24 @@ export default async function Profil() {
             <h2>Struktur Organisasi</h2>
           </div>
 
+          {/* Petunjuk Geser untuk Smartphone */}
+          <div className="mobile-scroll-hint" style={{
+            display: 'none',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: '#EFF6FF',
+            color: '#1D4ED8',
+            padding: '8px 12px',
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            marginBottom: '15px',
+            border: '1px solid #BFDBFE'
+          }}>
+            <span>↔️ Geser ke samping untuk melihat bagan lengkap</span>
+          </div>
+
           <div style={{ backgroundColor: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
             <div style={{ minWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-sm)' }}>
               {/* Kepala Sekolah */}
