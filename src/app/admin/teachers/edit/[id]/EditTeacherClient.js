@@ -121,23 +121,31 @@ export default function EditTeacherClient({ teacher }) {
   };
 
   return (
-    <>
+    <div className="admin-edit-teacher-layout">
       <style dangerouslySetInnerHTML={{ __html: `
-        :root {
-            --primary-gradient: linear-gradient(135deg, #0b3c5d 0%, #07253b 100%);
-            --accent-gradient: linear-gradient(135deg, #f5a623 0%, #d48408 100%);
-            --card-shadow: 0 15px 35px rgba(7, 37, 59, 0.08), 0 5px 15px rgba(0, 0, 0, 0.04);
-        }
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        .admin-edit-teacher-layout {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --accent-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --card-shadow: 0 15px 35px rgba(99, 102, 241, 0.08), 0 5px 15px rgba(0, 0, 0, 0.04);
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             margin: 0;
-            padding: var(--space-md);
-            font-family: var(--font-body);
+            padding: 2rem;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-main);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
+            width: 100%;
         }
         .container {
             width: 100%;
@@ -150,7 +158,7 @@ export default function EditTeacherClient({ teacher }) {
             color: var(--primary-dark);
             text-decoration: none;
             font-weight: 700;
-            margin-bottom: var(--space-md);
+            margin-bottom: 1.5rem;
             transition: all 0.2s ease;
             font-size: 0.95rem;
         }
@@ -160,39 +168,41 @@ export default function EditTeacherClient({ teacher }) {
         }
         .settings-card {
             background: white;
-            padding: var(--space-lg);
+            padding: 2rem;
             border-radius: var(--radius-md);
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(229, 231, 235, 0.6);
         }
         .settings-card h2 {
             margin-top: 0;
-            color: var(--primary-dark);
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
+            color: #0f172a;
+            font-family: inherit;
+            font-size: 1.35rem;
             font-weight: 800;
             border-bottom: 2px solid rgba(229, 231, 235, 0.4);
-            padding-bottom: var(--space-sm);
-            margin-bottom: var(--space-md);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
             letter-spacing: -0.02em;
         }
         .form-control {
             border-radius: var(--radius-sm);
             border: 1.5px solid #cbd5e1;
             padding: 0.65rem 0.85rem;
-            font-family: var(--font-body);
+            font-family: inherit;
             transition: all 0.25s ease;
             outline: none;
             font-size: 0.9rem;
             box-sizing: border-box;
+            background: #ffffff;
+            color: #0f172a;
         }
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.12);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
         }
         .btn {
             border-radius: var(--radius-sm);
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.2s ease;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
@@ -208,10 +218,10 @@ export default function EditTeacherClient({ teacher }) {
             background: var(--primary-gradient);
             color: white;
             border: none;
-            box-shadow: 0 4px 10px rgba(11, 60, 93, 0.15);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
         }
         .btn-primary:hover {
-            box-shadow: 0 6px 15px rgba(11, 60, 93, 0.25);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.25);
         }
         .btn-secondary {
             background-color: #f1f5f9;
@@ -231,25 +241,25 @@ export default function EditTeacherClient({ teacher }) {
         
         <div className="settings-card">
           <h2>✏️ Edit Data Guru / Staf</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.25rem' }}>
             Perbarui informasi guru di bawah ini. Tekan tombol Simpan Perubahan jika sudah selesai.
           </p>
 
           {errorMsg && (
-            <div className="alert alert-danger" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: 'var(--space-md)', fontSize: '0.9rem', backgroundColor: '#FEE2E2', color: '#991B1B', border: '1px solid #FCA5A5' }}>
+            <div className="alert alert-danger" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1.25rem', fontSize: '0.9rem', backgroundColor: '#FEE2E2', color: '#991B1B', border: '1px solid #FCA5A5' }}>
               {errorMsg}
             </div>
           )}
 
           {successMsg && (
-            <div className="alert alert-success" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: 'var(--space-md)', fontSize: '0.9rem', backgroundColor: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' }}>
+            <div className="alert alert-success" style={{ padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', marginBottom: '1.25rem', fontSize: '0.9rem', backgroundColor: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0' }}>
               {successMsg}
             </div>
           )}
           
           <form onSubmit={handleSubmit} encType="multipart/form-data">
-            <div className="form-group" style={{ marginBottom: 'var(--space-md)' }}>
-              <label htmlFor="teacher_name" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Nama Lengkap & Gelar *</label>
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="teacher_name" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Nama Lengkap & Gelar *</label>
               <input
                 type="text"
                 id="teacher_name"
@@ -262,9 +272,9 @@ export default function EditTeacherClient({ teacher }) {
               />
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label htmlFor="teacher_role" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Jabatan / Peran *</label>
+                <label htmlFor="teacher_role" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Jabatan / Peran *</label>
                 <input
                   type="text"
                   id="teacher_role"
@@ -277,7 +287,7 @@ export default function EditTeacherClient({ teacher }) {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="teacher_status" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Status Kepegawaian *</label>
+                <label htmlFor="teacher_status" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Status Kepegawaian *</label>
                 <select
                   id="teacher_status"
                   name="status"
@@ -295,8 +305,8 @@ export default function EditTeacherClient({ teacher }) {
               </div>
             </div>
             
-            <div className="form-group" style={{ marginBottom: 'var(--space-md)' }}>
-              <label htmlFor="teacher_details" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Pangkat / Keterangan Lain (Opsional)</label>
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="teacher_details" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Pangkat / Keterangan Lain (Opsional)</label>
               <input
                 type="text"
                 id="teacher_details"
@@ -308,9 +318,9 @@ export default function EditTeacherClient({ teacher }) {
               />
             </div>
             
-            <div className="form-group" style={{ marginBottom: 'var(--space-lg)' }}>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Foto / Avatar *</label>
-              <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', marginBottom: 'var(--space-sm)' }}>
+            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>Foto / Avatar *</label>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
                 <div style={{ width: '70px', height: '70px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
                   <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
@@ -358,7 +368,7 @@ export default function EditTeacherClient({ teacher }) {
               </div>
             </div>
             
-            <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
+            <div style={{ display: 'flex', gap: '1rem' }}>
               <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ flex: 1, padding: '0.75rem' }}>
                 {isSubmitting ? 'Menyimpan...' : '💾 Simpan Perubahan'}
               </button>
@@ -369,6 +379,6 @@ export default function EditTeacherClient({ teacher }) {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
