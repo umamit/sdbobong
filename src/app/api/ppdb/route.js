@@ -303,36 +303,42 @@ export async function DELETE(request) {
       try {
         // Try deleting by NIK first
         if (targetNik && targetNik.trim() !== '') {
-          const { error } = await supabase
+          const { data, error } = await supabase
             .from("ppdb_sdn_bobong")
             .delete()
-            .eq("nik_siswa", String(targetNik).trim());
+            .eq("nik_siswa", String(targetNik).trim())
+            .select();
           if (error) throw error;
-          supabaseDeleted = true;
+          if (data && data.length > 0) {
+            supabaseDeleted = true;
+          }
         }
 
         // Try deleting by integer ID next
-        if (id && /^\d+$/.test(String(id).trim())) {
-          const { error } = await supabase
+        if (!supabaseDeleted && id && /^\d+$/.test(String(id).trim())) {
+          const { data, error } = await supabase
             .from("ppdb_sdn_bobong")
             .delete()
-            .eq("id", parseInt(id, 10));
+            .eq("id", parseInt(id, 10))
+            .select();
           if (error) throw error;
-          supabaseDeleted = true;
+          if (data && data.length > 0) {
+            supabaseDeleted = true;
+          }
         }
 
         // Fallback to name if not deleted yet
         if (!supabaseDeleted && targetName && targetName.trim() !== '') {
-          const { error } = await supabase
+          const { data, error } = await supabase
             .from("ppdb_sdn_bobong")
             .delete()
-            .eq("nama_lengkap", targetName.trim());
+            .eq("nama_lengkap", targetName.trim())
+            .select();
           if (error) throw error;
-          supabaseDeleted = true;
+          if (data && data.length > 0) {
+            supabaseDeleted = true;
+          }
         }
-        
-        // If we reached here without error, we consider it deleted from Supabase
-        supabaseDeleted = true;
       } catch (e) {
         console.error("Error deleting from Supabase:", e);
         return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
