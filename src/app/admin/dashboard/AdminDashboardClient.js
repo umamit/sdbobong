@@ -208,6 +208,54 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleMakeHumas = async (teacher) => {
+    const defaultPhone = config.ppdb_contacts?.wa_humas || "";
+    const phone = window.prompt(`Jadikan ${teacher.name} sebagai Humas PPDB.\nMasukkan nomor WhatsApp beliau (Format: 628xxx):`, defaultPhone);
+    
+    if (phone === null) return; // User cancelled
+    
+    if (!phone.trim()) {
+      showToast('danger', 'Nomor WhatsApp wajib diisi.');
+      return;
+    }
+
+    const cleanedPhone = phone.replace(/[^0-9]/g, '');
+    if (!cleanedPhone.startsWith('628')) {
+      showToast('danger', 'Format nomor WhatsApp salah. Harus diawali dengan 628 (contoh: 6281234567890).');
+      return;
+    }
+
+    try {
+      const updatedContacts = {
+        ...config.ppdb_contacts,
+        nama_humas: teacher.name,
+        wa_humas: cleanedPhone,
+        jabatan_humas: teacher.role || 'Humas Sekolah'
+      };
+
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'contacts',
+          ...updatedContacts
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `${teacher.name} berhasil diatur sebagai Humas PPDB.`);
+        setConfig(prev => ({
+          ...prev,
+          ppdb_contacts: updatedContacts
+        }));
+      } else {
+        showToast('danger', data.error || 'Gagal mengatur Humas PPDB.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleNewsAdd = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -1848,7 +1896,7 @@ export default function AdminDashboardClient({
                         <th>Nama Lengkap</th>
                         <th>Jabatan</th>
                         <th>Status</th>
-                        <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                        <th style={{ width: '260px', textAlign: 'center' }}>Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1879,6 +1927,21 @@ export default function AdminDashboardClient({
                             </td>
                             <td style={{ textAlign: 'center' }}>
                               <div style={{ display: 'flex', gap: 'var(--space-xs)', justifyContent: 'center' }}>
+                                <button 
+                                  onClick={() => handleMakeHumas(t)} 
+                                  type="button" 
+                                  className="btn btn-primary" 
+                                  style={{ 
+                                    padding: '0.25rem 0.5rem', 
+                                    fontSize: '0.75rem', 
+                                    backgroundColor: '#2563eb', 
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '4px'
+                                  }}
+                                >
+                                  Jadikan Humas
+                                </button>
                                 <Link href={`/admin/teachers/edit/${t.id}`} className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', lineHeight: '1.5' }}>
                                   Edit
                                 </Link>
