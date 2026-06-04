@@ -30,6 +30,11 @@ export default function AdminDashboardClient({
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [toast, setToast] = useState(null);
   const [storageInfo, setStorageInfo] = useState(initialStorageInfo);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const [deleteTargetNik, setDeleteTargetNik] = useState('');
+  const [deleteTargetName, setDeleteTargetName] = useState('');
+  const [deleteIsBulk, setDeleteIsBulk] = useState(false);
 
   // States for Achievements form
   const [editingAchievementId, setEditingAchievementId] = useState(null);
@@ -99,48 +104,60 @@ export default function AdminDashboardClient({
     }
   };
 
-  const handlePPDBDelete = async (recordId) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data pendaftar ini secara permanen?')) return;
-    try {
-      const record = records.find(r => r.id === recordId);
-      const targetNik = record ? (record.nik_siswa || record.nik) : '';
-      const res = await fetch(`/api/ppdb?id=${recordId}&nik=${targetNik}`, {
-        method: 'DELETE'
-      });
-      const data = await res.json();
-      if (res.ok) {
-        showToast('success', 'Data pendaftar berhasil dihapus secara permanen.');
-        setRecords(prev => prev.filter(r => r.id !== recordId));
-      } else {
-        showToast('danger', data.error || 'Gagal menghapus data pendaftaran.');
-      }
-    } catch (err) {
-      showToast('danger', 'Terjadi kesalahan: ' + err.message);
-    }
+  const handlePPDBDelete = (recordId) => {
+    const record = records.find(r => r.id === recordId);
+    if (!record) return;
+    setDeleteTargetId(recordId);
+    setDeleteTargetNik(record.nik_siswa || record.nik || '');
+    setDeleteTargetName(record.nama_lengkap || '');
+    setDeleteIsBulk(false);
+    setDeleteModalOpen(true);
   };
 
-  const handleDeleteAllPPDB = async () => {
-    const confirmation = prompt('⚠️ WARNING: Apakah Anda yakin ingin menghapus SEMUA data pendaftar? Tindakan ini akan mengosongkan database pendaftaran di Supabase dan lokal secara permanen.\n\nKetik kata kunci "HAPUS SEMUA" di bawah untuk mengonfirmasi:');
-    if (confirmation !== 'HAPUS SEMUA') {
-      if (confirmation !== null) {
-        alert('Konfirmasi dibatalkan atau kata kunci salah.');
-      }
-      return;
-    }
+  const handleDeleteAllPPDB = () => {
+    setDeleteTargetId('all');
+    setDeleteTargetNik('');
+    setDeleteTargetName('Semua Pendaftar');
+    setDeleteIsBulk(true);
+    setDeleteModalOpen(true);
+  };
 
+  const executeDelete = async (scope) => {
     try {
-      const res = await fetch('/api/ppdb?all=true', {
-        method: 'DELETE'
-      });
-      const data = await res.json();
-      if (res.ok) {
-        showToast('success', 'Semua data pendaftar berhasil dihapus secara permanen.');
-        setRecords([]);
+      if (deleteIsBulk) {
+        // Bulk delete
+        const res = await fetch(`/api/ppdb?all=true&scope=${scope}`, {
+          method: 'DELETE'
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('success', `Semua data pendaftar berhasil dihapus secara permanen (Metode: ${scope === 'both' ? 'Lokal & Supabase' : scope === 'local' ? 'Hanya Lokal' : 'Hanya Supabase'}).`);
+          setRecords([]);
+        } else {
+          showToast('danger', data.error || 'Gagal menghapus semua data pendaftaran.');
+        }
       } else {
-        showToast('danger', data.error || 'Gagal menghapus semua data pendaftaran.');
+        // Individual delete
+        const res = await fetch(`/api/ppdb?id=${deleteTargetId}&nik=${deleteTargetNik}&scope=${scope}`, {
+          method: 'DELETE'
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast('success', `Data pendaftar berhasil dihapus secara permanen (Metode: ${scope === 'both' ? 'Lokal & Supabase' : scope === 'local' ? 'Hanya Lokal' : 'Hanya Supabase'}).`);
+          setRecords(prev => prev.filter(r => r.id !== deleteTargetId));
+        } else {
+          showToast('danger', data.error || 'Gagal menghapus data pendaftaran.');
+        }
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      // Close modal and reset state
+      setDeleteModalOpen(false);
+      setDeleteTargetId(null);
+      setDeleteTargetNik('');
+      setDeleteTargetName('');
+      setDeleteIsBulk(false);
     }
   };
 
@@ -2414,6 +2431,146 @@ export default function AdminDashboardClient({
           </section>
         </main>
       </div>
+
+      {/* CUSTOM DELETE CONFIRMATION MODAL WITH OPTIONS */}
+      {deleteModalOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          animation: 'fadeIn 0.2s ease-out'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            padding: '2rem',
+            width: '90%',
+            maxWidth: '500px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            border: '1px solid #e2e8f0',
+            textAlign: 'center',
+            position: 'relative'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
+              Konfirmasi Penghapusan
+            </h3>
+            <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+              {deleteIsBulk 
+                ? 'Pilih lokasi/cakupan database untuk mengosongkan SEMUA data pendaftar:' 
+                : `Pilih lokasi/cakupan database untuk menghapus data pendaftaran dari "${deleteTargetName}":`
+              }
+            </p>
+
+            {deleteIsBulk && (
+              <div style={{ marginBottom: '1.25rem', padding: '0.75rem', backgroundColor: '#fff7ed', borderRadius: '8px', border: '1px solid #ffedd5', fontSize: '0.8rem', color: '#c2410c', textAlign: 'left' }}>
+                <strong>Pemberitahuan Keamanan:</strong> Menghapus seluruh data pendaftaran memerlukan konfirmasi tertulis. Silakan ketik kata kunci <strong>HAPUS SEMUA</strong> di bawah untuk mengaktifkan pilihan hapus:
+                <input 
+                  type="text" 
+                  id="bulk-delete-confirm-input" 
+                  placeholder="Ketik HAPUS SEMUA" 
+                  style={{
+                    width: '100%',
+                    padding: '0.5rem 0.75rem',
+                    marginTop: '0.5rem',
+                    borderRadius: '6px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.85rem',
+                    boxSizing: 'border-box'
+                  }}
+                  onChange={(e) => {
+                    const btnBoth = document.getElementById('btn-del-both');
+                    const btnLocal = document.getElementById('btn-del-local');
+                    const btnSupabase = document.getElementById('btn-del-supabase');
+                    const isConfirmed = e.target.value === 'HAPUS SEMUA';
+                    if (btnBoth) btnBoth.disabled = !isConfirmed;
+                    if (btnLocal) btnLocal.disabled = !isConfirmed;
+                    if (btnSupabase) btnSupabase.disabled = !isConfirmed;
+                  }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+              <button 
+                id="btn-del-both"
+                disabled={deleteIsBulk}
+                className="btn btn-danger" 
+                style={{ 
+                  width: '100%', 
+                  padding: '0.75rem', 
+                  fontSize: '0.9rem',
+                  opacity: deleteIsBulk ? 0.5 : 1
+                }}
+                onClick={() => executeDelete('both')}
+              >
+                🗑️ Hapus dari Lokal & Supabase (Semua)
+              </button>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <button 
+                  id="btn-del-local"
+                  disabled={deleteIsBulk}
+                  className="btn btn-secondary" 
+                  style={{ 
+                    padding: '0.75rem', 
+                    fontSize: '0.85rem',
+                    color: '#dc2626',
+                    borderColor: '#fca5a5',
+                    backgroundColor: '#fef2f2',
+                    opacity: deleteIsBulk ? 0.5 : 1
+                  }}
+                  onClick={() => executeDelete('local')}
+                >
+                  🖥️ Hanya Lokal
+                </button>
+                <button 
+                  id="btn-del-supabase"
+                  disabled={deleteIsBulk}
+                  className="btn btn-secondary" 
+                  style={{ 
+                    padding: '0.75rem', 
+                    fontSize: '0.85rem',
+                    color: '#2563eb',
+                    borderColor: '#bfdbfe',
+                    backgroundColor: '#eff6ff',
+                    opacity: deleteIsBulk ? 0.5 : 1
+                  }}
+                  onClick={() => executeDelete('supabase')}
+                >
+                  ☁️ Hanya Supabase
+                </button>
+              </div>
+
+              <div style={{ fontSize: '0.75rem', color: '#64748b', textAlign: 'left', lineHeight: '1.4', marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                💡 <em>Catatan: Disarankan menghapus dari "Keduanya". Jika hanya dihapus dari salah satu, data dapat tersinkronisasi kembali saat halaman disegarkan karena sinkronisasi otomatis.</em>
+              </div>
+
+              <button 
+                className="btn btn-secondary" 
+                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', marginTop: '0.5rem' }}
+                onClick={() => {
+                  setDeleteModalOpen(false);
+                  setDeleteTargetId(null);
+                  setDeleteTargetNik('');
+                  setDeleteTargetName('');
+                  setDeleteIsBulk(false);
+                }}
+              >
+                Batalkan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

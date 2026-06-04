@@ -241,20 +241,25 @@ export async function DELETE(request) {
     const id = searchParams.get('id');
     const nik = searchParams.get('nik');
     const clearAll = searchParams.get('all') === 'true';
+    const scope = searchParams.get('scope') || 'both'; // 'both', 'local', 'supabase'
 
     if (clearAll) {
       let deletedOk = false;
-      try {
-        fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify([], null, 4), 'utf-8');
-        deletedOk = true;
-      } catch (e) {
-        console.error("Error clearing local JSON:", e);
+      if (scope === 'both' || scope === 'local') {
+        try {
+          fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify([], null, 4), 'utf-8');
+          deletedOk = true;
+        } catch (e) {
+          console.error("Error clearing local JSON:", e);
+        }
+      } else {
+        deletedOk = true; // skipped local
       }
 
       const supabaseActive = isSupabaseEnabled();
       let supabaseDeleted = false;
 
-      if (supabaseActive) {
+      if (supabaseActive && (scope === 'both' || scope === 'supabase')) {
         try {
           const { error } = await supabase.from("ppdb_sdn_bobong").delete().neq("id", 0);
           if (error) throw error;
@@ -263,6 +268,8 @@ export async function DELETE(request) {
           console.error("Error clearing Supabase:", e);
           return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
         }
+      } else {
+        supabaseDeleted = true; // skipped supabase
       }
 
       if (deletedOk || supabaseDeleted) {
@@ -305,37 +312,41 @@ export async function DELETE(request) {
     let deletedOk = false;
 
     // 1. Delete from local JSON
-    if (fs.existsSync(PENDAFTARAN_JSON)) {
-      try {
-        const records = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
-        const newRecords = [];
-        for (let idx = 0; idx < records.length; idx++) {
-          const r = records[idx];
-          const rId = r.id || r.nik || r.nik_siswa || String(idx + 1);
-          const rNik = r.nik || r.nik_siswa;
-          if (
-            String(rId) !== String(id) &&
-            String(rNik) !== String(nik) &&
-            (!nik || String(rNik) !== String(nik)) &&
-            (!id || String(rNik) !== String(id))
-          ) {
-            newRecords.push(r);
+    if (scope === 'both' || scope === 'local') {
+      if (fs.existsSync(PENDAFTARAN_JSON)) {
+        try {
+          const records = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
+          const newRecords = [];
+          for (let idx = 0; idx < records.length; idx++) {
+            const r = records[idx];
+            const rId = r.id || r.nik || r.nik_siswa || String(idx + 1);
+            const rNik = r.nik || r.nik_siswa;
+            if (
+              String(rId) !== String(id) &&
+              String(rNik) !== String(nik) &&
+              (!nik || String(rNik) !== String(nik)) &&
+              (!id || String(rNik) !== String(id))
+            ) {
+              newRecords.push(r);
+            }
           }
+          if (newRecords.length < records.length) {
+            fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(newRecords, null, 4), 'utf-8');
+            deletedOk = true;
+          }
+        } catch (e) {
+          console.error("Error deleting from local JSON:", e);
         }
-        if (newRecords.length < records.length) {
-          fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(newRecords, null, 4), 'utf-8');
-          deletedOk = true;
-        }
-      } catch (e) {
-        console.error("Error deleting from local JSON:", e);
       }
+    } else {
+      deletedOk = true; // skipped local
     }
 
     // 2. Delete from Supabase
     const supabaseActive = isSupabaseEnabled();
     let supabaseDeleted = false;
 
-    if (supabaseActive) {
+    if (supabaseActive && (scope === 'both' || scope === 'supabase')) {
       try {
         // Try deleting by NIK first
         if (targetNik && targetNik.trim() !== '') {
@@ -379,6 +390,8 @@ export async function DELETE(request) {
         console.error("Error deleting from Supabase:", e);
         return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
       }
+    } else {
+      supabaseDeleted = true; // skipped supabase
     }
 
     if (deletedOk || supabaseDeleted) {
