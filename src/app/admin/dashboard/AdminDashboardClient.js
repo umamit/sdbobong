@@ -8,6 +8,7 @@ export default function AdminDashboardClient({
   initialConfig,
   initialNewsList,
   initialTeachers,
+  initialAchievements,
   initialRecords,
   dbStatus
 }) {
@@ -17,7 +18,15 @@ export default function AdminDashboardClient({
   const [config, setConfig] = useState(initialConfig);
   const [newsList, setNewsList] = useState(initialNewsList);
   const [teachers, setTeachers] = useState(initialTeachers);
+  const [achievements, setAchievements] = useState(initialAchievements || []);
   const [toast, setToast] = useState(null);
+
+  // States for Achievements form
+  const [editingAchievementId, setEditingAchievementId] = useState(null);
+  const [achTitle, setAchTitle] = useState('');
+  const [achLevel, setAchLevel] = useState('Tingkat Kabupaten');
+  const [achYear, setAchYear] = useState('');
+  const [achDescription, setAchDescription] = useState('');
 
   // States for Teacher form preview
   const [teacherImageSelect, setTeacherImageSelect] = useState('/images/teacher_1.png');
@@ -246,6 +255,94 @@ export default function AdminDashboardClient({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleAchievementSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!achTitle.trim() || !achLevel.trim() || !achYear.trim() || !achDescription.trim()) {
+      showToast('danger', 'Semua kolom wajib diisi!');
+      return;
+    }
+
+    try {
+      const isEditing = !!editingAchievementId;
+      const url = '/api/achievements';
+      const method = isEditing ? 'PUT' : 'POST';
+      const body = {
+        title: achTitle,
+        level: achLevel,
+        year: achYear,
+        description: achDescription
+      };
+
+      if (isEditing) {
+        body.id = editingAchievementId;
+      }
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      const resData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(resData.error || "Gagal menyimpan data prestasi.");
+      }
+
+      if (isEditing) {
+        setAchievements(prev => prev.map(a => a.id === editingAchievementId ? resData.achievement : a));
+        showToast('success', 'Berhasil memperbarui data prestasi.');
+      } else {
+        setAchievements(prev => [...prev, resData.achievement]);
+        showToast('success', 'Berhasil menambahkan prestasi baru.');
+      }
+
+      handleAchievementCancel();
+    } catch (err) {
+      showToast('danger', err.message || "Terjadi kesalahan koneksi.");
+    }
+  };
+
+  const handleAchievementEdit = (ach) => {
+    setEditingAchievementId(ach.id);
+    setAchTitle(ach.title);
+    setAchLevel(ach.level);
+    setAchYear(ach.year);
+    setAchDescription(ach.description);
+  };
+
+  const handleAchievementCancel = () => {
+    setEditingAchievementId(null);
+    setAchTitle('');
+    setAchLevel('Tingkat Kabupaten');
+    setAchYear('');
+    setAchDescription('');
+  };
+
+  const handleAchievementDelete = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus data prestasi ini?')) return;
+
+    try {
+      const response = await fetch(`/api/achievements?id=${id}`, {
+        method: 'DELETE'
+      });
+
+      const resData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(resData.error || "Gagal menghapus data prestasi.");
+      }
+
+      setAchievements(prev => prev.filter(a => a.id !== id));
+      showToast('success', 'Berhasil menghapus data prestasi.');
+    } catch (err) {
+      showToast('danger', err.message || "Terjadi kesalahan koneksi.");
     }
   };
 
@@ -1105,6 +1202,14 @@ export default function AdminDashboardClient({
               <span>Kelola Guru & Staf</span>
             </a>
           </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'achievements' ? 'active' : ''}`} onClick={() => setActiveTab('achievements')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-6.75c-.621 0-1.125.504-1.125 1.125v3.375m9 0V9M5.25 18.75V9m3.75-5.25a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM12 9V5.25" />
+              </svg>
+              <span>Kelola Prestasi</span>
+            </a>
+          </li>
         </ul>
         <div className="sidebar-footer">
           <form onSubmit={handleLogout}>
@@ -1749,6 +1854,173 @@ export default function AdminDashboardClient({
                     <button type="submit" id="btn-submit-teacher" className="btn btn-primary" style={{ flex: 1, padding: '0.65rem' }}>💾 Simpan Data Guru</button>
                   </div>
                 </form>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: ACHIEVEMENTS MANAGEMENT ================= */}
+          <section id="tab-achievements" className={`tab-pane ${activeTab === 'achievements' ? 'active' : ''}`}>
+            <div className="news-cms-grid">
+              {/* Form Add / Edit Achievement */}
+              <div className="settings-card">
+                <h3>{editingAchievementId ? 'Edit Data Prestasi' : 'Tambah Prestasi Baru'}</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>
+                  {editingAchievementId 
+                    ? 'Ubah detail data prestasi guru sekolah yang dipilih.' 
+                    : 'Tambahkan data pencapaian atau prestasi guru sekolah untuk ditampilkan pada halaman profil.'}
+                </p>
+
+                <form onSubmit={handleAchievementSubmit}>
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="ach_title" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Nama/Judul Prestasi *</label>
+                    <input
+                      type="text"
+                      id="ach_title"
+                      className="form-control"
+                      placeholder="Contoh: Guru Berprestasi I"
+                      value={achTitle}
+                      onChange={(e) => setAchTitle(e.target.value)}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                    <div className="form-group">
+                      <label htmlFor="ach_level" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Tingkat Prestasi *</label>
+                      <select 
+                        id="ach_level" 
+                        className="form-control" 
+                        value={achLevel} 
+                        onChange={(e) => setAchLevel(e.target.value)}
+                        style={{ width: '100%' }}
+                        required
+                      >
+                        <option value="Tingkat Kabupaten">Tingkat Kabupaten</option>
+                        <option value="Tingkat Provinsi">Tingkat Provinsi</option>
+                        <option value="Tingkat Nasional">Tingkat Nasional</option>
+                        <option value="Tingkat Internasional">Tingkat Internasional</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="ach_year" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Tahun Penghargaan *</label>
+                      <input
+                        type="text"
+                        id="ach_year"
+                        className="form-control"
+                        placeholder="Contoh: 2025"
+                        value={achYear}
+                        onChange={(e) => setAchYear(e.target.value)}
+                        style={{ width: '100%' }}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="ach_desc" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Deskripsi / Keterangan *</label>
+                    <textarea
+                      id="ach_desc"
+                      className="form-control"
+                      placeholder="Jelaskan detail prestasi yang diraih..."
+                      value={achDescription}
+                      onChange={(e) => setAchDescription(e.target.value)}
+                      rows="4"
+                      style={{ width: '100%', resize: 'vertical' }}
+                      required
+                    ></textarea>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: 'var(--space-xs)', marginTop: 'var(--space-md)' }}>
+                    <button type="submit" className="btn btn-primary" style={{ flex: 1, padding: '0.65rem' }}>
+                      {editingAchievementId ? '💾 Simpan Perubahan' : '➕ Tambah Prestasi'}
+                    </button>
+                    {editingAchievementId && (
+                      <button type="button" onClick={handleAchievementCancel} className="btn btn-secondary">
+                        Batal
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+
+              {/* Table List of Achievements */}
+              <div className="settings-card" style={{ overflowX: 'auto' }}>
+                <h3>Daftar Prestasi Saat Ini</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                  Daftar pencapaian yang terbit di halaman profil. Klik **Edit** untuk mengedit atau **Hapus** untuk menghapus.
+                </p>
+
+                <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                  <table className="table-custom" style={{ fontSize: '0.85rem', width: '100%' }}>
+                    <thead>
+                      <tr>
+                        <th>Tahun</th>
+                        <th>Tingkat</th>
+                        <th>Judul Prestasi</th>
+                        <th>Keterangan</th>
+                        <th style={{ width: '140px', textAlign: 'center' }}>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {achievements.length > 0 ? (
+                        achievements.map((ach) => (
+                          <tr key={ach.id}>
+                            <td><strong>{ach.year}</strong></td>
+                            <td>
+                              <span className="badge" style={{
+                                backgroundColor: (ach.level || "").toLowerCase().includes("nasional") 
+                                  ? '#E8F5E9' 
+                                  : (ach.level || "").toLowerCase().includes("provinsi") 
+                                  ? '#E3F2FD' 
+                                  : '#FFF8E6',
+                                color: (ach.level || "").toLowerCase().includes("nasional") 
+                                  ? '#2E7D32' 
+                                  : (ach.level || "").toLowerCase().includes("provinsi") 
+                                  ? '#1565C0' 
+                                  : '#D48408',
+                                fontWeight: 600,
+                                padding: '0.2rem 0.4rem',
+                                fontSize: '0.75rem',
+                                borderRadius: '4px'
+                              }}>
+                                {ach.level}
+                              </span>
+                            </td>
+                            <td><strong style={{ color: 'var(--primary-dark)' }}>{ach.title}</strong></td>
+                            <td style={{ maxWidth: '250px', whiteSpace: 'normal', wordBreak: 'break-word' }}>{ach.description}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <div style={{ display: 'flex', gap: 'var(--space-xs)', justifyContent: 'center' }}>
+                                <button 
+                                  onClick={() => handleAchievementEdit(ach)} 
+                                  type="button" 
+                                  className="btn btn-secondary" 
+                                  style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', lineHeight: '1.5' }}
+                                >
+                                  Edit
+                                </button>
+                                <button 
+                                  onClick={() => handleAchievementDelete(ach.id)} 
+                                  type="button" 
+                                  className="btn-action-delete" 
+                                  style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                >
+                                  Hapus
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                            Belum ada data prestasi.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </section>

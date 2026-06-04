@@ -1,0 +1,23 @@
+[
+    {
+        "id": "achievement-1780600001",
+        "title": "Guru Berprestasi I",
+        "level": "Tingkat Kabupaten",
+        "year": "2025",
+        "description": "Penghargaan atas dedikasi dan inovasi dalam implementasi media ajar interaktif Kurikulum Merdeka tingkat Kabupaten Pulau Taliabu."
+    },
+    {
+        "id": "achievement-1780600002",
+        "title": "Juara II Media Pembelajaran Digital",
+        "level": "Tingkat Provinsi",
+        "year": "2024",
+        "description": "Meraih Juara 2 dalam ajang kompetisi pembuatan perangkat pembelajaran berbasis Teknologi Informasi dan Komunikasi tingkat Provinsi Maluku Utara."
+    },
+    {
+        "id": "achievement-1780600003",
+        "title": "Sertifikasi Guru Penggerak",
+        "level": "Tingkat Nasional",
+        "year": "2024",
+        "description": "Kelulusan para pendidik SDN Bobong dalam program pelatihan kepemimpinan pembelajaran berskala Nasional yang diselenggarakan oleh Kemendikbudristek."
+    }
+]

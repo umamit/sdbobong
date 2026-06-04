@@ -1,9 +1,10 @@
-import { loadTeachers } from '../../lib/database';
+import { loadTeachers, loadAchievements } from '../../lib/database';
 
 export const revalidate = 0; // Fresh load
 
 export default async function Profil() {
   const teachers = await loadTeachers();
+  const achievements = await loadAchievements();
 
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
@@ -369,44 +370,46 @@ export default async function Profil() {
             <h2>Prestasi Guru & Tenaga Pendidik</h2>
           </div>
           <div className="grid-3" style={{ marginTop: 'var(--space-md)' }}>
-            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #D48408', transition: 'var(--transition-normal)' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏆</div>
-              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#FEF3C7', color: '#D97706', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
-                Tingkat Kabupaten
-              </span>
-              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
-                Guru Berprestasi I (2025)
-              </h3>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
-                Penghargaan atas dedikasi dan inovasi dalam implementasi media ajar interaktif Kurikulum Merdeka tingkat Kabupaten Pulau Taliabu.
-              </p>
-            </div>
+            {achievements.length > 0 ? (
+              achievements.map((ach) => {
+                const lvl = (ach.level || "").toLowerCase();
+                const isNasional = lvl.includes("nasional");
+                const isProvinsi = lvl.includes("provinsi");
+                
+                const cardStyle = isNasional
+                  ? { borderTop: '4px solid #059669' }
+                  : isProvinsi
+                  ? { borderTop: '4px solid #2563EB' }
+                  : { borderTop: '4px solid #D48408' };
 
-            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #2563EB', transition: 'var(--transition-normal)' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🥇</div>
-              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#DBEAFE', color: '#1D4ED8', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
-                Tingkat Provinsi
-              </span>
-              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
-                Juara II Media Pembelajaran Digital (2024)
-              </h3>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
-                Meraih Juara 2 dalam ajang kompetisi pembuatan perangkat pembelajaran berbasis Teknologi Informasi dan Komunikasi tingkat Provinsi Maluku Utara.
-              </p>
-            </div>
+                const badgeStyle = isNasional
+                  ? { backgroundColor: '#D1FAE5', color: '#047857' }
+                  : isProvinsi
+                  ? { backgroundColor: '#DBEAFE', color: '#1D4ED8' }
+                  : { backgroundColor: '#FEF3C7', color: '#D97706' };
 
-            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #059669', transition: 'var(--transition-normal)' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🎓</div>
-              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#D1FAE5', color: '#047857', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
-                Tingkat Nasional
-              </span>
-              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
-                Sertifikasi Guru Penggerak (2024)
-              </h3>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
-                Kelulusan para pendidik SDN Bobong dalam program pelatihan kepemimpinan pembelajaran berskala Nasional yang diselenggarakan oleh Kemendikbudristek.
+                const icon = isNasional ? '🎓' : isProvinsi ? '🥇' : '🏆';
+
+                return (
+                  <div key={ach.id} className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', transition: 'var(--transition-normal)', ...cardStyle }}>
+                    <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>{icon}</div>
+                    <span className="badge" style={{ alignSelf: 'flex-start', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)', ...badgeStyle }}>
+                      {ach.level} {ach.year ? `(${ach.year})` : ''}
+                    </span>
+                    <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
+                      {ach.title}
+                    </h3>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
+                      {ach.description}
+                    </p>
+                  </div>
+                );
+              })
+            ) : (
+              <p style={{ gridColumn: 'span 3', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic', padding: 'var(--space-md)' }}>
+                Belum ada data prestasi pendidik yang diunggah.
               </p>
-            </div>
+            )}
           </div>
         </div>
       </section>

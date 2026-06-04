@@ -1,5 +1,5 @@
 import AdminDashboardClient from './AdminDashboardClient';
-import { loadWebConfig, loadNews, loadTeachers, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled } from '../../../lib/database';
+import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled } from '../../../lib/database';
 import fs from 'fs';
 
 export const dynamic = 'force-dynamic';
@@ -8,10 +8,11 @@ export default async function AdminDashboardPage() {
   // 1. Sync local status with Supabase on dashboard access
   await syncLocalToSupabase();
 
-  // 2. Fetch config, news, and teachers
+  // 2. Fetch config, news, teachers, and achievements
   const config = loadWebConfig();
   const newsList = await loadNews();
   const teachers = await loadTeachers();
+  const achievements = await loadAchievements();
 
   // 3. Load PPDB records
   let records = [];
@@ -91,6 +92,7 @@ export default async function AdminDashboardPage() {
       initialConfig={config}
       initialNewsList={newsList}
       initialTeachers={teachers}
+      initialAchievements={achievements}
       initialRecords={records}
       dbStatus={dbStatus}
     />

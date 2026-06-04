@@ -1,0 +1,148 @@
+import { NextResponse } from 'next/server';
+import { createClient } from '../../../lib/supabase/server';
+import { loadAchievements, saveAchievements, supabase, isSupabaseEnabled } from '../../../lib/database';
+
+export const dynamic = 'force-dynamic';
+
+async function checkAuth() {
+  try {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    return !!user;
+  } catch {
+    return false;
+  }
+}
+
+export async function GET() {
+  try {
+    const achievementsList = await loadAchievements();
+    return NextResponse.json(achievementsList);
+  } catch (e) {
+    return NextResponse.json({ error: "Gagal memuat data prestasi: " + e.message }, { status: 500 });
+  }
+}
+
+export async function POST(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const title = body.title?.trim();
+    const level = body.level?.trim();
+    const year = body.year?.trim();
+    const description = body.description?.trim();
+
+    if (!title || !level || !year || !description) {
+      return NextResponse.json({ error: "Kolom Judul, Tingkat, Tahun, dan Deskripsi wajib diisi!" }, { status: 400 });
+    }
+
+    const achievementsList = await loadAchievements();
+
+    const newAchievement = {
+      id: `achievement-${Math.floor(Date.now() / 1000)}`,
+      title,
+      level,
+      year,
+      description
+    };
+
+    achievementsList.push(newAchievement);
+
+    const saved = await saveAchievements(achievementsList);
+
+    if (saved) {
+      return NextResponse.json({ success: true, achievement: newAchievement });
+    } else {
+      return NextResponse.json({ error: "Gagal menyimpan data prestasi ke database." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
+export async function PUT(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const id = body.id?.trim();
+    const title = body.title?.trim();
+    const level = body.level?.trim();
+    const year = body.year?.trim();
+    const description = body.description?.trim();
+
+    if (!id) {
+      return NextResponse.json({ error: "ID prestasi tidak ditentukan." }, { status: 400 });
+    }
+
+    if (!title || !level || !year || !description) {
+      return NextResponse.json({ error: "Kolom Judul, Tingkat, Tahun, dan Deskripsi wajib diisi!" }, { status: 400 });
+    }
+
+    const achievementsList = await loadAchievements();
+    const achIndex = achievementsList.findIndex(a => a.id === id);
+
+    if (achIndex === -1) {
+      return NextResponse.json({ error: "Data prestasi tidak ditemukan." }, { status: 404 });
+    }
+
+    achievementsList[achIndex].title = title;
+    achievementsList[achIndex].level = level;
+    achievementsList[achIndex].year = year;
+    achievementsList[achIndex].description = description;
+
+    const saved = await saveAchievements(achievementsList);
+
+    if (saved) {
+      return NextResponse.json({ success: true, achievement: achievementsList[achIndex] });
+    } else {
+      return NextResponse.json({ error: "Gagal menyimpan perubahan data prestasi." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: "ID prestasi tidak ditentukan." }, { status: 400 });
+    }
+
+    const achievementsList = await loadAchievements();
+    const filteredList = achievementsList.filter(a => a.id !== id);
+
+    if (filteredList.length === achievementsList.length) {
+      if (isSupabaseEnabled() && supabase) {
+        try {
+          await supabase.from("achievements_sdn_bobong").delete().eq("id", id);
+        } catch (dbErr) {
+          console.error("Error direct delete from Supabase:", dbErr.message);
+        }
+      }
+      return NextResponse.json({ success: true, message: "Data prestasi sudah tidak ada." });
+    }
+
+    const saved = await saveAchievements(filteredList);
+
+    if (saved) {
+      return NextResponse.json({ success: true });
+    } else {
+      return NextResponse.json({ error: "Gagal menghapus data prestasi." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
