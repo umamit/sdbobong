@@ -23,7 +23,7 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <section className="hero" id="hero">
-        <div className="hero-overlay" style={{ backgroundImage: "url('/images/hero_school.svg')" }}></div>
+        <div className="hero-overlay" style={{ backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')` }}></div>
         <div className="container hero-content">
           <span className="hero-subtitle">Membangun Masa Depan di Jantung Taliabu</span>
           <h1 className="hero-title">Selamat Datang di Website Resmi SD Negeri Bobong</h1>

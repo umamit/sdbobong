@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
-import { loadWebConfig, saveWebConfig } from '../../../lib/database';
+import { loadWebConfig, saveWebConfig, handlePhotoUpload } from '../../../lib/database';
 
 async function checkAuth() {
   try {
@@ -74,6 +74,7 @@ export async function POST(request) {
       config.marquee_announcements = cleanedAnn;
     } else if (actionType === 'stats') {
       config.stats = {
+        ...(config.stats || {}),
         siswa_aktif: isNaN(siswa_aktif) ? 0 : siswa_aktif,
         guru_staf: isNaN(guru_staf) ? 0 : guru_staf,
         ruang_kelas: isNaN(ruang_kelas) ? 0 : ruang_kelas,
@@ -90,6 +91,23 @@ export async function POST(request) {
         wa_operator: wa_operator || '',
         jabatan_operator: jabatan_operator || ''
       };
+    } else if (actionType === 'hero_bg') {
+      const formData = await request.formData();
+      const file = formData.get('hero_bg_image');
+      if (file && file.size > 0) {
+        const uploadedUrl = await handlePhotoUpload(file, 'website_config', ['png', 'jpg', 'jpeg', 'svg']);
+        if (uploadedUrl === 'INVALID_TYPE') {
+          return NextResponse.json({ error: 'Format berkas tidak valid. Harus berupa gambar (png, jpg, jpeg, svg).' }, { status: 400 });
+        } else if (uploadedUrl === 'ERROR') {
+          return NextResponse.json({ error: 'Gagal menyimpan gambar di server.' }, { status: 500 });
+        }
+        config.stats = {
+          ...(config.stats || {}),
+          hero_background: uploadedUrl
+        };
+      } else {
+        return NextResponse.json({ error: 'Silakan pilih gambar terlebih dahulu.' }, { status: 400 });
+      }
     } else {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }

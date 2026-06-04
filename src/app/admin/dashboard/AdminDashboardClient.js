@@ -162,6 +162,29 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleHeroBgUpdate = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Background selamat datang berhasil diperbarui!');
+        setConfig(data.config);
+        form.reset();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui background.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleContactsUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -1768,6 +1791,51 @@ export default function AdminDashboardClient({
 
                   <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB</button>
                 </form>
+              </div>
+
+              {/* Welcome Background Config */}
+              <div className="settings-card" style={{ gridColumn: 'span 2' }}>
+                <h3>Ganti Background Selamat Datang (Hero Beranda)</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                  Unggah gambar latar belakang baru untuk banner ucapan selamat datang di halaman Beranda utama. Format yang didukung: JPG, JPEG, PNG, SVG (Maks 2MB).
+                </p>
+
+                <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                  {/* Preview */}
+                  <div style={{ flex: '1', minWidth: '200px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
+                    <div style={{ 
+                      width: '100%', 
+                      height: '150px', 
+                      borderRadius: 'var(--radius-md)', 
+                      border: '1px solid var(--border-color)', 
+                      backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
+                      backgroundSize: 'cover', 
+                      backgroundPosition: 'center',
+                      backgroundColor: '#e5e7eb'
+                    }}></div>
+                  </div>
+
+                  {/* Form */}
+                  <form onSubmit={handleHeroBgUpdate} encType="multipart/form-data" style={{ flex: '2', minWidth: '300px' }}>
+                    <input type="hidden" name="action_type" value="hero_bg" />
+                    
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label htmlFor="hero_bg_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Pilih File Gambar</label>
+                      <input
+                        type="file"
+                        id="hero_bg_image"
+                        name="hero_bg_image"
+                        className="form-control"
+                        accept=".png,.jpg,.jpeg,.svg"
+                        style={{ width: '100%' }}
+                        required
+                      />
+                    </div>
+
+                    <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>📤 Unggah & Terapkan Background</button>
+                  </form>
+                </div>
               </div>
             </div>
           </section>
