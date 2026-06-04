@@ -326,21 +326,32 @@ export default function AdminDashboardClient({
   return (
     <div className="admin-dashboard-layout">
       <style dangerouslySetInnerHTML={{ __html: `
-        :root {
-            --sidebar-width: 260px;
-            --admin-bg: #f1f5f9;
-            --primary-gradient: linear-gradient(180deg, #091e30 0%, #061521 100%);
-            --accent-gradient: linear-gradient(135deg, #f5a623 0%, #d48408 100%);
-            --teal-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
         .admin-dashboard-layout {
+            --sidebar-width: 280px;
+            --admin-bg: #f8fafc;
+            --sidebar-bg: #0b0f19;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --accent: #f59e0b;
+            --emerald: #10b981;
+            --rose: #ef4444;
+            --violet: #8b5cf6;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            --card-shadow-hover: 0 20px 35px -5px rgba(99, 102, 241, 0.08), 0 10px 15px -5px rgba(99, 102, 241, 0.03);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
             background-color: var(--admin-bg);
             margin: 0;
             padding: 0;
-            font-family: var(--font-body);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             color: var(--text-main);
             display: flex;
             height: 100vh;
@@ -349,7 +360,7 @@ export default function AdminDashboardClient({
         }
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--primary-gradient);
+            background: linear-gradient(180deg, #0b0f19 0%, #0f172a 100%);
             color: #ffffff;
             position: fixed;
             top: 0;
@@ -358,13 +369,13 @@ export default function AdminDashboardClient({
             z-index: 100;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.25);
             transition: var(--transition-smooth);
         }
         .sidebar-brand {
-            padding: 1.75rem 1.25rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.75rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             gap: 0.85rem;
@@ -372,58 +383,81 @@ export default function AdminDashboardClient({
         .sidebar-brand img {
             width: 40px;
             height: 40px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 4px 10px rgba(99, 102, 241, 0.3));
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px;
         }
         .sidebar-brand span {
-            font-family: var(--font-heading);
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             letter-spacing: 0.05em;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .sidebar-menu {
             list-style: none;
-            padding: var(--space-sm) 0;
+            padding: 1.5rem 0;
             margin: 0;
             flex: 1;
+            overflow-y: auto;
+        }
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
         }
         .sidebar-item {
             margin-bottom: 6px;
-            padding: 0 12px;
+            padding: 0 16px;
         }
         .sidebar-link {
             display: flex;
             align-items: center;
             gap: 0.85rem;
-            padding: 0.85rem 1rem;
-            color: rgba(255, 255, 255, 0.65);
+            padding: 0.85rem 1.15rem;
+            color: #94a3b8;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition-smooth);
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .sidebar-link svg {
+            width: 20px;
+            height: 20px;
+            color: #64748b;
+            transition: var(--transition-smooth);
         }
         .sidebar-link:hover {
             color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.06);
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transform: translateX(4px);
+        }
+        .sidebar-link:hover svg {
+            color: #ffffff;
         }
         .sidebar-link.active {
             color: #ffffff;
-            background: linear-gradient(135deg, rgba(245, 166, 35, 0.2) 0%, rgba(245, 166, 35, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.03) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             font-weight: 700;
-            border-left: 4px solid var(--secondary);
-            box-shadow: 0 4px 15px rgba(245, 166, 35, 0.05);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.1);
         }
-        .sidebar-link.active span:first-child {
-            filter: drop-shadow(0 0 8px var(--secondary));
+        .sidebar-link.active svg {
+            color: #818cf8;
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
         }
         .sidebar-footer {
             padding: 1.25rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #060910;
         }
         .btn-logout {
             width: 100%;
@@ -431,20 +465,25 @@ export default function AdminDashboardClient({
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.8rem;
-            background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition-smooth);
-            font-size: 0.9rem;
-            box-shadow: 0 4px 12 rgba(239, 68, 68, 0.15);
+            font-size: 0.875rem;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+        }
+        .btn-logout svg {
+            width: 18px;
+            height: 18px;
         }
         .btn-logout:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
         }
         .main-wrapper {
             margin-left: var(--sidebar-width);
@@ -456,24 +495,23 @@ export default function AdminDashboardClient({
             background-color: var(--admin-bg);
         }
         .top-navbar {
-            height: 75px;
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 2rem;
+            padding: 0 2.5rem;
             position: sticky;
             top: 0;
             z-index: 90;
         }
         .top-title h1 {
-            font-family: var(--font-heading);
             font-size: 1.35rem;
             font-weight: 800;
-            color: var(--primary-dark);
+            color: #0f172a;
             margin: 0;
             letter-spacing: -0.02em;
         }
@@ -481,21 +519,22 @@ export default function AdminDashboardClient({
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: #334155;
         }
         .user-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: var(--accent-gradient);
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(245, 166, 35, 0.25);
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
             position: relative;
         }
         .user-avatar::after {
@@ -503,16 +542,29 @@ export default function AdminDashboardClient({
             position: absolute;
             bottom: 1px;
             right: 1px;
-            width: 9px;
-            height: 9px;
-            background-color: #10b981;
-            border: 2px solid white;
+            width: 8px;
+            height: 8px;
+            background-color: var(--emerald);
+            border: 1.5px solid white;
             border-radius: 50%;
         }
         .content-body {
-            padding: 2rem;
+            padding: 2rem 2.5rem;
             flex: 1;
             overflow-y: auto;
+        }
+        .content-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .content-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .content-body::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .content-body::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
         .alert-toast {
             position: fixed;
@@ -520,34 +572,35 @@ export default function AdminDashboardClient({
             right: 24px;
             z-index: 9999;
             padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid transparent;
             animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             max-width: 400px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
         }
         @keyframes slideInRight {
-            from { transform: translateX(120%) scale(0.9); opacity: 0; }
+            from { transform: translateX(120%) scale(0.95); opacity: 0; }
             to { transform: translateX(0) scale(1); opacity: 1; }
         }
         .alert-toast-success {
             background-color: rgba(236, 253, 245, 0.95);
-            color: #065F46;
-            border: 1px solid #A7F3D0;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
         }
         .alert-toast-danger {
             background-color: rgba(254, 242, 242, 0.95);
-            color: #991B1B;
-            border: 1px solid #FCA5A5;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
         }
         .tab-pane {
             display: none;
-            animation: fadeIn 0.35s ease-out;
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
@@ -558,16 +611,16 @@ export default function AdminDashboardClient({
         }
         .stats-overview-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
         .overview-card {
             background-color: #ffffff;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -578,7 +631,6 @@ export default function AdminDashboardClient({
         .overview-card:hover {
             transform: translateY(-4px);
             box-shadow: var(--card-shadow-hover);
-            border-color: rgba(11, 60, 93, 0.15);
         }
         .overview-card::after {
             content: '';
@@ -587,16 +639,22 @@ export default function AdminDashboardClient({
             left: 0;
             width: 4px;
             height: 100%;
-            background: var(--primary-gradient);
+            background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
         }
         .overview-card.accent::after {
-            background: var(--accent-gradient);
+            background: linear-gradient(180deg, var(--emerald) 0%, #059669 100%);
+        }
+        .overview-card.warning::after {
+            background: linear-gradient(180deg, var(--accent) 0%, #d97706 100%);
+        }
+        .overview-card.purple::after {
+            background: linear-gradient(180deg, var(--violet) 0%, #7c3aed 100%);
         }
         .overview-card-title {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            color: #64748b;
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
             letter-spacing: 0.05em;
             display: block;
@@ -604,22 +662,60 @@ export default function AdminDashboardClient({
         .overview-card-value {
             font-size: 2.25rem;
             font-weight: 800;
-            color: var(--primary-dark);
+            color: #0f172a;
             line-height: 1;
             letter-spacing: -0.03em;
         }
+        .pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .pulse-dot.green {
+            background-color: #10b981;
+            animation: pulse-green 2s infinite;
+        }
+        .pulse-dot.amber {
+            background-color: #f59e0b;
+            animation: pulse-amber 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        @keyframes pulse-amber {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
         .admin-table {
             background: white;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid #e2e8f0;
             overflow: hidden;
             margin-bottom: 2rem;
         }
         .table-toolbar {
             padding: 1.5rem;
             background-color: #ffffff;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -628,10 +724,9 @@ export default function AdminDashboardClient({
         }
         .table-toolbar h3 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
-            color: var(--primary-dark);
-            font-family: var(--font-heading);
+            color: #0f172a;
             letter-spacing: -0.02em;
         }
         .table-custom {
@@ -639,21 +734,20 @@ export default function AdminDashboardClient({
             border-collapse: separate;
             border-spacing: 0;
             background-color: #ffffff;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: left;
         }
         .table-custom th {
             background-color: #f8fafc;
             color: #475569;
             padding: 1rem 1.25rem;
-            font-family: var(--font-heading);
             font-weight: 700;
             border-bottom: 2px solid #e2e8f0;
         }
         .table-custom td {
-            padding: 1.1rem 1.25rem;
+            padding: 1rem 1.25rem;
             border-bottom: 1px solid #f1f5f9;
-            color: #64748b;
+            color: #475569;
             vertical-align: middle;
         }
         .table-custom tr:hover td {
@@ -663,38 +757,42 @@ export default function AdminDashboardClient({
             border-bottom: none;
         }
         .table-responsive {
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             overflow: hidden;
             border: 1px solid #e2e8f0;
-            margin-bottom: 1rem;
+            margin: 0 1.5rem 1.5rem 1.5rem;
         }
         .status-badge-select {
-            padding: 0.45rem var(--space-xs);
-            font-size: 0.8rem;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border-radius: 9999px;
+            border: 1px solid transparent;
             cursor: pointer;
             outline: none;
             transition: var(--transition-smooth);
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: center;
         }
         .status-badge-select.pending {
-            background-color: #FFFBEB;
-            color: #D97706;
-            border-color: #FCD34D;
+            background-color: #fef3c7;
+            color: #d97706;
+            border-color: #fcd34d;
         }
         .status-badge-select.verified {
-            background-color: #ECFDF5;
+            background-color: #d1fae5;
             color: #059669;
-            border-color: #A7F3D0;
+            border-color: #6ee7b7;
         }
         .status-badge-select.rejected {
-            background-color: #FEF2F2;
-            color: #DC2626;
-            border-color: #FCA5A5;
+            background-color: #fee2e2;
+            color: #dc2626;
+            border-color: #fca5a5;
         }
         .status-badge-select:focus {
-            box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.12);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
         }
         .settings-grid {
             display: grid;
@@ -708,21 +806,20 @@ export default function AdminDashboardClient({
         }
         .settings-card {
             background: white;
-            padding: 2rem;
-            border-radius: 16px;
+            padding: 1.75rem;
+            border-radius: var(--radius-lg);
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid #e2e8f0;
             margin-bottom: 1.5rem;
         }
         .settings-card h3 {
             margin-top: 0;
-            border-bottom: 2px solid rgba(226, 232, 240, 0.5);
-            padding-bottom: var(--space-xs);
-            margin-bottom: var(--space-md);
-            color: var(--primary-dark);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+            color: #0f172a;
             font-weight: 800;
-            font-family: var(--font-heading);
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             letter-spacing: -0.02em;
         }
         .news-cms-grid {
@@ -736,94 +833,119 @@ export default function AdminDashboardClient({
             }
         }
         .btn {
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             font-weight: 700;
             transition: var(--transition-smooth);
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border: none;
+            padding: 0.65rem 1.25rem;
+            font-size: 0.875rem;
+            gap: 0.5rem;
         }
         .btn:hover {
             transform: translateY(-2px);
         }
+        .btn:active {
+            transform: translateY(0);
+        }
         .btn-primary {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             color: white;
-            box-shadow: 0 4px 10px rgba(11, 60, 93, 0.15);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
         .btn-primary:hover {
-            box-shadow: 0 8px 20px rgba(11, 60, 93, 0.25);
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
         }
         .btn-secondary {
             background-color: #f1f5f9;
-            color: #475569;
-            border: 1px solid #cbd5e1;
+            color: #334155;
+            border: 1px solid #e2e8f0;
         }
         .btn-secondary:hover {
             background-color: #e2e8f0;
-            color: #1e293b;
+            color: #0f172a;
         }
         .btn-action-delete {
-            background-color: #FEF2F2;
-            color: #DC2626;
-            border: 1px solid #FCA5A5;
-            padding: 0.45rem 0.8rem;
-            border-radius: 8px;
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: var(--transition-smooth);
             font-size: 0.8rem;
             font-weight: 700;
         }
         .btn-action-delete:hover {
-            background-color: #DC2626;
+            background-color: #ef4444;
             color: white;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
             transform: translateY(-1px);
         }
         .form-control {
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             border: 1.5px solid #cbd5e1;
-            padding: 0.75rem 1rem;
-            font-family: var(--font-body);
+            padding: 0.7rem 1rem;
+            font-family: inherit;
             transition: var(--transition-smooth);
             outline: none;
             font-size: 0.9rem;
             box-sizing: border-box;
             background: #ffffff;
             width: 100%;
+            color: #0f172a;
         }
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(11, 60, 93, 0.12);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
         .form-group label {
             display: block;
             margin-bottom: 6px;
             font-weight: 700;
-            font-size: 0.85rem;
-            color: #1e293b;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
         @media (max-width: 768px) {
             .sidebar {
-                width: 70px;
+                width: 80px;
             }
             .sidebar-brand span, .sidebar-link span:last-child, .sidebar-footer button span:last-child {
                 display: none;
             }
             .sidebar-brand {
                 justify-content: center;
-                padding: var(--space-sm) 0;
+                padding: 1.5rem 0;
             }
             .sidebar-link {
                 justify-content: center;
                 padding: 1rem 0;
             }
             .main-wrapper {
-                margin-left: 70px;
+                margin-left: 80px;
             }
         }
       `}} />
@@ -837,31 +959,42 @@ export default function AdminDashboardClient({
         <ul className="sidebar-menu">
           <li className="sidebar-item">
             <a className={`sidebar-link ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>
-              <span>📊</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+              </svg>
               <span>Ringkasan</span>
             </a>
           </li>
           <li className="sidebar-item">
             <a className={`sidebar-link ${activeTab === 'ppdb' ? 'active' : ''}`} onClick={() => setActiveTab('ppdb')}>
-              <span>📝</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
               <span>Kelola PPDB</span>
             </a>
           </li>
           <li className="sidebar-item">
             <a className={`sidebar-link ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>
-              <span>⚙️</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.43l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
               <span>Pengumuman & Stat</span>
             </a>
           </li>
           <li className="sidebar-item">
             <a className={`sidebar-link ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>
-              <span>📰</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+              </svg>
               <span>Kelola Berita</span>
             </a>
           </li>
           <li className="sidebar-item">
             <a className={`sidebar-link ${activeTab === 'teachers' ? 'active' : ''}`} onClick={() => setActiveTab('teachers')}>
-              <span>👨‍🏫</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 12 15c2.207 0 4.208.576 5.963 1.584ZM18 3.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6 7.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm3.193 9.48a9.011 9.011 0 0 1-6.078-.02A3.356 3.356 0 0 0 3 18.228a11.94 11.94 0 0 0 10.373 5.485c.01 0 .02 0 .03-.001-.13-.761-.203-1.547-.203-2.348 0-1.923.633-3.697 1.706-5.122Z" />
+              </svg>
               <span>Kelola Guru & Staf</span>
             </a>
           </li>
@@ -869,7 +1002,9 @@ export default function AdminDashboardClient({
         <div className="sidebar-footer">
           <form onSubmit={handleLogout}>
             <button type="submit" className="btn-logout">
-              <span>🚪</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+              </svg>
               <span>Logout</span>
             </button>
           </form>
@@ -905,8 +1040,10 @@ export default function AdminDashboardClient({
                     <span className="overview-card-title">Total Pendaftar PPDB</span>
                     <span className="overview-card-value">{records.length}</span>
                   </div>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(9, 30, 48, 0.08)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-                    📝
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -918,12 +1055,14 @@ export default function AdminDashboardClient({
                       {records.filter(r => r.status === 'Terverifikasi').length}
                     </span>
                   </div>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-                    ✅
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div className="overview-card">
+              <div className="overview-card warning">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <span className="overview-card-title">Jalur Zonasi</span>
@@ -931,12 +1070,14 @@ export default function AdminDashboardClient({
                       {records.filter(r => r.jalur_ppdb === 'Zonasi').length}
                     </span>
                   </div>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(245, 166, 35, 0.1)', color: '#f5a623', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-                    🗺️
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8m-6-1.25L3.61 18A.75.75 0 0 1 2.625 17.3V6.75a.75.75 0 0 1 .367-.65L9 2.75m0 12.75 6-3.75m0 3.75 6.39 3.05a.75.75 0 0 0 .993-.7V6.75a.75.75 0 0 0-.367-.65L15 2.75m0 9.5-6-3.75" />
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div className="overview-card">
+              <div className="overview-card purple">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <span className="overview-card-title">Jalur Afirmasi / Prestasi</span>
@@ -944,35 +1085,38 @@ export default function AdminDashboardClient({
                       {records.filter(r => r.jalur_ppdb === 'Afirmasi' || r.jalur_ppdb === 'Prestasi').length}
                     </span>
                   </div>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
-                    🏆
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-.75a1.125 1.125 0 0 1-1.125-1.125V11.25M9 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.75A1.125 1.125 0 0 1 12 13.125V11.25m-1.5-6h3a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-3a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3Z" />
+                    </svg>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div className="grid-2" style={{ marginTop: 'var(--space-md)' }}>
+ 
+            <div className="grid-2" style={{ marginTop: '1.5rem' }}>
               <div className="settings-card">
                 <h3>Selamat Datang di Panel Admin</h3>
                 <p>Melalui panel kontrol ini, Anda memiliki akses penuh untuk mengelola pendaftaran PPDB daring, menambahkan berita kegiatan sekolah, memperbarui pengumuman berjalan, dan memantau statistik siswa yang ditampilkan di website SDN Bobong secara langsung.</p>
-                <div style={{ marginTop: '1rem', display: 'flex', gap: 'var(--space-xs)' }}>
-                  <button className="btn btn-primary" style={{ padding: '0.5rem 1rem' }} onClick={() => setActiveTab('ppdb')}>Lihat Data Pendaftar PPDB</button>
-                  <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={() => setActiveTab('content')}>Edit Teks Pengumuman</button>
+                <div style={{ marginTop: '1.25rem', display: 'flex', gap: '0.75rem' }}>
+                  <button className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }} onClick={() => setActiveTab('ppdb')}>Lihat Data PPDB</button>
+                  <button className="btn btn-secondary" style={{ padding: '0.6rem 1.2rem' }} onClick={() => setActiveTab('content')}>Edit Pengumuman</button>
                 </div>
               </div>
-              <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', borderColor: 'var(--secondary)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🌟</div>
-                <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--primary-dark)' }}>Status Server & Database</h4>
-                <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Koneksi Supabase Cloud saat ini:</p>
+              <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', borderColor: '#e2e8f0' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>💻</div>
+                <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontWeight: 800 }}>Status Server & Database</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Sistem sinkronisasi data PPDB aktif:</p>
                 <span className="badge" style={{
-                  backgroundColor: dbStatus ? '#D1FAE5' : '#FEF3C7',
-                  color: dbStatus ? '#059669' : '#D97706',
-                  border: dbStatus ? '1px solid #A7F3D0' : '1px solid #FCD34D',
-                  fontSize: '0.9rem',
-                  padding: '0.4rem 0.8rem',
+                  backgroundColor: dbStatus ? '#d1fae5' : '#fef3c7',
+                  color: dbStatus ? '#065f46' : '#92400e',
+                  border: dbStatus ? '1px solid #a7f3d0' : '1px solid #fcd34d',
+                  fontSize: '0.85rem',
+                  padding: '0.5rem 1rem',
                   fontWeight: 700
                 }}>
-                  {dbStatus ? 'TERKONEKSI (Supabase)' : 'FALLBACK (Berkas JSON Lokal)'}
+                  <span className={`pulse-dot ${dbStatus ? 'green' : 'amber'}`}></span>
+                  {dbStatus ? 'SUPABASE CLOUD ACTIVE' : 'LOCAL CACHE ACTIVE (JSON)'}
                 </span>
               </div>
             </div>
