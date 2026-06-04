@@ -20,6 +20,10 @@ export default async function Profil() {
     (t.role || "").toLowerCase().includes("bendahara")
   ) || null;
 
+  const nonKomiteTeachers = teachers.filter(t =>
+    !(t.role || "").toLowerCase().includes("komite")
+  );
+
   return (
     <>
       {/* Page Banner */}
@@ -348,8 +352,8 @@ export default async function Profil() {
           </div>
 
           <div className="teachers-grid">
-            {teachers.length > 0 ? (
-              teachers.map((teacher) => {
+            {nonKomiteTeachers.length > 0 ? (
+              nonKomiteTeachers.map((teacher) => {
                 const isPNS = teacher.status === 'PNS';
                 const isPPPK = teacher.status === 'PPPK';
                 const isKomite = teacher.status === 'Komite Sekolah';
