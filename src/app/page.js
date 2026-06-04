@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { loadNews, loadWebConfig } from '../lib/database';
+import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
 
@@ -13,6 +13,9 @@ export default async function Home() {
     ruang_kelas: 9,
     akreditasi: "B"
   };
+
+  const teachers = await loadTeachers();
+  const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
   return (
     <>
@@ -80,8 +83,21 @@ export default async function Home() {
       {/* Sambutan Kepala Sekolah */}
       <section className="section-padding welcome-section">
         <div className="container welcome-layout">
-          <div className="welcome-img-container">
-            <img src="/images/principal.svg" alt="Kepala Sekolah SD Negeri Bobong" className="welcome-img" />
+          <div className="welcome-img-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
+            {kepalaSekolah ? (
+              <img 
+                src={kepalaSekolah.image} 
+                alt={`Foto ${kepalaSekolah.name}`} 
+                className="welcome-img" 
+                style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '320px' }}
+              />
+            ) : (
+              <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>
+                <span style={{ fontSize: '3rem' }}>👤</span>
+                <div style={{ fontWeight: 700, fontSize: '1.2rem' }}>Tidak Ada</div>
+                <div style={{ fontSize: '0.9rem', color: '#c53030' }}>Foto Kepala Sekolah</div>
+              </div>
+            )}
           </div>
           <div className="welcome-info">
             <span className="welcome-badge">Sambutan Kepala Sekolah</span>
@@ -91,6 +107,17 @@ export default async function Home() {
             </div>
             <p>Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.</p>
             <p>Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien.</p>
+            {kepalaSekolah ? (
+              <div style={{ marginTop: 'var(--space-sm)', marginBottom: 'var(--space-sm)' }}>
+                <h4 style={{ margin: 0, color: 'var(--primary-dark)', fontWeight: 700 }}>{kepalaSekolah.name}</h4>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>{kepalaSekolah.role} SD Negeri Bobong</p>
+              </div>
+            ) : (
+              <div style={{ marginTop: 'var(--space-sm)', marginBottom: 'var(--space-sm)' }}>
+                <h4 style={{ margin: 0, color: '#e53e3e', fontWeight: 700 }}>Tidak Ada</h4>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#c53030' }}>Kepala Sekolah SD Negeri Bobong</p>
+              </div>
+            )}
             <Link href="/profil" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)' }}>Baca Selengkapnya Tentang Kami</Link>
           </div>
         </div>

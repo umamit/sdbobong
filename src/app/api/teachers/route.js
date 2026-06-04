@@ -62,6 +62,14 @@ export async function POST(request) {
       return NextResponse.json({ error: "Data guru dengan nama ini sudah terdaftar!" }, { status: 400 });
     }
 
+    // Periksa duplikat jabatan Kepala Sekolah (hanya boleh satu Kepala Sekolah)
+    if (role.toLowerCase().includes('kepala sekolah')) {
+      const duplicateKepala = teachersList.find(t => (t.role || "").toLowerCase().includes("kepala sekolah"));
+      if (duplicateKepala) {
+        return NextResponse.json({ error: `Jabatan Kepala Sekolah sudah terdaftar atas nama ${duplicateKepala.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
     const newTeacher = {
       id: `teacher-${Math.floor(Date.now() / 1000)}`,
       name,
@@ -138,6 +146,14 @@ export async function PUT(request) {
     const duplicateTeacher = teachersList.find(t => t.name.toLowerCase() === name.toLowerCase() && t.id !== id);
     if (duplicateTeacher) {
       return NextResponse.json({ error: "Nama guru ini sudah terdaftar pada data guru lain!" }, { status: 400 });
+    }
+
+    // Periksa duplikat jabatan Kepala Sekolah dengan ID lain (hanya boleh satu Kepala Sekolah)
+    if (role.toLowerCase().includes('kepala sekolah')) {
+      const duplicateKepala = teachersList.find(t => (t.role || "").toLowerCase().includes("kepala sekolah") && t.id !== id);
+      if (duplicateKepala) {
+        return NextResponse.json({ error: `Jabatan Kepala Sekolah sudah terdaftar atas nama ${duplicateKepala.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
     }
 
     // Update details
