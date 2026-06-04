@@ -13,6 +13,8 @@ export default async function Home() {
     ruang_kelas: 9,
     akreditasi: "B"
   };
+  const contacts = config.ppdb_contacts || {};
+  const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
   const teachers = await loadTeachers();
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
@@ -65,7 +67,7 @@ export default async function Home() {
               </div>
             </Link>
             {/* Link 3: Contact WA Operator */}
-            <a href="https://wa.me/6281234567890?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya..." target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <a href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya...`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="quick-link-card">
                 <div className="quick-link-icon" style={{ backgroundColor: '#E8FAF0', color: '#25D366' }}>
                   <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>

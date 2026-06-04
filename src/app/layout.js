@@ -12,6 +12,24 @@ export default async function RootLayout({ children }) {
   // Load global configurations dynamically at render time (Server component)
   const config = await loadWebConfig();
   const announcements = config.marquee_announcements || [];
+  const contacts = config.ppdb_contacts || {};
+
+  const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
+  const humasPhone = (contacts.wa_humas || "").replace(/[^0-9]/g, '') || "6281234567890";
+
+  let humasDisp = "+62 812-3456-7890";
+  if (contacts.wa_humas) {
+    const raw = contacts.wa_humas.replace(/[^0-9]/g, '');
+    if (raw.startsWith('62')) {
+      const part1 = raw.substring(2, 5);
+      const part2 = raw.substring(5, 9);
+      const part3 = raw.substring(9);
+      humasDisp = `+62 ${part1}-${part2}-${part3}`;
+    } else {
+      humasDisp = contacts.wa_humas;
+    }
+  }
+
 
   return (
     <html lang="id">
@@ -130,9 +148,9 @@ export default async function RootLayout({ children }) {
                   <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                   <span>anhreko@gmail.com</span>
                 </a>
-                <a href="https://wa.me/6281234567890?text=Halo%20SD%20Negeri%20Bobong" target="_blank" rel="noreferrer" className="footer-contact-item">
+                <a href={`https://wa.me/${humasPhone}?text=Halo%20SD%20Negeri%20Bobong`} target="_blank" rel="noreferrer" className="footer-contact-item">
                   <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-                  <span>+62 812-3456-7890 (Humas WA)</span>
+                  <span>{humasDisp} (Humas WA)</span>
                 </a>
               </div>
             </div>
@@ -145,7 +163,7 @@ export default async function RootLayout({ children }) {
         </footer>
 
         {/* Floating WhatsApp Button */}
-        <a href="https://wa.me/6281234567890?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi..." className="floating-wa-btn no-print public-layout-wa-btn" target="_blank" rel="noreferrer" aria-label="Hubungi Operator Sekolah di WhatsApp">
+        <a href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi...`} className="floating-wa-btn no-print public-layout-wa-btn" target="_blank" rel="noreferrer" aria-label="Hubungi Operator Sekolah di WhatsApp">
           <svg className="icon-svg" style={{ width: '36px', height: '36px' }} viewBox="0 0 24 24">
             {/* White speech bubble background */}
             <path fill="#ffffff" d="M12.042 2C6.556 2 2.084 6.446 2.084 11.911c0 1.739.459 3.447 1.332 4.953L2.184 21.331l4.577-1.202a8.919 8.919 0 0 0 4.291 1.093h.004c5.486 0 9.957-4.446 9.957-9.911C21.013 6.446 16.541 2 12.042 2z"/>
