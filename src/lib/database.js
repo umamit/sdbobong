@@ -151,16 +151,12 @@ export function formatWaktuDaftar(rawWaktu) {
 
 // --- Data Loading and Saving Helpers ---
 
-export function loadWebConfig() {
-  if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
-    try {
-      return JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
-    } catch (e) {
-      console.error("Error loading web config:", e);
-    }
-  }
-  // Default Config
-  return {
+let cachedConfig = null;
+
+export async function loadWebConfig() {
+  if (cachedConfig) return cachedConfig;
+
+  let localConfig = {
     marquee_announcements: [
       "📢 PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka! Silakan daftar online pada portal PPDB.",
       "📅 INFO: Jadwal Pembagian Rapor Semester Genap dilaksanakan pada 20 Juni 2026.",
@@ -171,21 +167,102 @@ export function loadWebConfig() {
       guru_staf: 14,
       ruang_kelas: 9,
       akreditasi: "B"
-    }
+    },
+    force_local_cache: false
   };
+
+  if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
+    try {
+      localConfig = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
+    } catch (e) {
+      console.error("Error loading local web config:", e);
+    }
+  }
+
+  if (supabase && localConfig.force_local_cache !== true) {
+    try {
+      const { data, error } = await supabase
+        .from("config_sdn_bobong")
+        .select("*")
+        .eq("id", "global_config")
+        .single();
+      
+      if (!error && data) {
+        const dbConfig = {
+          marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
+          stats: data.stats || localConfig.stats,
+          force_local_cache: data.force_local_cache === true
+        };
+        cachedConfig = dbConfig;
+        
+        try {
+          fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(dbConfig, null, 4), 'utf-8');
+        } catch (e) {}
+        
+        return dbConfig;
+      } else if (error && error.code === 'PGRST116') {
+        console.log("Config record not found in Supabase. Seeding config...");
+        await supabase.from("config_sdn_bobong").insert({
+          id: "global_config",
+          marquee_announcements: localConfig.marquee_announcements,
+          stats: localConfig.stats,
+          force_local_cache: localConfig.force_local_cache === true
+        });
+      }
+    } catch (e) {
+      console.error("Error loading web config from Supabase:", e.message || e);
+    }
+  }
+
+  cachedConfig = localConfig;
+  return localConfig;
 }
 
 export function isSupabaseEnabled() {
   if (!supabase) return false;
+  if (cachedConfig && cachedConfig.force_local_cache === true) {
+    return false;
+  }
   try {
-    const config = loadWebConfig();
-    if (config.force_local_cache === true) {
-      return false;
+    if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
+      const config = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
+      if (config.force_local_cache === true) {
+        return false;
+      }
     }
   } catch (e) {
     console.error("Error reading force_local_cache:", e);
   }
   return true;
+}
+
+export async function saveWebConfig(config) {
+  cachedConfig = config;
+  
+  let localSaved = false;
+  try {
+    fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8');
+    localSaved = true;
+  } catch (e) {
+    console.error("Error saving config locally:", e);
+  }
+
+  if (supabase) {
+    try {
+      const { error } = await supabase.from("config_sdn_bobong").upsert({
+        id: "global_config",
+        marquee_announcements: config.marquee_announcements,
+        stats: config.stats,
+        force_local_cache: config.force_local_cache === true
+      });
+      if (error) throw error;
+      return true;
+    } catch (e) {
+      console.error("Error saving config to Supabase:", e.message || e);
+      return false;
+    }
+  }
+  return localSaved;
 }
 
 function getNewsSortKey(item) {

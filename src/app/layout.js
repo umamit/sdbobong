@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   // Load global configurations dynamically at render time (Server component)
-  const config = loadWebConfig();
+  const config = await loadWebConfig();
   const announcements = config.marquee_announcements || [];
 
   return (

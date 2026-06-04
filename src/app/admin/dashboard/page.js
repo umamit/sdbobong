@@ -9,7 +9,7 @@ export default async function AdminDashboardPage() {
   await syncLocalToSupabase();
 
   // 2. Fetch config, news, teachers, and achievements
-  const config = loadWebConfig();
+  const config = await loadWebConfig();
   const newsList = await loadNews();
   const teachers = await loadTeachers();
   const achievements = await loadAchievements();

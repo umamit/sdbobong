@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
-import { loadWebConfig, WEBSITE_CONFIG_JSON } from '../../../lib/database';
-import fs from 'fs';
+import { loadWebConfig, saveWebConfig } from '../../../lib/database';
 
 async function checkAuth() {
   try {
@@ -49,7 +48,7 @@ export async function POST(request) {
       }
     }
 
-    const config = loadWebConfig();
+    const config = await loadWebConfig();
 
     if (actionType === 'announcements') {
       if (!Array.isArray(announcements)) {
@@ -70,11 +69,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }
 
-    try {
-      fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8');
-    } catch (err) {
-      console.warn("Failed to write config locally (expected in read-only environments like Vercel):", err.message);
+    const saved = await saveWebConfig(config);
+    if (!saved) {
+      return NextResponse.json({ error: "Gagal menyimpan konfigurasi ke database." }, { status: 500 });
     }
+
     return NextResponse.json({ success: true, config });
   } catch (e) {
     return NextResponse.json({ error: 'Terjadi kesalahan server: ' + e.message }, { status: 500 });

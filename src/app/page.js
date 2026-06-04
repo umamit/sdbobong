@@ -6,7 +6,7 @@ export const revalidate = 0; // Disable compile-time cache to fetch fresh conten
 export default async function Home() {
   const allNews = await loadNews();
   const newsList = allNews.slice(0, 3);
-  const config = loadWebConfig();
+  const config = await loadWebConfig();
   const stats = config.stats || {
     siswa_aktif: 205,
     guru_staf: 14,
