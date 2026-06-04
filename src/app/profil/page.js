@@ -256,7 +256,14 @@ export default async function Profil() {
               <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
 
               {/* Grid of Teachers under Dewan Guru */}
-              {teachers.length > 0 ? (
+              {teachers.filter(t => {
+                const r = (t.role || "").toLowerCase();
+                return !r.includes("kepala sekolah") &&
+                       !r.includes("tata usaha") &&
+                       !r.includes("koordinator tu") &&
+                       !r.includes("komite") &&
+                       !r.includes("bendahara");
+              }).length > 0 ? (
                 <div style={{ 
                   display: 'flex', 
                   flexWrap: 'wrap', 
@@ -270,7 +277,14 @@ export default async function Profil() {
                   border: '1px dashed #cbd5e1',
                   boxSizing: 'border-box'
                 }}>
-                  {teachers.map((guru) => (
+                  {teachers.filter(t => {
+                    const r = (t.role || "").toLowerCase();
+                    return !r.includes("kepala sekolah") &&
+                           !r.includes("tata usaha") &&
+                           !r.includes("koordinator tu") &&
+                           !r.includes("komite") &&
+                           !r.includes("bendahara");
+                  }).map((guru) => (
                     <div 
                       key={guru.id} 
                       style={{ 
