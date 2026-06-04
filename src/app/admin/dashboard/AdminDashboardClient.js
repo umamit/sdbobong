@@ -35,6 +35,7 @@ export default function AdminDashboardClient({
   const [deleteTargetNik, setDeleteTargetNik] = useState('');
   const [deleteTargetName, setDeleteTargetName] = useState('');
   const [deleteIsBulk, setDeleteIsBulk] = useState(false);
+  const [addTeacherModalOpen, setAddTeacherModalOpen] = useState(false);
 
   // States for Achievements form
   const [editingAchievementId, setEditingAchievementId] = useState(null);
@@ -414,6 +415,7 @@ export default function AdminDashboardClient({
         setTeacherImageSelect('/images/teacher_1.png');
         setTeacherImageUrl('/images/teacher_1.png');
         setAvatarPreview('/images/teacher_1.png');
+        setAddTeacherModalOpen(false);
       } else {
         showToast('danger', data.error || 'Gagal menyimpan data guru baru.');
       }
@@ -2055,13 +2057,24 @@ export default function AdminDashboardClient({
 
           {/* ================= TAB: TEACHERS MANAGEMENT ================= */}
           <section id="tab-teachers" className={`tab-pane ${activeTab === 'teachers' ? 'active' : ''}`}>
-            <div className="news-cms-grid">
+            <div>
               {/* Table List of Teachers */}
               <div className="settings-card" style={{ overflowX: 'auto' }}>
-                <h3>Daftar Guru & Staf Saat Ini</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Daftar pendidik yang terbit di halaman profil publik. Klik tombol **Edit** untuk memuat datanya ke form di samping.
-                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>Daftar Guru & Staf Saat Ini</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>
+                      Daftar pendidik yang terbit di halaman profil publik. Klik tombol **Edit** untuk memuat datanya.
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => setAddTeacherModalOpen(true)} 
+                    className="btn btn-primary"
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                  >
+                    ➕ Tambah Pendidik Baru
+                  </button>
+                </div>
 
                 <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
                   <table className="table-custom" style={{ fontSize: '0.85rem', width: '100%' }}>
@@ -2145,120 +2158,6 @@ export default function AdminDashboardClient({
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              {/* Form Add / Edit Teacher */}
-              <div className="settings-card">
-                <h3 id="form-teacher-title">Tambah Guru / Staf Baru</h3>
-                <p id="form-teacher-desc" style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>
-                  Isi formulir berikut untuk menambahkan data pendidik baru ke halaman profil.
-                </p>
-
-                <form id="form-teacher" onSubmit={handleTeacherAdd} encType="multipart/form-data">
-                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <label htmlFor="teacher_name" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Nama Lengkap & Gelar *</label>
-                    <input
-                      type="text"
-                      id="teacher_name"
-                      name="name"
-                      className="form-control"
-                      placeholder="Contoh: Fatimah, S.Pd.SD."
-                      style={{ width: '100%' }}
-                      required
-                    />
-                  </div>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
-                    <div className="form-group">
-                      <label htmlFor="teacher_role" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Jabatan / Peran *</label>
-                      <input
-                        type="text"
-                        id="teacher_role"
-                        name="role"
-                        className="form-control"
-                        placeholder="Contoh: Wali Kelas 1, Guru Agama"
-                        style={{ width: '100%' }}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="teacher_status" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Status Kepegawaian *</label>
-                      <select id="teacher_status" name="status" className="form-control" style={{ width: '100%' }} required>
-                        <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
-                        <option value="PPPK">PPPK</option>
-                        <option value="Honorer Daerah">Honorer Daerah</option>
-                        <option value="Honorer Sekolah">Honorer Sekolah</option>
-                        <option value="Komite Sekolah">Komite Sekolah</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <label htmlFor="teacher_details" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Pangkat / Keterangan Lain (Opsional)</label>
-                    <input
-                      type="text"
-                      id="teacher_details"
-                      name="details"
-                      className="form-control"
-                      placeholder="Contoh: Pembina Tk. I / IV-b, Guru Kelas Bawah"
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-
-                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Foto / Avatar (Pilih Stok / Unggah)</label>
-                    <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
-                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
-                        <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <select
-                          id="teacher_image_select"
-                          value={teacherImageSelect}
-                          className="form-control"
-                          onChange={handleTeacherImageSelectChange}
-                          style={{ marginBottom: '5px', width: '100%' }}
-                        >
-                          <option value="/images/teacher_1.png">Stok Ilustrasi Pria (Default)</option>
-                          <option value="/images/teacher_2.jpg">Stok Ilustrasi Wanita Berhijab (Default)</option>
-                          <option value="/images/teacher_3.png">Stok Ilustrasi Wanita (Tanpa Hijab)</option>
-                          <option value="/images/teacher_4.jpg">Template Pas Foto Hijab (Merah)</option>
-                          <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
-                          <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
-                          <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
-                          <option value="custom">-- Input URL Gambar Kustom --</option>
-                        </select>
-
-                        <input
-                          type="text"
-                          id="teacher_image_url"
-                          name="image"
-                          className="form-control"
-                          value={teacherImageUrl}
-                          placeholder="Masukkan URL / path gambar custom"
-                          style={{ display: teacherImageSelect === 'custom' ? 'block' : 'none', width: '100%' }}
-                          onChange={handleTeacherImageUrlChange}
-                        />
-                      </div>
-                    </div>
-                    <div style={{ marginTop: '10px' }}>
-                      <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB - Opsional):</label>
-                      <input
-                        type="file"
-                        id="teacher_photo"
-                        name="photo"
-                        className="form-control"
-                        accept="image/png, image/jpeg, image/jpg"
-                        onChange={handleTeacherPhotoChange}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: 'var(--space-xs)', marginTop: 'var(--space-sm)' }}>
-                    <button type="submit" id="btn-submit-teacher" className="btn btn-primary" style={{ flex: 1, padding: '0.65rem' }}>💾 Simpan Data Guru</button>
-                  </div>
-                </form>
               </div>
             </div>
           </section>
@@ -2571,6 +2470,188 @@ export default function AdminDashboardClient({
           </div>
         </div>
       )}
+
+      {/* CUSTOM ADD TEACHER MODAL */}
+      {addTeacherModalOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          animation: 'fadeIn 0.2s ease-out'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            padding: '2rem',
+            width: '90%',
+            maxWidth: '600px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            border: '1px solid #e2e8f0',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            textAlign: 'left'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
+                ➕ Tambah Guru / Staf Baru
+              </h3>
+              <button 
+                onClick={() => setAddTeacherModalOpen(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '1.5rem',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                  lineHeight: 1,
+                  padding: '4px'
+                }}
+                aria-label="Tutup"
+              >
+                &times;
+              </button>
+            </div>
+            
+            <p style={{ color: '#64748b', fontSize: '0.85rem', margin: 0 }}>
+              Isi formulir berikut untuk menambahkan data pendidik baru ke halaman profil.
+            </p>
+
+            <form id="form-teacher" onSubmit={handleTeacherAdd} encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="form-group">
+                <label htmlFor="teacher_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Lengkap & Gelar *</label>
+                <input
+                  type="text"
+                  id="teacher_name"
+                  name="name"
+                  className="form-control"
+                  placeholder="Contoh: Fatimah, S.Pd.SD."
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label htmlFor="teacher_role" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Jabatan / Peran *</label>
+                  <input
+                    type="text"
+                    id="teacher_role"
+                    name="role"
+                    className="form-control"
+                    placeholder="Contoh: Wali Kelas 1, Guru Agama"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="teacher_status" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Status Kepegawaian *</label>
+                  <select id="teacher_status" name="status" className="form-control" style={{ width: '100%', boxSizing: 'border-box' }} required>
+                    <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
+                    <option value="PPPK">PPPK</option>
+                    <option value="Honorer Daerah">Honorer Daerah</option>
+                    <option value="Honorer Sekolah">Honorer Sekolah</option>
+                    <option value="Komite Sekolah">Komite Sekolah</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="teacher_details" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Pangkat / Keterangan Lain (Opsional)</label>
+                <input
+                  type="text"
+                  id="teacher_details"
+                  name="details"
+                  className="form-control"
+                  placeholder="Contoh: Pembina Tk. I / IV-b, Guru Kelas Bawah"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div className="form-group">
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Foto / Avatar (Pilih Stok / Unggah)</label>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
+                    <img id="avatar-preview" src={avatarPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <select
+                      id="teacher_image_select"
+                      value={teacherImageSelect}
+                      className="form-control"
+                      onChange={handleTeacherImageSelectChange}
+                      style={{ marginBottom: '5px', width: '100%', boxSizing: 'border-box' }}
+                    >
+                      <option value="/images/teacher_1.png">Stok Ilustrasi Pria (Default)</option>
+                      <option value="/images/teacher_2.jpg">Stok Ilustrasi Wanita Berhijab (Default)</option>
+                      <option value="/images/teacher_3.png">Stok Ilustrasi Wanita (Tanpa Hijab)</option>
+                      <option value="/images/teacher_4.jpg">Template Pas Foto Hijab (Merah)</option>
+                      <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
+                      <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
+                      <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
+                      <option value="custom">-- Input URL Gambar Kustom --</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      id="teacher_image_url"
+                      name="image"
+                      className="form-control"
+                      value={teacherImageUrl}
+                      placeholder="Masukkan URL / path gambar custom"
+                      style={{ display: teacherImageSelect === 'custom' ? 'block' : 'none', width: '100%', boxSizing: 'border-box' }}
+                      onChange={handleTeacherImageUrlChange}
+                    />
+                  </div>
+                </div>
+                <div style={{ marginTop: '10px' }}>
+                  <label htmlFor="teacher_photo" style={{ display: 'block', marginBottom: '6px', fontWeight: 500, fontSize: '0.85rem', color: '#64748b' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB - Opsional):</label>
+                  <input
+                    type="file"
+                    id="teacher_photo"
+                    name="photo"
+                    className="form-control"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handleTeacherPhotoChange}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem', borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => setAddTeacherModalOpen(false)}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  id="btn-submit-teacher" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Data Guru
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
