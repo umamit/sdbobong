@@ -10,6 +10,13 @@
         "ruang_kelas": 9,
         "siswa_aktif": 205
     },
-    "ppdb_contacts": {},
+    "ppdb_contacts": {
+        "wa_humas": "6281340123456",
+        "nama_humas": "Hidayat N.",
+        "wa_operator": "6281356701023",
+        "jabatan_humas": "Guru",
+        "nama_operator": "Ami Wambes, S.Pd",
+        "jabatan_operator": "Guru Kelas 4a"
+    },
     "force_local_cache": false
 }

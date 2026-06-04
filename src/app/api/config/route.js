@@ -95,7 +95,7 @@ export async function POST(request) {
       const formData = await request.formData();
       const file = formData.get('hero_bg_image');
       if (file && file.size > 0) {
-        const uploadedUrl = await handlePhotoUpload(file, 'website_config', ['png', 'jpg', 'jpeg', 'svg']);
+        const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg']);
         if (uploadedUrl === 'INVALID_TYPE') {
           return NextResponse.json({ error: 'Format berkas tidak valid. Harus berupa gambar (png, jpg, jpeg, svg).' }, { status: 400 });
         } else if (uploadedUrl === 'ERROR') {
