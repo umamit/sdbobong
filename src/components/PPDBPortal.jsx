@@ -314,8 +314,7 @@ export default function PPDBPortal({ pendaftarList, config }) {
             {hasHumas ? (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
                 <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
-                <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>{contacts.nama_humas}</p>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>{contacts.jabatan_humas || 'Pendidik / Humas Sekolah'}</p>
+                <p style={{ fontWeight: 700, marginBottom: 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_humas}</p>
                 <a href={`https://wa.me/${contacts.wa_humas.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_humas)},%20saya%20ingin%20bertanya%20mengenai%20syarat%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>Tanya {contacts.nama_humas.split(',')[0]} (WA)</a>
               </div>
             ) : (
@@ -333,8 +332,7 @@ export default function PPDBPortal({ pendaftarList, config }) {
             {hasOperator ? (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
                 <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
-                <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>{contacts.nama_operator}</p>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>{contacts.jabatan_operator || 'Operator Sekolah'}</p>
+                <p style={{ fontWeight: 700, marginBottom: 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_operator}</p>
                 <a href={`https://wa.me/${contacts.wa_operator.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_operator)},%20saya%20mengalami%20kendala%20teknis%20daring%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ width: '100%', color: 'white' }}>Tanya {contacts.nama_operator.split(',')[0]} (WA)</a>
               </div>
             ) : (
