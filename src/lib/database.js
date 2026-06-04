@@ -168,6 +168,14 @@ export async function loadWebConfig() {
       ruang_kelas: 9,
       akreditasi: "B"
     },
+    ppdb_contacts: {
+      nama_humas: "Ibu Husnita Usman, M.Pd.",
+      wa_humas: "6281234567890",
+      jabatan_humas: "Pendidik Bidang Studi / Humas Sekolah",
+      nama_operator: "Bapak Kasmudin",
+      wa_operator: "6281234567890",
+      jabatan_operator: "Operator Sekolah SD Negeri Bobong"
+    },
     force_local_cache: false
   };
 
@@ -191,6 +199,7 @@ export async function loadWebConfig() {
         const dbConfig = {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
           stats: data.stats || localConfig.stats,
+          ppdb_contacts: data.ppdb_contacts || localConfig.ppdb_contacts,
           force_local_cache: data.force_local_cache === true
         };
         cachedConfig = dbConfig;
@@ -206,6 +215,7 @@ export async function loadWebConfig() {
           id: "global_config",
           marquee_announcements: localConfig.marquee_announcements,
           stats: localConfig.stats,
+          ppdb_contacts: localConfig.ppdb_contacts,
           force_local_cache: localConfig.force_local_cache === true
         });
       }
@@ -253,6 +263,7 @@ export async function saveWebConfig(config) {
         id: "global_config",
         marquee_announcements: config.marquee_announcements,
         stats: config.stats,
+        ppdb_contacts: config.ppdb_contacts,
         force_local_cache: config.force_local_cache === true
       });
       if (error) throw error;

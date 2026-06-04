@@ -162,6 +162,52 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleContactsUpdate = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const nama_humas = form.nama_humas.value.trim();
+    const wa_humas = form.wa_humas.value.trim();
+    const jabatan_humas = form.jabatan_humas.value.trim();
+    const nama_operator = form.nama_operator.value.trim();
+    const wa_operator = form.wa_operator.value.trim();
+    const jabatan_operator = form.jabatan_operator.value.trim();
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'contacts',
+          nama_humas,
+          wa_humas,
+          jabatan_humas,
+          nama_operator,
+          wa_operator,
+          jabatan_operator
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Kontak PPDB berhasil disimpan.');
+        setConfig(prev => ({
+          ...prev,
+          ppdb_contacts: {
+            nama_humas,
+            wa_humas,
+            jabatan_humas,
+            nama_operator,
+            wa_operator,
+            jabatan_operator
+          }
+        }));
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan data kontak.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleNewsAdd = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -1549,6 +1595,117 @@ export default function AdminDashboardClient({
                   </div>
 
                   <button type="submit" className="btn btn-secondary" style={{ marginTop: 'var(--space-xs)', width: '100%', padding: '0.5rem' }}>💾 Simpan Data Statistik</button>
+                </form>
+              </div>
+
+              {/* PPDB Contacts Config */}
+              <div className="settings-card" style={{ gridColumn: 'span 2' }}>
+                <h3>Kelola Kontak Informasi & Humas PPDB</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                  Konfigurasikan nama, jabatan, dan nomor WhatsApp panitia PPDB yang akan ditampilkan pada portal PPDB utama publik.
+                </p>
+
+                {(!config.ppdb_contacts?.nama_humas || !config.ppdb_contacts?.wa_humas || !config.ppdb_contacts?.nama_operator || !config.ppdb_contacts?.wa_operator) && (
+                  <div style={{
+                    backgroundColor: '#FDF2F2',
+                    color: '#9B1C1C',
+                    border: '1px solid #FBD5D5',
+                    padding: '0.75rem 1rem',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: '0.85rem',
+                    marginBottom: 'var(--space-md)',
+                    fontWeight: 600
+                  }}>
+                    ⚠️ Peringatan: Kontak PPDB belum lengkap! Tulisan peringatan merah akan muncul di halaman publik jika bagian ini kosong.
+                  </div>
+                )}
+
+                <form onSubmit={handleContactsUpdate}>
+                  <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
+                    {/* Humas */}
+                    <div>
+                      <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>1. Kontak Informasi & Humas</h4>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="nama_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Humas</label>
+                        <input
+                          type="text"
+                          id="nama_humas"
+                          name="nama_humas"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.nama_humas || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: Ibu Husnita Usman, M.Pd."
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="jabatan_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Humas</label>
+                        <input
+                          type="text"
+                          id="jabatan_humas"
+                          name="jabatan_humas"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.jabatan_humas || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: Pendidik Bidang Studi / Humas"
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
+                        <input
+                          type="text"
+                          id="wa_humas"
+                          name="wa_humas"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.wa_humas || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: 6281234567890"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Operator */}
+                    <div>
+                      <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>2. Kontak Dukungan Teknis & Operator</h4>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="nama_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Operator</label>
+                        <input
+                          type="text"
+                          id="nama_operator"
+                          name="nama_operator"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.nama_operator || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: Bapak Kasmudin"
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="jabatan_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Operator</label>
+                        <input
+                          type="text"
+                          id="jabatan_operator"
+                          name="jabatan_operator"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.jabatan_operator || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: Operator Sekolah"
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="wa_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
+                        <input
+                          type="text"
+                          id="wa_operator"
+                          name="wa_operator"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.wa_operator || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: 6281234567890"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB</button>
                 </form>
               </div>
             </div>

@@ -3,8 +3,20 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function PPDBPortal({ pendaftarList }) {
+export default function PPDBPortal({ pendaftarList, config }) {
   const [activeIndex, setActiveIndex] = useState(null);
+
+  const contacts = config?.ppdb_contacts || {
+    nama_humas: "",
+    wa_humas: "",
+    jabatan_humas: "",
+    nama_operator: "",
+    wa_operator: "",
+    jabatan_operator: ""
+  };
+
+  const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim());
+  const hasOperator = !!(contacts.nama_operator?.trim() && contacts.wa_operator?.trim());
 
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
@@ -222,9 +234,27 @@ export default function PPDBPortal({ pendaftarList }) {
               <Link href="/formulir-ppdb" target="_blank" className="btn btn-outline btn-block" style={{ maxWidth: '400px', textDecoration: 'none', display: 'inline-block' }}>
                 📥 Cetak / Unduh Formulir Offline
               </Link>
-              <a href="https://wa.me/6281234567890?text=Halo%20Panitia%20PPDB%20SDN%20Bobong,%20saya%20kesulitan%20mendaftar%20online.%20Mohon%20bantuan..." target="_blank" rel="noreferrer" className="btn btn-accent btn-block" style={{ maxWidth: '400px', backgroundColor: '#25D366', color: 'white', textDecoration: 'none', display: 'inline-block' }}>
-                💬 Tanya Panitia via WhatsApp
+              <a 
+                href={hasHumas ? `https://wa.me/${contacts.wa_humas.replace(/[^0-9]/g, '')}?text=Halo%20Panitia%20PPDB%20SDN%20Bobong,%20saya%20kesulitan%20mendaftar%20online.%20Mohon%20bantuan...` : hasOperator ? `https://wa.me/${contacts.wa_operator.replace(/[^0-9]/g, '')}?text=Halo%20Panitia%20PPDB%20SDN%20Bobong,%20saya%20kesulitan%20mendaftar%20online.%20Mohon%20bantuan...` : '#'} 
+                target={hasHumas || hasOperator ? "_blank" : "_self"} 
+                rel="noreferrer" 
+                className="btn btn-accent btn-block" 
+                style={{ 
+                  maxWidth: '400px', 
+                  backgroundColor: (hasHumas || hasOperator) ? '#25D366' : '#cbd5e1', 
+                  color: (hasHumas || hasOperator) ? 'white' : '#64748b', 
+                  textDecoration: 'none', 
+                  display: 'inline-block',
+                  cursor: (hasHumas || hasOperator) ? 'pointer' : 'not-allowed'
+                }}
+              >
+                { (hasHumas || hasOperator) ? "💬 Tanya Panitia via WhatsApp" : "⚠️ Kontak WhatsApp Belum Diatur" }
               </a>
+              {!(hasHumas || hasOperator) && (
+                <p style={{ color: '#EF4444', fontWeight: 600, fontSize: '0.85rem', marginTop: '0.5rem', marginBottom: 0 }}>
+                  ⚠️ Kontak WhatsApp Panitia belum diatur oleh Admin.
+                </p>
+              )}
             </div>
 
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 'var(--space-sm)', lineHeight: 1.4 }}>
@@ -281,18 +311,43 @@ export default function PPDBPortal({ pendaftarList }) {
           </div>
           <p className="text-center" style={{ marginBottom: 'var(--space-md)', color: 'var(--text-muted)' }}>Apabila Bapak/Ibu wali murid mengalami kendala saat mengisi formulir online, silakan hubungi panitia PPDB berikut:</p>
           <div className="grid-2">
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
-              <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>Ibu Husnita Usman, M.Pd.</p>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>Pendidik Bidang Studi / Humas Sekolah</p>
-              <a href="https://wa.me/6281234567890?text=Halo%20Ibu%20Husnita,%20saya%20ingin%20bertanya%20mengenai%20syarat%20PPDB%20SDN%20Bobong..." target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>Tanya Ibu Husnita (WA)</a>
-            </div>
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-              <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
-              <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>Bapak Kasmudin</p>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>Operator Sekolah SD Negeri Bobong</p>
-              <a href="https://wa.me/6281234567890?text=Halo%20Bapak%20Kasmudin,%20saya%20mengalami%20kendala%20teknis%20daring%20PPDB%20SDN%20Bobong..." target="_blank" rel="noreferrer" className="btn btn-primary" style={{ width: '100%', color: 'white' }}>Tanya Pak Kasmudin (WA)</a>
-            </div>
+            {hasHumas ? (
+              <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
+                <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>{contacts.nama_humas}</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>{contacts.jabatan_humas || 'Pendidik / Humas Sekolah'}</p>
+                <a href={`https://wa.me/${contacts.wa_humas.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_humas)},%20saya%20ingin%20bertanya%20mengenai%20syarat%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>Tanya {contacts.nama_humas.split(',')[0]} (WA)</a>
+              </div>
+            ) : (
+              <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '2px dashed #EF4444', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '180px' }}>
+                <h3 style={{ fontSize: '1.15rem', color: '#EF4444', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
+                <p style={{ fontWeight: 700, color: '#B91C1C', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                  ⚠️ Kontak Humas Belum Dikonfigurasi
+                </p>
+                <p style={{ fontSize: '0.8rem', color: '#EF4444', margin: 0 }}>
+                  Silakan hubungi pihak sekolah secara langsung atau tunggu admin memperbarui kontak.
+                </p>
+              </div>
+            )}
+
+            {hasOperator ? (
+              <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
+                <p style={{ fontWeight: 700, marginBottom: '0.25rem', color: 'var(--text-main)' }}>{contacts.nama_operator}</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>{contacts.jabatan_operator || 'Operator Sekolah'}</p>
+                <a href={`https://wa.me/${contacts.wa_operator.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_operator)},%20saya%20mengalami%20kendala%20teknis%20daring%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ width: '100%', color: 'white' }}>Tanya {contacts.nama_operator.split(',')[0]} (WA)</a>
+              </div>
+            ) : (
+              <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '2px dashed #EF4444', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '180px' }}>
+                <h3 style={{ fontSize: '1.15rem', color: '#EF4444', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
+                <p style={{ fontWeight: 700, color: '#B91C1C', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                  ⚠️ Kontak Operator Belum Dikonfigurasi
+                </p>
+                <p style={{ fontSize: '0.8rem', color: '#EF4444', margin: 0 }}>
+                  Silakan hubungi pihak sekolah secara langsung atau tunggu admin memperbarui kontak.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>

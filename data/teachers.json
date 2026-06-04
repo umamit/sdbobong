@@ -16,6 +16,14 @@
         "image": "/images/teacher_2.jpg"
     },
     {
+        "id": "teacher-1780566348",
+        "name": "Syawal",
+        "role": "Ketua Komite",
+        "details": "Masyarakat",
+        "status": "Komite Sekolah",
+        "image": "/images/teacher_1.png"
+    },
+    {
         "id": "teacher-7",
         "name": "Husnita Usman, M.Pd.",
         "role": "Guru Bahasa Inggris",
@@ -38,5 +46,13 @@
         "details": "belum tahu",
         "status": "PPPK",
         "image": "/images/teacher_2.jpg"
+    },
+    {
+        "id": "teacher-1780568856",
+        "name": "Hidayat N.",
+        "role": "Guru",
+        "details": "Guru Kelas Bengkel",
+        "status": "PNS",
+        "image": "/images/teacher_1.png"
     }
 ]

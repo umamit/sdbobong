@@ -23,6 +23,8 @@ export async function POST(request) {
     let announcements = [];
     let siswa_aktif, guru_staf, ruang_kelas, akreditasi;
     let force_local_cache;
+    let nama_humas, wa_humas, jabatan_humas;
+    let nama_operator, wa_operator, jabatan_operator;
 
     if (contentType.includes('application/json')) {
       const body = await request.json();
@@ -33,6 +35,13 @@ export async function POST(request) {
       ruang_kelas = body.ruang_kelas;
       akreditasi = body.akreditasi;
       force_local_cache = body.force_local_cache;
+      
+      nama_humas = body.nama_humas;
+      wa_humas = body.wa_humas;
+      jabatan_humas = body.jabatan_humas;
+      nama_operator = body.nama_operator;
+      wa_operator = body.wa_operator;
+      jabatan_operator = body.jabatan_operator;
     } else {
       const formData = await request.formData();
       actionType = formData.get('action_type');
@@ -45,6 +54,13 @@ export async function POST(request) {
         akreditasi = formData.get('akreditasi') || 'B';
       } else if (actionType === 'toggle_db') {
         force_local_cache = formData.get('force_local_cache') === 'true';
+      } else if (actionType === 'contacts') {
+        nama_humas = formData.get('nama_humas')?.toString().trim();
+        wa_humas = formData.get('wa_humas')?.toString().trim();
+        jabatan_humas = formData.get('jabatan_humas')?.toString().trim();
+        nama_operator = formData.get('nama_operator')?.toString().trim();
+        wa_operator = formData.get('wa_operator')?.toString().trim();
+        jabatan_operator = formData.get('jabatan_operator')?.toString().trim();
       }
     }
 
@@ -65,6 +81,15 @@ export async function POST(request) {
       };
     } else if (actionType === 'toggle_db') {
       config.force_local_cache = force_local_cache === true;
+    } else if (actionType === 'contacts') {
+      config.ppdb_contacts = {
+        nama_humas: nama_humas || '',
+        wa_humas: wa_humas || '',
+        jabatan_humas: jabatan_humas || '',
+        nama_operator: nama_operator || '',
+        wa_operator: wa_operator || '',
+        jabatan_operator: jabatan_operator || ''
+      };
     } else {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }
