@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
-import { loadTeachers, saveTeachers, handlePhotoUpload } from '../../../lib/database';
+import { loadTeachers, saveTeachers, handlePhotoUpload, supabase, isSupabaseEnabled } from '../../../lib/database';
 
 async function checkAuth() {
   try {
@@ -163,7 +163,14 @@ export async function DELETE(request) {
     const filteredList = teachersList.filter(t => t.id !== id);
 
     if (filteredList.length === teachersList.length) {
-      return NextResponse.json({ error: "Data guru tidak ditemukan." }, { status: 404 });
+      if (isSupabaseEnabled() && supabase) {
+        try {
+          await supabase.from("teachers_sdn_bobong").delete().eq("id", id);
+        } catch (dbErr) {
+          console.error("Error direct delete from Supabase:", dbErr.message);
+        }
+      }
+      return NextResponse.json({ success: true, message: "Data guru sudah tidak ada." });
     }
 
     const saved = await saveTeachers(filteredList);
