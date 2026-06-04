@@ -23,7 +23,7 @@ export const PENDAFTARAN_JSON = path.join(DATA_DIR, 'pendaftaran.json');
 
 // --- Helper Utilities ---
 
-export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowedExts = ['png']) {
+export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowedExts = ['png', 'jpg', 'jpeg']) {
   if (!fileObj || typeof fileObj === 'string' || !fileObj.name) {
     return "NO_FILE";
   }
