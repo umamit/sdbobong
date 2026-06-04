@@ -306,7 +306,7 @@ export async function saveWebConfig(config) {
       return true;
     } catch (e) {
       console.error("Error saving config to Supabase:", e.message || e);
-      return false;
+      return localSaved; // Fallback to local save status so missing tables do not crash the UI
     }
   }
   return localSaved;
