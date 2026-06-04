@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { updateSession } from './lib/supabase/middleware';
+import { verifyAdminToken } from './lib/auth';
 
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -49,8 +50,7 @@ export async function middleware(request) {
   if (path.startsWith('/admin') && path !== '/admin/login') {
     // Check if the service role key cookie exists and is valid
     const adminToken = request.cookies.get('admin_session_token')?.value;
-    const serviceRoleKey = process.env.SUPABASE_KEY || '';
-    const isValidToken = adminToken && serviceRoleKey && adminToken === serviceRoleKey;
+    const isValidToken = await verifyAdminToken(adminToken);
 
     if (isValidToken) {
       return NextResponse.next();

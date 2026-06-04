@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
+import { createAdminToken } from '../../../lib/auth';
 
 export async function POST(request) {
   try {
@@ -14,9 +15,11 @@ export async function POST(request) {
 
     if (isServiceRoleKey || isLocalAdmin) {
       const response = NextResponse.json({ success: true });
-      response.cookies.set('admin_session_token', serviceRoleKey, {
+      const secureToken = await createAdminToken();
+      response.cookies.set('admin_session_token', secureToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         path: '/',
         maxAge: 7200 // 2 hours
       });
