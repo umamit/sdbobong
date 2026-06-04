@@ -1,14 +1,8 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+export const revalidate = 0;
 
 export default function Akademik() {
-  const [currentMonth, setCurrentMonth] = useState('');
-
-  useEffect(() => {
-    const months = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
-    setCurrentMonth(months[new Date().getMonth()]);
-  }, []);
+  const months = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
+  const currentMonth = months[new Date().getMonth()];
 
   const calendarData = [
     { id: 'juli', month: 'Juli 2025', desc: 'Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)', dates: '14 - 16 Juli 2025' },
