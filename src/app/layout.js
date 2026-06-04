@@ -1,6 +1,7 @@
 import '../../public/css/style.css';
 import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
+import LayoutControl from '../components/LayoutControl';
 
 export const metadata = {
   title: 'SD Negeri Bobong - Cerdas, Berkarakter, dan Berbudaya',
@@ -17,10 +18,16 @@ export default async function RootLayout({ children }) {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if (window.location.pathname.startsWith('/admin')) {
+            document.documentElement.classList.add('is-admin');
+          }
+        `}} />
       </head>
       <body>
+        <LayoutControl />
         {/* Running Announcement Banner */}
-        <div className="announcement-banner no-print">
+        <div className="announcement-banner no-print public-layout-announcement">
           <div className="marquee-content">
             {announcements.map((ann, idx) => (
               <span key={idx}>{ann}</span>
@@ -29,7 +36,7 @@ export default async function RootLayout({ children }) {
         </div>
 
         {/* Header & Navigation */}
-        <div className="no-print">
+        <div className="no-print public-layout-header">
           <Header />
         </div>
 
@@ -37,7 +44,7 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="no-print">
+        <footer className="no-print public-layout-footer">
           <div className="container footer-grid">
             <div className="footer-widget">
               <a href="/" className="logo-container" style={{ marginBottom: 'var(--space-xs)', textDecoration: 'none' }}>
@@ -89,7 +96,7 @@ export default async function RootLayout({ children }) {
         </footer>
 
         {/* Floating WhatsApp Button */}
-        <a href="https://wa.me/6281234567890?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi..." className="floating-wa-btn no-print" target="_blank" rel="noreferrer" aria-label="Hubungi Operator Sekolah di WhatsApp">
+        <a href="https://wa.me/6281234567890?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi..." className="floating-wa-btn no-print public-layout-wa-btn" target="_blank" rel="noreferrer" aria-label="Hubungi Operator Sekolah di WhatsApp">
           <svg className="icon-svg" style={{ width: '36px', height: '36px' }} viewBox="0 0 24 24">
             {/* White speech bubble background */}
             <path fill="#ffffff" d="M12.042 2C6.556 2 2.084 6.446 2.084 11.911c0 1.739.459 3.447 1.332 4.953L2.184 21.331l4.577-1.202a8.919 8.919 0 0 0 4.291 1.093h.004c5.486 0 9.957-4.446 9.957-9.911C21.013 6.446 16.541 2 12.042 2z"/>

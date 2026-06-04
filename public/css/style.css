@@ -1247,3 +1247,20 @@ footer {
         grid-template-columns: 2fr 1fr 1fr;
     }
 }
+
+/* ==========================================================================
+   Admin Pages Layout Adaptations (Zero-Hydration Flash)
+   ========================================================================== */
+.is-admin .public-layout-header,
+.is-admin .public-layout-footer,
+.is-admin .public-layout-announcement,
+.is-admin .public-layout-wa-btn {
+    display: none !important;
+}
+
+.is-admin body {
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f8fafc !important; /* Matches --admin-bg */
+}

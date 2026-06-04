@@ -328,6 +328,7 @@ export default function AdminDashboardClient({
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
+
         .admin-dashboard-layout {
             --sidebar-width: 280px;
             --admin-bg: #f8fafc;

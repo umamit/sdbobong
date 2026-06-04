@@ -125,6 +125,7 @@ export default function EditTeacherClient({ teacher }) {
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
+
         .admin-edit-teacher-layout {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
