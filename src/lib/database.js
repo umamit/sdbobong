@@ -5,9 +5,13 @@ import path from 'path';
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || '';
 
-// Initialize Supabase Client
+// Initialize Supabase Client with no-store fetch option to prevent Next.js 14 from caching database queries
 export const supabase = (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.includes("your-project-id"))
-  ? createClient(SUPABASE_URL, SUPABASE_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_KEY, {
+      global: {
+        fetch: (url, options) => fetch(url, { ...options, cache: 'no-store' })
+      }
+    })
   : null;
 
 // Paths to local JSON configuration and caching databases

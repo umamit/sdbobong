@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
 import { loadTeachers, saveTeachers, handlePhotoUpload, supabase, isSupabaseEnabled } from '../../../lib/database';
 
+export const dynamic = 'force-dynamic';
+
 async function checkAuth() {
   try {
     const supabase = createClient();
