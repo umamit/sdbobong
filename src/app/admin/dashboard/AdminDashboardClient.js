@@ -35,8 +35,6 @@ export default function AdminDashboardClient({
 
   const showToast = (type, message) => {
     setToast({ type, message });
-    // Scroll to top to ensure toast is visible
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       setToast(null);
     }, 5000);
@@ -60,10 +58,15 @@ export default function AdminDashboardClient({
 
   const handleStatusChange = async (recordId, newStatus) => {
     try {
+      const record = records.find(r => r.id === recordId);
       const res = await fetch('/api/ppdb', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: recordId, status: newStatus })
+        body: JSON.stringify({
+          id: recordId,
+          nik: record ? (record.nik_siswa || record.nik) : null,
+          status: newStatus
+        })
       });
       const data = await res.json();
       if (res.ok) {
@@ -80,7 +83,9 @@ export default function AdminDashboardClient({
   const handlePPDBDelete = async (recordId) => {
     if (!confirm('Apakah Anda yakin ingin menghapus data pendaftar ini secara permanen?')) return;
     try {
-      const res = await fetch(`/api/ppdb?id=${recordId}`, {
+      const record = records.find(r => r.id === recordId);
+      const targetNik = record ? (record.nik_siswa || record.nik) : '';
+      const res = await fetch(`/api/ppdb?id=${recordId}&nik=${targetNik}`, {
         method: 'DELETE'
       });
       const data = await res.json();
@@ -338,7 +343,8 @@ export default function AdminDashboardClient({
             font-family: var(--font-body);
             color: var(--text-main);
             display: flex;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             width: 100%;
         }
         .sidebar {
@@ -445,7 +451,8 @@ export default function AdminDashboardClient({
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             background-color: var(--admin-bg);
         }
         .top-navbar {
@@ -505,6 +512,7 @@ export default function AdminDashboardClient({
         .content-body {
             padding: 2rem;
             flex: 1;
+            overflow-y: auto;
         }
         .alert-toast {
             position: fixed;

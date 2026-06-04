@@ -4,6 +4,8 @@ import { PENDAFTARAN_JSON, loadLocalStatuses, supabase } from '../../../lib/data
 import fs from 'fs';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
 async function checkAuth() {
   try {
     const supabase = createClient();
@@ -138,10 +140,10 @@ export async function PUT(request) {
   }
 
   try {
-    const { id, status: newStatus } = await request.json();
+    const { id, nik, status: newStatus } = await request.json();
 
     if (!id || !newStatus) {
-      return NextResponse.json({ error: "ID dan status wajib ditentukan." }, { status: 400 });
+      return NextResponse.json({ error: "ID/NIK dan status wajib ditentukan." }, { status: 400 });
     }
 
     let updatedOk = false;
@@ -154,7 +156,13 @@ export async function PUT(request) {
         for (let idx = 0; idx < records.length; idx++) {
           const r = records[idx];
           const rId = r.id || r.nik || r.nik_siswa || String(idx + 1);
-          if (String(rId) === String(id) || String(r.nik) === String(id) || String(r.nik_siswa) === String(id)) {
+          const rNik = r.nik || r.nik_siswa;
+          if (
+            String(rId) === String(id) ||
+            String(rNik) === String(nik) ||
+            (nik && String(rNik) === String(nik)) ||
+            (id && String(rNik) === String(id))
+          ) {
             r.status = newStatus;
             found = true;
             break;
@@ -172,13 +180,19 @@ export async function PUT(request) {
     // 2. Update Supabase
     if (supabase) {
       try {
-        const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", id).select();
-        if (data && data.length > 0) {
-          updatedOk = true;
-        } else {
-          // Try NIK if ID mismatch
-          const { data: dataNik } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", id).select();
-          if (dataNik && dataNik.length > 0) {
+        // Try updating by NIK first (since NIK is unique and stable)
+        const targetNik = nik || id;
+        if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
+          const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", String(targetNik).trim()).select();
+          if (data && data.length > 0) {
+            updatedOk = true;
+          }
+        }
+
+        // Try updating by integer ID next if not updated yet
+        if (!updatedOk && id && /^\d+$/.test(String(id).trim())) {
+          const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", parseInt(id, 10)).select();
+          if (data && data.length > 0) {
             updatedOk = true;
           }
         }
@@ -205,6 +219,7 @@ export async function DELETE(request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    const nik = searchParams.get('nik');
 
     if (!id) {
       return NextResponse.json({ error: "ID pendaftar tidak ditentukan." }, { status: 400 });
@@ -220,7 +235,13 @@ export async function DELETE(request) {
         for (let idx = 0; idx < records.length; idx++) {
           const r = records[idx];
           const rId = r.id || r.nik || r.nik_siswa || String(idx + 1);
-          if (String(rId) !== String(id) && String(r.nik) !== String(id) && String(r.nik_siswa) !== String(id)) {
+          const rNik = r.nik || r.nik_siswa;
+          if (
+            String(rId) !== String(id) &&
+            String(rNik) !== String(nik) &&
+            (!nik || String(rNik) !== String(nik)) &&
+            (!id || String(rNik) !== String(id))
+          ) {
             newRecords.push(r);
           }
         }
@@ -236,13 +257,19 @@ export async function DELETE(request) {
     // 2. Delete from Supabase
     if (supabase) {
       try {
-        const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("id", id).select();
-        if (data && data.length > 0) {
-          deletedOk = true;
-        } else {
-          // Try NIK if ID mismatch
-          const { data: dataNik } = await supabase.from("ppdb_sdn_bobong").delete().eq("nik_siswa", id).select();
-          if (dataNik && dataNik.length > 0) {
+        // Try deleting by NIK first (since NIK is unique and stable)
+        const targetNik = nik || id;
+        if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
+          const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("nik_siswa", String(targetNik).trim()).select();
+          if (data && data.length > 0) {
+            deletedOk = true;
+          }
+        }
+
+        // Try deleting by integer ID next if not deleted yet
+        if (!deletedOk && id && /^\d+$/.test(String(id).trim())) {
+          const { data, error } = await supabase.from("ppdb_sdn_bobong").delete().eq("id", parseInt(id, 10)).select();
+          if (data && data.length > 0) {
             deletedOk = true;
           }
         }
@@ -255,6 +282,102 @@ export async function DELETE(request) {
       return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Gagal menghapus data pendaftar." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const {
+      nama_lengkap,
+      nik,
+      tempat_lahir,
+      tanggal_lahir,
+      jenis_kelamin,
+      nama_ibu,
+      no_hp,
+      alamat,
+      jalur_ppdb
+    } = body;
+
+    if (!nama_lengkap || !nik || !tempat_lahir || !tanggal_lahir || !jenis_kelamin || !nama_ibu || !no_hp || !alamat || !jalur_ppdb) {
+      return NextResponse.json({ error: "Semua kolom formulir wajib diisi!" }, { status: 400 });
+    }
+
+    if (nik.length !== 16 || !/^\d+$/.test(nik)) {
+      return NextResponse.json({ error: "NIK harus terdiri dari 16 digit angka!" }, { status: 400 });
+    }
+
+    const waktu_daftar = new Date().toISOString().replace('T', ' ').split('.')[0];
+    const status = "Diterima Sistem";
+    const newId = `ppdb-${Math.floor(Date.now() / 1000)}`;
+
+    let savedToSupabase = false;
+
+    // 1. Try to save to Supabase
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from("ppdb_sdn_bobong").insert({
+          nama_lengkap,
+          nik_siswa: nik,
+          tempat_lahir,
+          tanggal_lahir,
+          jenis_kelamin,
+          nama_ibu_kandung: nama_ibu,
+          alamat_domisili: alamat,
+          nomor_hp_orangtua: no_hp,
+          jalur_ppdb,
+          waktu_daftar,
+          status
+        }).select();
+
+        if (error) throw error;
+        savedToSupabase = true;
+      } catch (e) {
+        console.error("Error saving to Supabase during PPDB POST:", e.message || e);
+      }
+    }
+
+    // 2. Save/Append to local JSON
+    let localSaved = false;
+    try {
+      let localRecords = [];
+      if (fs.existsSync(PENDAFTARAN_JSON)) {
+        localRecords = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
+      }
+      
+      // Prevent duplicate NIK in local list
+      localRecords = localRecords.filter(r => String(r.nik).trim() !== String(nik).trim());
+
+      const newRecord = {
+        id: newId,
+        nama_lengkap,
+        nik,
+        tempat_lahir,
+        tanggal_lahir,
+        jenis_kelamin,
+        nama_ibu,
+        no_hp,
+        alamat,
+        jalur_ppdb,
+        waktu_daftar,
+        status
+      };
+
+      localRecords.unshift(newRecord);
+      fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(localRecords, null, 4), 'utf-8');
+      localSaved = true;
+    } catch (e) {
+      console.error("Error saving to local JSON during PPDB POST:", e);
+    }
+
+    if (savedToSupabase || localSaved) {
+      return NextResponse.json({ success: true });
+    } else {
+      return NextResponse.json({ error: "Gagal menyimpan data pendaftaran." }, { status: 500 });
     }
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
