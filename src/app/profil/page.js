@@ -16,6 +16,10 @@ export default async function Profil() {
     (t.role || "").toLowerCase().includes("komite")
   ) || null;
 
+  const bendahara = teachers.find(t =>
+    (t.role || "").toLowerCase().includes("bendahara")
+  ) || null;
+
   return (
     <>
       {/* Page Banner */}
@@ -193,7 +197,7 @@ export default async function Profil() {
               <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
 
               <div style={{ display: 'flex', gap: 'var(--space-lg)', justifyContent: 'center', width: '100%', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: 0, left: '25%', right: '25%', height: '2px', backgroundColor: 'var(--primary)', zIndex: 1 }}></div>
+                <div style={{ position: 'absolute', top: 0, left: '18%', right: '18%', height: '2px', backgroundColor: 'var(--primary)', zIndex: 1 }}></div>
 
                 {/* Left Box: Komite */}
                 {komite ? (
@@ -210,7 +214,7 @@ export default async function Profil() {
                   </div>
                 )}
 
-                {/* Right Box: Tata Usaha */}
+                {/* Center Box: Tata Usaha */}
                 {tataUsaha ? (
                   <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
@@ -222,6 +226,21 @@ export default async function Profil() {
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
                     <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Tata Usaha</div>
+                  </div>
+                )}
+
+                {/* Right Box: Bendahara */}
+                {bendahara ? (
+                  <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
+                  </div>
+                ) : (
+                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
+                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
+                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Bendahara</div>
                   </div>
                 )}
               </div>
@@ -242,7 +261,8 @@ export default async function Profil() {
                 return !r.includes("kepala sekolah") &&
                        !r.includes("tata usaha") &&
                        !r.includes("koordinator tu") &&
-                       !r.includes("komite");
+                       !r.includes("komite") &&
+                       !r.includes("bendahara");
               }).length > 0 ? (
                 <div style={{ 
                   display: 'flex', 
@@ -262,7 +282,8 @@ export default async function Profil() {
                     return !r.includes("kepala sekolah") &&
                            !r.includes("tata usaha") &&
                            !r.includes("koordinator tu") &&
-                           !r.includes("komite");
+                           !r.includes("komite") &&
+                           !r.includes("bendahara");
                   }).map((guru) => (
                     <div 
                       key={guru.id} 
