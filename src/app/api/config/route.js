@@ -23,6 +23,7 @@ export async function POST(request) {
     let actionType = '';
     let announcements = [];
     let siswa_aktif, guru_staf, ruang_kelas, akreditasi;
+    let force_local_cache;
 
     if (contentType.includes('application/json')) {
       const body = await request.json();
@@ -32,6 +33,7 @@ export async function POST(request) {
       guru_staf = body.guru_staf;
       ruang_kelas = body.ruang_kelas;
       akreditasi = body.akreditasi;
+      force_local_cache = body.force_local_cache;
     } else {
       const formData = await request.formData();
       actionType = formData.get('action_type');
@@ -42,6 +44,8 @@ export async function POST(request) {
         guru_staf = parseInt(formData.get('guru_staf') || '0', 10);
         ruang_kelas = parseInt(formData.get('ruang_kelas') || '0', 10);
         akreditasi = formData.get('akreditasi') || 'B';
+      } else if (actionType === 'toggle_db') {
+        force_local_cache = formData.get('force_local_cache') === 'true';
       }
     }
 
@@ -60,6 +64,8 @@ export async function POST(request) {
         ruang_kelas: isNaN(ruang_kelas) ? 0 : ruang_kelas,
         akreditasi: String(akreditasi).trim().toUpperCase() || 'B'
       };
+    } else if (actionType === 'toggle_db') {
+      config.force_local_cache = force_local_cache === true;
     } else {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }

@@ -249,6 +249,29 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleDbToggle = async (shouldForceLocal) => {
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'toggle_db',
+          force_local_cache: shouldForceLocal
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('success', shouldForceLocal ? 'Berhasil beralih ke Mode Cache Lokal (Offline).' : 'Berhasil mengaktifkan Mode Supabase Cloud.');
+        setConfig(data.config);
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui status database.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   // Avatar selection helpers
   const handleTeacherImageSelectChange = (e) => {
     const val = e.target.value;
@@ -770,6 +793,74 @@ export default function AdminDashboardClient({
             margin: 0 1.5rem 1.5rem 1.5rem;
             -webkit-overflow-scrolling: touch;
         }
+        /* Database Toggle Switch */
+        .db-toggle-container {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+        .db-toggle-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: left;
+        }
+        .db-toggle-desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 2px;
+            text-align: left;
+        }
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 44px;
+          height: 24px;
+          flex-shrink: 0;
+        }
+        .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #cbd5e1;
+          transition: .3s;
+          border-radius: 24px;
+        }
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 18px;
+          width: 18px;
+          left: 3px;
+          bottom: 3px;
+          background-color: white;
+          transition: .3s;
+          border-radius: 50%;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        input:checked + .slider {
+          background-color: var(--primary);
+        }
+        input:checked + .slider:before {
+          transform: translateX(20px);
+        }
+
         .status-badge-select {
             padding: 0.4rem 0.75rem;
             font-size: 0.75rem;
@@ -1121,18 +1212,45 @@ export default function AdminDashboardClient({
               <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', borderColor: '#e2e8f0' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>💻</div>
                 <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontWeight: 800 }}>Status Server & Database</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Sistem sinkronisasi data PPDB aktif:</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Koneksi database sinkronisasi saat ini:</p>
                 <span className="badge" style={{
-                  backgroundColor: dbStatus ? '#d1fae5' : '#fef3c7',
-                  color: dbStatus ? '#065f46' : '#92400e',
-                  border: dbStatus ? '1px solid #a7f3d0' : '1px solid #fcd34d',
+                  backgroundColor: dbStatus === 'active' ? '#d1fae5' : dbStatus === 'disabled' ? '#fee2e2' : '#fef3c7',
+                  color: dbStatus === 'active' ? '#065f46' : dbStatus === 'disabled' ? '#991b1b' : '#b45309',
+                  border: dbStatus === 'active' ? '1px solid #a7f3d0' : dbStatus === 'disabled' ? '1px solid #fca5a5' : '1px solid #fcd34d',
                   fontSize: '0.85rem',
                   padding: '0.5rem 1rem',
-                  fontWeight: 700
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem'
                 }}>
-                  <span className={`pulse-dot ${dbStatus ? 'green' : 'amber'}`}></span>
-                  {dbStatus ? 'SUPABASE CLOUD ACTIVE' : 'LOCAL CACHE ACTIVE (JSON)'}
+                  <span className={`pulse-dot ${dbStatus === 'active' ? 'green' : dbStatus === 'disabled' ? 'red' : 'amber'}`}></span>
+                  {dbStatus === 'active' 
+                    ? 'SUPABASE CLOUD ACTIVE' 
+                    : dbStatus === 'forced_local'
+                      ? 'LOCAL CACHE FORCE ACTIVE' 
+                      : dbStatus === 'disabled'
+                        ? 'LOCAL CACHE ACTIVE (NO CREDENTIALS)'
+                        : 'LOCAL CACHE ACTIVE (AUTO FALLBACK)'
+                  }
                 </span>
+                
+                {/* Interactive Toggle Switch */}
+                <div className="db-toggle-container">
+                  <div style={{ textAlign: 'left' }}>
+                    <div className="db-toggle-label">Gunakan Database Cloud</div>
+                    <div className="db-toggle-desc">Hubungkan ke Supabase Cloud secara real-time</div>
+                  </div>
+                  <label className="switch">
+                    <input 
+                      type="checkbox" 
+                      disabled={dbStatus === 'disabled'} 
+                      checked={dbStatus === 'active' || (dbStatus !== 'forced_local' && dbStatus !== 'disabled')} 
+                      onChange={(e) => handleDbToggle(!e.target.checked)} 
+                    />
+                    <span className="slider"></span>
+                  </label>
+                </div>
               </div>
             </div>
           </section>

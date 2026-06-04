@@ -1,5 +1,5 @@
 import AdminDashboardClient from './AdminDashboardClient';
-import { loadWebConfig, loadNews, loadTeachers, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase } from '../../../lib/database';
+import { loadWebConfig, loadNews, loadTeachers, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled } from '../../../lib/database';
 import fs from 'fs';
 
 export const dynamic = 'force-dynamic';
@@ -15,9 +15,11 @@ export default async function AdminDashboardPage() {
 
   // 3. Load PPDB records
   let records = [];
-  let dbStatus = false;
+  let dbStatus = false; // default fallback (auto local)
 
-  if (supabase) {
+  const supabaseActive = isSupabaseEnabled();
+
+  if (supabaseActive) {
     try {
       const { data, error } = await supabase
         .from("ppdb_sdn_bobong")
@@ -26,10 +28,17 @@ export default async function AdminDashboardPage() {
       
       if (!error && data) {
         records = data;
-        dbStatus = true;
+        dbStatus = 'active';
       }
     } catch (e) {
       console.error("Error querying Supabase for admin dashboard page:", e);
+    }
+  } else {
+    // If Supabase is disabled manually, or key is missing
+    if (supabase) {
+      dbStatus = 'forced_local';
+    } else {
+      dbStatus = 'disabled';
     }
   }
 

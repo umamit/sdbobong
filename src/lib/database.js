@@ -38,7 +38,7 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
   const uniqueFilename = `${uniquePrefix}_${secureName}`;
 
   // 1. Try to upload to Supabase Storage
-  if (supabase) {
+  if (isSupabaseEnabled()) {
     try {
       const arrayBuffer = await fileObj.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -170,6 +170,19 @@ export function loadWebConfig() {
   };
 }
 
+export function isSupabaseEnabled() {
+  if (!supabase) return false;
+  try {
+    const config = loadWebConfig();
+    if (config.force_local_cache === true) {
+      return false;
+    }
+  } catch (e) {
+    console.error("Error reading force_local_cache:", e);
+  }
+  return true;
+}
+
 function getNewsSortKey(item) {
   const dateStr = item.date || "";
   try {
@@ -221,7 +234,7 @@ export async function loadNews() {
     }
   }
 
-  if (!supabase) return localNews;
+  if (!isSupabaseEnabled()) return localNews;
 
   try {
     const { data: supabaseNews, error } = await supabase.from("news_sdn_bobong").select("*");
@@ -279,7 +292,7 @@ export async function saveNews(newsList) {
     console.error("Error saving news locally:", e);
   }
 
-  if (supabase) {
+  if (isSupabaseEnabled()) {
     try {
       for (const article of newsList) {
         await supabase.from("news_sdn_bobong").upsert({
@@ -319,7 +332,7 @@ export async function loadTeachers() {
     }
   }
 
-  if (!supabase) return localTeachers;
+  if (!isSupabaseEnabled()) return localTeachers;
 
   try {
     const { data: supabaseTeachers, error } = await supabase.from("teachers_sdn_bobong").select("*");
@@ -388,7 +401,7 @@ export async function saveTeachers(teachersList) {
     console.error("Error saving teachers locally:", e);
   }
 
-  if (supabase) {
+  if (isSupabaseEnabled()) {
     try {
       for (const t of teachersList) {
         await supabase.from("teachers_sdn_bobong").upsert({
@@ -437,7 +450,7 @@ export function loadLocalStatuses() {
 }
 
 export async function syncLocalToSupabase() {
-  if (!supabase) return;
+  if (!isSupabaseEnabled()) return;
 
   let localRecords = [];
   if (fs.existsSync(PENDAFTARAN_JSON)) {
