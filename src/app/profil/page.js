@@ -361,6 +361,56 @@ export default async function Profil() {
         </div>
       </section>
 
+      {/* Prestasi Guru */}
+      <section className="section-padding" style={{ backgroundColor: 'white', borderTop: '1px solid var(--border-color)' }}>
+        <div className="container">
+          <div className="section-header">
+            <span className="section-subtitle">Pencapaian Pendidik</span>
+            <h2>Prestasi Guru & Tenaga Pendidik</h2>
+          </div>
+          <div className="grid-3" style={{ marginTop: 'var(--space-md)' }}>
+            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #D48408', transition: 'var(--transition-normal)' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏆</div>
+              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#FEF3C7', color: '#D97706', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                Tingkat Kabupaten
+              </span>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
+                Guru Berprestasi I (2025)
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
+                Penghargaan atas dedikasi dan inovasi dalam implementasi media ajar interaktif Kurikulum Merdeka tingkat Kabupaten Pulau Taliabu.
+              </p>
+            </div>
+
+            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #2563EB', transition: 'var(--transition-normal)' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🥇</div>
+              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#DBEAFE', color: '#1D4ED8', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                Tingkat Provinsi
+              </span>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
+                Juara II Media Pembelajaran Digital (2024)
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
+                Meraih Juara 2 dalam ajang kompetisi pembuatan perangkat pembelajaran berbasis Teknologi Informasi dan Komunikasi tingkat Provinsi Maluku Utara.
+              </p>
+            </div>
+
+            <div className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', borderTop: '4px solid #059669', transition: 'var(--transition-normal)' }}>
+              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🎓</div>
+              <span className="badge" style={{ alignSelf: 'flex-start', backgroundColor: '#D1FAE5', color: '#047857', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                Tingkat Nasional
+              </span>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: 'var(--space-xs) 0 0.25rem 0' }}>
+                Sertifikasi Guru Penggerak (2024)
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, lineHeight: 1.5 }}>
+                Kelulusan para pendidik SDN Bobong dalam program pelatihan kepemimpinan pembelajaran berskala Nasional yang diselenggarakan oleh Kemendikbudristek.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Data Pendidik & Staf */}
       <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="container">
