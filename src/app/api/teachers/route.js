@@ -70,6 +70,30 @@ export async function POST(request) {
       }
     }
 
+    // Periksa duplikat jabatan Ketua Komite (hanya boleh satu Komite)
+    if (role.toLowerCase().includes('komite')) {
+      const duplicateKomite = teachersList.find(t => (t.role || "").toLowerCase().includes("komite"));
+      if (duplicateKomite) {
+        return NextResponse.json({ error: `Jabatan Komite Sekolah sudah terdaftar atas nama ${duplicateKomite.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
+    // Periksa duplikat jabatan Tata Usaha (hanya boleh satu Tata Usaha)
+    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu')) {
+      const duplicateTU = teachersList.find(t => (t.role || "").toLowerCase().includes("tata usaha") || (t.role || "").toLowerCase().includes("koordinator tu"));
+      if (duplicateTU) {
+        return NextResponse.json({ error: `Jabatan Tata Usaha sudah terdaftar atas nama ${duplicateTU.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
+    // Periksa duplikat jabatan Bendahara (hanya boleh satu Bendahara)
+    if (role.toLowerCase().includes('bendahara')) {
+      const duplicateBendahara = teachersList.find(t => (t.role || "").toLowerCase().includes("bendahara"));
+      if (duplicateBendahara) {
+        return NextResponse.json({ error: `Jabatan Bendahara sudah terdaftar atas nama ${duplicateBendahara.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
     const newTeacher = {
       id: `teacher-${Math.floor(Date.now() / 1000)}`,
       name,
@@ -153,6 +177,30 @@ export async function PUT(request) {
       const duplicateKepala = teachersList.find(t => (t.role || "").toLowerCase().includes("kepala sekolah") && t.id !== id);
       if (duplicateKepala) {
         return NextResponse.json({ error: `Jabatan Kepala Sekolah sudah terdaftar atas nama ${duplicateKepala.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
+    // Periksa duplikat jabatan Ketua Komite dengan ID lain (hanya boleh satu Komite)
+    if (role.toLowerCase().includes('komite')) {
+      const duplicateKomite = teachersList.find(t => (t.role || "").toLowerCase().includes("komite") && t.id !== id);
+      if (duplicateKomite) {
+        return NextResponse.json({ error: `Jabatan Komite Sekolah sudah terdaftar atas nama ${duplicateKomite.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
+    // Periksa duplikat jabatan Tata Usaha dengan ID lain (hanya boleh satu Tata Usaha)
+    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu')) {
+      const duplicateTU = teachersList.find(t => ((t.role || "").toLowerCase().includes("tata usaha") || (t.role || "").toLowerCase().includes("koordinator tu")) && t.id !== id);
+      if (duplicateTU) {
+        return NextResponse.json({ error: `Jabatan Tata Usaha sudah terdaftar atas nama ${duplicateTU.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
+      }
+    }
+
+    // Periksa duplikat jabatan Bendahara dengan ID lain (hanya boleh satu Bendahara)
+    if (role.toLowerCase().includes('bendahara')) {
+      const duplicateBendahara = teachersList.find(t => (t.role || "").toLowerCase().includes("bendahara") && t.id !== id);
+      if (duplicateBendahara) {
+        return NextResponse.json({ error: `Jabatan Bendahara sudah terdaftar atas nama ${duplicateBendahara.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
       }
     }
 
