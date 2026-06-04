@@ -5,9 +5,11 @@
         "🌟 PRESTASI: SDN Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
     ],
     "stats": {
-        "siswa_aktif": 205,
         "guru_staf": 14,
+        "akreditasi": "B",
         "ruang_kelas": 9,
-        "akreditasi": "B"
-    }
+        "siswa_aktif": 205
+    },
+    "ppdb_contacts": {},
+    "force_local_cache": false
 }
