@@ -47,7 +47,7 @@ export async function POST(request) {
     }
 
     if (!image) {
-      image = "/images/teacher_1.svg"; // Fallback default illustration
+      image = "/images/teacher_1.png"; // Fallback default illustration
     }
 
     if (!name || !role || !status) {
@@ -120,7 +120,7 @@ export async function PUT(request) {
     }
 
     if (!image) {
-      image = "/images/teacher_1.svg"; // Fallback default illustration
+      image = "/images/teacher_1.png"; // Fallback default illustration
     }
 
     if (!name || !role || !status) {

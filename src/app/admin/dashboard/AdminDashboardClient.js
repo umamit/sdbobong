@@ -20,9 +20,9 @@ export default function AdminDashboardClient({
   const [toast, setToast] = useState(null);
 
   // States for Teacher form preview
-  const [teacherImageSelect, setTeacherImageSelect] = useState('/images/teacher_1.svg');
-  const [teacherImageUrl, setTeacherImageUrl] = useState('/images/teacher_1.svg');
-  const [avatarPreview, setAvatarPreview] = useState('/images/teacher_1.svg');
+  const [teacherImageSelect, setTeacherImageSelect] = useState('/images/teacher_1.png');
+  const [teacherImageUrl, setTeacherImageUrl] = useState('/images/teacher_1.png');
+  const [avatarPreview, setAvatarPreview] = useState('/images/teacher_1.png');
 
   // Load active tab from URL query param if present
   useEffect(() => {
@@ -220,9 +220,9 @@ export default function AdminDashboardClient({
           setTeachers(prev => [...prev, data.teacher]);
         }
         form.reset();
-        setTeacherImageSelect('/images/teacher_1.svg');
-        setTeacherImageUrl('/images/teacher_1.svg');
-        setAvatarPreview('/images/teacher_1.svg');
+        setTeacherImageSelect('/images/teacher_1.png');
+        setTeacherImageUrl('/images/teacher_1.png');
+        setAvatarPreview('/images/teacher_1.png');
       } else {
         showToast('danger', data.error || 'Gagal menyimpan data guru baru.');
       }
@@ -1708,12 +1708,11 @@ export default function AdminDashboardClient({
                           onChange={handleTeacherImageSelectChange}
                           style={{ marginBottom: '5px', width: '100%' }}
                         >
-                          <option value="/images/teacher_1.svg">Stok Ilustrasi Pria (Default)</option>
-                          <option value="/images/teacher_2.svg">Stok Ilustrasi Wanita (Default)</option>
-                          <option value="/images/teacher_3.svg">Stok Ilustrasi Pria 2</option>
-                          <option value="/images/teacher_4.svg">Stok Ilustrasi Wanita 2</option>
-                          <option value="/images/teacher_5.svg">Stok Ilustrasi Pria 3</option>
-                          <option value="/images/teacher_6.svg">Stok Ilustrasi Wanita 3</option>
+                          <option value="/images/teacher_1.png">Stok Ilustrasi Pria (Default)</option>
+                          <option value="/images/teacher_2.jpg">Stok Ilustrasi Wanita Berhijab (Default)</option>
+                          <option value="/images/teacher_3.png">Stok Ilustrasi Wanita (Tanpa Hijab)</option>
+                          <option value="/images/teacher_4.jpg">Template Pas Foto Hijab (Merah)</option>
+                          <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
                           <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
                           <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
                           <option value="custom">-- Input URL Gambar Kustom --</option>

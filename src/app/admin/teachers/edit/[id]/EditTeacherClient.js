@@ -22,12 +22,11 @@ export default function EditTeacherClient({ teacher }) {
   // Initial select binding
   useEffect(() => {
     const defaultAvatars = [
-      '/images/teacher_1.svg',
-      '/images/teacher_2.svg',
-      '/images/teacher_3.svg',
-      '/images/teacher_4.svg',
-      '/images/teacher_5.svg',
-      '/images/teacher_6.svg',
+      '/images/teacher_1.png',
+      '/images/teacher_2.jpg',
+      '/images/teacher_3.png',
+      '/images/teacher_4.jpg',
+      '/images/teacher_5.png',
       '/images/teacher_7.jpg',
       '/images/principal.svg'
     ];
@@ -334,12 +333,11 @@ export default function EditTeacherClient({ teacher }) {
                     onChange={handleImageSelectChange}
                     style={{ width: '100%', marginBottom: '5px' }}
                   >
-                    <option value="/images/teacher_1.svg">Stok Ilustrasi Pria (Default)</option>
-                    <option value="/images/teacher_2.svg">Stok Ilustrasi Wanita (Default)</option>
-                    <option value="/images/teacher_3.svg">Stok Ilustrasi Pria 2</option>
-                    <option value="/images/teacher_4.svg">Stok Ilustrasi Wanita 2</option>
-                    <option value="/images/teacher_5.svg">Stok Ilustrasi Pria 3</option>
-                    <option value="/images/teacher_6.svg">Stok Ilustrasi Wanita 3</option>
+                    <option value="/images/teacher_1.png">Stok Ilustrasi Pria (Default)</option>
+                    <option value="/images/teacher_2.jpg">Stok Ilustrasi Wanita Berhijab (Default)</option>
+                    <option value="/images/teacher_3.png">Stok Ilustrasi Wanita (Tanpa Hijab)</option>
+                    <option value="/images/teacher_4.jpg">Template Pas Foto Hijab (Merah)</option>
+                    <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
                     <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
                     <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
                     <option value="custom">-- Input URL Gambar Kustom --</option>
