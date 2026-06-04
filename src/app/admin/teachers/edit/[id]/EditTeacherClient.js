@@ -302,6 +302,7 @@ export default function EditTeacherClient({ teacher }) {
                   <option value="PPPK">PPPK</option>
                   <option value="Honorer Daerah">Honorer Daerah</option>
                   <option value="Honorer Sekolah">Honorer Sekolah</option>
+                  <option value="Komite Sekolah">Komite Sekolah</option>
                 </select>
               </div>
             </div>

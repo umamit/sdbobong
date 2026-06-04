@@ -352,10 +352,13 @@ export default async function Profil() {
               teachers.map((teacher) => {
                 const isPNS = teacher.status === 'PNS';
                 const isPPPK = teacher.status === 'PPPK';
+                const isKomite = teacher.status === 'Komite Sekolah';
                 const statusStyle = isPNS 
                   ? { color: 'white', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }
                   : isPPPK
                   ? { backgroundColor: '#E8FAF0', color: '#20BA5A', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }
+                  : isKomite
+                  ? { backgroundColor: '#EEF2FF', color: '#4F46E5', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }
                   : { backgroundColor: '#FFF8E6', color: '#D48408', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 };
 
                 return (
