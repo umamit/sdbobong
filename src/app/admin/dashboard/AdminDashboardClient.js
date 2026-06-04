@@ -208,9 +208,12 @@ export default function AdminDashboardClient({
     }
   };
 
-  const handleMakeHumas = async (teacher) => {
-    const defaultPhone = config.ppdb_contacts?.wa_humas || "";
-    const phone = window.prompt(`Jadikan ${teacher.name} sebagai Humas PPDB.\nMasukkan nomor WhatsApp beliau (Format: 628xxx):`, defaultPhone);
+  const handleMakeContact = async (teacher, type) => {
+    const contactName = type === 'humas' ? 'Humas PPDB' : 'Operator Dapodik/Sekolah';
+    const currentPhone = type === 'humas' ? config.ppdb_contacts?.wa_humas : config.ppdb_contacts?.wa_operator;
+    const defaultPhone = currentPhone || "";
+    
+    const phone = window.prompt(`Jadikan ${teacher.name} sebagai ${contactName}.\nMasukkan nomor WhatsApp beliau (Format: 628xxx):`, defaultPhone);
     
     if (phone === null) return; // User cancelled
     
@@ -226,12 +229,22 @@ export default function AdminDashboardClient({
     }
 
     try {
-      const updatedContacts = {
-        ...config.ppdb_contacts,
-        nama_humas: teacher.name,
-        wa_humas: cleanedPhone,
-        jabatan_humas: teacher.role || 'Humas Sekolah'
-      };
+      let updatedContacts;
+      if (type === 'humas') {
+        updatedContacts = {
+          ...config.ppdb_contacts,
+          nama_humas: teacher.name,
+          wa_humas: cleanedPhone,
+          jabatan_humas: teacher.role || 'Humas Sekolah'
+        };
+      } else {
+        updatedContacts = {
+          ...config.ppdb_contacts,
+          nama_operator: teacher.name,
+          wa_operator: cleanedPhone,
+          jabatan_operator: teacher.role || 'Operator Sekolah'
+        };
+      }
 
       const res = await fetch('/api/config', {
         method: 'POST',
@@ -243,13 +256,13 @@ export default function AdminDashboardClient({
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', `${teacher.name} berhasil diatur sebagai Humas PPDB.`);
+        showToast('success', `${teacher.name} berhasil diatur sebagai ${contactName}.`);
         setConfig(prev => ({
           ...prev,
           ppdb_contacts: updatedContacts
         }));
       } else {
-        showToast('danger', data.error || 'Gagal mengatur Humas PPDB.');
+        showToast('danger', data.error || `Gagal mengatur ${contactName}.`);
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
@@ -1927,21 +1940,31 @@ export default function AdminDashboardClient({
                             </td>
                             <td style={{ textAlign: 'center' }}>
                               <div style={{ display: 'flex', gap: 'var(--space-xs)', justifyContent: 'center' }}>
-                                <button 
-                                  onClick={() => handleMakeHumas(t)} 
-                                  type="button" 
-                                  className="btn btn-primary" 
+                                <select 
+                                  onChange={(e) => {
+                                    const action = e.target.value;
+                                    if (action === 'humas') handleMakeContact(t, 'humas');
+                                    if (action === 'operator') handleMakeContact(t, 'operator');
+                                    e.target.value = ''; // Reset select
+                                  }} 
+                                  className="form-control" 
                                   style={{ 
                                     padding: '0.25rem 0.5rem', 
                                     fontSize: '0.75rem', 
-                                    backgroundColor: '#2563eb', 
+                                    width: 'auto',
+                                    display: 'inline-block',
+                                    cursor: 'pointer',
+                                    backgroundColor: '#2563eb',
                                     color: 'white',
                                     border: 'none',
-                                    borderRadius: '4px'
+                                    borderRadius: '4px',
+                                    fontWeight: '600'
                                   }}
                                 >
-                                  Jadikan Humas
-                                </button>
+                                  <option value="" disabled selected style={{ backgroundColor: 'white', color: 'var(--text-main)' }}>Set Kontak PPDB</option>
+                                  <option value="humas" style={{ backgroundColor: 'white', color: 'var(--text-main)' }}>Jadikan Humas</option>
+                                  <option value="operator" style={{ backgroundColor: 'white', color: 'var(--text-main)' }}>Jadikan Operator</option>
+                                </select>
                                 <Link href={`/admin/teachers/edit/${t.id}`} className="btn btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', lineHeight: '1.5' }}>
                                   Edit
                                 </Link>
