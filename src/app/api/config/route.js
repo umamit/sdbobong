@@ -34,6 +34,7 @@ export async function POST(request) {
     let force_local_cache;
     let nama_humas, wa_humas, jabatan_humas;
     let nama_operator, wa_operator, jabatan_operator;
+    let wa_floating;
     let parsedFormData = null;
 
     if (contentType.includes('application/json')) {
@@ -52,6 +53,7 @@ export async function POST(request) {
       nama_operator = body.nama_operator;
       wa_operator = body.wa_operator;
       jabatan_operator = body.jabatan_operator;
+      wa_floating = body.wa_floating;
     } else {
       const formData = await request.formData();
       parsedFormData = formData;
@@ -72,6 +74,7 @@ export async function POST(request) {
         nama_operator = formData.get('nama_operator')?.toString().trim();
         wa_operator = formData.get('wa_operator')?.toString().trim();
         jabatan_operator = formData.get('jabatan_operator')?.toString().trim();
+        wa_floating = formData.get('wa_floating')?.toString().trim();
       }
     }
 
@@ -100,7 +103,8 @@ export async function POST(request) {
         jabatan_humas: jabatan_humas || '',
         nama_operator: nama_operator || '',
         wa_operator: wa_operator || '',
-        jabatan_operator: jabatan_operator || ''
+        jabatan_operator: jabatan_operator || '',
+        wa_floating: wa_floating || ''
       };
     } else if (actionType === 'hero_bg') {
       const file = parsedFormData ? parsedFormData.get('hero_bg_image') : null;

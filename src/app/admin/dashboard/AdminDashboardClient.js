@@ -259,6 +259,24 @@ export default function AdminDashboardClient({
     const nama_operator = form.nama_operator.value.trim();
     const wa_operator = form.wa_operator.value.trim();
     const jabatan_operator = form.jabatan_operator.value.trim();
+    const wa_floating = form.wa_floating.value.trim();
+
+    const clean_wa_humas = wa_humas.replace(/[^0-9]/g, '');
+    const clean_wa_operator = wa_operator.replace(/[^0-9]/g, '');
+    const clean_wa_floating = wa_floating.replace(/[^0-9]/g, '');
+
+    if (clean_wa_humas && !clean_wa_humas.startsWith('62')) {
+      showToast('danger', 'Format No. WhatsApp Humas salah. Harus menggunakan format kode negara (contoh: 6281234567890).');
+      return;
+    }
+    if (clean_wa_operator && !clean_wa_operator.startsWith('62')) {
+      showToast('danger', 'Format No. WhatsApp Operator salah. Harus menggunakan format kode negara (contoh: 6281234567890).');
+      return;
+    }
+    if (clean_wa_floating && !clean_wa_floating.startsWith('62')) {
+      showToast('danger', 'Format No. WhatsApp Tombol Melayang salah. Harus menggunakan format kode negara (contoh: 6281234567890).');
+      return;
+    }
 
     try {
       const res = await fetch('/api/config', {
@@ -267,25 +285,27 @@ export default function AdminDashboardClient({
         body: JSON.stringify({
           action_type: 'contacts',
           nama_humas,
-          wa_humas,
+          wa_humas: clean_wa_humas,
           jabatan_humas,
           nama_operator,
-          wa_operator,
-          jabatan_operator
+          wa_operator: clean_wa_operator,
+          jabatan_operator,
+          wa_floating: clean_wa_floating
         })
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', 'Kontak PPDB berhasil disimpan.');
+        showToast('success', 'Kontak PPDB & Tombol Melayang berhasil disimpan.');
         setConfig(prev => ({
           ...prev,
           ppdb_contacts: {
             nama_humas,
-            wa_humas,
+            wa_humas: clean_wa_humas,
             jabatan_humas,
             nama_operator,
-            wa_operator,
-            jabatan_operator
+            wa_operator: clean_wa_operator,
+            jabatan_operator,
+            wa_floating: clean_wa_floating
           }
         }));
       } else {
@@ -2003,7 +2023,28 @@ export default function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB</button>
+                  <hr style={{ border: '0', borderTop: '1px solid var(--border-color)', margin: 'var(--space-md) 0' }} />
+                  
+                  <div style={{ marginBottom: 'var(--space-md)' }}>
+                    <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang (Floating Button)</h4>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-xs)' }}>
+                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau yang tampil di sudut kanan bawah semua halaman publik. Jika dikosongkan, tombol melayang akan otomatis menggunakan nomor <strong>Operator Sekolah</strong> di atas sebagai cadangan.
+                    </p>
+                    <div className="form-group" style={{ maxWidth: '500px' }}>
+                      <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Gunakan Format Angka: 628xxx)</label>
+                      <input
+                        type="text"
+                        id="wa_floating"
+                        name="wa_floating"
+                        className="form-control"
+                        defaultValue={config.ppdb_contacts?.wa_floating || ''}
+                        style={{ width: '100%' }}
+                        placeholder="Contoh: 6281234567890"
+                      />
+                    </div>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB & Tombol Melayang</button>
                 </form>
               </div>
 
