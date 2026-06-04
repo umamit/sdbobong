@@ -51,6 +51,13 @@ export async function POST(request) {
     }
 
     const newsList = await loadNews();
+
+    // Periksa duplikat judul berita
+    const duplicateNews = newsList.find(n => n.title.toLowerCase() === title.toLowerCase());
+    if (duplicateNews) {
+      return NextResponse.json({ error: "Berita dengan judul ini sudah diterbitkan!" }, { status: 400 });
+    }
+
     const newArticle = {
       id: `news-${Math.floor(Date.now() / 1000)}`,
       title,

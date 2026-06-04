@@ -55,6 +55,13 @@ export async function POST(request) {
     }
 
     const teachersList = await loadTeachers();
+
+    // Periksa duplikat nama guru
+    const duplicateTeacher = teachersList.find(t => t.name.toLowerCase() === name.toLowerCase());
+    if (duplicateTeacher) {
+      return NextResponse.json({ error: "Data guru dengan nama ini sudah terdaftar!" }, { status: 400 });
+    }
+
     const newTeacher = {
       id: `teacher-${Math.floor(Date.now() / 1000)}`,
       name,
@@ -125,6 +132,12 @@ export async function PUT(request) {
 
     if (!name || !role || !status) {
       return NextResponse.json({ error: "Kolom Nama, Jabatan, dan Status wajib diisi!" }, { status: 400 });
+    }
+
+    // Periksa duplikat nama guru dengan ID lain
+    const duplicateTeacher = teachersList.find(t => t.name.toLowerCase() === name.toLowerCase() && t.id !== id);
+    if (duplicateTeacher) {
+      return NextResponse.json({ error: "Nama guru ini sudah terdaftar pada data guru lain!" }, { status: 400 });
     }
 
     // Update details
