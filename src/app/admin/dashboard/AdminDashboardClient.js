@@ -10,7 +10,16 @@ export default function AdminDashboardClient({
   initialTeachers,
   initialAchievements,
   initialRecords,
-  dbStatus
+  dbStatus,
+  initialStorageInfo = {
+    supabaseSize: 0,
+    localSize: 0,
+    supabaseFormatted: '0 B',
+    localFormatted: '0 B',
+    totalSize: 0,
+    totalFormatted: '0 B',
+    isSupabaseActive: false
+  },
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
@@ -20,6 +29,7 @@ export default function AdminDashboardClient({
   const [teachers, setTeachers] = useState(initialTeachers);
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [toast, setToast] = useState(null);
+  const [storageInfo, setStorageInfo] = useState(initialStorageInfo);
 
   // States for Achievements form
   const [editingAchievementId, setEditingAchievementId] = useState(null);
@@ -908,6 +918,9 @@ export default function AdminDashboardClient({
         .overview-card.purple::after {
             background: linear-gradient(180deg, var(--violet) 0%, #7c3aed 100%);
         }
+        .overview-card.cyan::after {
+            background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+        }
         .overview-card-title {
             font-size: 0.75rem;
             font-weight: 700;
@@ -1430,6 +1443,25 @@ export default function AdminDashboardClient({
                   <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-.75a1.125 1.125 0 0 1-1.125-1.125V11.25M9 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.75A1.125 1.125 0 0 1 12 13.125V11.25m-1.5-6h3a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-3a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3Z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="overview-card cyan">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Storage Terpakai</span>
+                    <span className="overview-card-value">{storageInfo.totalFormatted || '0 B'}</span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                      {storageInfo.isSupabaseActive ? 'Supabase Storage Aktif' : 'Penyimpanan Lokal Aktif'}
+                    </span>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px', display: 'block' }}>
+                      Supabase: {storageInfo.supabaseFormatted || '0 B'} | Lokal: {storageInfo.localFormatted || '0 B'}
+                    </span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75" />
                     </svg>
                   </div>
                 </div>
