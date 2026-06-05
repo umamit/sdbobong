@@ -7,6 +7,11 @@ export async function GET() {
     "version": "1.0.0",
     "protocolVersion": "2025-06-18",
     "description": "Model Context Protocol (MCP) server for SD Negeri Bobong, enabling AI agents to read news, teachers database, and register new students.",
+    "serverInfo": {
+      "name": "id.sch.sdnegeribobong/mcp-server",
+      "version": "1.0.0",
+      "description": "Model Context Protocol (MCP) server for SD Negeri Bobong"
+    },
     "transport": {
       "type": "streamable-http",
       "endpoint": "/api/mcp"

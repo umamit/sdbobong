@@ -26,6 +26,24 @@ export async function GET() {
             "href": "https://sdnegeribobong.sch.id/.well-known/mcp/server-card.json",
             "type": "application/json"
           }
+        ],
+        "openid-configuration": [
+          {
+            "href": "https://sdnegeribobong.sch.id/.well-known/openid-configuration",
+            "type": "application/json"
+          }
+        ],
+        "oauth-authorization-server": [
+          {
+            "href": "https://sdnegeribobong.sch.id/.well-known/oauth-authorization-server",
+            "type": "application/json"
+          }
+        ],
+        "oauth-protected-resource": [
+          {
+            "href": "https://sdnegeribobong.sch.id/.well-known/oauth-protected-resource",
+            "type": "application/json"
+          }
         ]
       }
     ]

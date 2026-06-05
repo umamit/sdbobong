@@ -145,4 +145,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.calendar-row')) {
         highlightCurrentMonth();
     }
+
+    // 6. WebMCP Integration (Browser-side AI Assistant Agent Discovery)
+    try {
+        if (typeof navigator !== 'undefined' && navigator.modelContext && navigator.modelContext.provideContext) {
+            navigator.modelContext.provideContext({
+                tools: [
+                    {
+                        name: "baca_profil_sdn_bobong",
+                        description: "Membaca sejarah, visi, misi, dan struktur dewan guru SD Negeri Bobong.",
+                        inputSchema: {
+                            type: "object",
+                            properties: {}
+                        }
+                    },
+                    {
+                        name: "pendaftaran_ppdb_online",
+                        description: "Mendaftarkan calon siswa baru secara otomatis melalui jalur Zonasi, Afirmasi, Prestasi, atau Perpindahan Orang Tua.",
+                        inputSchema: {
+                            type: "object",
+                            properties: {
+                                nama_lengkap: { type: "string", description: "Nama lengkap calon siswa baru" },
+                                NIK: { type: "string", description: "Nomor Induk Kependudukan 16 digit siswa" },
+                                tempat_lahir: { type: "string", description: "Tempat lahir calon siswa" },
+                                tanggal_lahir: { type: "string", description: "Tanggal lahir dengan format YYYY-MM-DD" },
+                                jenis_kelamin: { type: "string", enum: ["Laki-laki", "Perempuan"] },
+                                nama_ibu_kandung: { type: "string", description: "Nama ibu kandung calon siswa" },
+                                nomor_hp_orangtua: { type: "string", description: "Nomor WhatsApp aktif orang tua" },
+                                alamat_domisili: { type: "string", description: "Alamat domisili lengkap" },
+                                jalur_ppdb: { type: "string", enum: ["Zonasi", "Afirmasi", "Perpindahan Orang Tua", "Prestasi"] }
+                            },
+                            required: ["nama_lengkap", "NIK", "tempat_lahir", "tanggal_lahir", "jenis_kelamin", "nama_ibu_kandung", "nomor_hp_orangtua", "alamat_domisili", "jalur_ppdb"]
+                        }
+                    }
+                ]
+            });
+            console.log("WebMCP capabilities initialized for browser AI agents.");
+        }
+    } catch (webmcpErr) {
+        console.warn("WebMCP initialization failed or unsupported:", webmcpErr);
+    }
 });

@@ -8,6 +8,7 @@
 # =========================================================================
 
 User-agent: *
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
 Disallow: /admin
 Disallow: /admin/*
