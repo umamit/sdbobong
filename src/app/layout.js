@@ -2,6 +2,7 @@ import '../../public/css/style.css';
 import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
+import Script from 'next/script';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -26,8 +27,6 @@ export default async function RootLayout({ children }) {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
         <script dangerouslySetInnerHTML={{ __html: `
           if (window.location.pathname.startsWith('/admin')) {
             document.documentElement.classList.add('is-admin');
@@ -82,6 +81,20 @@ export default async function RootLayout({ children }) {
         `}} />
       </head>
       <body>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-YLP88SDQ53"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-YLP88SDQ53');
+          `}
+        </Script>
         <LayoutControl />
         {/* Running Announcement Banner */}
         <div className="announcement-banner no-print public-layout-announcement">
