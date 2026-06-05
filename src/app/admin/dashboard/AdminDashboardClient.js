@@ -2469,7 +2469,7 @@ export default function AdminDashboardClient({
       <aside className="sidebar">
         <div className="sidebar-brand">
           <img src="/images/logo_sekolah.png" alt="Logo" />
-          <span>SDN BOBONG</span>
+          <span>SD NEGERI BOBONG</span>
         </div>
         <ul className="sidebar-menu">
           <li className="sidebar-item">
