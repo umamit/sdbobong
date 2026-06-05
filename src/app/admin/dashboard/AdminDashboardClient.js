@@ -48,6 +48,8 @@ export default function AdminDashboardClient({
   const [kurikulumPreview, setKurikulumPreview] = useState('');
   const [ekskulFiles, setEkskulFiles] = useState({});
   const [ekskulPreviews, setEkskulPreviews] = useState({});
+  const [galleryFiles, setGalleryFiles] = useState({});
+  const [galleryPreviews, setGalleryPreviews] = useState({});
 
   // ================= NEW STATES FOR PREMIUM DASHBOARD UPGRADES =================
   // PPDB Filter & Pagination
@@ -181,6 +183,57 @@ export default function AdminDashboardClient({
     const updated = (pageContents.ppdb?.faq || []).filter((_, i) => i !== index);
     handleFieldChange('ppdb', 'faq', updated);
   };
+  
+  const handleAddGalleryItem = () => {
+    const current = pageContents.galeri?.gallery_items || [
+      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
+      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
+      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
+      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
+      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
+      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
+    ];
+    const updated = [...current, { id: 'g_' + Date.now(), src: '/images/gallery_1.svg', alt: '' }];
+    handleFieldChange('galeri', 'gallery_items', updated);
+  };
+
+  const handleUpdateGalleryItem = (index, key, val) => {
+    const current = pageContents.galeri?.gallery_items || [
+      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
+      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
+      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
+      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
+      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
+      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
+    ];
+    const updated = [...current];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('galeri', 'gallery_items', updated);
+  };
+
+  const handleRemoveGalleryItem = (index) => {
+    const current = pageContents.galeri?.gallery_items || [
+      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
+      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
+      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
+      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
+      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
+      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
+    ];
+    const updated = current.filter((_, i) => i !== index);
+    handleFieldChange('galeri', 'gallery_items', updated);
+  };
+
+  const handleGalleryFileChange = (index, file) => {
+    if (file) {
+      setGalleryFiles(prev => ({ ...prev, [index]: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setGalleryPreviews(prev => ({ ...prev, [index]: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleAddPPDBJadwal = () => {
     const current = pageContents.ppdb?.jadwal || [];
@@ -244,6 +297,16 @@ export default function AdminDashboardClient({
       Object.keys(ekskulFiles).forEach(index => {
         filesToUpload[`ekskul_image_${index}`] = ekskulFiles[index];
       });
+    } else if (pageName === 'galeri') {
+      Object.keys(galleryFiles).forEach(index => {
+        const items = dataToSave.gallery_items || [];
+        const item = items[index];
+        if (item && item.id) {
+          filesToUpload[`gallery_image_id_${item.id}`] = galleryFiles[index];
+        } else {
+          filesToUpload[`gallery_image_index_${index}`] = galleryFiles[index];
+        }
+      });
     }
 
     await handlePageContentsSave(pageName, dataToSave, filesToUpload);
@@ -254,6 +317,9 @@ export default function AdminDashboardClient({
       setKurikulumFile(null);
     } else if (pageName === 'kesiswaan') {
       setEkskulFiles({});
+    } else if (pageName === 'galeri') {
+      setGalleryFiles({});
+      setGalleryPreviews({});
     }
   };
 
@@ -370,6 +436,48 @@ export default function AdminDashboardClient({
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
+  };
+
+  const sendWhatsAppNotification = (record) => {
+    if (!record) return;
+    const phone = record.nomor_hp_orangtua || record.no_hp || '';
+    if (!phone) {
+      showToast('danger', 'Gagal: Nomor HP orang tua tidak ditemukan.');
+      return;
+    }
+
+    // Format phone to international format 62...
+    let cleanedPhone = phone.replace(/\D/g, '');
+    if (cleanedPhone.startsWith('0')) {
+      cleanedPhone = '62' + cleanedPhone.slice(1);
+    } else if (cleanedPhone.startsWith('62')) {
+      // already correct
+    } else if (cleanedPhone.length > 0) {
+      cleanedPhone = '62' + cleanedPhone;
+    }
+
+    if (!cleanedPhone) {
+      showToast('danger', 'Gagal: Nomor HP tidak valid.');
+      return;
+    }
+
+    let message = '';
+    const studentName = record.nama_lengkap || '';
+    const nik = record.nik_siswa || record.nik || '';
+
+    if (record.status === 'Diterima Sistem') {
+      message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nKami menginformasikan bahwa berkas pendaftaran PPDB TA 2026/2027 di SD Negeri Bobong atas nama anak Anda telah kami terima dalam sistem dengan NIK: *${nik}*.\n\nHarap menunggu proses verifikasi berkas lebih lanjut oleh panitia sekolah. Terima kasih. 🙏\n\n-- Panitia PPDB SDN Bobong`;
+    } else if (record.status === 'Terverifikasi') {
+      message = `Selamat Bapak/Ibu Orang Tua dari *${studentName}*! 🎉\n\nBerkas pendaftaran PPDB TA 2026/2027 anak Anda di SD Negeri Bobong dengan NIK: *${nik}* dinyatakan *TERVERIFIKASI & MEMENUHI SYARAT*.\n\nMohon pantau pengumuman kelulusan akhir di portal PPDB kami secara berkala. Terima kasih. 😊\n\n-- Panitia PPDB SDN Bobong`;
+    } else if (record.status === 'Ditolak') {
+      message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nKami menginformasikan bahwa berkas pendaftaran PPDB TA 2026/2027 di SD Negeri Bobong atas nama anak Anda saat ini dinyatakan *DITOLAK / BELUM MEMENUHI SYARAT*.\n\nSilakan periksa kembali kelengkapan berkas Anda atau hubungi sekretariat panitia PPDB sekolah untuk informasi lebih lanjut. Terima kasih.\n\n-- Panitia PPDB SDN Bobong`;
+    } else {
+      message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nHubungi Panitia PPDB SD Negeri Bobong terkait status pendaftaran anak Anda dengan NIK: *${nik}*. Terima kasih.`;
+    }
+
+    const waUrl = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank');
+    showToast('success', `Membuka WhatsApp untuk mengirim notifikasi ke nomor ${cleanedPhone}`);
   };
 
   const handlePPDBDelete = (recordId) => {
@@ -2775,7 +2883,7 @@ export default function AdminDashboardClient({
                       <th>Alamat Lengkap</th>
                       <th>Tanggal Daftar</th>
                       <th style={{ width: '140px' }}>Status</th>
-                      <th style={{ width: '180px', textAlign: 'center' }}>Aksi</th>
+                      <th style={{ width: '240px', textAlign: 'center' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2825,6 +2933,28 @@ export default function AdminDashboardClient({
                                   title="Lihat Detail & Cetak Bukti"
                                 >
                                   👁️ Detail
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => sendWhatsAppNotification(r)}
+                                  className="btn"
+                                  style={{
+                                    padding: '0.35rem 0.7rem',
+                                    fontSize: '0.75rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    backgroundColor: '#10b981',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    boxShadow: '0 2px 4px rgba(16, 185, 129, 0.2)'
+                                  }}
+                                  title="Kirim Notifikasi Status PPDB lewat WhatsApp"
+                                >
+                                  💬 WA
                                 </button>
                                 <button onClick={() => handlePPDBDelete(r.id)} type="button" className="btn-action-delete" style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}>Hapus</button>
                               </div>
@@ -3603,7 +3733,8 @@ export default function AdminDashboardClient({
                   { id: 'profil', label: '📝 Profil Sekolah' },
                   { id: 'akademik', label: '📖 Akademik' },
                   { id: 'kesiswaan', label: '🎨 Kesiswaan & Ekskul' },
-                  { id: 'ppdb', label: '🎓 PPDB Portal' }
+                  { id: 'ppdb', label: '🎓 PPDB Portal' },
+                  { id: 'galeri', label: '📸 Galeri Kegiatan' }
                 ].map(subTab => (
                   <button
                     key={subTab.id}
@@ -4683,6 +4814,179 @@ export default function AdminDashboardClient({
                           Belum ada daftar FAQ. Klik tombol di kanan atas untuk menambahkan baris baru.
                         </p>
                       )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= SUB-TAB: GALERI ================= */}
+              {activePageSubTab === 'galeri' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0, color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          📸 Kelola Galeri Kegiatan Sekolah
+                        </h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                          Tambahkan, edit deskripsi, atau ganti foto-foto dokumentasi kegiatan SD Negeri Bobong yang tampil di halaman depan.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleAddGalleryItem}
+                        className="btn btn-primary"
+                        style={{
+                          padding: '0.5rem 1rem',
+                          fontSize: '0.85rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          boxShadow: '0 4px 6px rgba(99, 102, 241, 0.2)'
+                        }}
+                      >
+                        ➕ Tambah Foto Baru
+                      </button>
+                    </div>
+
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                      gap: '1.5rem'
+                    }}>
+                      {(pageContents.galeri?.gallery_items || [
+                        { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
+                        { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
+                        { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
+                        { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
+                        { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
+                        { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
+                      ]).map((item, idx) => {
+                        const previewSrc = galleryPreviews[idx] || item.src;
+                        return (
+                          <div
+                            key={item.id || idx}
+                            style={{
+                              backgroundColor: '#ffffff',
+                              borderRadius: '12px',
+                              border: '1px solid #e2e8f0',
+                              overflow: 'hidden',
+                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              position: 'relative'
+                            }}
+                          >
+                            <div style={{ position: 'relative', width: '100%', height: '180px', backgroundColor: '#f1f5f9' }}>
+                              <img
+                                src={previewSrc}
+                                alt={item.alt || 'Pratinjau Foto'}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                onError={(e) => { e.target.src = '/images/gallery_1.svg'; }}
+                              />
+                              <div style={{
+                                position: 'absolute',
+                                top: '8px',
+                                right: '8px',
+                                display: 'flex',
+                                gap: '6px'
+                              }}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveGalleryItem(idx)}
+                                  className="btn-action-delete"
+                                  style={{
+                                    backgroundColor: 'rgba(239, 68, 68, 0.9)',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    width: '32px',
+                                    height: '32px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem',
+                                    backdropFilter: 'blur(4px)',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                  }}
+                                  title="Hapus Foto"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
+                              <div style={{
+                                position: 'absolute',
+                                bottom: '8px',
+                                left: '8px',
+                                backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                                color: '#ffffff',
+                                padding: '4px 8px',
+                                borderRadius: '6px',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                backdropFilter: 'blur(4px)'
+                              }}>
+                                #{idx + 1}
+                              </div>
+                            </div>
+
+                            <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', flexGrow: 1 }}>
+                              <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                  Keterangan Foto (Alt Text)
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Deskripsi singkat kegiatan..."
+                                  value={item.alt || ''}
+                                  onChange={(e) => handleUpdateGalleryItem(idx, 'alt', e.target.value)}
+                                  style={{ width: '100%', fontSize: '0.85rem' }}
+                                />
+                              </div>
+
+                              <div className="form-group" style={{ marginBottom: 0 }}>
+                                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                  Ganti Berkas Gambar
+                                </label>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                  <input
+                                    type="file"
+                                    id={`gallery-file-${idx}`}
+                                    accept="image/*"
+                                    onChange={(e) => handleGalleryFileChange(idx, e.target.files[0])}
+                                    style={{ display: 'none' }}
+                                  />
+                                  <label
+                                    htmlFor={`gallery-file-${idx}`}
+                                    className="btn btn-secondary"
+                                    style={{
+                                      padding: '0.4rem 0.8rem',
+                                      fontSize: '0.75rem',
+                                      margin: 0,
+                                      cursor: 'pointer',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '4px',
+                                      width: '100%',
+                                      justifyContent: 'center'
+                                    }}
+                                  >
+                                    |__||__||__||__||__||__||__||__||__||__||__||__||__|  Unggah Gambar
+                                  </label>
+                                </div>
+                                {galleryFiles[idx] && (
+                                  <p style={{ margin: '4px 0 0 0', fontSize: '0.7rem', color: '#10b981', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    ✅ Siap diunggah: {galleryFiles[idx].name}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import { loadNews } from '../../lib/database';
+import { loadNews, loadWebConfig } from '../../lib/database';
 import Gallery from '../../components/Gallery';
 
 export const dynamic = 'force-dynamic';
@@ -6,6 +6,8 @@ export const revalidate = 0; // Fresh load
 
 export default async function Berita() {
   const newsList = await loadNews();
+  const config = await loadWebConfig();
+  const galleryItems = config.stats?.page_contents?.galeri?.gallery_items || [];
 
   return (
     <>
@@ -62,7 +64,7 @@ export default async function Berita() {
 
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Silakan sentuh atau klik pada gambar untuk menampilkan tampilan penuh (Lightbox).</p>
 
-          <Gallery />
+          <Gallery initialItems={galleryItems} />
         </div>
       </section>
     </>

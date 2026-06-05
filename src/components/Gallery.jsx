@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 
-export default function Gallery() {
+export default function Gallery({ initialItems }) {
   const [activeImage, setActiveImage] = useState(null);
 
-  const galleryItems = [
+  const defaultItems = [
     { src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
     { src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
     { src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
@@ -13,6 +13,8 @@ export default function Gallery() {
     { src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
     { src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
   ];
+
+  const galleryItems = Array.isArray(initialItems) && initialItems.length > 0 ? initialItems : defaultItems;
 
   // Prevent background scrolling when lightbox is open
   useEffect(() => {

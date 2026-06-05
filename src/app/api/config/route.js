@@ -165,6 +165,20 @@ export async function POST(request) {
                 if (pageData.ekstrakurikuler && pageData.ekstrakurikuler[index]) {
                   pageData.ekstrakurikuler[index].image = uploadedUrl;
                 }
+              } else if (key.startsWith('gallery_image_')) {
+                const parts = key.split('_');
+                if (parts[2] === 'index') {
+                  const index = parseInt(parts[3], 10);
+                  if (pageData.gallery_items && pageData.gallery_items[index]) {
+                    pageData.gallery_items[index].src = uploadedUrl;
+                  }
+                } else if (parts[2] === 'id') {
+                  const targetId = parts.slice(3).join('_');
+                  if (pageData.gallery_items) {
+                    const item = pageData.gallery_items.find(g => g.id === targetId);
+                    if (item) item.src = uploadedUrl;
+                  }
+                }
               }
             }
           }
