@@ -1414,11 +1414,12 @@ export default function AdminDashboardClient({
         }
         .sidebar-brand span {
             font-weight: 800;
-            font-size: 1.15rem;
-            letter-spacing: 0.05em;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
             background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            white-space: nowrap;
         }
         .sidebar-menu {
             list-style: none;
