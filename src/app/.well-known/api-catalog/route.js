@@ -14,6 +14,18 @@ export async function GET() {
             "href": "https://sdnegeribobong.sch.id/profil",
             "type": "text/html"
           }
+        ],
+        "agent-skills": [
+          {
+            "href": "https://sdnegeribobong.sch.id/.well-known/agent-skills/index.json",
+            "type": "application/json"
+          }
+        ],
+        "mcp-server-card": [
+          {
+            "href": "https://sdnegeribobong.sch.id/.well-known/mcp/server-card.json",
+            "type": "application/json"
+          }
         ]
       }
     ]
