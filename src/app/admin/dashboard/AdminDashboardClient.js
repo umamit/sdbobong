@@ -3668,8 +3668,23 @@ export default function AdminDashboardClient({
                       {teachers.length > 0 ? (
                         teachers.map((t) => (
                           <tr key={t.id}>
-                            <td style={{ textAlign: 'center' }}>
-                              <img src={t.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--border-color)' }} />
+                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                              <div style={{
+                                width: '42px',
+                                height: '42px',
+                                borderRadius: '50%',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: '2px solid var(--border-color, #e2e8f0)',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                                backgroundColor: '#f8fafc',
+                                margin: '0 auto',
+                                flexShrink: 0
+                              }}>
+                                <img src={t.image || '/images/teacher_1.png'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              </div>
                             </td>
                             <td>
                               <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{t.name}</strong>
