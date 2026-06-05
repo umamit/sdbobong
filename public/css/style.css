@@ -1121,13 +1121,35 @@ footer {
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: var(--space-md);
-    text-align: center;
     font-size: 0.85rem;
     color: #9CA3AF;
 }
 
-.footer-bottom p {
+.footer-bottom-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.developer-note {
+    font-weight: 500;
+    color: #9CA3AF;
+}
+
+.copyright-note {
     margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .footer-bottom-flex {
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: var(--space-xs);
+    }
 }
 
 /* Floating WhatsApp Widget */

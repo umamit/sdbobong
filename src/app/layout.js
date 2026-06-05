@@ -165,8 +165,13 @@ export default async function RootLayout({ children }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <div className="container">
-              <p>&copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</a></p>
+            <div className="container footer-bottom-flex">
+              <div className="developer-note">
+                made with ❤️ Anhr
+              </div>
+              <p className="copyright-note">
+                &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</a>
+              </p>
             </div>
           </div>
         </footer>
