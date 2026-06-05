@@ -11,6 +11,19 @@ const nextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Link',
+            value: '</.well-known/api-catalog>; rel="api-catalog"',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
