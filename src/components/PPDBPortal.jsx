@@ -26,7 +26,28 @@ export default function PPDBPortal({ pendaftarList, config }) {
     }
   };
 
-  const faqData = [
+  const ppdbConfig = config?.stats?.page_contents?.ppdb || {};
+
+  const banner_title = ppdbConfig.banner_title || "PPDB TA 2026/2027";
+  const banner_text = ppdbConfig.banner_text || "Portal resmi Penerimaan Peserta Didik Baru SD Negeri Bobong secara daring dan transparan.";
+  const syarat_usia = ppdbConfig.syarat_usia || "Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli 2026. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.";
+  
+  const syarat_berkas = ppdbConfig.syarat_berkas || [
+    "Scan/Fotokopi Akta Kelahiran calon siswa.",
+    "Scan/Fotokopi Kartu Keluarga (KK) terbaru.",
+    "Scan/Fotokopi KTP Orang Tua (Ayah dan Ibu / Wali).",
+    "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar (jika tatap muka).",
+    "Mengisi formulir pendaftaran resmi."
+  ];
+
+  const alur_steps = ppdbConfig.alur_steps || [
+    { num: "1", title: "Persiapan Dokumen", desc: "Orang tua menyiapkan scan/fotokopi berkas persyaratan (Akta Lahir, KK, KTP)." },
+    { num: "2", title: "Pengisian Formulir", desc: "Klik tombol Daftar Daring di bawah, atau datang langsung ke sekolah untuk dibantu operator." },
+    { num: "3", title: "Verifikasi Berkas", desc: "Panitia PPDB SD Negeri Bobong memeriksa berkas fisik atau unggahan berkas digital." },
+    { num: "4", title: "Pengumuman Kelulusan", desc: "Pengumuman siswa yang lolos seleksi dapat diakses di papan sekolah atau via grup WhatsApp." }
+  ];
+
+  const faqData = ppdbConfig.faq || [
     {
       q: "Bagaimana jika anak belum berusia 6 tahun pada 1 Juli 2026?",
       a: "Calon siswa yang berusia kurang dari 6 tahun (minimal 5 tahun 6 bulan) dapat dipertimbangkan jika memiliki potensi kecerdasan istimewa atau kesiapan psikologis, yang dibuktikan dengan rekomendasi psikolog profesional atau surat keterangan dari dewan guru sekolah asal."
@@ -45,13 +66,20 @@ export default function PPDBPortal({ pendaftarList, config }) {
     }
   ];
 
+  const jadwal = ppdbConfig.jadwal || [
+    { activity: "Pendaftaran Online/Offline", dates: "01 Juni - 30 Juni 2026" },
+    { activity: "Verifikasi Berkas & Wawancara", dates: "01 Juli - 03 Juli 2026 (08.00 - 12.00 WIT)" },
+    { activity: "Pengumuman Hasil Seleksi", dates: "06 Juli 2026" },
+    { activity: "Daftar Ulang Siswa Baru", dates: "07 Juli - 10 Juli 2026" }
+  ];
+
   return (
     <>
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>PPDB TA 2026/2027</h1>
-          <p className="hero-text" style={{ marginBottom: 0 }}>Portal resmi Penerimaan Peserta Didik Baru SD Negeri Bobong secara daring dan transparan.</p>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>{banner_title}</h1>
+          <p className="hero-text" style={{ marginBottom: 0 }}>{banner_text}</p>
         </div>
       </section>
 
@@ -68,7 +96,7 @@ export default function PPDBPortal({ pendaftarList, config }) {
             <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '2px solid var(--secondary)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>👶</div>
               <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>Batas Usia Anak</h3>
-              <p style={{ fontSize: '0.95rem', marginBottom: 0 }}>Calon peserta didik baru harus berusia <strong>minimal 6 (enam) tahun</strong> pada tanggal <strong>1 Juli 2026</strong>. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.</p>
+              <p style={{ fontSize: '0.95rem', marginBottom: 0 }}>{syarat_usia}</p>
             </div>
 
             {/* Dokumen */}
@@ -78,11 +106,9 @@ export default function PPDBPortal({ pendaftarList, config }) {
                 Dokumen yang Harus Disiapkan
               </h3>
               <ul className="misi-list" style={{ fontSize: '0.95rem' }}>
-                <li>Scan/Fotokopi <strong>Akta Kelahiran</strong> calon siswa.</li>
-                <li>Scan/Fotokopi <strong>Kartu Keluarga (KK)</strong> terbaru.</li>
-                <li>Scan/Fotokopi <strong>KTP Orang Tua</strong> (Ayah dan Ibu / Wali).</li>
-                <li>Pas foto berwarna ukuran <strong>3x4 (Latar Merah)</strong> sebanyak 2 lembar (jika tatap muka).</li>
-                <li>Mengisi formulir pendaftaran resmi.</li>
+                {syarat_berkas.map((berkas, idx) => (
+                  <li key={idx}>{berkas}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -100,31 +126,18 @@ export default function PPDBPortal({ pendaftarList, config }) {
           <div className="grid-2" style={{ alignItems: 'flex-start' }}>
             {/* Steps Infographic */}
             <div className="ppdb-steps">
-              <div className="ppdb-step-item">
-                <div className="ppdb-step-number">1</div>
-                <h4 className="ppdb-step-title">Persiapan Dokumen</h4>
-                <p style={{ fontSize: '0.9rem' }}>Orang tua menyiapkan scan/fotokopi berkas persyaratan (Akta Lahir, KK, KTP).</p>
-              </div>
-              <div className="ppdb-step-item">
-                <div className="ppdb-step-number">2</div>
-                <h4 className="ppdb-step-title">Pengisian Formulir</h4>
-                <p style={{ fontSize: '0.9rem' }}>Klik tombol <strong>Daftar Daring</strong> di bawah, atau datang langsung ke sekolah untuk dibantu operator.</p>
-              </div>
-              <div className="ppdb-step-item">
-                <div className="ppdb-step-number">3</div>
-                <h4 className="ppdb-step-title">Verifikasi Berkas</h4>
-                <p style={{ fontSize: '0.9rem' }}>Panitia PPDB SD Negeri Bobong memeriksa berkas fisik atau unggahan berkas digital.</p>
-              </div>
-              <div className="ppdb-step-item">
-                <div className="ppdb-step-number">4</div>
-                <h4 className="ppdb-step-title">Pengumuman Kelulusan</h4>
-                <p style={{ fontSize: '0.9rem' }}>Pengumuman siswa yang lolos seleksi dapat diakses di papan sekolah atau via grup WhatsApp.</p>
-              </div>
+              {alur_steps.map((step, idx) => (
+                <div key={idx} className="ppdb-step-item">
+                  <div className="ppdb-step-number">{step.num || (idx + 1)}</div>
+                  <h4 className="ppdb-step-title">{step.title}</h4>
+                  <p style={{ fontSize: '0.9rem' }}>{step.desc}</p>
+                </div>
+              ))}
             </div>
 
             {/* Jadwal Kegiatan */}
             <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
-              <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)' }}>Jadwal Penting PPDB 2026</h3>
+              <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)' }}>Jadwal Penting PPDB</h3>
 
               <div className="table-responsive" style={{ boxShadow: 'none', border: 'none', marginBottom: 0 }}>
                 <table className="table-custom" style={{ fontSize: '0.9rem' }}>
@@ -135,22 +148,12 @@ export default function PPDBPortal({ pendaftarList, config }) {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><strong>Pendaftaran Online/Offline</strong></td>
-                      <td>01 Juni - 30 Juni 2026</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Verifikasi Berkas & Wawancara</strong></td>
-                      <td>01 Juli - 03 Juli 2026 (08.00 - 12.00 WIT)</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Pengumuman Hasil Seleksi</strong></td>
-                      <td>06 Juli 2026</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Daftar Ulang Siswa Baru</strong></td>
-                      <td>07 Juli - 10 Juli 2026</td>
-                    </tr>
+                    {jadwal.map((item, idx) => (
+                      <tr key={idx}>
+                        <td><strong>{item.activity}</strong></td>
+                        <td>{item.dates}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

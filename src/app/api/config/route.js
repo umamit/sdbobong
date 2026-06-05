@@ -36,9 +36,11 @@ export async function POST(request) {
     let nama_operator, wa_operator, jabatan_operator;
     let wa_floating;
     let parsedFormData = null;
+    let parsedJsonBody = null;
 
     if (contentType.includes('application/json')) {
-      const body = await request.json();
+      parsedJsonBody = await request.json();
+      const body = parsedJsonBody;
       actionType = body.action_type;
       announcements = body.announcements;
       siswa_aktif = body.siswa_aktif;
@@ -122,6 +124,55 @@ export async function POST(request) {
       } else {
         return NextResponse.json({ error: 'Silakan pilih gambar terlebih dahulu.' }, { status: 400 });
       }
+    } else if (actionType === 'update_page_contents') {
+      let pageName, pageDataStr;
+      if (contentType.includes('application/json')) {
+        pageName = parsedJsonBody ? parsedJsonBody.page_name : null;
+        pageDataStr = parsedJsonBody ? JSON.stringify(parsedJsonBody.page_data) : null;
+      } else {
+        pageName = parsedFormData ? parsedFormData.get('page_name') : null;
+        pageDataStr = parsedFormData ? parsedFormData.get('page_data') : null;
+      }
+
+      if (!pageName || !pageDataStr) {
+        return NextResponse.json({ error: 'Data halaman tidak lengkap.' }, { status: 400 });
+      }
+
+      let pageData = {};
+      try {
+        pageData = typeof pageDataStr === 'string' ? JSON.parse(pageDataStr) : pageDataStr;
+      } catch (e) {
+        return NextResponse.json({ error: 'Format data halaman tidak valid.' }, { status: 400 });
+      }
+
+      // Pastikan stats dan page_contents terinisialisasi
+      if (!config.stats) config.stats = {};
+      if (!config.stats.page_contents) config.stats.page_contents = {};
+      if (!config.stats.page_contents[pageName]) config.stats.page_contents[pageName] = {};
+
+      // Proses file upload jika ada
+      if (parsedFormData) {
+        for (const [key, value] of parsedFormData.entries()) {
+          if (value && typeof value === 'object' && value.size > 0) {
+            const uploadedUrl = await handlePhotoUpload(value, 'teachers', ['png', 'jpg', 'jpeg', 'svg', 'gif']);
+            if (uploadedUrl && uploadedUrl !== 'INVALID_TYPE' && uploadedUrl !== 'ERROR') {
+              if (key === 'sejarah_image_file') {
+                pageData.sejarah_image = uploadedUrl;
+              } else if (key === 'kurikulum_image_file') {
+                pageData.kurikulum_image = uploadedUrl;
+              } else if (key.startsWith('ekskul_image_')) {
+                const index = parseInt(key.split('_')[2], 10);
+                if (pageData.ekstrakurikuler && pageData.ekstrakurikuler[index]) {
+                  pageData.ekstrakurikuler[index].image = uploadedUrl;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Simpan kembali konten halaman yang baru
+      config.stats.page_contents[pageName] = pageData;
     } else {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }

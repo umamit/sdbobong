@@ -1,26 +1,52 @@
+import { loadWebConfig } from '../../lib/database';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default function Akademik() {
+export default async function Akademik() {
+  const config = await loadWebConfig();
+
+  const akademik = config.stats?.page_contents?.akademik || {
+    banner_title: "Informasi Akademik",
+    banner_text: "Panduan kurikulum, kalender pendidikan berjalan, serta tata tertib kedisiplinan siswa.",
+    kurikulum_badge: "Metode Pembelajaran",
+    kurikulum_title: "Penerapan Kurikulum Merdeka",
+    kurikulum_p1: "SD Negeri Bobong telah mengimplementasikan Kurikulum Merdeka secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.",
+    kurikulum_p2: "Salah satu pilar utama kurikulum ini adalah Projek Penguatan Profil Pelajar Pancasila (P5). Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.",
+    kurikulum_image: "/images/kurikulum_merdeka.svg",
+    kurikulum_tags: ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
+    calendar: [
+      { id: "juli", month: "Juli 2025", desc: "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", dates: "14 - 16 Juli 2025" },
+      { id: "agustus", month: "Agustus 2025", desc: "Peringatan HUT RI ke-80 & Lomba Kemerdekaan Antar Kelas", dates: "17 Agustus 2025" },
+      { id: "september", month: "September 2025", desc: "Asesmen Nasional Berbasis Komputer (ANBK)", dates: "Pekan ke-3 September" },
+      { id: "desember", month: "Desember 2025", desc: "Asesmen Sumatif Semester Ganjil & Pembagian Rapor", dates: "15 - 20 Desember 2025" },
+      { id: "maret", month: "Maret 2026", desc: "Libur Khusus Awal Puasa Ramadan 1447 H", dates: "Menyesuaikan Keputusan Menteri" },
+      { id: "juni", month: "Juni 2026", desc: "Ujian Akhir Semester Genap & Pembagian Rapor Kenaikan Kelas", dates: "08 - 20 Juni 2026" }
+    ],
+    tata_tertib: [
+      "Kehadiran: Siswa wajib hadir di sekolah paling lambat pukul 07.15 WIT sebelum bel masuk berbunyi.",
+      "Atribut: Siswa harus mengenakan seragam lengkap dengan badge nama, logo lokasi kabupaten, dan ikat pinggang hitam sekolah.",
+      "Kebersihan: Siswa dilarang membuang sampah sembarangan and diwajibkan berpartisipasi aktif dalam regu piket kelas masing-masing.",
+      "Perizinan: Apabila siswa berhalangan hadir karena sakit atau keperluan keluarga, orang tua wajib mengirimkan surat izin tertulis atau menghubungi guru kelas via WA."
+    ],
+    seragam: [
+      { days: "Senin - Selasa", type: "Nasional Merah Putih", details: "Dasi, Topi Upacara, Sepatu Hitam Kaos Kaki Putih" },
+      { days: "Rabu - Kamis", type: "Batik Khas Taliabu / Lokal", details: "Bawahan Merah, Sepatu Hitam Kaos Kaki Putih" },
+      { days: "Jumat", type: "Busana Muslim Sekolah / Olahraga", details: "Pakaian Olahraga hanya dipakai saat jam praktek PJOK" },
+      { days: "Sabtu", type: "Pramuka Lengkap", details: "Hasduk/Setangan Leher, Baret/Topi Pramuka, Sepatu Hitam Kaos Kaki Hitam" }
+    ]
+  };
+
   const months = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
   const currentMonth = months[new Date().getMonth()];
-
-  const calendarData = [
-    { id: 'juli', month: 'Juli 2025', desc: 'Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)', dates: '14 - 16 Juli 2025' },
-    { id: 'agustus', month: 'Agustus 2025', desc: 'Peringatan HUT RI ke-80 & Lomba Kemerdekaan Antar Kelas', dates: '17 Agustus 2025' },
-    { id: 'september', month: 'September 2025', desc: 'Asesmen Nasional Berbasis Komputer (ANBK)', dates: 'Pekan ke-3 September' },
-    { id: 'desember', month: 'Desember 2025', desc: 'Asesmen Sumatif Semester Ganjil & Pembagian Rapor', dates: '15 - 20 Desember 2025' },
-    { id: 'maret', month: 'Maret 2026', desc: 'Libur Khusus Awal Puasa Ramadan 1447 H', dates: 'Menyesuaikan Keputusan Menteri' },
-    { id: 'juni', month: 'Juni 2026', desc: 'Ujian Akhir Semester Genap & Pembagian Rapor Kenaikan Kelas', dates: '08 - 20 Juni 2026' }
-  ];
 
   return (
     <>
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Informasi Akademik</h1>
-          <p className="hero-text" style={{ marginBottom: 0 }}>Panduan kurikulum, kalender pendidikan berjalan, serta tata tertib kedisiplinan siswa.</p>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>{akademik.banner_title}</h1>
+          <p className="hero-text" style={{ marginBottom: 0 }}>{akademik.banner_text}</p>
         </div>
       </section>
 
@@ -29,18 +55,18 @@ export default function Akademik() {
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
             <div style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src="/images/kurikulum_merdeka.svg" alt="Aktivitas Kurikulum Merdeka" style={{ width: '100%', height: '300px' }} />
+              <img src={akademik.kurikulum_image} alt="Aktivitas Kurikulum Merdeka" style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
             </div>
             <div style={{ order: 1 }}>
-              <span className="welcome-badge">Metode Pembelajaran</span>
-              <h2 style={{ marginBottom: 'var(--space-sm)' }}>Penerapan Kurikulum Merdeka</h2>
-              <p>SD Negeri Bobong telah mengimplementasikan <strong>Kurikulum Merdeka</strong> secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.</p>
-              <p>Salah satu pilar utama kurikulum ini adalah <strong>Projek Penguatan Profil Pelajar Pancasila (P5)</strong>. Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.</p>
+              <span className="welcome-badge">{akademik.kurikulum_badge}</span>
+              <h2 style={{ marginBottom: 'var(--space-sm)' }}>{akademik.kurikulum_title}</h2>
+              <p>{akademik.kurikulum_p1}</p>
+              <p>{akademik.kurikulum_p2}</p>
 
               <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-md)', flexWrap: 'wrap' }}>
-                <span className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>💡 Fokus Karakter</span>
-                <span className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>🌱 Belajar Kontekstual</span>
-                <span className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>🎭 Kreativitas Lokal</span>
+                {akademik.kurikulum_tags && akademik.kurikulum_tags.map((tag, idx) => (
+                  <span key={idx} className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>{tag}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -52,7 +78,7 @@ export default function Akademik() {
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Kalender Belajar</span>
-            <h2>Kalender Pendidikan TA 2025/2026</h2>
+            <h2>Kalender Pendidikan Berjalan</h2>
           </div>
 
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Berikut adalah perkiraan agenda penting sekolah sepanjang tahun ajaran berjalan. Baris bertanda khusus mendeteksi bulan yang sedang berjalan secara otomatis.</p>
@@ -67,7 +93,7 @@ export default function Akademik() {
                 </tr>
               </thead>
               <tbody>
-                {calendarData.map((row) => {
+                {akademik.calendar && akademik.calendar.map((row) => {
                   const isCurrent = row.id === currentMonth;
                   const rowStyle = isCurrent ? {
                     borderLeft: '4px solid var(--secondary)',
@@ -108,10 +134,9 @@ export default function Akademik() {
                 Ketentuan Kedisiplinan
               </h3>
               <ul className="misi-list" style={{ fontSize: '0.95rem' }}>
-                <li><strong>Kehadiran:</strong> Siswa wajib hadir di sekolah paling lambat pukul <strong>07.15 WIT</strong> sebelum bel masuk berbunyi.</li>
-                <li><strong>Atribut:</strong> Siswa harus mengenakan seragam lengkap dengan badge nama, logo lokasi kabupaten, dan ikat pinggang hitam sekolah.</li>
-                <li><strong>Kebersihan:</strong> Siswa dilarang membuang sampah sembarangan dan diwajibkan berpartisipasi aktif dalam regu piket kelas masing-masing.</li>
-                <li><strong>Perizinan:</strong> Apabila siswa berhalangan hadir karena sakit atau keperluan keluarga, orang tua wajib mengirimkan surat izin tertulis atau menghubungi guru kelas via WA.</li>
+                {akademik.tata_tertib && akademik.tata_tertib.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
 
@@ -132,26 +157,13 @@ export default function Akademik() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><strong>Senin - Selasa</strong></td>
-                      <td>Nasional Merah Putih</td>
-                      <td>Dasi, Topi Upacara, Sepatu Hitam Kaos Kaki Putih</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Rabu - Kamis</strong></td>
-                      <td>Batik Khas Taliabu / Lokal</td>
-                      <td>Bawahan Merah, Sepatu Hitam Kaos Kaki Putih</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Jumat</strong></td>
-                      <td>Busana Muslim Sekolah / Olahraga</td>
-                      <td>Pakaian Olahraga hanya dipakai saat jam praktek PJOK</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Sabtu</strong></td>
-                      <td>Pramuka Lengkap</td>
-                      <td>Hasduk/Setangan Leher, Baret/Topi Pramuka, Sepatu Hitam Kaos Kaki Hitam</td>
-                    </tr>
+                    {akademik.seragam && akademik.seragam.map((item, idx) => (
+                      <tr key={idx}>
+                        <td><strong>{item.days}</strong></td>
+                        <td>{item.type}</td>
+                        <td>{item.details}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

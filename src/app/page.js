@@ -20,6 +20,17 @@ export default async function Home() {
   const teachers = await loadTeachers();
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
+  const beranda = config.stats?.page_contents?.beranda || {
+    hero_subtitle: "Membangun Masa Depan di Jantung Taliabu",
+    hero_title: "Selamat Datang di Website Resmi SD Negeri Bobong",
+    hero_text: "\"Cerdas, Berkarakter, dan Berbudaya.\" Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.",
+    welcome_badge: "Sambutan Kepala Sekolah",
+    welcome_title: "Mendidik dengan Hati dan Budaya Taliabu",
+    welcome_quote: "\"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya.\"",
+    welcome_p1: "Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
+    welcome_p2: "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien."
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -36,9 +47,9 @@ export default async function Home() {
           <div className="hero-overlay" style={{ backgroundImage: "url('/images/hero_school.svg')" }}></div>
         )}
         <div className="container hero-content">
-          <span className="hero-subtitle">Membangun Masa Depan di Jantung Taliabu</span>
-          <h1 className="hero-title">Selamat Datang di Website Resmi SD Negeri Bobong</h1>
-          <p className="hero-text">"Cerdas, Berkarakter, dan Berbudaya." Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.</p>
+          <span className="hero-subtitle">{beranda.hero_subtitle}</span>
+          <h1 className="hero-title">{beranda.hero_title}</h1>
+          <p className="hero-text">{beranda.hero_text}</p>
           <div className="hero-actions">
             <Link href="/ppdb" className="btn btn-secondary">
               <svg className="icon-svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -113,13 +124,13 @@ export default async function Home() {
             )}
           </div>
           <div className="welcome-info">
-            <span className="welcome-badge">Sambutan Kepala Sekolah</span>
-            <h2>Mendidik dengan Hati dan Budaya Taliabu</h2>
+            <span className="welcome-badge">{beranda.welcome_badge}</span>
+            <h2>{beranda.welcome_title}</h2>
             <div className="welcome-quote">
-              "Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya."
+              {beranda.welcome_quote}
             </div>
-            <p>Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.</p>
-            <p>Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien.</p>
+            <p>{beranda.welcome_p1}</p>
+            <p>{beranda.welcome_p2}</p>
             {kepalaSekolah ? (
               <div style={{ marginTop: 'var(--space-sm)', marginBottom: 'var(--space-sm)' }}>
                 <h4 style={{ margin: 0, color: 'var(--primary-dark)', fontWeight: 700 }}>{kepalaSekolah.name}</h4>

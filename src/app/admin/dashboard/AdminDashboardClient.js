@@ -37,6 +37,198 @@ export default function AdminDashboardClient({
   const [deleteIsBulk, setDeleteIsBulk] = useState(false);
   const [addTeacherModalOpen, setAddTeacherModalOpen] = useState(false);
 
+  // States for Page Contents dynamic editor
+  const [pageContents, setPageContents] = useState({});
+  const [activePageSubTab, setActivePageSubTab] = useState('beranda');
+  
+  const [sejarahFile, setSejarahFile] = useState(null);
+  const [sejarahPreview, setSejarahPreview] = useState('');
+  const [kurikulumFile, setKurikulumFile] = useState(null);
+  const [kurikulumPreview, setKurikulumPreview] = useState('');
+  const [ekskulFiles, setEkskulFiles] = useState({});
+  const [ekskulPreviews, setEkskulPreviews] = useState({});
+
+  useEffect(() => {
+    if (config?.stats?.page_contents) {
+      setPageContents(config.stats.page_contents);
+    }
+  }, [config]);
+
+  const handleFieldChange = (page, key, value) => {
+    setPageContents(prev => ({
+      ...prev,
+      [page]: {
+        ...prev[page],
+        [key]: value
+      }
+    }));
+  };
+
+  const handleAddCalendar = () => {
+    const current = pageContents.akademik?.calendar || [];
+    const updated = [...current, { id: 'cal_' + Date.now(), month: '', dates: '', desc: '' }];
+    handleFieldChange('akademik', 'calendar', updated);
+  };
+  const handleUpdateCalendar = (index, key, val) => {
+    const updated = [...(pageContents.akademik?.calendar || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('akademik', 'calendar', updated);
+  };
+  const handleRemoveCalendar = (index) => {
+    const updated = (pageContents.akademik?.calendar || []).filter((_, i) => i !== index);
+    handleFieldChange('akademik', 'calendar', updated);
+  };
+
+  const handleAddSeragam = () => {
+    const current = pageContents.akademik?.seragam || [];
+    const updated = [...current, { days: '', type: '', details: '' }];
+    handleFieldChange('akademik', 'seragam', updated);
+  };
+  const handleUpdateSeragam = (index, key, val) => {
+    const updated = [...(pageContents.akademik?.seragam || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('akademik', 'seragam', updated);
+  };
+  const handleRemoveSeragam = (index) => {
+    const updated = (pageContents.akademik?.seragam || []).filter((_, i) => i !== index);
+    handleFieldChange('akademik', 'seragam', updated);
+  };
+
+  const handleAddEkskul = () => {
+    const current = pageContents.kesiswaan?.ekstrakurikuler || [];
+    const updated = [...current, { id: 'ekskul_' + Date.now(), nama: '', deskripsi: '', jadwal: '', is_wajib: false, image: '/images/ekskul_pramuka.svg' }];
+    handleFieldChange('kesiswaan', 'ekstrakurikuler', updated);
+  };
+  const handleUpdateEkskul = (index, key, val) => {
+    const updated = [...(pageContents.kesiswaan?.ekstrakurikuler || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('kesiswaan', 'ekstrakurikuler', updated);
+  };
+  const handleRemoveEkskul = (index) => {
+    const updated = (pageContents.kesiswaan?.ekstrakurikuler || []).filter((_, i) => i !== index);
+    handleFieldChange('kesiswaan', 'ekstrakurikuler', updated);
+  };
+
+  const handleAddKesiswaanPrestasi = () => {
+    const current = pageContents.kesiswaan?.prestasi || [];
+    const updated = [...current, { rank: '', title: '', level: '', desc: '', icon: '🏆' }];
+    handleFieldChange('kesiswaan', 'prestasi', updated);
+  };
+  const handleUpdateKesiswaanPrestasi = (index, key, val) => {
+    const updated = [...(pageContents.kesiswaan?.prestasi || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('kesiswaan', 'prestasi', updated);
+  };
+  const handleRemoveKesiswaanPrestasi = (index) => {
+    const updated = (pageContents.kesiswaan?.prestasi || []).filter((_, i) => i !== index);
+    handleFieldChange('kesiswaan', 'prestasi', updated);
+  };
+
+  const handleAddKarya = () => {
+    const current = pageContents.kesiswaan?.karya || [];
+    const updated = [...current, { icon: '🎨', title: '', category: '', desc: '' }];
+    handleFieldChange('kesiswaan', 'karya', updated);
+  };
+  const handleUpdateKarya = (index, key, val) => {
+    const updated = [...(pageContents.kesiswaan?.karya || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('kesiswaan', 'karya', updated);
+  };
+  const handleRemoveKarya = (index) => {
+    const updated = (pageContents.kesiswaan?.karya || []).filter((_, i) => i !== index);
+    handleFieldChange('kesiswaan', 'karya', updated);
+  };
+
+  const handleAddPPDBFaq = () => {
+    const current = pageContents.ppdb?.faq || [];
+    const updated = [...current, { q: '', a: '' }];
+    handleFieldChange('ppdb', 'faq', updated);
+  };
+  const handleUpdatePPDBFaq = (index, key, val) => {
+    const updated = [...(pageContents.ppdb?.faq || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('ppdb', 'faq', updated);
+  };
+  const handleRemovePPDBFaq = (index) => {
+    const updated = (pageContents.ppdb?.faq || []).filter((_, i) => i !== index);
+    handleFieldChange('ppdb', 'faq', updated);
+  };
+
+  const handleAddPPDBJadwal = () => {
+    const current = pageContents.ppdb?.jadwal || [];
+    const updated = [...current, { activity: '', dates: '' }];
+    handleFieldChange('ppdb', 'jadwal', updated);
+  };
+  const handleUpdatePPDBJadwal = (index, key, val) => {
+    const updated = [...(pageContents.ppdb?.jadwal || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('ppdb', 'jadwal', updated);
+  };
+  const handleRemovePPDBJadwal = (index) => {
+    const updated = (pageContents.ppdb?.jadwal || []).filter((_, i) => i !== index);
+    handleFieldChange('ppdb', 'jadwal', updated);
+  };
+
+  const handlePageContentsSave = async (pageName, updatedData, fileFields = {}) => {
+    try {
+      const formData = new FormData();
+      formData.append('action_type', 'update_page_contents');
+      formData.append('page_name', pageName);
+      formData.append('page_data', JSON.stringify(updatedData));
+      
+      // Append any file uploads
+      Object.keys(fileFields).forEach(key => {
+        if (fileFields[key]) {
+          formData.append(key, fileFields[key]);
+        }
+      });
+
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `Konten halaman ${pageName.toUpperCase()} berhasil diperbarui!`);
+        setConfig(data.config);
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan konten halaman.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const submitPageContents = async (pageName) => {
+    const dataToSave = { ...pageContents[pageName] };
+    const filesToUpload = {};
+
+    if (pageName === 'profil') {
+      if (sejarahFile) {
+        filesToUpload['sejarah_image_file'] = sejarahFile;
+      }
+    } else if (pageName === 'akademik') {
+      if (kurikulumFile) {
+        filesToUpload['kurikulum_image_file'] = kurikulumFile;
+      }
+    } else if (pageName === 'kesiswaan') {
+      Object.keys(ekskulFiles).forEach(index => {
+        filesToUpload[`ekskul_image_${index}`] = ekskulFiles[index];
+      });
+    }
+
+    await handlePageContentsSave(pageName, dataToSave, filesToUpload);
+    
+    if (pageName === 'profil') {
+      setSejarahFile(null);
+    } else if (pageName === 'akademik') {
+      setKurikulumFile(null);
+    } else if (pageName === 'kesiswaan') {
+      setEkskulFiles({});
+    }
+  };
+
   // States for Achievements form
   const [editingAchievementId, setEditingAchievementId] = useState(null);
   const [achTitle, setAchTitle] = useState('');
@@ -59,6 +251,41 @@ export default function AdminDashboardClient({
   const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
   const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
   const [editAvatarPreview, setEditAvatarPreview] = useState('');
+
+  const handleSejarahFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSejarahFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSejarahPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleKurikulumFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setKurikulumFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setKurikulumPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEkskulFileChange = (index, file) => {
+    if (file) {
+      setEkskulFiles(prev => ({ ...prev, [index]: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEkskulPreviews(prev => ({ ...prev, [index]: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
 
   // Load active tab from URL query param if present
@@ -761,7 +988,9 @@ export default function AdminDashboardClient({
       ppdb: 'Manajemen Data PPDB',
       content: 'Pengumuman & Statistik',
       news: 'Manajemen Berita Sekolah',
-      teachers: 'Manajemen Guru & Kepala Sekolah'
+      teachers: 'Manajemen Guru & Kepala Sekolah',
+      achievements: 'Manajemen Prestasi Sekolah',
+      pages: 'Kelola Konten Halaman'
     };
     return titles[activeTab] || 'Dashboard Admin';
   };
@@ -1542,6 +1771,14 @@ export default function AdminDashboardClient({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-6.75c-.621 0-1.125.504-1.125 1.125v3.375m9 0V9M5.25 18.75V9m3.75-5.25a2.25 2.25 0 1 1 4.5 0 2.25 2.25 0 0 1-4.5 0ZM12 9V5.25" />
               </svg>
               <span>Kelola Prestasi</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'pages' ? 'active' : ''}`} onClick={() => setActiveTab('pages')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A11.952 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918M4.157 7.582A8.959 8.959 0 0 0 3 12c0 .778.099 1.533.284 2.253" />
+              </svg>
+              <span>Kelola Konten Halaman</span>
             </a>
           </li>
         </ul>
@@ -2490,6 +2727,1149 @@ export default function AdminDashboardClient({
                   </table>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: PAGES CONTENT MANAGEMENT ================= */}
+          <section id="tab-pages" className={`tab-pane ${activeTab === 'pages' ? 'active' : ''}`}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+              
+              {/* Premium Sub-Tab Pill Navigation */}
+              <div style={{
+                display: 'flex',
+                gap: 'var(--space-sm)',
+                borderBottom: '2px solid #e2e8f0',
+                paddingBottom: 'var(--space-xs)',
+                overflowX: 'auto',
+                scrollbarWidth: 'none',
+                marginBottom: 'var(--space-xs)'
+              }}>
+                {[
+                  { id: 'beranda', label: '🏠 Beranda' },
+                  { id: 'profil', label: '📝 Profil Sekolah' },
+                  { id: 'akademik', label: '📖 Akademik' },
+                  { id: 'kesiswaan', label: '🎨 Kesiswaan & Ekskul' },
+                  { id: 'ppdb', label: '🎓 PPDB Portal' }
+                ].map(subTab => (
+                  <button
+                    key={subTab.id}
+                    type="button"
+                    onClick={() => setActivePageSubTab(subTab.id)}
+                    style={{
+                      padding: '0.75rem 1.25rem',
+                      fontSize: '0.9rem',
+                      fontWeight: activePageSubTab === subTab.id ? 700 : 500,
+                      backgroundColor: activePageSubTab === subTab.id ? 'var(--primary)' : 'transparent',
+                      color: activePageSubTab === subTab.id ? '#ffffff' : 'var(--text-muted)',
+                      border: 'none',
+                      borderBottom: activePageSubTab === subTab.id ? '3px solid var(--primary-dark)' : '3px solid transparent',
+                      borderRadius: '8px 8px 0 0',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    {subTab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Sub-tab description header */}
+              <div style={{ padding: '0 0.5rem', marginBottom: 'var(--space-xs)' }}>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                  Mengedit konten dinamis (teks dan gambar) untuk halaman <strong>{activePageSubTab.toUpperCase()}</strong>. Tekan tombol Simpan di bagian bawah setelah melakukan perubahan.
+                </p>
+              </div>
+
+              {/* ================= SUB-TAB: BERANDA ================= */}
+              {activePageSubTab === 'beranda' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <h3>Hero Section (Bagian Atas)</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Grup teks yang melayang di atas video/gambar latar belakang beranda.
+                    </p>
+                    
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Utama (Hero Title)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={pageContents.beranda?.hero_title || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'hero_title', e.target.value)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Sub-Judul (Hero Subtitle)</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={pageContents.beranda?.hero_subtitle || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'hero_subtitle', e.target.value)}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Deskripsi Pendukung (Hero Text)</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.beranda?.hero_text || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'hero_text', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Sambutan Kepala Sekolah</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Profil sambutan Kepala Sekolah yang berada di bagian tengah halaman utama.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Label Kecil (Welcome Badge)</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.beranda?.welcome_badge || ''}
+                          onChange={(e) => handleFieldChange('beranda', 'welcome_badge', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Sambutan (Welcome Title)</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.beranda?.welcome_title || ''}
+                          onChange={(e) => handleFieldChange('beranda', 'welcome_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Kutipan Penting (Welcome Quote / Motto)</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.beranda?.welcome_quote || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'welcome_quote', e.target.value)}
+                        rows="2"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Isi Sambutan - Paragraf 1</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.beranda?.welcome_p1 || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'welcome_p1', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Isi Sambutan - Paragraf 2</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.beranda?.welcome_p2 || ''}
+                        onChange={(e) => handleFieldChange('beranda', 'welcome_p2', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= SUB-TAB: PROFIL ================= */}
+              {activePageSubTab === 'profil' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <h3>Header Banner Profil</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Judul dan deskripsi pendek pada banner atas halaman Profil Sekolah.
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Banner</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.banner_title || ''}
+                          onChange={(e) => handleFieldChange('profil', 'banner_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Deskripsi Singkat Banner</label>
+                        <textarea
+                          className="form-control"
+                          value={pageContents.profil?.banner_text || ''}
+                          onChange={(e) => handleFieldChange('profil', 'banner_text', e.target.value)}
+                          rows="2"
+                          style={{ width: '100%', resize: 'vertical' }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Sejarah Sekolah & Visualisasi</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Profil sejarah pembentukan institusi sekolah beserta ilustrasi pendukung sejarah.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Label Kecil (Sejarah Badge)</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sejarah_badge || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sejarah_badge', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Bagian Sejarah</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sejarah_title || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sejarah_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Paragraf Sejarah 1</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.profil?.sejarah_p1 || ''}
+                        onChange={(e) => handleFieldChange('profil', 'sejarah_p1', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Paragraf Sejarah 2</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.profil?.sejarah_p2 || ''}
+                        onChange={(e) => handleFieldChange('profil', 'sejarah_p2', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem' }}>Unggah Gambar Sejarah Baru (Mengganti Gambar)</label>
+                      <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center', marginTop: 'var(--space-xs)' }}>
+                        <div style={{ 
+                          width: '120px', 
+                          height: '80px', 
+                          borderRadius: '8px', 
+                          border: '2px dashed var(--primary)', 
+                          overflow: 'hidden', 
+                          backgroundColor: '#f8fafc', 
+                          display: 'flex', 
+                          justifyContent: 'center', 
+                          alignItems: 'center',
+                          flexShrink: 0
+                        }}>
+                          <img 
+                            src={sejarahPreview || pageContents.profil?.sejarah_image || '/images/profil_sekolah.svg'} 
+                            alt="Sejarah Preview" 
+                            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} 
+                          />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <input
+                            type="file"
+                            className="form-control"
+                            accept="image/png, image/jpeg, image/jpg, image/svg+xml, image/gif"
+                            onChange={handleSejarahFileChange}
+                            style={{ width: '100%' }}
+                          />
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0 }}>
+                            Format yang didukung: png, jpg, jpeg, svg, gif (Maks. 1MB).
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Visi & Misi</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Semboyan visi sekolah dan daftar urut misi sekolah berjalan.
+                    </p>
+                    
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Visi Sekolah (Teks Utama)</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.profil?.visi || ''}
+                        onChange={(e) => handleFieldChange('profil', 'visi', e.target.value)}
+                        rows="2"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Misi Sekolah (Tulis Setiap Poin di Baris Baru)</label>
+                      <textarea
+                        className="form-control"
+                        value={Array.isArray(pageContents.profil?.misi) ? pageContents.profil.misi.join('\n') : (pageContents.profil?.misi || '')}
+                        onChange={(e) => handleFieldChange('profil', 'misi', e.target.value.split('\n'))}
+                        rows="6"
+                        placeholder="Tulis setiap misi dalam baris baru..."
+                        style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: '1.5' }}
+                      ></textarea>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0 }}>
+                        💡 Tekan Enter untuk membuat butir misi baru. Spasi kosong di baris terakhir otomatis divalidasi dan diabaikan saat rendering.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= SUB-TAB: AKADEMIK ================= */}
+              {activePageSubTab === 'akademik' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <h3>Header Banner Akademik</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Banner atas yang terletak pada halaman Panduan Akademik.
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Banner</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.akademik?.banner_title || ''}
+                          onChange={(e) => handleFieldChange('akademik', 'banner_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Deskripsi Singkat Banner</label>
+                        <textarea
+                          className="form-control"
+                          value={pageContents.akademik?.banner_text || ''}
+                          onChange={(e) => handleFieldChange('akademik', 'banner_text', e.target.value)}
+                          rows="2"
+                          style={{ width: '100%', resize: 'vertical' }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Sistem & Penerapan Kurikulum</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Metode pembelajaran dan tags highlight yang mengindikasikan program prioritas sekolah.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Label Kecil (Kurikulum Badge)</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.akademik?.kurikulum_badge || ''}
+                          onChange={(e) => handleFieldChange('akademik', 'kurikulum_badge', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Bagian Kurikulum</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.akademik?.kurikulum_title || ''}
+                          onChange={(e) => handleFieldChange('akademik', 'kurikulum_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Isi Kurikulum - Paragraf 1</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.akademik?.kurikulum_p1 || ''}
+                        onChange={(e) => handleFieldChange('akademik', 'kurikulum_p1', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Isi Kurikulum - Paragraf 2</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.akademik?.kurikulum_p2 || ''}
+                        onChange={(e) => handleFieldChange('akademik', 'kurikulum_p2', e.target.value)}
+                        rows="4"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem' }}>Unggah Gambar Kurikulum</label>
+                        <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
+                          <div style={{ 
+                            width: '100px', 
+                            height: '65px', 
+                            borderRadius: '6px', 
+                            border: '2px dashed var(--primary)', 
+                            overflow: 'hidden', 
+                            backgroundColor: '#f8fafc', 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center',
+                            flexShrink: 0
+                          }}>
+                            <img 
+                              src={kurikulumPreview || pageContents.akademik?.kurikulum_image || '/images/kurikulum_merdeka.svg'} 
+                              alt="Kurikulum Preview" 
+                              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} 
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <input
+                              type="file"
+                              className="form-control"
+                              accept="image/*"
+                              onChange={handleKurikulumFileChange}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Kurikulum Highlight Tags (Satu baris per Tag)</label>
+                        <textarea
+                          className="form-control"
+                          value={Array.isArray(pageContents.akademik?.kurikulum_tags) ? pageContents.akademik.kurikulum_tags.join('\n') : (pageContents.akademik?.kurikulum_tags || '')}
+                          onChange={(e) => handleFieldChange('akademik', 'kurikulum_tags', e.target.value.split('\n'))}
+                          rows="2"
+                          style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem' }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Kalender Akademik</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Agenda dan rentang tanggal pelaksanaan aktivitas di SD Negeri Bobong.</p>
+                      </div>
+                      <button type="button" onClick={handleAddCalendar} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Baris Kalender
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.akademik?.calendar || []).map((cal, idx) => (
+                        <div key={cal.id || idx} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1.5fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Bulan & Tahun"
+                              className="form-control"
+                              value={cal.month || ''}
+                              onChange={(e) => handleUpdateCalendar(idx, 'month', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Rentang Tanggal"
+                              className="form-control"
+                              value={cal.dates || ''}
+                              onChange={(e) => handleUpdateCalendar(idx, 'dates', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Nama Kegiatan Akademik..."
+                              className="form-control"
+                              value={cal.desc || ''}
+                              onChange={(e) => handleUpdateCalendar(idx, 'desc', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveCalendar(idx)}
+                            className="btn-action-delete"
+                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.akademik?.calendar || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada agenda kalender akademik. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Tata Tertib Sekolah</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Daftar tata tertib kedisiplinan murid di lingkungan SDN Bobong.
+                    </p>
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Aturan & Disiplin (Satu baris per Aturan)</label>
+                      <textarea
+                        className="form-control"
+                        value={Array.isArray(pageContents.akademik?.tata_tertib) ? pageContents.akademik.tata_tertib.join('\n') : (pageContents.akademik?.tata_tertib || '')}
+                        onChange={(e) => handleFieldChange('akademik', 'tata_tertib', e.target.value.split('\n'))}
+                        rows="6"
+                        placeholder="Tulis setiap tata tertib dalam baris baru..."
+                        style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: '1.5' }}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Ketentuan Penggunaan Seragam Sekolah</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Aturan pemakaian seragam dan atribut sekolah berdasarkan hari.</p>
+                      </div>
+                      <button type="button" onClick={handleAddSeragam} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Baris Seragam
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.akademik?.seragam || []).map((sg, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1.5fr 2fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Hari Ketentuan"
+                              className="form-control"
+                              value={sg.days || ''}
+                              onChange={(e) => handleUpdateSeragam(idx, 'days', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Jenis Pakaian Seragam"
+                              className="form-control"
+                              value={sg.type || ''}
+                              onChange={(e) => handleUpdateSeragam(idx, 'type', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Atribut & Detail..."
+                              className="form-control"
+                              value={sg.details || ''}
+                              onChange={(e) => handleUpdateSeragam(idx, 'details', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSeragam(idx)}
+                            className="btn-action-delete"
+                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.akademik?.seragam || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada ketentuan seragam. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= SUB-TAB: KESISWAAN ================= */}
+              {activePageSubTab === 'kesiswaan' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <h3>Header Banner Kesiswaan</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Banner atas yang terletak pada halaman Kesiswaan & Ekstrakurikuler.
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Banner</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.kesiswaan?.banner_title || ''}
+                          onChange={(e) => handleFieldChange('kesiswaan', 'banner_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Deskripsi Singkat Banner</label>
+                        <textarea
+                          className="form-control"
+                          value={pageContents.kesiswaan?.banner_text || ''}
+                          onChange={(e) => handleFieldChange('kesiswaan', 'banner_text', e.target.value)}
+                          rows="2"
+                          style={{ width: '100%', resize: 'vertical' }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Daftar Kegiatan Ekstrakurikuler (Ekskul)</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Daftar kartu wadah pengembangan minat & bakat siswa.</p>
+                      </div>
+                      <button type="button" onClick={handleAddEkskul} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Ekskul Baru
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                      {(pageContents.kesiswaan?.ekstrakurikuler || []).map((ek, idx) => (
+                        <div key={ek.id || idx} style={{ display: 'grid', gridTemplateColumns: '3fr 4fr 2.5fr 1fr auto', gap: 'var(--space-sm)', alignItems: 'start', backgroundColor: '#f8fafc', padding: 'var(--space-md)', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Nama Kegiatan *</label>
+                              <input
+                                type="text"
+                                placeholder="Nama Ekskul"
+                                className="form-control"
+                                value={ek.nama || ''}
+                                onChange={(e) => handleUpdateEkskul(idx, 'nama', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0, marginTop: '8px' }}>
+                              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Jadwal Latihan *</label>
+                              <input
+                                type="text"
+                                placeholder="Jadwal (e.g. Sabtu, 14.00 - 16.00)"
+                                className="form-control"
+                                value={ek.jadwal || ''}
+                                onChange={(e) => handleUpdateEkskul(idx, 'jadwal', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Deskripsi Kegiatan *</label>
+                            <textarea
+                              placeholder="Deskripsikan aktivitas ekskul..."
+                              className="form-control"
+                              value={ek.deskripsi || ''}
+                              onChange={(e) => handleUpdateEkskul(idx, 'deskripsi', e.target.value)}
+                              rows="4"
+                              style={{ width: '100%', resize: 'vertical' }}
+                            ></textarea>
+                          </div>
+
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Gambar / Logo Ekskul</label>
+                            <div style={{ display: 'flex', gap: '5px', alignItems: 'center', marginTop: '4px' }}>
+                              <div style={{ 
+                                width: '55px', 
+                                height: '55px', 
+                                borderRadius: '8px', 
+                                border: '1px solid #cbd5e1', 
+                                overflow: 'hidden', 
+                                backgroundColor: '#ffffff', 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                alignItems: 'center',
+                                flexShrink: 0
+                              }}>
+                                <img 
+                                  src={ekskulPreviews[idx] || ek.image || '/images/ekskul_pramuka.svg'} 
+                                  alt="Ekskul Preview" 
+                                  style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+                                />
+                              </div>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleEkskulFileChange(idx, e.target.files[0])}
+                                style={{ fontSize: '0.7rem', width: '100%' }}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="form-group" style={{ marginBottom: 0, textAlign: 'center' }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Ekstra Wajib</label>
+                            <input
+                              type="checkbox"
+                              checked={!!ek.is_wajib}
+                              onChange={(e) => handleUpdateEkskul(idx, 'is_wajib', e.target.checked)}
+                              style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                            />
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveEkskul(idx)}
+                            className="btn-action-delete"
+                            style={{ alignSelf: 'center', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.kesiswaan?.ekstrakurikuler || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada data ekstrakurikuler. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Daftar Prestasi Hebat Murid</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Daftar raihan kejuaraan murid yang dipajang di halaman Kesiswaan.</p>
+                      </div>
+                      <button type="button" onClick={handleAddKesiswaanPrestasi} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Prestasi Murid
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.kesiswaan?.prestasi || []).map((pr, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1.5fr 3.5fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Peringkat (e.g. 1st / Juara)"
+                              className="form-control"
+                              value={pr.rank || ''}
+                              onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'rank', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Ikon Emoji"
+                              className="form-control"
+                              value={pr.icon || ''}
+                              onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'icon', e.target.value)}
+                              style={{ width: '100%', textAlign: 'center' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Tingkat Lomba"
+                              className="form-control"
+                              value={pr.level || ''}
+                              onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'level', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Nama Juara / Lomba..."
+                              className="form-control"
+                              value={pr.title || ''}
+                              onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'title', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Detail / Deskripsi Prestasi..."
+                              className="form-control"
+                              value={pr.desc || ''}
+                              onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'desc', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveKesiswaanPrestasi(idx)}
+                            className="btn-action-delete"
+                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.kesiswaan?.prestasi || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada prestasi murid kustom. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Galeri Karya Kreatif Kreasi Murid</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Etalase pameran kreasi seni, budaya, kerajinan tangan, atau puisi murid.</p>
+                      </div>
+                      <button type="button" onClick={handleAddKarya} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Karya Murid
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.kesiswaan?.karya || []).map((kr, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 2.5fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Ikon Emoji"
+                              className="form-control"
+                              value={kr.icon || ''}
+                              onChange={(e) => handleUpdateKarya(idx, 'icon', e.target.value)}
+                              style={{ width: '100%', textAlign: 'center' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Nama Judul Karya"
+                              className="form-control"
+                              value={kr.title || ''}
+                              onChange={(e) => handleUpdateKarya(idx, 'title', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Kategori / Tema (P5)"
+                              className="form-control"
+                              value={kr.category || ''}
+                              onChange={(e) => handleUpdateKarya(idx, 'category', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Penjelasan ringkas karya..."
+                              className="form-control"
+                              value={kr.desc || ''}
+                              onChange={(e) => handleUpdateKarya(idx, 'desc', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveKarya(idx)}
+                            className="btn-action-delete"
+                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.kesiswaan?.karya || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada karya murid kustom. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= SUB-TAB: PPDB ================= */}
+              {activePageSubTab === 'ppdb' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', animation: 'fadeIn 0.25s ease' }}>
+                  <div className="settings-card">
+                    <h3>Header Banner PPDB Portal</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Banner atas yang terletak pada halaman Penerimaan Peserta Didik Baru (PPDB).
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Judul Banner</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.ppdb?.banner_title || ''}
+                          onChange={(e) => handleFieldChange('ppdb', 'banner_title', e.target.value)}
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Deskripsi Singkat Banner</label>
+                        <textarea
+                          className="form-control"
+                          value={pageContents.ppdb?.banner_text || ''}
+                          onChange={(e) => handleFieldChange('ppdb', 'banner_text', e.target.value)}
+                          rows="2"
+                          style={{ width: '100%', resize: 'vertical' }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Ketentuan Usia & Syarat Berkas Pendaftaran</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Persyaratan kriteria utama usia anak serta unggahan dokumen digital untuk mendaftar.
+                    </p>
+                    
+                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Aturan Ambang Batas Usia</label>
+                      <textarea
+                        className="form-control"
+                        value={pageContents.ppdb?.syarat_usia || ''}
+                        onChange={(e) => handleFieldChange('ppdb', 'syarat_usia', e.target.value)}
+                        rows="3"
+                        style={{ width: '100%', resize: 'vertical' }}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                      <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Daftar Berkas Persyaratan (Tulis Setiap Syarat di Baris Baru)</label>
+                      <textarea
+                        className="form-control"
+                        value={Array.isArray(pageContents.ppdb?.syarat_berkas) ? pageContents.ppdb.syarat_berkas.join('\n') : (pageContents.ppdb?.syarat_berkas || '')}
+                        onChange={(e) => handleFieldChange('ppdb', 'syarat_berkas', e.target.value.split('\n'))}
+                        rows="6"
+                        placeholder="Tulis setiap syarat berkas dalam baris baru..."
+                        style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: '1.5' }}
+                      ></textarea>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0 }}>
+                        💡 Tekan Enter untuk membuat butir dokumen baru yang harus dilampirkan pendaftar.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Alur Pendaftaran (4 Langkah Sistematis)</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Empat langkah panduan tahapan pendaftaran murid baru dari persiapan berkas hingga pengumuman kelulusan.
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.ppdb?.alur_steps || []).map((step, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '80px 2fr 4fr', gap: 'var(--space-md)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)' }}>Langkah</span>
+                            <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary)' }}>{step.num || (idx + 1)}</span>
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Nama Tahapan *</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={step.title || ''}
+                              onChange={(e) => {
+                                const updated = [...(pageContents.ppdb?.alur_steps || [])];
+                                updated[idx] = { ...updated[idx], title: e.target.value };
+                                handleFieldChange('ppdb', 'alur_steps', updated);
+                              }}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Penjelasan Singkat Aktivitas *</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={step.desc || ''}
+                              onChange={(e) => {
+                                const updated = [...(pageContents.ppdb?.alur_steps || [])];
+                                updated[idx] = { ...updated[idx], desc: e.target.value };
+                                handleFieldChange('ppdb', 'alur_steps', updated);
+                              }}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Jadwal Penting Agenda PPDB</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Rentang tanggal pelaksanaan PPDB TA 2026/2027 berjalan.</p>
+                      </div>
+                      <button type="button" onClick={handleAddPPDBJadwal} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Baris Jadwal
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                      {(pageContents.ppdb?.jadwal || []).map((jd, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '3.5fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Nama Agenda / Kegiatan"
+                              className="form-control"
+                              value={jd.activity || ''}
+                              onChange={(e) => handleUpdatePPDBJadwal(idx, 'activity', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <input
+                              type="text"
+                              placeholder="Rentang Tanggal Pelaksanaan"
+                              className="form-control"
+                              value={jd.dates || ''}
+                              onChange={(e) => handleUpdatePPDBJadwal(idx, 'dates', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePPDBJadwal(idx)}
+                            className="btn-action-delete"
+                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.ppdb?.jadwal || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada jadwal PPDB. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Tanya Jawab PPDB (FAQ)</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Informasi tanya jawab umum yang sering ditanyakan oleh calon pendaftar.</p>
+                      </div>
+                      <button type="button" onClick={handleAddPPDBFaq} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Baris FAQ
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                      {(pageContents.ppdb?.faq || []).map((faqItem, idx) => (
+                        <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 'var(--space-sm)', alignItems: 'start', backgroundColor: '#f8fafc', padding: 'var(--space-md)', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Pertanyaan (Question) *</label>
+                              <input
+                                type="text"
+                                placeholder="Ketik pertanyaan utama di sini..."
+                                className="form-control"
+                                value={faqItem.q || ''}
+                                onChange={(e) => handleUpdatePPDBFaq(idx, 'q', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)' }}>Jawaban (Answer) *</label>
+                              <textarea
+                                placeholder="Ketik jawaban penjelasan mendalam di sini..."
+                                className="form-control"
+                                value={faqItem.a || ''}
+                                onChange={(e) => handleUpdatePPDBFaq(idx, 'a', e.target.value)}
+                                rows="3"
+                                style={{ width: '100%', resize: 'vertical' }}
+                              ></textarea>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePPDBFaq(idx)}
+                            className="btn-action-delete"
+                            style={{ alignSelf: 'center', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      ))}
+                      {(pageContents.ppdb?.faq || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          Belum ada daftar FAQ. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Premium Sticky Save Footer Panel */}
+              <div style={{
+                marginTop: 'var(--space-lg)',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                position: 'sticky',
+                bottom: '15px',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                padding: '1rem 1.5rem',
+                borderRadius: '12px',
+                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+                border: '1px solid #e2e8f0',
+                zIndex: 100,
+                alignItems: 'center',
+                gap: '15px',
+                animation: 'slideUp 0.3s ease'
+              }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                  ⚠️ Klik simpan untuk menerapkan semua perubahan di tab <strong>{activePageSubTab.toUpperCase()}</strong> ini ke database.
+                </span>
+                <button
+                  type="button"
+                  onClick={() => submitPageContents(activePageSubTab)}
+                  className="btn btn-primary"
+                  style={{
+                    padding: '0.75rem 2rem',
+                    fontSize: '0.95rem',
+                    fontWeight: 700,
+                    boxShadow: '0 4px 14px 0 rgba(30, 64, 175, 0.3)'
+                  }}
+                >
+                  💾 Simpan Konten Halaman ({activePageSubTab.toUpperCase()})
+                </button>
+              </div>
+
             </div>
           </section>
         </main>

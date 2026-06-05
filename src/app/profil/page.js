@@ -1,4 +1,4 @@
-import { loadTeachers, loadAchievements } from '../../lib/database';
+import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -6,6 +6,25 @@ export const revalidate = 0; // Fresh load
 export default async function Profil() {
   const teachers = await loadTeachers();
   const achievements = await loadAchievements();
+  const config = await loadWebConfig();
+
+  const profil = config.stats?.page_contents?.profil || {
+    banner_title: "Profil Sekolah",
+    banner_text: "Mengenal lebih dekat sejarah, visi misi, dan jajaran pendidik SD Negeri Bobong.",
+    sejarah_badge: "Sejarah Sekolah",
+    sejarah_title: "Perjalanan SD Negeri Bobong",
+    sejarah_p1: "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.",
+    sejarah_p2: "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum and sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
+    sejarah_image: "/images/profil_sekolah.svg",
+    visi: "\"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global.\"",
+    misi: [
+      "Melaksanakan pembelajaran aktif, kreatif, efektif, dan menyenangkan untuk mengoptimalkan kecerdasan siswa.",
+      "Menanamkan keimanan, ketakwaan, serta nilai budi pekerti luhur dalam aktivitas harian sekolah.",
+      "Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.",
+      "Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.",
+      "Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak."
+    ]
+  };
 
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
@@ -31,8 +50,8 @@ export default async function Profil() {
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Profil Sekolah</h1>
-          <p className="hero-text" style={{ marginBottom: 0 }}>Mengenal lebih dekat sejarah, visi misi, dan jajaran pendidik SD Negeri Bobong.</p>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>{profil.banner_title}</h1>
+          <p className="hero-text" style={{ marginBottom: 0 }}>{profil.banner_text}</p>
         </div>
       </section>
 
@@ -41,13 +60,13 @@ export default async function Profil() {
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
             <div>
-              <span className="welcome-badge">Sejarah Sekolah</span>
-              <h2 style={{ marginBottom: 'var(--space-sm)' }}>Perjalanan SD Negeri Bobong</h2>
-              <p>SD Negeri Bobong didirikan secara resmi pada tanggal <strong>04 Oktober 1971</strong> berdasarkan Surat Keputusan (SK) Pendirian Nomor <strong>420/04/10/1971</strong>. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.</p>
-              <p>Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.</p>
+              <span className="welcome-badge">{profil.sejarah_badge}</span>
+              <h2 style={{ marginBottom: 'var(--space-sm)' }}>{profil.sejarah_title}</h2>
+              <p>{profil.sejarah_p1}</p>
+              <p>{profil.sejarah_p2}</p>
             </div>
             <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src="/images/profil_sekolah.svg" alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px' }} />
+              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -157,7 +176,7 @@ export default async function Profil() {
                 <h3>Visi Sekolah</h3>
               </div>
               <p style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', fontWeight: 500, lineHeight: 1.7, fontStyle: 'italic' }}>
-                "Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global."
+                {profil.visi}
               </p>
             </div>
             <div className="visimisi-box">
@@ -166,11 +185,9 @@ export default async function Profil() {
                 <h3>Misi Sekolah</h3>
               </div>
               <ul className="misi-list">
-                <li>Melaksanakan pembelajaran aktif, kreatif, efektif, dan menyenangkan untuk mengoptimalkan kecerdasan siswa.</li>
-                <li>Menanamkan keimanan, ketakwaan, serta nilai budi pekerti luhur dalam aktivitas harian sekolah.</li>
-                <li>Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.</li>
-                <li>Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.</li>
-                <li>Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak.</li>
+                {profil.misi && profil.misi.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
           </div>
