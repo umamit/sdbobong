@@ -1,3 +1,12 @@
+# =========================================================================
+# PENTING BAGI DEVELOPER / ADMIN:
+# Jika ada penambahan rute halaman publik baru di masa mendatang, pastikan:
+# 1. Halaman tersebut diizinkan (Allow) secara default di bawah ini.
+# 2. Jika rute tersebut bersifat internal, sensitif, atau administratif (seperti /admin),
+#    tambahkan baris 'Disallow: /nama-rute' di bawah block 'User-agent: *'.
+# 3. Tambahkan rute publik baru tersebut ke berkas 'src/app/sitemap.js' agar sitemap.xml selalu sinkron.
+# =========================================================================
+
 User-agent: *
 Allow: /
 Disallow: /admin
