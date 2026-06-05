@@ -31,8 +31,57 @@ export default async function Home() {
     welcome_p2: "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien."
   };
 
+  const schoolSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "School",
+        "@id": "https://www.sdnegeribobong.sch.id/#school",
+        "name": "SD Negeri Bobong",
+        "url": "https://www.sdnegeribobong.sch.id",
+        "sameAs": [
+          "https://sdnegeribobong.sch.id"
+        ],
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.sdnegeribobong.sch.id/favicon.png",
+          "width": "192",
+          "height": "192"
+        },
+        "image": "https://www.sdnegeribobong.sch.id/favicon.png",
+        "description": "Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bobong, Pulau Taliabu",
+          "addressRegion": "Maluku Utara",
+          "addressCountry": "ID"
+        },
+        "telephone": `+${operatorPhone}`
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.sdnegeribobong.sch.id/#website",
+        "url": "https://www.sdnegeribobong.sch.id",
+        "name": "SD Negeri Bobong",
+        "alternateName": "SDN Bobong",
+        "publisher": {
+          "@id": "https://www.sdnegeribobong.sch.id/#school"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.sdnegeribobong.sch.id/berita?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }}
+      />
       {/* Hero Section */}
       <section 
         className="hero" 
