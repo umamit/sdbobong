@@ -37,7 +37,7 @@
         "role": "Guru Kelas 4a",
         "details": "Guru Kelas Atas",
         "status": "Honorer Daerah",
-        "image": "/images/teacher_4.svg"
+        "image": "/images/teacher_2.jpg"
     },
     {
         "id": "teacher-1780563447",
@@ -54,5 +54,13 @@
         "details": "Guru Kelas Bengkel",
         "status": "PNS",
         "image": "/images/teacher_1.png"
+    },
+    {
+        "id": "teacher-1780593889",
+        "name": "Syareefah",
+        "role": "Wali Kelas",
+        "details": "",
+        "status": "PPPK",
+        "image": "/images/teacher_2.jpg"
     }
 ]

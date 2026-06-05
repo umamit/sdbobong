@@ -1,6 +1,5 @@
 {
     "marquee_announcements": [
-        "📢 DYNAMISM TEST ANNOUNCEMENT - 1780581622897",
         "📢 PENGUMUMAN BARU: PPDB 2026/2027 Telah Aktif!",
         "📅 INFO: Ujian Akhir Semester Genap dilaksanakan Juni 2026.",
         "🌟 PRESTASI: SDN Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
@@ -10,125 +9,16 @@
         "akreditasi": "B",
         "ruang_kelas": 9,
         "siswa_aktif": 205,
-        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
-        "page_contents": {
-            "beranda": {
-                "hero_subtitle": "Membangun Masa Depan di Jantung Taliabu",
-                "hero_title": "Selamat Datang di Website Resmi SD Negeri Bobong",
-                "hero_text": "\"Cerdas, Berkarakter, dan Berbudaya.\" Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.",
-                "welcome_badge": "Sambutan Kepala Sekolah",
-                "welcome_title": "Mendidik dengan Hati dan Budaya Taliabu",
-                "welcome_quote": "\"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya.\"",
-                "welcome_p1": "Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
-                "welcome_p2": "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien."
-            },
-            "profil": {
-                "banner_title": "Profil Sekolah",
-                "banner_text": "Mengenal lebih dekat sejarah, visi misi, dan jajaran pendidik SD Negeri Bobong.",
-                "sejarah_badge": "Sejarah Sekolah",
-                "sejarah_title": "Perjalanan SD Negeri Bobong",
-                "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.",
-                "sejarah_p2": "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
-                "sejarah_image": "/images/profil_sekolah.svg",
-                "visi": "\"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global.\"",
-                "misi": [
-                    "Melaksanakan pembelajaran aktif, kreatif, efektif, dan menyenangkan untuk mengoptimalkan kecerdasan siswa.",
-                    "Menanamkan keimanan, ketakwaan, serta nilai budi pekerti luhur dalam aktivitas harian sekolah.",
-                    "Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.",
-                    "Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.",
-                    "Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak."
-                ]
-            },
-            "akademik": {
-                "banner_title": "Informasi Akademik",
-                "banner_text": "Panduan kurikulum, kalender pendidikan berjalan, serta tata tertib kedisiplinan siswa.",
-                "kurikulum_badge": "Metode Pembelajaran",
-                "kurikulum_title": "Penerapan Kurikulum Merdeka",
-                "kurikulum_p1": "SD Negeri Bobong telah mengimplementasikan Kurikulum Merdeka secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.",
-                "kurikulum_p2": "Salah satu pilar utama kurikulum ini adalah Projek Penguatan Profil Pelajar Pancasila (P5). Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.",
-                "kurikulum_image": "/images/kurikulum_merdeka.svg",
-                "kurikulum_tags": ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
-                "calendar": [
-                    { "id": "juli", "month": "Juli 2025", "desc": "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", "dates": "14 - 16 Juli 2025" },
-                    { "id": "agustus", "month": "Agustus 2025", "desc": "Peringatan HUT RI ke-80 & Lomba Kemerdekaan Antar Kelas", "dates": "17 Agustus 2025" },
-                    { "id": "september", "month": "September 2025", "desc": "Asesmen Nasional Berbasis Komputer (ANBK)", "dates": "Pekan ke-3 September" },
-                    { "id": "desember", "month": "Desember 2025", "desc": "Asesmen Sumatif Semester Ganjil & Pembagian Rapor", "dates": "15 - 20 Desember 2025" },
-                    { "id": "maret", "month": "Maret 2026", "desc": "Libur Khusus Awal Puasa Ramadan 1447 H", "dates": "Menyesuaikan Keputusan Menteri" },
-                    { "id": "juni", "month": "Juni 2026", "desc": "Ujian Akhir Semester Genap & Pembagian Rapor Kenaikan Kelas", "dates": "08 - 20 Juni 2026" }
-                ],
-                "tata_tertib": [
-                    "Kehadiran: Siswa wajib hadir di sekolah paling lambat pukul 07.15 WIT sebelum bel masuk berbunyi.",
-                    "Atribut: Siswa harus mengenakan seragam lengkap dengan badge nama, logo lokasi kabupaten, dan ikat pinggang hitam sekolah.",
-                    "Kebersihan: Siswa dilarang membuang sampah sembarangan dan diwajibkan berpartisipasi aktif dalam regu piket kelas masing-masing.",
-                    "Perizinan: Apabila siswa berhalangan hadir karena sakit atau keperluan keluarga, orang tua wajib mengirimkan surat izin tertulis atau menghubungi guru kelas via WA."
-                ],
-                "seragam": [
-                    { "days": "Senin - Selasa", "type": "Nasional Merah Putih", "details": "Dasi, Topi Upacara, Sepatu Hitam Kaos Kaki Putih" },
-                    { "days": "Rabu - Kamis", "type": "Batik Khas Taliabu / Lokal", "details": "Bawahan Merah, Sepatu Hitam Kaos Kaki Putih" },
-                    { "days": "Jumat", "type": "Busana Muslim Sekolah / Olahraga", "details": "Pakaian Olahraga hanya dipakai saat jam praktek PJOK" },
-                    { "days": "Sabtu", "type": "Pramuka Lengkap", "details": "Hasduk/Setangan Leher, Baret/Topi Pramuka, Sepatu Hitam Kaos Kaki Hitam" }
-                ]
-            },
-            "kesiswaan": {
-                "banner_title": "Kesiswaan & Ekstrakurikuler",
-                "banner_text": "Wadah eksplorasi bakat, minat, serta apresiasi etalase prestasi siswa-siswi kami.",
-                "ekstrakurikuler": [
-                    { "id": "ekskul_1", "nama": "Gerakan Pramuka (Gugus Depan)", "deskripsi": "Melatih kemandirian, kedisiplinan, kerja sama, dan kecintaan pada alam. Pramuka merupakan kegiatan ekstra wajib bagi siswa kelas 3 s/d 6.", "jadwal": "Sabtu, Pukul 14.00 - 16.00 WIT", "image": "/images/ekskul_pramuka.svg", "is_wajib": true },
-                    { "id": "ekskul_2", "nama": "Dokter Kecil & UKS", "deskripsi": "Membekali siswa dengan pemahaman kesehatan dasar, P3K, pola hidup bersih sehat (PHBS), serta pembantuan lingkungan sehat sekolah.", "jadwal": "Rabu, Pukul 15.00 - 16.30 WIT", "image": "/images/ekskul_uks.svg", "is_wajib": false },
-                    { "id": "ekskul_3", "nama": "Klub Olahraga (Sepak Bola & Bulu Tangkis)", "deskripsi": "Mengembangkan ketangkasan motorik siswa dan menyaring bibit unggul untuk kejuaraan O2SN tingkat kabupaten dan provinsi.", "jadwal": "Selasa, Pukul 15.30 - 17.00 WIT", "image": "/images/ekskul_olahraga.svg", "is_wajib": false },
-                    { "id": "ekskul_4", "nama": "Seni Tari Tradisional Maluku Utara", "deskripsi": "Melestarikan kebudayaan daerah melalui tari tradisional seperti Tari Lalayon dan Soya-Soya. Melatih keselarasan gerak dan estetika seni.", "jadwal": "Kamis, Pukul 15.00 - 17.00 WIT", "image": "/images/ekskul_senitari.svg", "is_wajib": false }
-                ],
-                "prestasi": [
-                    { "rank": "1st", "title": "Juara 1 Lomba Pidato", "level": "Tingkat Kabupaten", "desc": "Diraih oleh Fahri Taliabu dalam Lomba Pidato Bahasa Indonesia Hari Guru Nasional Kabupaten Pulau Taliabu Tahun 2025.", "icon": "🏆" },
-                    { "rank": "2nd", "title": "Juara 2 Kaligrafi", "level": "Tingkat Kecamatan", "desc": "Diraih oleh Siti Aminah dalam Festival Lomba Seni Siswa Nasional (FLS2N) Tingkat Kecamatan Taliabu Barat Tahun 2025.", "icon": "🥈" },
-                    { "rank": "H1", "title": "Juara Harapan 1 Pramuka", "level": "Tingkat Kabupaten", "desc": "Diraih oleh Regu Garuda Penggalang Putra dalam Lomba Tingkat Gugus Depan Pramuka se-Kabupaten Taliabu Tahun 2024.", "icon": "🏅" }
-                ],
-                "karya": [
-                    { "icon": "🎨", "title": "Lukisan Poster Laut Taliabu", "category": "Tema: Cinta Lingkungan Bahari", "desc": "Hasil gambar krayon siswa kelas 5 dalam rangka kampanye cinta laut pesisir Pulau Taliabu." },
-                    { "icon": "🪵", "title": "Tempat Pensil Anyaman Bambu", "category": "Proyek P5 - Kelas 4", "desc": "Pemanfaatan bambu anyaman tradisional khas Maluku Utara menjadi wadah alat tulis serbaguna." },
-                    { "icon": "📝", "title": "Kumpulan Puisi Siswa", "category": "Tema: Terima Kasih Guruku", "desc": "Karya tulisan puisi tangan murid kelas 3 pada peringatan HUT Persatuan Guru Republik Indonesia." }
-                ]
-            },
-            "ppdb": {
-                "banner_title": "PPDB TA 2026/2027",
-                "banner_text": "Portal resmi Penerimaan Peserta Didik Baru SD Negeri Bobong secara daring dan transparan.",
-                "syarat_usia": "Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli 2026. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.",
-                "syarat_berkas": [
-                    "Scan/Fotokopi Akta Kelahiran calon siswa.",
-                    "Scan/Fotokopi Kartu Keluarga (KK) terbaru.",
-                    "Scan/Fotokopi KTP Orang Tua (Ayah dan Ibu / Wali).",
-                    "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar (jika tatap muka).",
-                    "Mengisi formulir pendaftaran resmi."
-                ],
-                "alur_steps": [
-                    { "num": "1", "title": "Persiapan Dokumen", "desc": "Orang tua menyiapkan scan/fotokopi berkas persyaratan (Akta Lahir, KK, KTP)." },
-                    { "num": "2", "title": "Pengisian Formulir", "desc": "Klik tombol Daftar Daring di bawah, atau datang langsung ke sekolah untuk dibantu operator." },
-                    { "num": "3", "title": "Verifikasi Berkas", "desc": "Panitia PPDB SD Negeri Bobong memeriksa berkas fisik atau unggahan berkas digital." },
-                    { "num": "4", "title": "Pengumuman Kelulusan", "desc": "Pengumuman siswa yang lolos seleksi dapat diakses di papan sekolah atau via grup WhatsApp." }
-                ],
-                "faq": [
-                    { "q": "Bagaimana jika anak belum berusia 6 tahun pada 1 Juli 2026?", "a": "Calon siswa yang berusia kurang dari 6 tahun (minimal 5 tahun 6 bulan) dapat dipertimbangkan jika memiliki potensi kecerdasan istimewa atau kesiapan psikologis, yang dibuktikan dengan rekomendasi psikolog profesional atau surat keterangan dari dewan guru sekolah asal." },
-                    { "q": "Apakah ada pungutan biaya pendaftaran PPDB di SD Negeri Bobong?", "a": "Tidak ada. Seluruh proses pendaftaran, seleksi, hingga daftar ulang siswa di SD Negeri Bobong tidak dipungut biaya apapun (Gratis) sesuai dengan kebijakan BOS Nasional." },
-                    { "q": "Bagaimana jika kami tidak bisa mengisi formulir pendaftaran online?", "a": "Orang tua murid tidak perlu khawatir. Anda cukup membawa semua dokumen fotokopi yang diperlukan (Akta Lahir, KK, KTP) ke sekolah. Operator dan Panitia PPDB SD Negeri Bobong akan membantu memasukkan data anak Anda ke sistem pendaftaran digital sekolah." },
-                    { "q": "Kapan pengumuman hasil seleksi diumumkan?", "a": "Hasil seleksi PPDB SD Negeri Bobong akan diumumkan secara resmi pada tanggal 06 Juli 2026. Pengumuman akan ditempel di gerbang sekolah, dikirim ke grup koordinasi wali murid baru, serta diinfokan di halaman berita website ini." }
-                ],
-                "jadwal": [
-                    { "activity": "Pendaftaran Online/Offline", "dates": "01 Juni - 30 Juni 2026" },
-                    { "activity": "Verifikasi Berkas & Wawancara", "dates": "01 Juli - 03 Juli 2026 (08.00 - 12.00 WIT)" },
-                    { "activity": "Pengumuman Hasil Seleksi", "dates": "06 Juli 2026" },
-                    { "activity": "Daftar Ulang Siswa Baru", "dates": "07 Juli - 10 Juli 2026" }
-                ]
-            }
-        }
+        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg"
     },
     "ppdb_contacts": {
         "wa_humas": "6281340123456",
         "nama_humas": "Hidayat N.",
+        "wa_floating": "6282292111638",
         "wa_operator": "6281356701023",
         "jabatan_humas": "Guru",
         "nama_operator": "Ami Wambes, S.Pd",
-        "jabatan_operator": "Guru Kelas 4a",
-        "wa_floating": "6281356701023"
+        "jabatan_operator": "Guru Kelas 4a"
     },
     "force_local_cache": false
 }

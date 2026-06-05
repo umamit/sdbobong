@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { loadWebConfig, saveWebConfig, handlePhotoUpload } from '../../../lib/database';
+import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 
 async function checkAuth() {
@@ -173,6 +173,40 @@ export async function POST(request) {
 
       // Simpan kembali konten halaman yang baru
       config.stats.page_contents[pageName] = pageData;
+    } else if (actionType === 'restore_backup') {
+      const restoredConfig = parsedJsonBody?.config || parsedJsonBody?.restored_config;
+      if (!restoredConfig || typeof restoredConfig !== 'object') {
+        return NextResponse.json({ error: 'Data cadangan tidak valid.' }, { status: 400 });
+      }
+      // Overwrite config values
+      if (restoredConfig.marquee_announcements) config.marquee_announcements = restoredConfig.marquee_announcements;
+      if (restoredConfig.stats) config.stats = restoredConfig.stats;
+      if (restoredConfig.ppdb_contacts) config.ppdb_contacts = restoredConfig.ppdb_contacts;
+      if (typeof restoredConfig.force_local_cache !== 'undefined') config.force_local_cache = restoredConfig.force_local_cache;
+
+      // Restore other collections (newsList, teachers, achievements) if provided in backup
+      const newsList = parsedJsonBody?.newsList;
+      const teachers = parsedJsonBody?.teachers;
+      const achievements = parsedJsonBody?.achievements;
+
+      if (Array.isArray(newsList)) {
+        const savedNewsResult = await saveNews(newsList);
+        if (!savedNewsResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data berita ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(teachers)) {
+        const savedTeachersResult = await saveTeachers(teachers);
+        if (!savedTeachersResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data guru/staf ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(achievements)) {
+        const savedAchievementsResult = await saveAchievements(achievements);
+        if (!savedAchievementsResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data prestasi ke database.' }, { status: 500 });
+        }
+      }
     } else {
       return NextResponse.json({ error: 'Action type tidak dikenal.' }, { status: 400 });
     }
@@ -188,7 +222,13 @@ export async function POST(request) {
       console.error("Cache revalidation failed in config route:", cacheErr);
     }
 
-    return NextResponse.json({ success: true, config });
+    return NextResponse.json({
+      success: true,
+      config,
+      newsList: Array.isArray(parsedJsonBody?.newsList) ? parsedJsonBody.newsList : undefined,
+      teachers: Array.isArray(parsedJsonBody?.teachers) ? parsedJsonBody.teachers : undefined,
+      achievements: Array.isArray(parsedJsonBody?.achievements) ? parsedJsonBody.achievements : undefined
+    });
   } catch (e) {
     return NextResponse.json({ error: 'Terjadi kesalahan server: ' + e.message }, { status: 500 });
   }

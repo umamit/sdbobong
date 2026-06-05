@@ -35,6 +35,7 @@ export default function AdminDashboardClient({
   const [deleteTargetNik, setDeleteTargetNik] = useState('');
   const [deleteTargetName, setDeleteTargetName] = useState('');
   const [deleteIsBulk, setDeleteIsBulk] = useState(false);
+  const [bulkDeleteConfirmText, setBulkDeleteConfirmText] = useState('');
   const [addTeacherModalOpen, setAddTeacherModalOpen] = useState(false);
 
   // States for Page Contents dynamic editor
@@ -47,6 +48,33 @@ export default function AdminDashboardClient({
   const [kurikulumPreview, setKurikulumPreview] = useState('');
   const [ekskulFiles, setEkskulFiles] = useState({});
   const [ekskulPreviews, setEkskulPreviews] = useState({});
+
+  // ================= NEW STATES FOR PREMIUM DASHBOARD UPGRADES =================
+  // PPDB Filter & Pagination
+  const [ppdbSearch, setPpdbSearch] = useState('');
+  const [ppdbFilterJalur, setPpdbFilterJalur] = useState('Semua');
+  const [ppdbFilterStatus, setPpdbFilterStatus] = useState('Semua');
+  const [ppdbPage, setPpdbPage] = useState(1);
+  const [ppdbPerPage, setPpdbPerPage] = useState(10);
+
+  // PPDB Detailed View
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  // Admin Account Change Password
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  // Agenda Management
+  const [agendaSearch, setAgendaSearch] = useState('');
+  const [agendaModalOpen, setAgendaModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null); // null = add, else = event object
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventDates, setEventDates] = useState('');
+  const [eventDesc, setEventDesc] = useState('');
+  const [eventMonth, setEventMonth] = useState('Juli 2025');
 
   useEffect(() => {
     if (config?.stats?.page_contents) {
@@ -398,6 +426,7 @@ export default function AdminDashboardClient({
       setDeleteTargetNik('');
       setDeleteTargetName('');
       setDeleteIsBulk(false);
+      setBulkDeleteConfirmText('');
     }
   };
 
@@ -423,6 +452,188 @@ export default function AdminDashboardClient({
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
+  };
+
+  // ================= NEW PREMIUM HANDLERS =================
+  // Change Password Handler
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      showToast('danger', 'Konfirmasi password baru tidak cocok!');
+      return;
+    }
+    setIsChangingPassword(true);
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Password admin berhasil diubah!');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        showToast('danger', data.error || 'Gagal mengubah password.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  // Export Website Configuration Backup (JSON)
+  const handleBackupExport = () => {
+    try {
+      const backupData = {
+        version: '1.0',
+        date: new Date().toISOString(),
+        config: config,
+        newsList: newsList,
+        teachers: teachers,
+        achievements: achievements
+      };
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(backupData, null, 2))}`;
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute('href', jsonString);
+      const dateStr = new Date().toISOString().slice(0, 10);
+      downloadAnchor.setAttribute('download', `backup_sdn_bobong_${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('success', 'Berkas cadangan konfigurasi (JSON) berhasil diunduh!');
+    } catch (err) {
+      showToast('danger', 'Gagal melakukan ekspor: ' + err.message);
+    }
+  };
+
+  // Import Website Configuration Backup (JSON)
+  const handleBackupRestore = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const backupData = JSON.parse(event.target.result);
+        if (!backupData.config || typeof backupData.config !== 'object') {
+          showToast('danger', 'Berkas cadangan tidak valid atau tidak memiliki format yang benar!');
+          return;
+        }
+
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action_type: 'restore_backup',
+            config: backupData.config,
+            newsList: backupData.newsList || null,
+            teachers: backupData.teachers || null,
+            achievements: backupData.achievements || null
+          })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showToast('success', 'Konfigurasi website berhasil dipulihkan dari berkas cadangan!');
+          setConfig(data.config);
+          if (data.config?.stats?.page_contents) {
+            setPageContents(data.config.stats.page_contents);
+          }
+          
+          // Also optionally restore lists if available in backup / response
+          if (data.newsList) {
+            setNewsList(data.newsList);
+          } else if (backupData.newsList) {
+            setNewsList(backupData.newsList);
+          }
+
+          if (data.teachers) {
+            setTeachers(data.teachers);
+          } else if (backupData.teachers) {
+            setTeachers(backupData.teachers);
+          }
+
+          if (data.achievements) {
+            setAchievements(data.achievements);
+          } else if (backupData.achievements) {
+            setAchievements(backupData.achievements);
+          }
+        } else {
+          showToast('danger', data.error || 'Gagal memulihkan dari berkas cadangan.');
+        }
+      } catch (err) {
+        showToast('danger', 'Gagal membaca berkas cadangan: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input value
+    e.target.value = '';
+  };
+
+  // Agenda Event Save Handler
+  const handleSaveAgendaEvent = async (e) => {
+    e.preventDefault();
+    const currentCalendar = pageContents.akademik?.calendar || [];
+    let updatedCalendar = [];
+
+    if (editingEvent) {
+      // Edit existing event
+      updatedCalendar = currentCalendar.map(evt =>
+        evt.id === editingEvent.id
+          ? { ...evt, month: eventMonth, dates: eventDates, desc: eventDesc }
+          : evt
+      );
+    } else {
+      // Add new event
+      const newEvt = {
+        id: 'cal_' + Date.now(),
+        month: eventMonth,
+        dates: eventDates,
+        desc: eventDesc
+      };
+      updatedCalendar = [...currentCalendar, newEvt];
+    }
+
+    const updatedAkademik = {
+      ...pageContents.akademik,
+      calendar: updatedCalendar
+    };
+
+    setPageContents(prev => ({
+      ...prev,
+      akademik: updatedAkademik
+    }));
+
+    await handlePageContentsSave('akademik', updatedAkademik);
+
+    setAgendaModalOpen(false);
+    setEditingEvent(null);
+    setEventDates('');
+    setEventDesc('');
+  };
+
+  // Agenda Event Delete Handler
+  const handleDeleteAgendaEvent = async (eventId) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus agenda kegiatan ini?')) return;
+
+    const currentCalendar = pageContents.akademik?.calendar || [];
+    const updatedCalendar = currentCalendar.filter(evt => evt.id !== eventId);
+
+    const updatedAkademik = {
+      ...pageContents.akademik,
+      calendar: updatedCalendar
+    };
+
+    setPageContents(prev => ({
+      ...prev,
+      akademik: updatedAkademik
+    }));
+
+    await handlePageContentsSave('akademik', updatedAkademik);
   };
 
   const handleStatsUpdate = async (e) => {
@@ -982,6 +1193,29 @@ export default function AdminDashboardClient({
     }
   };
 
+  // Computed states for PPDB Search, Filter, and Pagination
+  const filteredPPDB = records.filter(r => {
+    const searchLower = ppdbSearch.toLowerCase();
+    const matchesSearch = (r.nama_lengkap || '').toLowerCase().includes(searchLower) ||
+                          (r.nik_siswa || r.nik || '').toLowerCase().includes(searchLower) ||
+                          (r.nomor_hp_orangtua || r.no_hp || '').toLowerCase().includes(searchLower);
+    const matchesJalur = ppdbFilterJalur === 'Semua' || r.jalur_ppdb === ppdbFilterJalur;
+    const matchesStatus = ppdbFilterStatus === 'Semua' || r.status === ppdbFilterStatus;
+    return matchesSearch && matchesJalur && matchesStatus;
+  });
+
+  const totalPPDBPages = Math.ceil(filteredPPDB.length / ppdbPerPage) || 1;
+  const paginatedPPDB = filteredPPDB.slice((ppdbPage - 1) * ppdbPerPage, ppdbPage * ppdbPerPage);
+
+  // Computed states for Agenda Search
+  const calendarEvents = pageContents.akademik?.calendar || [];
+  const filteredEvents = calendarEvents.filter(evt => {
+    const query = agendaSearch.toLowerCase();
+    return (evt.month || '').toLowerCase().includes(query) ||
+           (evt.dates || '').toLowerCase().includes(query) ||
+           (evt.desc || '').toLowerCase().includes(query);
+  });
+
   const getPageTitle = () => {
     const titles = {
       overview: 'Ringkasan Dashboard',
@@ -990,7 +1224,8 @@ export default function AdminDashboardClient({
       news: 'Manajemen Berita Sekolah',
       teachers: 'Manajemen Guru & Kepala Sekolah',
       achievements: 'Manajemen Prestasi Sekolah',
-      pages: 'Kelola Konten Halaman'
+      pages: 'Kelola Konten Halaman',
+      agenda: 'Sistem Agenda & Kegiatan Sekolah'
     };
     return titles[activeTab] || 'Dashboard Admin';
   };
@@ -1715,6 +1950,251 @@ export default function AdminDashboardClient({
                 padding-right: 1.5rem;
             }
         }
+
+        /* PREMIUM STYLES FOR DASHBOARD UPGRADES */
+        .analytics-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        @media (max-width: 1024px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .donut-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .donut-legends {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+        .legend-color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .bar-chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .chart-bar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .chart-bar-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .chart-bar-bg {
+            background-color: #f1f5f9;
+            height: 10px;
+            border-radius: 9999px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .chart-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1s ease-out;
+        }
+
+        /* Search, Filter, Pagination */
+        .filter-toolbar {
+            background-color: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1.2fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+        }
+        @media (max-width: 768px) {
+            .filter-toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn-pagination {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+        }
+        .btn-pagination:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+        .btn-pagination:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-pagination.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* Detail Modal Print Slip Styles */
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+            #print-slip-container, #print-slip-container * {
+                visibility: visible !important;
+            }
+            #print-slip-container {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: #ffffff !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        .print-slip {
+            background-color: #ffffff;
+            color: #1e293b;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+        }
+        .print-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border-bottom: 3px double #0f172a;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .print-logo {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+        }
+        .print-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .print-title h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .print-title h3 {
+            margin: 4px 0 0 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .print-title p {
+            margin: 4px 0 0 0;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .print-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .print-field {
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+        .print-field-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .print-field-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-top: 2px;
+        }
+        
+        .print-footer-signature {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            text-align: center;
+        }
+        .signature-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 120px;
+        }
       `}} />
 
       {/* SIDEBAR */}
@@ -1779,6 +2259,14 @@ export default function AdminDashboardClient({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A11.952 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918M4.157 7.582A8.959 8.959 0 0 0 3 12c0 .778.099 1.533.284 2.253" />
               </svg>
               <span>Kelola Konten Halaman</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'agenda' ? 'active' : ''}`} onClick={() => setActiveTab('agenda')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+              </svg>
+              <span>Agenda Sekolah</span>
             </a>
           </li>
         </ul>
@@ -1895,6 +2383,135 @@ export default function AdminDashboardClient({
                 </div>
               </div>
             </div>
+
+            {/* DYNAMIC SVG ANALYTICS CHARTS */}
+            {(() => {
+              const maleCount = records.filter(r => {
+                const jk = r.jenis_kelamin || '';
+                return jk.toLowerCase().startsWith('l') || jk === 'Laki-laki';
+              }).length;
+              const femaleCount = records.filter(r => {
+                const jk = r.jenis_kelamin || '';
+                return jk.toLowerCase().startsWith('p') || jk === 'Perempuan';
+              }).length;
+              const totalGender = maleCount + femaleCount;
+              const malePercent = totalGender > 0 ? Math.round((maleCount / totalGender) * 100) : 50;
+              const femalePercent = totalGender > 0 ? Math.round((femaleCount / totalGender) * 100) : 50;
+
+              // Radius 40 => Circumference = 2 * PI * 40 = 251.32
+              const maleDash = (malePercent / 100) * 251.32;
+              const femaleDash = (femalePercent / 100) * 251.32;
+
+              // Jalur PPDB stats
+              const totalPPDB = records.length;
+              const zonasi = records.filter(r => r.jalur_ppdb === 'Zonasi').length;
+              const afirmasi = records.filter(r => r.jalur_ppdb === 'Afirmasi').length;
+              const prestasi = records.filter(r => r.jalur_ppdb === 'Prestasi').length;
+              const perpindahan = records.filter(r => r.jalur_ppdb === 'Perpindahan' || r.jalur_ppdb?.toLowerCase().includes('pindah')).length;
+
+              const zonasiPct = totalPPDB > 0 ? Math.round((zonasi / totalPPDB) * 100) : 0;
+              const afirmasiPct = totalPPDB > 0 ? Math.round((afirmasi / totalPPDB) * 100) : 0;
+              const prestasiPct = totalPPDB > 0 ? Math.round((prestasi / totalPPDB) * 100) : 0;
+              const perpindahanPct = totalPPDB > 0 ? Math.round((perpindahan / totalPPDB) * 100) : 0;
+
+              return (
+                <div className="analytics-card" style={{ marginTop: '1.5rem' }}>
+                  <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>📊 Analisis Data PPDB Real-time</h3>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Visualisasi statistik pendaftar siswa baru berdasarkan gender dan jalur masuk.</p>
+                  </div>
+
+                  <div className="analytics-grid">
+                    {/* Donut Chart */}
+                    <div className="donut-container" style={{ borderRight: '1px solid #f1f5f9', paddingRight: '1rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Sebaran Jenis Kelamin</h4>
+                      <div style={{ position: 'relative', width: '160px', height: '160px' }}>
+                        <svg width="160" height="160" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
+                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" strokeWidth="12" />
+                          {totalGender > 0 ? (
+                            <>
+                              <circle 
+                                cx="50" cy="50" r="40" fill="transparent" 
+                                stroke="#6366f1" strokeWidth="12" 
+                                strokeDasharray={`${maleDash} 251.32`} 
+                              />
+                              <circle 
+                                cx="50" cy="50" r="40" fill="transparent" 
+                                stroke="#8b5cf6" strokeWidth="12" 
+                                strokeDasharray={`${femaleDash} 251.32`} 
+                                strokeDashoffset={-maleDash} 
+                              />
+                            </>
+                          ) : (
+                            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#94a3b8" strokeWidth="12" />
+                          )}
+                        </svg>
+                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+                          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', display: 'block' }}>{totalGender}</span>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Siswa</span>
+                        </div>
+                      </div>
+
+                      <div className="donut-legends">
+                        <div className="legend-item">
+                          <span style={{ fontWeight: 600 }}><span className="legend-color-dot" style={{ backgroundColor: '#6366f1' }}></span>Laki-laki</span>
+                          <span style={{ fontWeight: 700, color: '#475569' }}>{maleCount} ({malePercent}%)</span>
+                        </div>
+                        <div className="legend-item">
+                          <span style={{ fontWeight: 600 }}><span className="legend-color-dot" style={{ backgroundColor: '#8b5cf6' }}></span>Perempuan</span>
+                          <span style={{ fontWeight: 700, color: '#475569' }}>{femaleCount} ({femalePercent}%)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bar Chart */}
+                    <div className="bar-chart-container">
+                      <h4 style={{ margin: 0, color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Distribusi Jalur Pendaftaran</h4>
+                      
+                      <div className="chart-bar-item">
+                        <div className="chart-bar-info">
+                          <span>🛣️ Jalur Zonasi</span>
+                          <span>{zonasi} Pendaftar ({zonasiPct}%)</span>
+                        </div>
+                        <div className="chart-bar-bg">
+                          <div className="chart-bar-fill" style={{ width: `${zonasiPct}%`, backgroundColor: '#f59e0b' }}></div>
+                        </div>
+                      </div>
+
+                      <div className="chart-bar-item">
+                        <div className="chart-bar-info">
+                          <span>❤️ Jalur Afirmasi</span>
+                          <span>{afirmasi} Pendaftar ({afirmasiPct}%)</span>
+                        </div>
+                        <div className="chart-bar-bg">
+                          <div className="chart-bar-fill" style={{ width: `${afirmasiPct}%`, backgroundColor: '#10b981' }}></div>
+                        </div>
+                      </div>
+
+                      <div className="chart-bar-item">
+                        <div className="chart-bar-info">
+                          <span>🏆 Jalur Prestasi</span>
+                          <span>{prestasi} Pendaftar ({prestasiPct}%)</span>
+                        </div>
+                        <div className="chart-bar-bg">
+                          <div className="chart-bar-fill" style={{ width: `${prestasiPct}%`, backgroundColor: '#8b5cf6' }}></div>
+                        </div>
+                      </div>
+
+                      <div className="chart-bar-item">
+                        <div className="chart-bar-info">
+                          <span>💼 Perpindahan Tugas Orang Tua</span>
+                          <span>{perpindahan} Pendaftar ({perpindahanPct}%)</span>
+                        </div>
+                        <div className="chart-bar-bg">
+                          <div className="chart-bar-fill" style={{ width: `${perpindahanPct}%`, backgroundColor: '#06b6d4' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
  
             <div className="grid-2" style={{ marginTop: '1.5rem' }}>
               <div className="settings-card">
@@ -1949,12 +2566,123 @@ export default function AdminDashboardClient({
                 </div>
               </div>
             </div>
+
+            <div className="grid-2" style={{ marginTop: '1.5rem' }}>
+              {/* CHANGE PASSWORD FORM CARD */}
+              <div className="settings-card">
+                <h3>🔐 Ganti Password Admin</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                  Perbarui kata sandi untuk akun administrator Anda secara aman. Sesi Anda akan tetap aktif setelah perubahan selesai.
+                </p>
+
+                <form onSubmit={handleChangePassword} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Password Saat Ini</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Masukkan password saat ini..."
+                      style={{ width: '100%', boxSizing: 'border-box' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Password Baru (Min 6 Karakter)</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Masukkan password baru..."
+                      style={{ width: '100%', boxSizing: 'border-box' }}
+                      minLength={6}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Konfirmasi Password Baru</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Ulangi password baru..."
+                      style={{ width: '100%', boxSizing: 'border-box' }}
+                      required
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary" 
+                    style={{ padding: '0.6rem 1rem', marginTop: '0.5rem', alignSelf: 'flex-start' }}
+                    disabled={isChangingPassword}
+                  >
+                    {isChangingPassword ? 'Memproses...' : '🔐 Perbarui Password'}
+                  </button>
+                </form>
+              </div>
+
+              {/* BACKUP & RESTORE CONFIG CARD */}
+              <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <h3>💾 Cadangan & Pemulihan Konfigurasi</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                    Ekspor seluruh pengaturan konten teks, gambar, pengumuman berjalan, dan statistik sekolah ke berkas JSON cadangan lokal. Anda dapat memulihkannya kapan saja untuk mengembalikan data ke kondisi yang dicadangkan.
+                  </p>
+
+                  <div style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.8rem', color: '#1e3a8a', marginBottom: '1.25rem', fontWeight: 500 }}>
+                    💡 <strong>Tips:</strong> Disarankan melakukan pencadangan (export) sebelum Anda melakukan perubahan teks berskala besar di halaman website!
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#334155' }}>1. Simpan Cadangan Berkas</h4>
+                    <button 
+                      type="button" 
+                      onClick={handleBackupExport}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.6rem 1.2rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    >
+                      📥 Ekspor Cadangan (.json)
+                    </button>
+                  </div>
+
+                  <div>
+                    <h4 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#334155' }}>2. Pulihkan Dari Cadangan</h4>
+                    <div style={{ position: 'relative' }}>
+                      <input 
+                        type="file" 
+                        accept=".json"
+                        onChange={handleBackupRestore}
+                        style={{ display: 'none' }}
+                        id="backup-restore-input"
+                      />
+                      <button 
+                        type="button"
+                        onClick={() => document.getElementById('backup-restore-input').click()}
+                        className="btn btn-danger"
+                        style={{ padding: '0.6rem 1.2rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#ef4444' }}
+                      >
+                        📤 Unggah & Pulihkan Cadangan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* ================= TAB: PPDB MANAGEMENT ================= */}
-          <section id="tab-ppdb" class={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
+          {/* ================= TAB: PPDB MANAGEMENT ================= */}
+          <section id="tab-ppdb" className={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
             <div className="admin-table">
-              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
                 <h3>Daftar Lengkap Formulir Masuk</h3>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
@@ -1972,6 +2700,69 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
+              {/* Advanced Filter Toolbar */}
+              <div className="table-filters" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', alignItems: 'center' }}>
+                <div style={{ flex: '1', minWidth: '250px', position: 'relative' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Cari Calon Siswa</label>
+                  <input
+                    type="text"
+                    placeholder="Cari berdasarkan nama, NIK, atau nomor HP..."
+                    value={ppdbSearch}
+                    onChange={(e) => { setPpdbSearch(e.target.value); setPpdbPage(1); }}
+                    className="form-control"
+                    style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                  />
+                  <span style={{ position: 'absolute', left: '1rem', bottom: '0.7rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+                </div>
+                
+                <div style={{ minWidth: '150px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Filter Jalur</label>
+                  <select
+                    value={ppdbFilterJalur}
+                    onChange={(e) => { setPpdbFilterJalur(e.target.value); setPpdbPage(1); }}
+                    className="form-control"
+                    style={{ width: '100%', height: '42px', boxSizing: 'border-box' }}
+                  >
+                    <option value="Semua">Semua Jalur</option>
+                    <option value="Zonasi">Zonasi</option>
+                    <option value="Afirmasi">Afirmasi</option>
+                    <option value="Prestasi">Prestasi</option>
+                    <option value="Perpindahan Tugas Orang Tua">Perpindahan Tugas Orang Tua</option>
+                  </select>
+                </div>
+
+                <div style={{ minWidth: '150px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Filter Status</label>
+                  <select
+                    value={ppdbFilterStatus}
+                    onChange={(e) => { setPpdbFilterStatus(e.target.value); setPpdbPage(1); }}
+                    className="form-control"
+                    style={{ width: '100%', height: '42px', boxSizing: 'border-box' }}
+                  >
+                    <option value="Semua">Semua Status</option>
+                    <option value="Diterima Sistem">Diterima Sistem</option>
+                    <option value="Terverifikasi">Terverifikasi</option>
+                    <option value="Ditolak">Ditolak</option>
+                  </select>
+                </div>
+
+                <div style={{ minWidth: '100px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Per Halaman</label>
+                  <select
+                    value={ppdbPerPage}
+                    onChange={(e) => { setPpdbPerPage(Number(e.target.value)); setPpdbPage(1); }}
+                    className="form-control"
+                    style={{ width: '100%', height: '42px', boxSizing: 'border-box' }}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Responsive Table */}
               <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
                 <table className="table-custom" style={{ fontSize: '0.85rem', width: '100%' }}>
                   <thead>
@@ -1984,59 +2775,122 @@ export default function AdminDashboardClient({
                       <th>Alamat Lengkap</th>
                       <th>Tanggal Daftar</th>
                       <th style={{ width: '140px' }}>Status</th>
-                      <th style={{ width: '100px', textAlign: 'center' }}>Aksi</th>
+                      <th style={{ width: '180px', textAlign: 'center' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {records.length > 0 ? (
-                      records.map((r, idx) => (
-                        <tr key={r.id || idx}>
-                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
-                          <td>
-                            <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{r.nama_lengkap}</strong><br />
-                            <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>NIK: {r.nik_siswa || r.nik}</span>
-                          </td>
-                          <td>
-                            <span>Ibu: {r.nama_ibu_kandung || r.nama_ibu}</span><br />
-                            <span style={{ fontSize: '0.75rem', color: 'var(--primary)' }}>📞 {r.nomor_hp_orangtua || r.no_hp}</span>
-                          </td>
-                          <td>
-                            <span>{r.tempat_lahir}, {r.tanggal_lahir}</span><br />
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{r.jenis_kelamin}</span>
-                          </td>
-                          <td>
-                            <span className="badge" style={{ backgroundColor: '#E8F0FE', color: 'var(--primary)', fontWeight: 600, padding: '0.2rem 0.4rem', fontSize: '0.75rem' }}>
-                              {r.jalur_ppdb}
-                            </span>
-                          </td>
-                          <td style={{ maxWidth: '200px', wordWrap: 'break-word', fontSize: '0.8rem' }}>{r.alamat_domisili || r.alamat}</td>
-                          <td style={{ fontSize: '0.75rem' }}>{r.waktu_daftar}</td>
-                          <td>
-                            <select
-                              value={r.status}
-                              className={`status-badge-select ${r.status === 'Terverifikasi' ? 'verified' : r.status === 'Ditolak' ? 'rejected' : 'pending'}`}
-                              onChange={(e) => handleStatusChange(r.id, e.target.value)}
-                            >
-                              <option value="Diterima Sistem">Diterima Sistem</option>
-                              <option value="Terverifikasi">Terverifikasi</option>
-                              <option value="Ditolak">Ditolak</option>
-                            </select>
-                          </td>
-                          <td style={{ textAlign: 'center' }}>
-                            <button onClick={() => handlePPDBDelete(r.id)} type="button" className="btn-action-delete">Hapus</button>
-                          </td>
-                        </tr>
-                      ))
+                    {paginatedPPDB.length > 0 ? (
+                      paginatedPPDB.map((r, idx) => {
+                        const displayIndex = (ppdbPage - 1) * ppdbPerPage + idx + 1;
+                        return (
+                          <tr key={r.id || idx}>
+                            <td style={{ textAlign: 'center', fontWeight: 600 }}>{displayIndex}</td>
+                            <td>
+                              <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{r.nama_lengkap}</strong><br />
+                              <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>NIK: {r.nik_siswa || r.nik}</span>
+                            </td>
+                            <td>
+                              <span>Ibu: {r.nama_ibu_kandung || r.nama_ibu}</span><br />
+                              <span style={{ fontSize: '0.75rem', color: 'var(--primary)' }}>📞 {r.nomor_hp_orangtua || r.no_hp}</span>
+                            </td>
+                            <td>
+                              <span>{r.tempat_lahir}, {r.tanggal_lahir}</span><br />
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{r.jenis_kelamin}</span>
+                            </td>
+                            <td>
+                              <span className="badge" style={{ backgroundColor: '#E8F0FE', color: 'var(--primary)', fontWeight: 600, padding: '0.2rem 0.4rem', fontSize: '0.75rem' }}>
+                                {r.jalur_ppdb}
+                              </span>
+                            </td>
+                            <td style={{ maxWidth: '200px', wordWrap: 'break-word', fontSize: '0.8rem' }}>{r.alamat_domisili || r.alamat}</td>
+                            <td style={{ fontSize: '0.75rem' }}>{r.waktu_daftar}</td>
+                            <td>
+                              <select
+                                value={r.status}
+                                className={`status-badge-select ${r.status === 'Terverifikasi' ? 'verified' : r.status === 'Ditolak' ? 'rejected' : 'pending'}`}
+                                onChange={(e) => handleStatusChange(r.id, e.target.value)}
+                              >
+                                <option value="Diterima Sistem">Diterima Sistem</option>
+                                <option value="Terverifikasi">Terverifikasi</option>
+                                <option value="Ditolak">Ditolak</option>
+                              </select>
+                            </td>
+                            <td style={{ textAlign: 'center' }}>
+                              <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => { setSelectedRecord(r); setIsDetailModalOpen(true); }}
+                                  className="btn btn-secondary"
+                                  style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                                  title="Lihat Detail & Cetak Bukti"
+                                >
+                                  👁️ Detail
+                                </button>
+                                <button onClick={() => handlePPDBDelete(r.id)} type="button" className="btn-action-delete" style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}>Hapus</button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
                     ) : (
                       <tr>
                         <td colSpan="9" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                          Belum ada data pendaftar calon siswa baru.
+                          Belum ada data pendaftar calon siswa baru yang sesuai dengan filter pencarian.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
+
+              {/* Premium Pagination System */}
+              {totalPPDBPages > 1 && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', padding: '1rem', backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    Menampilkan <strong>{Math.min(filteredPPDB.length, (ppdbPage - 1) * ppdbPerPage + 1)}-{Math.min(filteredPPDB.length, ppdbPage * ppdbPerPage)}</strong> dari total <strong>{filteredPPDB.length}</strong> pendaftar
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.25rem' }}>
+                    <button
+                      type="button"
+                      className="btn-pagination"
+                      disabled={ppdbPage === 1}
+                      onClick={() => setPpdbPage(prev => Math.max(1, prev - 1))}
+                      style={{ padding: '0.5rem 0.75rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: ppdbPage === 1 ? '#f1f5f9' : '#ffffff', cursor: ppdbPage === 1 ? 'not-allowed' : 'pointer', fontSize: '0.85rem' }}
+                    >
+                      ◀️ Prev
+                    </button>
+                    {Array.from({ length: totalPPDBPages }).map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className={`btn-pagination ${ppdbPage === i + 1 ? 'active' : ''}`}
+                        onClick={() => setPpdbPage(i + 1)}
+                        style={{
+                          padding: '0.5rem 0.75rem',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '6px',
+                          background: ppdbPage === i + 1 ? 'var(--primary)' : '#ffffff',
+                          color: ppdbPage === i + 1 ? '#ffffff' : '#1e293b',
+                          cursor: 'pointer',
+                          fontSize: '0.85rem',
+                          fontWeight: '600'
+                        }}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className="btn-pagination"
+                      disabled={ppdbPage === totalPPDBPages}
+                      onClick={() => setPpdbPage(prev => Math.min(totalPPDBPages, prev + 1))}
+                      style={{ padding: '0.5rem 0.75rem', border: '1px solid #cbd5e1', borderRadius: '6px', background: ppdbPage === totalPPDBPages ? '#f1f5f9' : '#ffffff', cursor: ppdbPage === totalPPDBPages ? 'not-allowed' : 'pointer', fontSize: '0.85rem' }}
+                    >
+                      Next ▶️
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
@@ -3872,6 +4726,104 @@ export default function AdminDashboardClient({
 
             </div>
           </section>
+
+          {/* ================= TAB: AGENDA SEKOLAH ================= */}
+          <section id="tab-agenda" className={`tab-pane ${activeTab === 'agenda' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Daftar Agenda Kegiatan & Kalender Akademik</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola jadwal kegiatan sekolah, libur nasional, dan agenda penting lainnya.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingEvent(null);
+                    setEventMonth('Juli 2025');
+                    setEventDates('');
+                    setEventDesc('');
+                    setAgendaModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah Agenda Baru
+                </button>
+              </div>
+
+              {/* Agenda Search Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Cari agenda kegiatan berdasarkan bulan, tanggal, atau deskripsi kegiatan..."
+                  value={agendaSearch}
+                  onChange={(e) => setAgendaSearch(e.target.value)}
+                  className="form-control"
+                  style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ position: 'absolute', left: '2rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+              </div>
+
+              {/* Table or Grid */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '180px' }}>Bulan / Tahun</th>
+                      <th style={{ width: '220px' }}>Rentang Tanggal</th>
+                      <th>Nama Kegiatan / Deskripsi Agenda</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredEvents.length > 0 ? (
+                      filteredEvents.map((evt, idx) => (
+                        <tr key={evt.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>{evt.month || '-'}</td>
+                          <td style={{ fontWeight: 500, color: 'var(--primary)' }}>📅 {evt.dates || '-'}</td>
+                          <td style={{ fontWeight: 500, color: '#1e293b' }}>{evt.desc || '-'}</td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingEvent(evt);
+                                  setEventMonth(evt.month || 'Juli 2025');
+                                  setEventDates(evt.dates || '');
+                                  setEventDesc(evt.desc || '');
+                                  setAgendaModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteAgendaEvent(evt.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Tidak ada agenda sekolah yang cocok dengan pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
 
@@ -3920,6 +4872,7 @@ export default function AdminDashboardClient({
                   type="text" 
                   id="bulk-delete-confirm-input" 
                   placeholder="Ketik HAPUS SEMUA" 
+                  value={bulkDeleteConfirmText}
                   style={{
                     width: '100%',
                     padding: '0.5rem 0.75rem',
@@ -3929,15 +4882,7 @@ export default function AdminDashboardClient({
                     fontSize: '0.85rem',
                     boxSizing: 'border-box'
                   }}
-                  onChange={(e) => {
-                    const btnBoth = document.getElementById('btn-del-both');
-                    const btnLocal = document.getElementById('btn-del-local');
-                    const btnSupabase = document.getElementById('btn-del-supabase');
-                    const isConfirmed = e.target.value === 'HAPUS SEMUA';
-                    if (btnBoth) btnBoth.disabled = !isConfirmed;
-                    if (btnLocal) btnLocal.disabled = !isConfirmed;
-                    if (btnSupabase) btnSupabase.disabled = !isConfirmed;
-                  }}
+                  onChange={(e) => setBulkDeleteConfirmText(e.target.value)}
                 />
               </div>
             )}
@@ -3945,13 +4890,13 @@ export default function AdminDashboardClient({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
               <button 
                 id="btn-del-both"
-                disabled={deleteIsBulk}
+                disabled={deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA'}
                 className="btn btn-danger" 
                 style={{ 
                   width: '100%', 
                   padding: '0.75rem', 
                   fontSize: '0.9rem',
-                  opacity: deleteIsBulk ? 0.5 : 1
+                  opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
                 }}
                 onClick={() => executeDelete('both')}
               >
@@ -3961,7 +4906,7 @@ export default function AdminDashboardClient({
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <button 
                   id="btn-del-local"
-                  disabled={deleteIsBulk}
+                  disabled={deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA'}
                   className="btn btn-secondary" 
                   style={{ 
                     padding: '0.75rem', 
@@ -3969,7 +4914,7 @@ export default function AdminDashboardClient({
                     color: '#dc2626',
                     borderColor: '#fca5a5',
                     backgroundColor: '#fef2f2',
-                    opacity: deleteIsBulk ? 0.5 : 1
+                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
                   }}
                   onClick={() => executeDelete('local')}
                 >
@@ -3977,7 +4922,7 @@ export default function AdminDashboardClient({
                 </button>
                 <button 
                   id="btn-del-supabase"
-                  disabled={deleteIsBulk}
+                  disabled={deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA'}
                   className="btn btn-secondary" 
                   style={{ 
                     padding: '0.75rem', 
@@ -3985,7 +4930,7 @@ export default function AdminDashboardClient({
                     color: '#2563eb',
                     borderColor: '#bfdbfe',
                     backgroundColor: '#eff6ff',
-                    opacity: deleteIsBulk ? 0.5 : 1
+                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
                   }}
                   onClick={() => executeDelete('supabase')}
                 >
@@ -4006,6 +4951,7 @@ export default function AdminDashboardClient({
                   setDeleteTargetNik('');
                   setDeleteTargetName('');
                   setDeleteIsBulk(false);
+                  setBulkDeleteConfirmText('');
                 }}
               >
                 Batalkan
@@ -4384,6 +5330,244 @@ export default function AdminDashboardClient({
                   style={{ flex: 1, padding: '0.65rem' }}
                 >
                   💾 Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= DETAIL MODAL PPDB & CETAK BUKTI ================= */}
+      {isDetailModalOpen && selectedRecord && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', overflowY: 'auto', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '850px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', position: 'relative', display: 'flex', flexDirection: 'column', maxHeight: '90vh', overflow: 'hidden' }}>
+            
+            {/* Modal Header (No Print) */}
+            <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary-dark)', color: '#ffffff', borderRadius: '16px 16px 0 0' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>🔍 Lembar Detail Pendaftaran Calon Siswa</h3>
+              <button 
+                type="button" 
+                onClick={() => { setIsDetailModalOpen(false); setSelectedRecord(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8, transition: 'opacity 0.2s' }}
+                onMouseOver={(e) => e.target.style.opacity = 1}
+                onMouseOut={(e) => e.target.style.opacity = 0.8}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body / Printable Slip */}
+            <div style={{ padding: '2rem', overflowY: 'auto', flex: 1, backgroundColor: '#f8fafc' }}>
+              
+              {/* Slip layout inside a card */}
+              <div id="print-slip-container" className="print-slip" style={{ backgroundColor: '#ffffff', padding: '2.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', boxSizing: 'border-box' }}>
+                {/* Kop Surat Sekolah */}
+                <div className="print-header" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', borderBottom: '3px double #0f172a', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
+                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
+                  <div className="print-title" style={{ flexGrow: 1, textAlign: 'center' }}>
+                    <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN ALOR</h2>
+                    <h3 style={{ margin: '2px 0', fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary-dark)' }}>SD NEGERI BOBONG</h3>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Alamat: Bobong, Kabupaten Alor, Nusa Tenggara Timur</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 12345678 | Email: sdn.bobong@gmail.com</p>
+                  </div>
+                </div>
+
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                  <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, textTransform: 'uppercase', color: '#0f172a', letterSpacing: '1px' }}>BUKTI PENDAFTARAN CALON SISWA BARU (PPDB)</h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#64748b' }}>Tahun Pelajaran: 2025/2026</p>
+                </div>
+
+                {/* Grid Fields */}
+                <div className="print-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+                  
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>ID Pendaftaran</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.id || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Waktu Pendaftaran</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.waktu_daftar || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Lengkap Calon Siswa</div>
+                    <div className="print-field-value" style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--primary-dark)', marginTop: '2px' }}>{selectedRecord.nama_lengkap || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nomor Induk Kependudukan (NIK)</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nik_siswa || selectedRecord.nik || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Tempat, Tanggal Lahir</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.tempat_lahir || '-'}, {selectedRecord.tanggal_lahir || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jenis Kelamin</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.jenis_kelamin || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jalur Seleksi PPDB</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 700, color: '#2563eb', marginTop: '2px' }}>
+                      <span style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.2rem 0.6rem', borderRadius: '6px' }}>
+                        🚀 {selectedRecord.jalur_ppdb || '-'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Status Kelulusan Verifikasi</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 700, marginTop: '2px', color: selectedRecord.status === 'Terverifikasi' ? '#16a34a' : selectedRecord.status === 'Ditolak' ? '#dc2626' : '#ea580c' }}>
+                      <span style={{ backgroundColor: selectedRecord.status === 'Terverifikasi' ? '#f0fdf4' : selectedRecord.status === 'Ditolak' ? '#fef2f2' : '#fff7ed', border: '1px solid currentColor', padding: '0.2rem 0.6rem', borderRadius: '6px' }}>
+                        {selectedRecord.status || 'Diterima Sistem'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Ibu Kandung</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nama_ibu_kandung || selectedRecord.nama_ibu || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>No. HP Orang Tua / Wali</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>📞 {selectedRecord.nomor_hp_orangtua || selectedRecord.no_hp || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', gridColumn: 'span 2' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Alamat Tempat Tinggal (Domisili)</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px', lineHeight: '1.4' }}>{selectedRecord.alamat_domisili || selectedRecord.alamat || '-'}</div>
+                  </div>
+                </div>
+
+                {/* Catatan / Keterangan tambahan di slip */}
+                <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '2rem' }}>
+                  <h5 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>⚠️ INSTRUKSI DAFTAR ULANG:</h5>
+                  <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.75rem', color: '#475569', lineHeight: '1.6' }}>
+                    <li>Simpan atau cetak bukti pendaftaran elektronik ini secara fisik.</li>
+                    <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC KTP Orang Tua) ke SDN Bobong.</li>
+                    <li>Serahkan seluruh berkas ke Panitia PPDB di ruang sekretariat pada jam kerja (08:00 - 12:00 WITA) untuk validasi berkas fisik.</li>
+                  </ol>
+                </div>
+
+                {/* Signature Block */}
+                <div className="print-footer-signature" style={{ marginTop: '4rem', display: 'grid', gridTemplateColumns: '1fr 1fr', textAlign: 'center' }}>
+                  <div className="signature-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '120px' }}>
+                    <span style={{ fontSize: '0.85rem', color: '#475569' }}>Pendaftar / Orang Tua</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, borderTop: '1px solid #94a3b8', width: '150px', paddingTop: '4px' }}>{selectedRecord.nama_ibu_kandung || selectedRecord.nama_ibu || 'Orang Tua Wali'}</span>
+                  </div>
+                  <div className="signature-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '120px' }}>
+                    <span style={{ fontSize: '0.85rem', color: '#475569' }}>Panitia PPDB SDN Bobong</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, borderTop: '1px solid #94a3b8', width: '150px', paddingTop: '4px' }}>Nama Petugas Verifikator</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Modal Footer (No Print) */}
+            <div className="no-print" style={{ display: 'flex', gap: '0.75rem', padding: '1.25rem 1.75rem', borderTop: '1px solid #f1f5f9', backgroundColor: '#ffffff', borderRadius: '0 0 16px 16px', justifyContent: 'flex-end' }}>
+              <button 
+                type="button" 
+                className="btn btn-secondary" 
+                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                onClick={() => { setIsDetailModalOpen(false); setSelectedRecord(null); }}
+              >
+                ✕ Tutup Detail
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-primary" 
+                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                onClick={() => window.print()}
+              >
+                🖨️ Cetak Bukti Pendaftaran (Slip)
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT AGENDA EVENT ================= */}
+      {agendaModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingEvent ? '✏️ Edit Agenda Kegiatan' : '➕ Tambah Agenda Sekolah Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => { setAgendaModalOpen(false); setEditingEvent(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveAgendaEvent} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="event_month" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Bulan & Tahun</label>
+                  <input
+                    type="text"
+                    id="event_month"
+                    className="form-control"
+                    placeholder="Contoh: Juli 2025"
+                    value={eventMonth}
+                    onChange={(e) => setEventMonth(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="event_dates" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Rentang Tanggal</label>
+                  <input
+                    type="text"
+                    id="event_dates"
+                    className="form-control"
+                    placeholder="Contoh: 14 - 19 Juli 2025"
+                    value={eventDates}
+                    onChange={(e) => setEventDates(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="event_desc" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Deskripsi Kegiatan</label>
+                  <textarea
+                    id="event_desc"
+                    className="form-control"
+                    placeholder="Tulis nama kegiatan akademis atau detail agenda sekolah di sini..."
+                    value={eventDesc}
+                    onChange={(e) => setEventDesc(e.target.value)}
+                    rows="3"
+                    style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => { setAgendaModalOpen(false); setEditingEvent(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Agenda
                 </button>
               </div>
             </form>
