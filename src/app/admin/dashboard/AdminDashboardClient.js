@@ -3498,6 +3498,9 @@ export default function AdminDashboardClient({
                         style={{ width: '100%' }}
                         required
                       />
+                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                        💡 <strong>Rekomendasi:</strong> Gunakan gambar lanskap berkualitas tinggi (resolusi minimal 1920x1080) agar tidak terlihat pecah pada layar monitor komputer berukuran besar.
+                      </p>
                     </div>
 
                     <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>📤 Unggah & Terapkan Background</button>
@@ -3577,6 +3580,9 @@ export default function AdminDashboardClient({
                         onChange={handleNewsPhotoChange}
                         style={{ width: '100%' }}
                       />
+                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                        💡 <strong>Rekomendasi:</strong> Gunakan rasio landscape horizontal (16:9) agar tampilan spanduk dan galeri berita terlihat seimbang.
+                      </p>
                     </div>
                   </div>
 
@@ -5611,6 +5617,9 @@ export default function AdminDashboardClient({
                     onChange={handleTeacherPhotoChange}
                     style={{ width: '100%', boxSizing: 'border-box' }}
                   />
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                    💡 <strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.
+                  </p>
                 </div>
               </div>
 
@@ -5806,6 +5815,9 @@ export default function AdminDashboardClient({
                     onChange={handleEditTeacherPhotoChange}
                     style={{ width: '100%', boxSizing: 'border-box' }}
                   />
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                    💡 <strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.
+                  </p>
                 </div>
               </div>
 

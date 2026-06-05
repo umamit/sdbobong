@@ -366,6 +366,9 @@ export default function EditTeacherClient({ teacher }) {
                   onChange={handlePhotoChange}
                   style={{ width: '100%' }}
                 />
+                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                  💡 <strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.
+                </p>
               </div>
             </div>
             
