@@ -2197,24 +2197,60 @@ export default function AdminDashboardClient({
 
         /* Detail Modal Print Slip Styles */
         @media print {
+            html, body {
+                height: auto !important;
+                overflow: visible !important;
+                background-color: #ffffff !important;
+            }
+            .admin-dashboard-layout,
+            .main-wrapper,
+            .content-body,
+            .modal-backdrop,
+            .modal-content {
+                position: static !important;
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: #ffffff !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            /* Override nested modal body scroll */
+            .modal-content > div {
+                overflow: visible !important;
+                padding: 0 !important;
+                height: auto !important;
+                background: #ffffff !important;
+            }
+            #print-slip-container {
+                position: static !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                background-color: #ffffff !important;
+                overflow: visible !important;
+            }
             body * {
                 visibility: hidden !important;
             }
             #print-slip-container, #print-slip-container * {
                 visibility: visible !important;
             }
-            #print-slip-container {
-                position: absolute !important;
-                left: 0 !important;
-                top: 0 !important;
-                width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                box-shadow: none !important;
-                border: none !important;
-                background: #ffffff !important;
-            }
-            .no-print {
+            .no-print,
+            .sidebar,
+            .top-navbar,
+            .admin-table,
+            .table-filters,
+            .table-toolbar {
                 display: none !important;
             }
         }
@@ -5669,20 +5705,25 @@ export default function AdminDashboardClient({
                 <div className="print-header" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', borderBottom: '3px double #0f172a', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
                   <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
                   <div className="print-title" style={{ flexGrow: 1, textAlign: 'center' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN ALOR</h2>
+                    <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
                     <h3 style={{ margin: '2px 0', fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary-dark)' }}>SD NEGERI BOBONG</h3>
-                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Alamat: Bobong, Kabupaten Alor, Nusa Tenggara Timur</p>
-                    <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 12345678 | Email: sdn.bobong@gmail.com</p>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
                   </div>
                 </div>
 
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                   <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, textTransform: 'uppercase', color: '#0f172a', letterSpacing: '1px' }}>BUKTI PENDAFTARAN CALON SISWA BARU (PPDB)</h4>
-                  <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#64748b' }}>Tahun Pelajaran: 2025/2026</p>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#64748b' }}>Tahun Ajaran: 2026/2027</p>
+                </div>
+
+                {/* Subtitle Section 1 */}
+                <div style={{ borderLeft: '4px solid var(--primary-dark)', paddingLeft: '8px', marginBottom: '1.25rem', textAlign: 'left' }}>
+                  <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase' }}>A. DATA UTAMA PENDAFTARAN ONLINE (SISTEM)</h5>
                 </div>
 
                 {/* Grid Fields */}
-                <div className="print-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+                <div className="print-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 1.5rem', marginBottom: '2rem' }}>
                   
                   <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>ID Pendaftaran</div>
@@ -5745,6 +5786,44 @@ export default function AdminDashboardClient({
                   <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', gridColumn: 'span 2' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Alamat Tempat Tinggal (Domisili)</div>
                     <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px', lineHeight: '1.4' }}>{selectedRecord.alamat_domisili || selectedRecord.alamat || '-'}</div>
+                  </div>
+                </div>
+
+                {/* Subtitle Section 2 */}
+                <div style={{ borderLeft: '4px solid #475569', paddingLeft: '8px', marginBottom: '1.25rem', marginTop: '2.5rem', textAlign: 'left' }}>
+                  <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase' }}>B. DATA PENDUKUNG VERIFIKASI (Diisi Manual / Saat Daftar Ulang)</h5>
+                </div>
+
+                {/* Grid Fields Manual */}
+                <div className="print-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 1.5rem', marginBottom: '2rem' }}>
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Lengkap Ayah Kandung</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Pekerjaan Orang Tua</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Agama Calon Siswa</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Asal Sekolah (TK / PAUD)</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Panggilan Siswa</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jumlah Bersaudara (Anak Ke)</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>Anak Ke ........ Dari ........ Bersaudara</div>
                   </div>
                 </div>
 
