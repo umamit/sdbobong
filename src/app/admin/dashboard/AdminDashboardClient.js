@@ -1347,6 +1347,10 @@ export default function AdminDashboardClient({
             display: none;
         }
 
+        .no-screen {
+            display: none !important;
+        }
+
 
         .admin-dashboard-layout {
             --sidebar-width: 280px;
@@ -2360,6 +2364,19 @@ export default function AdminDashboardClient({
             .print-only {
                 display: block !important;
             }
+
+            .no-screen {
+                display: table-row !important;
+            }
+
+            .table-custom tr {
+                page-break-inside: avoid !important;
+                keep-together: always !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom thead {
+                display: table-header-group !important;
+            }
         }
         
         .print-slip {
@@ -3055,11 +3072,12 @@ export default function AdminDashboardClient({
                     </tr>
                   </thead>
                   <tbody>
-                    {paginatedPPDB.length > 0 ? (
-                      paginatedPPDB.map((r, idx) => {
-                        const displayIndex = (ppdbPage - 1) * ppdbPerPage + idx + 1;
+                    {filteredPPDB.length > 0 ? (
+                      filteredPPDB.map((r, idx) => {
+                        const displayIndex = idx + 1;
+                        const isRowOnCurrentPage = idx >= (ppdbPage - 1) * ppdbPerPage && idx < ppdbPage * ppdbPerPage;
                         return (
-                          <tr key={r.id || idx}>
+                          <tr key={r.id || idx} className={isRowOnCurrentPage ? '' : 'no-screen'}>
                             <td style={{ textAlign: 'center', fontWeight: 600 }}>{displayIndex}</td>
                             <td>
                               <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{r.nama_lengkap}</strong><br />
@@ -3081,15 +3099,20 @@ export default function AdminDashboardClient({
                             <td style={{ maxWidth: '200px', wordWrap: 'break-word', fontSize: '0.8rem' }}>{r.alamat_domisili || r.alamat}</td>
                             <td style={{ fontSize: '0.75rem' }}>{r.waktu_daftar}</td>
                             <td>
-                              <select
-                                value={r.status}
-                                className={`status-badge-select ${r.status === 'Terverifikasi' ? 'verified' : r.status === 'Ditolak' ? 'rejected' : 'pending'}`}
-                                onChange={(e) => handleStatusChange(r.id, e.target.value)}
-                              >
-                                <option value="Diterima Sistem">Diterima Sistem</option>
-                                <option value="Terverifikasi">Terverifikasi</option>
-                                <option value="Ditolak">Ditolak</option>
-                              </select>
+                              <div className="no-print">
+                                <select
+                                  value={r.status}
+                                  className={`status-badge-select ${r.status === 'Terverifikasi' ? 'verified' : r.status === 'Ditolak' ? 'rejected' : 'pending'}`}
+                                  onChange={(e) => handleStatusChange(r.id, e.target.value)}
+                                >
+                                  <option value="Diterima Sistem">Diterima Sistem</option>
+                                  <option value="Terverifikasi">Terverifikasi</option>
+                                  <option value="Ditolak">Ditolak</option>
+                                </select>
+                              </div>
+                              <span className="print-only" style={{ fontWeight: 600, color: r.status === 'Terverifikasi' ? '#059669' : r.status === 'Ditolak' ? '#dc2626' : '#d97706' }}>
+                                {r.status}
+                              </span>
                             </td>
                             <td className="no-print" style={{ textAlign: 'center' }}>
                               <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
