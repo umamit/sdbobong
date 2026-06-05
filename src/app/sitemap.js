@@ -1,6 +1,5 @@
 export default async function sitemap() {
-  // Ganti dengan nama domain resmi Anda nanti (misalnya https://sdn-bobong.sch.id)
-  const baseUrl = 'https://sdn-bobong.sch.id'; 
+  const baseUrl = 'https://sdnegeribobong.sch.id'; 
 
   const routes = [
     '',
@@ -9,7 +8,8 @@ export default async function sitemap() {
     '/kesiswaan',
     '/ppdb',
     '/berita',
-    '/ppdb-online'
+    '/ppdb-online',
+    '/formulir-ppdb'
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

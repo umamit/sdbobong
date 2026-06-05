@@ -1,5 +1,10 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /api
+Disallow: /api/*
+Disallow: /ppdb-online/sukses
 
 User-agent: GPTBot
 Disallow: /
@@ -24,3 +29,5 @@ Disallow: /
 
 User-agent: FacebookBot
 Disallow: /
+
+Sitemap: https://sdnegeribobong.sch.id/sitemap.xml
