@@ -27,6 +27,8 @@ export default async function RootLayout({ children }) {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
         <script dangerouslySetInnerHTML={{ __html: `
           if (window.location.pathname.startsWith('/admin')) {
             document.documentElement.classList.add('is-admin');
