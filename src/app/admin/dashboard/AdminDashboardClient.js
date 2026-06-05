@@ -1339,9 +1339,13 @@ export default function AdminDashboardClient({
   };
 
   return (
-    <div className="admin-dashboard-layout">
+    <div className={`admin-dashboard-layout ${isDetailModalOpen ? 'print-detail-open' : ''}`}>
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        .print-only {
+            display: none;
+        }
 
 
         .admin-dashboard-layout {
@@ -2195,18 +2199,28 @@ export default function AdminDashboardClient({
             border-color: var(--primary);
         }
 
-        /* Detail Modal Print Slip Styles */
+        /* Unified & Adaptive Print Styles */
         @media print {
+            /* General resets for print */
             html, body {
                 height: auto !important;
                 overflow: visible !important;
                 background-color: #ffffff !important;
+                color: #000000 !important;
+                font-family: 'Plus Jakarta Sans', sans-serif !important;
             }
-            .admin-dashboard-layout,
-            .main-wrapper,
-            .content-body,
-            .modal-backdrop,
-            .modal-content {
+
+            /* 1. SCENARIO A: Printing the Individual Student Registration Slip (Modal is Open) */
+            body:has(#print-slip-container), 
+            body.print-detail-open {
+                background: #ffffff !important;
+            }
+            
+            .print-detail-open .admin-dashboard-layout,
+            .print-detail-open .main-wrapper,
+            .print-detail-open .content-body,
+            .print-detail-open .modal-backdrop,
+            .print-detail-open .modal-content {
                 position: static !important;
                 display: block !important;
                 width: 100% !important;
@@ -2221,13 +2235,14 @@ export default function AdminDashboardClient({
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
             }
-            /* Override nested modal body scroll */
-            .modal-content > div {
+
+            .print-detail-open .modal-content > div {
                 overflow: visible !important;
                 padding: 0 !important;
                 height: auto !important;
                 background: #ffffff !important;
             }
+
             #print-slip-container {
                 position: static !important;
                 width: 100% !important;
@@ -2239,19 +2254,111 @@ export default function AdminDashboardClient({
                 background-color: #ffffff !important;
                 overflow: visible !important;
             }
-            body * {
+
+            /* Hide everything under body in scenario A, except the print-slip-container */
+            body:has(#print-slip-container) * {
                 visibility: hidden !important;
             }
-            #print-slip-container, #print-slip-container * {
+            body.print-detail-open * {
+                visibility: hidden !important;
+            }
+
+            body:has(#print-slip-container) #print-slip-container,
+            body:has(#print-slip-container) #print-slip-container *,
+            body.print-detail-open #print-slip-container,
+            body.print-detail-open #print-slip-container * {
                 visibility: visible !important;
             }
+
+            /* 2. SCENARIO B: Printing the Active Tab (Student Registration List / Tables) directly */
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .admin-dashboard-layout {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .main-wrapper {
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                background-color: #ffffff !important;
+                padding: 0 !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .content-body {
+                padding: 1.5rem 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .admin-table {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: #ffffff !important;
+                overflow: visible !important;
+                display: block !important;
+                width: 100% !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-responsive {
+                overflow: visible !important;
+                margin: 0 !important;
+                border: none !important;
+                display: block !important;
+                width: 100% !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom {
+                border-collapse: collapse !important;
+                width: 100% !important;
+                display: table !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom th,
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom td {
+                border: 1px solid #cbd5e1 !important;
+                padding: 8px 10px !important;
+                color: #0f172a !important;
+                background: #ffffff !important;
+                font-size: 0.8rem !important;
+            }
+
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom th {
+                background-color: #f1f5f9 !important;
+                font-weight: 700 !important;
+            }
+
+            /* Hide interactive Actions column from printed table */
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom th:last-child,
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom td:last-child,
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom th.no-print,
+            body:not(:has(#print-slip-container)):not(.print-detail-open) .table-custom td.no-print {
+                display: none !important;
+            }
+
+            /* Universal Hides for Print */
             .no-print,
             .sidebar,
             .top-navbar,
-            .admin-table,
             .table-filters,
-            .table-toolbar {
+            .pagination-container,
+            .btn-pagination,
+            .table-toolbar .btn,
+            .table-toolbar button,
+            .modal-backdrop:not(.print-detail-open) {
                 display: none !important;
+            }
+
+            /* Print-only elements show up */
+            .print-only {
+                display: block !important;
             }
         }
         
@@ -2826,9 +2933,34 @@ export default function AdminDashboardClient({
           {/* ================= TAB: PPDB MANAGEMENT ================= */}
           <section id="tab-ppdb" className={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
             <div className="admin-table">
+              {/* Print-Only Official School Header */}
+              <div className="print-only" style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', borderBottom: '3px double #0f172a', paddingBottom: '1.5rem' }}>
+                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" style={{ width: '70px', height: '75px', objectFit: 'contain' }} />
+                  <div style={{ flexGrow: 1, textAlign: 'center' }}>
+                    <h2 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
+                    <h3 style={{ margin: '2px 0', fontSize: '1.15rem', fontWeight: 700, color: '#4f46e5' }}>SD NEGERI BOBONG</h3>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', fontWeight: 500 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.7rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'center', marginTop: '1.5rem', marginBottom: '1rem' }}>
+                  <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, textTransform: 'uppercase', color: '#0f172a', letterSpacing: '1px' }}>LAPORAN DAFTAR LENGKAP FORMULIR MASUK SISWA (PPDB)</h4>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#475569' }}>Tahun Ajaran: 2026/2027</p>
+                </div>
+              </div>
+
               <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
                 <h3>Daftar Lengkap Formulir Masuk</h3>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div className="no-print" style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button 
+                    type="button"
+                    onClick={() => window.print()} 
+                    className="btn btn-secondary" 
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                  >
+                    🖨️ Cetak Laporan (PDF)
+                  </button>
                   <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
                     📥 Ekspor Data ke Excel/CSV
                   </a>
@@ -2919,7 +3051,7 @@ export default function AdminDashboardClient({
                       <th>Alamat Lengkap</th>
                       <th>Tanggal Daftar</th>
                       <th style={{ width: '140px' }}>Status</th>
-                      <th style={{ width: '240px', textAlign: 'center' }}>Aksi</th>
+                      <th className="no-print" style={{ width: '240px', textAlign: 'center' }}>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2959,7 +3091,7 @@ export default function AdminDashboardClient({
                                 <option value="Ditolak">Ditolak</option>
                               </select>
                             </td>
-                            <td style={{ textAlign: 'center' }}>
+                            <td className="no-print" style={{ textAlign: 'center' }}>
                               <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
                                 <button
                                   type="button"
@@ -3011,7 +3143,7 @@ export default function AdminDashboardClient({
 
               {/* Premium Pagination System */}
               {totalPPDBPages > 1 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', padding: '1rem', backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '1rem' }}>
+                <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem', padding: '1rem', backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '1rem' }}>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                     Menampilkan <strong>{Math.min(filteredPPDB.length, (ppdbPage - 1) * ppdbPerPage + 1)}-{Math.min(filteredPPDB.length, ppdbPage * ppdbPerPage)}</strong> dari total <strong>{filteredPPDB.length}</strong> pendaftar
                   </div>
