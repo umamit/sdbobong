@@ -4,6 +4,76 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+// Client-side image compression using HTML5 Canvas (Zero-dependency, lightweight)
+const compressImage = (file, maxW = 1920, maxH = 1080, quality = 0.8) => {
+  return new Promise((resolve) => {
+    if (!file) {
+      resolve(file);
+      return;
+    }
+
+    // Skip if not a compressable image or is vector/animated format (SVG, GIF)
+    const isImage = file.type.startsWith('image/');
+    const isSvg = file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg');
+    const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+
+    if (!isImage || isSvg || isGif) {
+      resolve(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        // Scale down dimensions if exceeding max boundaries
+        if (width > maxW || height > maxH) {
+          const ratio = Math.min(maxW / width, maxH / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            resolve(file);
+            return;
+          }
+
+          // Use compressed file only if it's smaller than the original
+          if (blob.size < file.size) {
+            const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+            resolve(compressedFile);
+          } else {
+            resolve(file);
+          }
+        }, 'image/jpeg', quality);
+      };
+      img.onerror = () => resolve(file);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(file);
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function AdminDashboardClient({
   initialConfig,
   initialNewsList,
@@ -278,12 +348,20 @@ export default function AdminDashboardClient({
       formData.append('page_name', pageName);
       formData.append('page_data', JSON.stringify(updatedData));
       
-      // Append any file uploads
-      Object.keys(fileFields).forEach(key => {
+      showToast('info', 'Menyiapkan berkas media...');
+
+      // Append any file uploads, compressing images on the fly
+      for (const key of Object.keys(fileFields)) {
         if (fileFields[key]) {
-          formData.append(key, fileFields[key]);
+          const file = fileFields[key];
+          if (file instanceof File) {
+            const compressed = await compressImage(file);
+            formData.append(key, compressed);
+          } else {
+            formData.append(key, file);
+          }
         }
-      });
+      }
 
       const res = await fetch('/api/config', {
         method: 'POST',
@@ -841,17 +919,29 @@ export default function AdminDashboardClient({
         showToast('danger', `Durasi video adalah ${duration.toFixed(1)} detik. Maksimal durasi video yang diperbolehkan adalah 10 detik!`);
         return;
       }
+
+      // Friendly educational warning for large videos > 3MB
+      if (file.size > 3 * 1024 * 1024) {
+        showToast('warning', 'Pemberitahuan: Ukuran berkas video cukup besar (>3MB). Sangat disarankan untuk mengompresi video terlebih dahulu sebelum mengunggah agar halaman beranda tetap ringan dimuat oleh pengunjung.');
+      }
     }
 
-    // Limit maximum file size (20MB for video, 2MB for image)
-    const maxSize = file.type.startsWith('video/') ? 20 * 1024 * 1024 : 2 * 1024 * 1024;
-    if (file.size > maxSize) {
-      const sizeLabel = file.type.startsWith('video/') ? '20MB' : '2MB';
-      showToast('danger', `Ukuran berkas melebihi batas maksimal (${sizeLabel}).`);
+    let uploadFile = file;
+    if (file.type.startsWith('image/')) {
+      showToast('info', 'Sedang mengompresi gambar latar belakang...');
+      uploadFile = await compressImage(file);
+    }
+
+    // Limit maximum file size (20MB for video, 2MB for image after compression)
+    const maxSize = uploadFile.type.startsWith('video/') ? 20 * 1024 * 1024 : 2 * 1024 * 1024;
+    if (uploadFile.size > maxSize) {
+      const sizeLabel = uploadFile.type.startsWith('video/') ? '20MB' : '2MB';
+      showToast('danger', `Ukuran berkas melebihi batas maksimal (${sizeLabel}). Silakan kompresi berkas terlebih dahulu.`);
       return;
     }
 
     const formData = new FormData(form);
+    formData.set('hero_bg_image', uploadFile);
 
     try {
       showToast('info', 'Sedang mengunggah berkas...');
@@ -1020,7 +1110,15 @@ export default function AdminDashboardClient({
     const form = e.target;
     const formData = new FormData(form);
 
+    const photoFile = formData.get('photo');
+    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
+      showToast('info', 'Sedang mengompresi ilustrasi berita...');
+      const compressed = await compressImage(photoFile);
+      formData.set('photo', compressed);
+    }
+
     try {
+      showToast('info', 'Sedang mempublikasikan berita...');
       const res = await fetch('/api/news', {
         method: 'POST',
         body: formData
@@ -1069,7 +1167,15 @@ export default function AdminDashboardClient({
       formData.set('image', teacherImageUrl);
     }
 
+    const photoFile = formData.get('photo');
+    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
+      showToast('info', 'Sedang mengompresi foto guru...');
+      const compressed = await compressImage(photoFile);
+      formData.set('photo', compressed);
+    }
+
     try {
+      showToast('info', 'Sedang menyimpan data guru...');
       const res = await fetch('/api/teachers', {
         method: 'POST',
         body: formData
@@ -1363,7 +1469,15 @@ export default function AdminDashboardClient({
       formData.set('image', editTeacherImageUrl);
     }
 
+    const photoFile = formData.get('photo');
+    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
+      showToast('info', 'Sedang mengompresi foto guru...');
+      const compressed = await compressImage(photoFile);
+      formData.set('photo', compressed);
+    }
+
     try {
+      showToast('info', 'Sedang memperbarui data guru...');
       const res = await fetch('/api/teachers', {
         method: 'PUT',
         body: formData
