@@ -224,7 +224,7 @@ export async function loadWebConfig() {
     downloads: [
       { id: "dl-1", title: "Brosur Informasi PPDB 2026/2027", category: "PPDB", fileUrl: "/files/brosur-ppdb-2026.pdf", date: "2026-05-01" },
       { id: "dl-2", title: "Kalender Akademik 2026/2027", category: "Akademik", fileUrl: "/files/kalender-akademik-2026.pdf", date: "2026-05-15" },
-      { id: "dl-3", title: "Formulir Pendaftaran PPDB Offline", category: "PPDB", fileUrl: "/files/formulir-ppdb-2026.pdf", date: "2026-05-01" }
+      { id: "dl-3", title: "Formulir Pendaftaran PPDB Offline", category: "PPDB", fileUrl: "/formulir-ppdb", date: "2026-05-01" }
     ],
     faqs: [
       { id: "faq-1", question: "Kapan pendaftaran PPDB online SDN Bobong dibuka?", answer: "Pendaftaran PPDB online SDN Bobong dibuka mulai tanggal 1 Mei hingga 30 Juni 2026 untuk Tahun Ajaran 2026/2027." },
