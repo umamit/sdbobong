@@ -2,25 +2,149 @@
     "marquee_announcements": [
         "📢 PENGUMUMAN BARU: PPDB 2026/2027 Telah Aktif!",
         "📅 INFO: Ujian Akhir Semester Genap dilaksanakan Juni 2026.",
-        "🌟 PRESTASI: SDN Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
+        "🌟 PRESTASI: SD Negeri Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
     ],
     "stats": {
-        "guru_staf": 14,
+        "guru_staf": 18,
         "akreditasi": "B",
         "ruang_kelas": 9,
-        "siswa_aktif": 205,
-        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg"
+        "siswa_aktif": 340,
+        "_faqs_fallback": [
+            {
+                "id": "faq-1",
+                "answer": "Pendaftaran PPDB online SDN Bobong dibuka mulai tanggal 1 Mei hingga 30 Juni 2026 untuk Tahun Ajaran 2026/2027.",
+                "question": "Kapan pendaftaran PPDB online SDN Bobong dibuka?"
+            },
+            {
+                "id": "faq-2",
+                "answer": "Sama sekali tidak. Seluruh proses pendaftaran dan seleksi PPDB di SDN Bobong gratis tanpa biaya apa pun (Rp 0).",
+                "question": "Apakah pendaftaran di SDN Bobong dipungut biaya?"
+            },
+            {
+                "id": "faq-3",
+                "answer": "Anda dapat mengunjungi halaman 'Kelulusan' di website ini dan memasukkan nomor NISN atau nomor ujian peserta untuk melihat status kelulusan secara mandiri.",
+                "question": "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?"
+            }
+        ],
+        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
+        "_gallery_fallback": [
+            {
+                "id": "gal-1",
+                "url": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
+                "date": "2026-05-24",
+                "type": "image",
+                "title": "Upacara Bendera Hari Senin"
+            },
+            {
+                "id": "gal-2",
+                "url": "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+                "date": "2026-05-18",
+                "type": "image",
+                "title": "Kegiatan Belajar Mengajar Outdoor"
+            },
+            {
+                "id": "gal-3",
+                "url": "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800",
+                "date": "2026-05-10",
+                "type": "image",
+                "title": "Lomba Pramuka Tingkat Kabupaten"
+            }
+        ],
+        "_downloads_fallback": [
+            {
+                "id": "dl-1",
+                "date": "2026-05-01",
+                "title": "Brosur Informasi PPDB 2026/2027",
+                "fileUrl": "/files/brosur-ppdb-2026.pdf",
+                "category": "PPDB"
+            },
+            {
+                "id": "dl-2",
+                "date": "2026-05-15",
+                "title": "Kalender Akademik 2026/2027",
+                "fileUrl": "/files/kalender-akademik-2026.pdf",
+                "category": "Akademik"
+            },
+            {
+                "id": "dl-3",
+                "date": "2026-05-01",
+                "title": "Formulir Pendaftaran PPDB Offline",
+                "fileUrl": "/formulir-ppdb",
+                "category": "PPDB"
+            }
+        ]
     },
     "ppdb_contacts": {
-        "wa_humas": "6281340123456",
+        "wa_humas": "6281340123496",
         "nama_humas": "Hidayat N.",
         "wa_floating": "6282292111638",
-        "wa_operator": "6281356701023",
+        "wa_operator": "6281356701091",
         "jabatan_humas": "Guru",
-        "nip_humas": "19900815 201503 1 005",
-        "nama_operator": "Ami Wambes, S.Pd",
-        "jabatan_operator": "Guru Kelas 4a",
-        "nip_operator": ""
+        "nama_operator": "Hermin Majapahit",
+        "jabatan_operator": "Operator/Guru Kelas 3C"
     },
-    "force_local_cache": false
+    "force_local_cache": false,
+    "downloads": [
+        {
+            "id": "dl-1",
+            "date": "2026-05-01",
+            "title": "Brosur Informasi PPDB 2026/2027",
+            "fileUrl": "/files/brosur-ppdb-2026.pdf",
+            "category": "PPDB"
+        },
+        {
+            "id": "dl-2",
+            "date": "2026-05-15",
+            "title": "Kalender Akademik 2026/2027",
+            "fileUrl": "/files/kalender-akademik-2026.pdf",
+            "category": "Akademik"
+        },
+        {
+            "id": "dl-3",
+            "date": "2026-05-01",
+            "title": "Formulir Pendaftaran PPDB Offline",
+            "fileUrl": "/formulir-ppdb",
+            "category": "PPDB"
+        }
+    ],
+    "faqs": [
+        {
+            "id": "faq-1",
+            "answer": "Pendaftaran PPDB online SDN Bobong dibuka mulai tanggal 1 Mei hingga 30 Juni 2026 untuk Tahun Ajaran 2026/2027.",
+            "question": "Kapan pendaftaran PPDB online SDN Bobong dibuka?"
+        },
+        {
+            "id": "faq-2",
+            "answer": "Sama sekali tidak. Seluruh proses pendaftaran dan seleksi PPDB di SDN Bobong gratis tanpa biaya apa pun (Rp 0).",
+            "question": "Apakah pendaftaran di SDN Bobong dipungut biaya?"
+        },
+        {
+            "id": "faq-3",
+            "answer": "Anda dapat mengunjungi halaman 'Kelulusan' di website ini dan memasukkan nomor NISN atau nomor ujian peserta untuk melihat status kelulusan secara mandiri.",
+            "question": "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?"
+        }
+    ],
+    "gallery": [
+        {
+            "id": "gal-1",
+            "url": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
+            "date": "2026-05-24",
+            "type": "image",
+            "title": "Upacara Bendera Hari Senin"
+        },
+        {
+            "id": "gal-2",
+            "url": "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+            "date": "2026-05-18",
+            "type": "image",
+            "title": "Kegiatan Belajar Mengajar Outdoor"
+        },
+        {
+            "id": "gal-3",
+            "url": "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800",
+            "date": "2026-05-10",
+            "type": "image",
+            "title": "Lomba Pramuka Tingkat Kabupaten"
+        }
+    ]
 }

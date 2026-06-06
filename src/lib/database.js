@@ -243,6 +243,15 @@ export async function loadWebConfig() {
     try {
       const loaded = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
       localConfig = { ...localConfig, ...loaded };
+      if (localConfig.stats?._downloads_fallback && !localConfig.downloads) {
+        localConfig.downloads = localConfig.stats._downloads_fallback;
+      }
+      if (localConfig.stats?._faqs_fallback && !localConfig.faqs) {
+        localConfig.faqs = localConfig.stats._faqs_fallback;
+      }
+      if (localConfig.stats?._gallery_fallback && !localConfig.gallery) {
+        localConfig.gallery = localConfig.stats._gallery_fallback;
+      }
       if (!localConfig.downloads) localConfig.downloads = [];
       if (!localConfig.faqs) localConfig.faqs = [];
       if (!localConfig.gallery) localConfig.gallery = [];
@@ -265,9 +274,9 @@ export async function loadWebConfig() {
           stats: data.stats || localConfig.stats,
           ppdb_contacts: data.ppdb_contacts || localConfig.ppdb_contacts,
           force_local_cache: data.force_local_cache === true,
-          downloads: data.downloads || localConfig.downloads || [],
-          faqs: data.faqs || localConfig.faqs || [],
-          gallery: data.gallery || localConfig.gallery || []
+          downloads: data.downloads || data.stats?._downloads_fallback || localConfig.downloads || [],
+          faqs: data.faqs || data.stats?._faqs_fallback || localConfig.faqs || [],
+          gallery: data.gallery || data.stats?._gallery_fallback || localConfig.gallery || []
         };
         cachedConfig = dbConfig;
         
@@ -377,6 +386,28 @@ export function isSupabaseEnabled() {
 
 export async function saveWebConfig(config) {
   cachedConfig = config;
+  
+  // Ensure stats object is initialized
+  if (!config.stats) config.stats = {};
+  
+  // Defensively secure downloads, faqs, and gallery data inside stats fallbacks
+  if (config.downloads !== undefined) {
+    config.stats._downloads_fallback = config.downloads;
+  } else if (config.stats._downloads_fallback === undefined) {
+    config.stats._downloads_fallback = [];
+  }
+  
+  if (config.faqs !== undefined) {
+    config.stats._faqs_fallback = config.faqs;
+  } else if (config.stats._faqs_fallback === undefined) {
+    config.stats._faqs_fallback = [];
+  }
+  
+  if (config.gallery !== undefined) {
+    config.stats._gallery_fallback = config.gallery;
+  } else if (config.stats._gallery_fallback === undefined) {
+    config.stats._gallery_fallback = [];
+  }
   
   let localSaved = false;
   try {
