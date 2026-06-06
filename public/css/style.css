@@ -293,28 +293,19 @@ header {
     }
 
     .nav-link {
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
         position: relative;
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
     }
     
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0.75rem;
-        right: 0.75rem;
-        height: 2.5px;
-        background-color: var(--primary);
-        transform: scaleX(0);
-        transition: var(--transition-fast);
-        border-radius: var(--radius-full);
-    }
-    
-    .nav-link:hover::after, .nav-link.active::after {
-        transform: scaleX(1);
+    .nav-link:hover,
+    .nav-link.active {
+        background-color: rgba(11, 60, 93, 0.08);
+        color: var(--primary);
     }
 }
 
