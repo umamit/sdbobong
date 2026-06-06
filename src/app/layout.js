@@ -214,15 +214,14 @@ export default async function RootLayout({ children }) {
         {/* aim AI Virtual Assistant Widget */}
         <ChatWidget />
 
-        {/* Floating WhatsApp Button */}
+        {/* Floating WhatsApp Button (Disembunyikan sesuai permintaan pengguna)
         <a href={`https://wa.me/${floatingPhone}?text=Halo%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi...`} className="floating-wa-btn no-print public-layout-wa-btn" target="_blank" rel="noreferrer" aria-label="Hubungi Sekolah di WhatsApp">
           <svg className="icon-svg" style={{ width: '36px', height: '36px' }} viewBox="0 0 24 24">
-            {/* White speech bubble background */}
             <path fill="#ffffff" d="M12.042 2C6.556 2 2.084 6.446 2.084 11.911c0 1.739.459 3.447 1.332 4.953L2.184 21.331l4.577-1.202a8.919 8.919 0 0 0 4.291 1.093h.004c5.486 0 9.957-4.446 9.957-9.911C21.013 6.446 16.541 2 12.042 2z"/>
-            {/* WhatsApp green telephone receiver */}
             <path fill="#25D366" d="M17.79 15.398c-.187.524-1.083 1.002-1.514 1.066-.387.057-.876.082-1.413-.089-.325-.104-.743-.242-1.279-.473-2.25-.972-3.72-3.237-3.832-3.387-.112-.15-.916-1.218-.916-2.321s.579-1.646.785-1.871a.826.826 0 0 1 .599-.28c.063 0 .125.002.188.005.138.006.323-.052.504.383.187.449.636 1.553.692 1.666.056.112.075.244.019.393s-.112.243-.224.374c-.112.131-.235.293-.336.393-.113.112-.224.237-.099.458.131.225.631.959 1.304 1.554.757.664 1.523 1.012 1.804 1.113.224.112.486.044.711-.056.131-.058.544-.654.711-.879.15-.224.299-.187.504-.112s1.307.617 1.533.73c.225.112.374.168.43.263.056.094.056.543-.131 1.067z"/>
           </svg>
         </a>
+        */}
       </body>
     </html>
   );

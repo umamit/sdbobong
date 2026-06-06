@@ -1661,9 +1661,9 @@ footer {
 
 .aim-ai-container {
     position: fixed;
-    bottom: 95px; /* Tepat di atas tombol WhatsApp melayang (bottom: 25px) */
+    bottom: 25px; /* Diturunkan ke posisi paling bawah karena tombol WhatsApp melayang disembunyikan */
     right: 25px;
-    z-index: 9998; /* Berada tepat di bawah z-index tombol WA (9999) atau sejajar */
+    z-index: 9999; /* Dinaikkan ke level z-index tertinggi */
     font-family: var(--font-body);
 }
 
@@ -2148,7 +2148,7 @@ footer {
    ========================================================================== */
 @media (max-width: 480px) {
     .aim-ai-container {
-        bottom: 85px; /* Sesuaikan posisi trigger button pada layar HP */
+        bottom: 25px; /* Diturunkan di layar HP karena tombol WhatsApp disembunyikan */
         right: 15px;
     }
 
