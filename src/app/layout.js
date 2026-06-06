@@ -147,7 +147,7 @@ export default async function RootLayout({ children }) {
                 <li><Link href="/ppdb">Portal Info PPDB</Link></li>
                 <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>
                 <li><Link href="/formulir-ppdb">Formulir PPDB Offline</Link></li>
-                <li><Link href="/berita">Berita &amp; Galeri</Link></li>
+                <li><Link href="/berita">Berita Sekolah</Link></li>
               </ul>
             </div>
             <div className="footer-widget">

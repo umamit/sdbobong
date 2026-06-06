@@ -4407,7 +4407,7 @@ export default function AdminDashboardClient({
               <div className="settings-card">
                 <h3>Daftar Berita Saat Ini</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Daftar warta yang saat ini sedang aktif di halaman Berita & Galeri. Anda dapat menghapusnya jika artikel sudah usang.
+                  Daftar warta yang saat ini sedang aktif di halaman Berita Sekolah. Anda dapat menghapusnya jika artikel sudah usang.
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', maxHeight: '520px', overflowY: 'auto', paddingRight: '5px' }}>
