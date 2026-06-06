@@ -807,9 +807,54 @@ export default function AdminDashboardClient({
   const handleHeroBgUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
+    const fileInput = form.hero_bg_image;
+    const file = fileInput.files?.[0];
+
+    if (!file) {
+      showToast('danger', 'Silakan pilih berkas terlebih dahulu.');
+      return;
+    }
+
+    // Client-side validation for video duration
+    if (file.type.startsWith('video/')) {
+      const checkVideoDuration = () => {
+        return new Promise((resolve) => {
+          const video = document.createElement('video');
+          video.preload = 'metadata';
+          video.onloadedmetadata = () => {
+            window.URL.revokeObjectURL(video.src);
+            resolve(video.duration);
+          };
+          video.onerror = () => {
+            resolve(-1);
+          };
+          video.src = window.URL.createObjectURL(file);
+        });
+      };
+
+      const duration = await checkVideoDuration();
+      if (duration === -1) {
+        showToast('danger', 'Format video tidak terbaca atau rusak.');
+        return;
+      }
+      if (duration > 10.5) { // 10.5 second buffer
+        showToast('danger', `Durasi video adalah ${duration.toFixed(1)} detik. Maksimal durasi video yang diperbolehkan adalah 10 detik!`);
+        return;
+      }
+    }
+
+    // Limit maximum file size (20MB for video, 2MB for image)
+    const maxSize = file.type.startsWith('video/') ? 20 * 1024 * 1024 : 2 * 1024 * 1024;
+    if (file.size > maxSize) {
+      const sizeLabel = file.type.startsWith('video/') ? '20MB' : '2MB';
+      showToast('danger', `Ukuran berkas melebihi batas maksimal (${sizeLabel}).`);
+      return;
+    }
+
     const formData = new FormData(form);
 
     try {
+      showToast('info', 'Sedang mengunggah berkas...');
       const res = await fetch('/api/config', {
         method: 'POST',
         body: formData
@@ -3553,23 +3598,41 @@ export default function AdminDashboardClient({
               <div className="settings-card" style={{ gridColumn: 'span 2' }}>
                 <h3>Ganti Background Selamat Datang (Hero Beranda)</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Unggah gambar latar belakang baru untuk banner ucapan selamat datang di halaman Beranda utama. Format yang didukung: JPG, JPEG, PNG, SVG (Maks 2MB).
+                  Unggah gambar atau video pendek latar belakang baru untuk banner ucapan selamat datang di halaman Beranda utama. Format gambar yang didukung: JPG, JPEG, PNG, SVG (Maks 2MB). Format video pendek yang didukung: MP4, WebM, OGG, MOV, M4V (Maks 10 detik & 20MB).
                 </p>
 
                 <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                   {/* Preview */}
                   <div style={{ flex: '1', minWidth: '200px' }}>
                     <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
-                    <div style={{ 
-                      width: '100%', 
-                      height: '150px', 
-                      borderRadius: 'var(--radius-md)', 
-                      border: '1px solid var(--border-color)', 
-                      backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center',
-                      backgroundColor: '#e5e7eb'
-                    }}></div>
+                    {config.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background) ? (
+                      <video 
+                        src={config.stats.hero_background}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{ 
+                          width: '100%', 
+                          height: '150px', 
+                          borderRadius: 'var(--radius-md)', 
+                          border: '1px solid var(--border-color)', 
+                          objectFit: 'cover',
+                          backgroundColor: '#000'
+                        }}
+                      />
+                    ) : (
+                      <div style={{ 
+                        width: '100%', 
+                        height: '150px', 
+                        borderRadius: 'var(--radius-md)', 
+                        border: '1px solid var(--border-color)', 
+                        backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
+                        backgroundSize: 'cover', 
+                        backgroundPosition: 'center',
+                        backgroundColor: '#e5e7eb'
+                      }}></div>
+                    )}
                   </div>
 
                   {/* Form */}
@@ -3577,18 +3640,18 @@ export default function AdminDashboardClient({
                     <input type="hidden" name="action_type" value="hero_bg" />
                     
                     <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                      <label htmlFor="hero_bg_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Pilih File Gambar</label>
+                      <label htmlFor="hero_bg_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Pilih File Gambar atau Video Pendek (Maks 10 Detik)</label>
                       <input
                         type="file"
                         id="hero_bg_image"
                         name="hero_bg_image"
                         className="form-control"
-                        accept=".png,.jpg,.jpeg,.svg"
+                        accept=".png,.jpg,.jpeg,.svg,.mp4,.webm,.ogg,.mov,.m4v"
                         style={{ width: '100%' }}
                         required
                       />
                       <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
-                        💡 <strong>Rekomendasi:</strong> Gunakan gambar lanskap berkualitas tinggi (resolusi minimal 1920x1080) agar tidak terlihat pecah pada layar monitor komputer berukuran besar.
+                        💡 <strong>Rekomendasi:</strong> Gunakan rasio lanskap berkualitas tinggi (minimal 1920x1080). Untuk video, pastikan berdurasi maksimal 10 detik agar tidak ditolak oleh sistem pengunggahan.
                       </p>
                     </div>
 

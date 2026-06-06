@@ -31,6 +31,10 @@ export default async function Home() {
     welcome_p2: "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien."
   };
 
+  const isVideoBg = config.stats?.hero_background && (
+    /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background)
+  );
+
   const schoolSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -86,14 +90,52 @@ export default async function Home() {
       <section 
         className="hero" 
         id="hero"
-        style={config.stats?.hero_background ? {
+        style={config.stats?.hero_background && !isVideoBg ? {
           backgroundImage: `linear-gradient(135deg, rgba(11, 60, 93, 0.85) 0%, rgba(9, 34, 53, 0.9) 100%), url('${config.stats.hero_background}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         } : {}}
       >
-        {!config.stats?.hero_background && (
-          <div className="hero-overlay" style={{ backgroundImage: "url('/images/hero_school.svg')" }}></div>
+        {isVideoBg ? (
+          <>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                zIndex: 1,
+              }}
+            >
+              <source src={config.stats.hero_background} type="video/mp4" />
+              <source src={config.stats.hero_background} type="video/webm" />
+              <source src={config.stats.hero_background} type="video/ogg" />
+              <source src={config.stats.hero_background} type="video/quicktime" />
+              Your browser does not support the video tag.
+            </video>
+            {/* Dark overlay specifically for the video to ensure high readability of text */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.82) 0%, rgba(9, 34, 53, 0.87) 100%)',
+                zIndex: 1,
+              }}
+            />
+          </>
+        ) : (
+          !config.stats?.hero_background && (
+            <div className="hero-overlay" style={{ backgroundImage: "url('/images/hero_school.svg')" }}></div>
+          )
         )}
         <div className="container hero-content">
           <span className="hero-subtitle">{beranda.hero_subtitle}</span>

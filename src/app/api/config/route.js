@@ -120,18 +120,18 @@ export async function POST(request) {
     } else if (actionType === 'hero_bg') {
       const file = parsedFormData ? parsedFormData.get('hero_bg_image') : null;
       if (file && file.size > 0) {
-        const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg']);
+        const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg', 'mp4', 'webm', 'ogg', 'mov', 'm4v']);
         if (uploadedUrl === 'INVALID_TYPE') {
-          return NextResponse.json({ error: 'Format berkas tidak valid. Harus berupa gambar (png, jpg, jpeg, svg).' }, { status: 400 });
+          return NextResponse.json({ error: 'Format berkas tidak valid. Harus berupa gambar (png, jpg, jpeg, svg) atau video pendek (mp4, webm, ogg, mov, m4v).' }, { status: 400 });
         } else if (uploadedUrl === 'ERROR') {
-          return NextResponse.json({ error: 'Gagal menyimpan gambar di server.' }, { status: 500 });
+          return NextResponse.json({ error: 'Gagal menyimpan berkas di server.' }, { status: 500 });
         }
         config.stats = {
           ...(config.stats || {}),
           hero_background: uploadedUrl
         };
       } else {
-        return NextResponse.json({ error: 'Silakan pilih gambar terlebih dahulu.' }, { status: 400 });
+        return NextResponse.json({ error: 'Silakan pilih gambar atau video terlebih dahulu.' }, { status: 400 });
       }
     } else if (actionType === 'update_page_contents') {
       let pageName, pageDataStr;
