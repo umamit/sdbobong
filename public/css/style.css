@@ -1119,6 +1119,77 @@ footer {
     color: var(--secondary-light);
 }
 
+/* Footer Affiliations Styles */
+.footer-affiliations {
+    margin-bottom: var(--space-md);
+}
+
+.affiliations-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin-bottom: var(--space-md);
+    width: 100%;
+}
+
+.affiliations-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    text-align: center;
+}
+
+.affiliations-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9CA3AF;
+    font-weight: 600;
+}
+
+.affiliations-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.affiliation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.35rem var(--space-xs);
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+}
+
+.affiliation-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.affiliation-logo {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0.9) contrast(1.1);
+    transition: var(--transition-fast);
+}
+
+.affiliation-item:hover .affiliation-logo {
+    filter: brightness(1) contrast(1);
+}
+
+.affiliation-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #E5E7EB;
+}
+
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: var(--space-md);
@@ -1279,6 +1350,19 @@ footer {
     
     .footer-grid {
         grid-template-columns: 2fr 1fr 1fr;
+    }
+    
+    .affiliations-content {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--space-md);
+        text-align: left;
+    }
+    
+    .affiliations-logos {
+        justify-content: flex-start;
+        gap: var(--space-md);
     }
 }
 

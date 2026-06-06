@@ -164,6 +164,25 @@ export default async function RootLayout({ children }) {
               </div>
             </div>
           </div>
+          
+          {/* Institutional Affiliations */}
+          <div className="container footer-affiliations">
+            <div className="affiliations-divider"></div>
+            <div className="affiliations-content">
+              <span className="affiliations-label">Afiliasi Resmi:</span>
+              <div className="affiliations-logos">
+                <div className="affiliation-item" title="Pemerintah Kabupaten Pulau Taliabu">
+                  <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" />
+                  <span className="affiliation-text">Pemkab Pulau Taliabu</span>
+                </div>
+                <div className="affiliation-item" title="Dinas Pendidikan Kabupaten Pulau Taliabu">
+                  <img src="/images/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" />
+                  <span className="affiliation-text">Dinas Pendidikan Taliabu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="footer-bottom">
             <div className="container footer-bottom-flex">
               <div className="developer-note">
