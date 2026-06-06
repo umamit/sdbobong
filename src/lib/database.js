@@ -472,30 +472,59 @@ export async function loadTeachers() {
     const { data: supabaseTeachers, error } = await supabase.from("teachers_sdn_bobong").select("*");
     if (error) throw error;
 
+    // Check if NIP column exists in database dynamically
+    let hasNipColumn = false;
+    try {
+      const { error: nipError } = await supabase.from("teachers_sdn_bobong").select("nip").limit(1);
+      if (!nipError) {
+        hasNipColumn = true;
+      }
+    } catch (e) {
+      hasNipColumn = false;
+    }
+
     if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0) {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
       for (const t of localTeachers) {
-        await supabase.from("teachers_sdn_bobong").insert({
+        const insertObj = {
           id: t.id,
           name: t.name,
           role: t.role,
           details: t.details,
           status: t.status,
           image: t.image
-        });
+        };
+        if (hasNipColumn) {
+          insertObj.nip = t.nip || "";
+        }
+        await supabase.from("teachers_sdn_bobong").insert(insertObj);
       }
       return localTeachers;
     }
 
     if (supabaseTeachers) {
-      const teachersList = supabaseTeachers.map(t => ({
-        id: t.id,
-        name: t.name,
-        role: t.role,
-        details: t.details,
-        status: t.status,
-        image: t.image
-      }));
+      const teachersList = supabaseTeachers.map(t => {
+        const obj = {
+          id: t.id,
+          name: t.name,
+          role: t.role,
+          details: t.details,
+          status: t.status,
+          image: t.image
+        };
+        if (hasNipColumn) {
+          obj.nip = t.nip || "";
+        } else if (t.nip !== undefined) {
+          obj.nip = t.nip || "";
+        } else {
+          // Fallback to local cached NIP if present
+          const localMatch = localTeachers.find(lt => lt.id === t.id);
+          if (localMatch && localMatch.nip) {
+            obj.nip = localMatch.nip;
+          }
+        }
+        return obj;
+      });
 
       teachersList.sort((a, b) => {
         const roleA = (a.role || "").toLowerCase();
@@ -537,15 +566,30 @@ export async function saveTeachers(teachersList) {
 
   if (isSupabaseEnabled()) {
     try {
+      // Check if NIP column exists in database dynamically
+      let hasNipColumn = false;
+      try {
+        const { error: nipError } = await supabase.from("teachers_sdn_bobong").select("nip").limit(1);
+        if (!nipError) {
+          hasNipColumn = true;
+        }
+      } catch (e) {
+        hasNipColumn = false;
+      }
+
       for (const t of teachersList) {
-        const { error } = await supabase.from("teachers_sdn_bobong").upsert({
+        const upsertObj = {
           id: t.id,
           name: t.name,
           role: t.role,
           details: t.details,
           status: t.status,
           image: t.image
-        });
+        };
+        if (hasNipColumn) {
+          upsertObj.nip = t.nip || "";
+        }
+        const { error } = await supabase.from("teachers_sdn_bobong").upsert(upsertObj);
         if (error) throw error;
       }
 

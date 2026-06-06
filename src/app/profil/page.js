@@ -466,6 +466,11 @@ export default async function Profil() {
                     <div className="teacher-info">
                       <div className="teacher-role">{teacher.role}</div>
                       <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{teacher.name}</h3>
+                      {teacher.nip && (
+                        <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '500', marginBottom: teacher.details ? '0.15rem' : '0' }}>
+                          NIP. {teacher.nip}
+                        </div>
+                      )}
                       {teacher.details && (
                         <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 0 }}>{teacher.details}</p>
                       )}

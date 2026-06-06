@@ -342,6 +342,7 @@ export default function AdminDashboardClient({
   const [editRole, setEditRole] = useState('');
   const [editStatus, setEditStatus] = useState('PNS');
   const [editDetails, setEditDetails] = useState('');
+  const [editNip, setEditNip] = useState('');
   const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
   const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
   const [editAvatarPreview, setEditAvatarPreview] = useState('');
@@ -1186,6 +1187,7 @@ export default function AdminDashboardClient({
     setEditRole(t.role || '');
     setEditStatus(t.status || 'PNS');
     setEditDetails(t.details || '');
+    setEditNip(t.nip || '');
     
     const defaultAvatars = [
       '/images/teacher_1.png',
@@ -3692,6 +3694,9 @@ export default function AdminDashboardClient({
                             </td>
                             <td>
                               <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{t.name}</strong>
+                              {t.nip && (
+                                <><br /><span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500' }}>NIP. {t.nip}</span></>
+                              )}
                               {t.details && (
                                 <><br /><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{t.details}</span></>
                               )}
@@ -5599,6 +5604,18 @@ export default function AdminDashboardClient({
               </div>
 
               <div className="form-group">
+                <label htmlFor="teacher_nip" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NIP (Nomor Induk Pegawai - Opsional)</label>
+                <input
+                  type="text"
+                  id="teacher_nip"
+                  name="nip"
+                  className="form-control"
+                  placeholder="Contoh: 19820311 200904 2 001"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div className="form-group">
                 <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Foto / Avatar (Pilih Stok / Unggah)</label>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, backgroundColor: 'var(--bg-main)' }}>
@@ -5791,6 +5808,20 @@ export default function AdminDashboardClient({
                   style={{ width: '100%', boxSizing: 'border-box' }}
                   value={editDetails}
                   onChange={(e) => setEditDetails(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_teacher_nip" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NIP (Nomor Induk Pegawai - Opsional)</label>
+                <input
+                  type="text"
+                  id="edit_teacher_nip"
+                  name="nip"
+                  className="form-control"
+                  placeholder="Contoh: 19820311 200904 2 001"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={editNip}
+                  onChange={(e) => setEditNip(e.target.value)}
                 />
               </div>
 

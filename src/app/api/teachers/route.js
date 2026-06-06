@@ -43,6 +43,7 @@ export async function POST(request) {
     const role = formData.get('role')?.toString().trim();
     const details = formData.get('details')?.toString().trim() || "";
     const status = formData.get('status')?.toString().trim();
+    const nip = formData.get('nip')?.toString().trim() || "";
     let image = formData.get('image')?.toString().trim();
 
     // Process photo upload
@@ -111,7 +112,8 @@ export async function POST(request) {
       role,
       details,
       status,
-      image
+      image,
+      nip
     };
 
     if (role.toLowerCase().includes('kepala sekolah')) {
@@ -149,6 +151,7 @@ export async function PUT(request) {
     const role = formData.get('role')?.toString().trim();
     const details = formData.get('details')?.toString().trim() || "";
     const status = formData.get('status')?.toString().trim();
+    const nip = formData.get('nip')?.toString().trim() || "";
     let image = formData.get('image')?.toString().trim();
 
     if (!id) {
@@ -226,6 +229,7 @@ export async function PUT(request) {
     teachersList[teacherIndex].details = details;
     teachersList[teacherIndex].status = status;
     teachersList[teacherIndex].image = image;
+    teachersList[teacherIndex].nip = nip;
 
     const saved = await saveTeachers(teachersList);
 

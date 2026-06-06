@@ -10,6 +10,7 @@ export default function EditTeacherClient({ teacher }) {
   const [role, setRole] = useState(teacher.role || '');
   const [status, setStatus] = useState(teacher.status || 'PNS');
   const [details, setDetails] = useState(teacher.details || '');
+  const [nip, setNip] = useState(teacher.nip || '');
   
   const [teacherImageSelect, setTeacherImageSelect] = useState('');
   const [teacherImageUrl, setTeacherImageUrl] = useState(teacher.image || '');
@@ -318,6 +319,20 @@ export default function EditTeacherClient({ teacher }) {
                 className="form-control"
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
+                style={{ width: '100%' }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="teacher_nip" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem' }}>NIP (Nomor Induk Pegawai - Opsional)</label>
+              <input
+                type="text"
+                id="teacher_nip"
+                name="nip"
+                className="form-control"
+                value={nip}
+                onChange={(e) => setNip(e.target.value)}
+                placeholder="Contoh: 19820311 200904 2 001"
                 style={{ width: '100%' }}
               />
             </div>
