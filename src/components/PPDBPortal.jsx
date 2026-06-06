@@ -10,9 +10,11 @@ export default function PPDBPortal({ pendaftarList, config }) {
     nama_humas: "",
     wa_humas: "",
     jabatan_humas: "",
+    nip_humas: "",
     nama_operator: "",
     wa_operator: "",
-    jabatan_operator: ""
+    jabatan_operator: "",
+    nip_operator: ""
   };
 
   const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim());

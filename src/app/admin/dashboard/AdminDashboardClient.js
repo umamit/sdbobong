@@ -3381,7 +3381,7 @@ export default function AdminDashboardClient({
                   </div>
                 )}
 
-                <form onSubmit={handleContactsUpdate}>
+                 <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config.ppdb_contacts) : 'empty'}>
                   <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
                     {/* Humas */}
                     <div>
