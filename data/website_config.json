@@ -17,8 +17,10 @@
         "wa_floating": "6282292111638",
         "wa_operator": "6281356701023",
         "jabatan_humas": "Guru",
+        "nip_humas": "19900815 201503 1 005",
         "nama_operator": "Ami Wambes, S.Pd",
-        "jabatan_operator": "Guru Kelas 4a"
+        "jabatan_operator": "Guru Kelas 4a",
+        "nip_operator": ""
     },
     "force_local_cache": false
 }

@@ -805,9 +805,11 @@ export default function AdminDashboardClient({
     const nama_humas = form.nama_humas.value.trim();
     const wa_humas = form.wa_humas.value.trim();
     const jabatan_humas = form.jabatan_humas.value.trim();
+    const nip_humas = form.nip_humas.value.trim();
     const nama_operator = form.nama_operator.value.trim();
     const wa_operator = form.wa_operator.value.trim();
     const jabatan_operator = form.jabatan_operator.value.trim();
+    const nip_operator = form.nip_operator.value.trim();
     const wa_floating = form.wa_floating.value.trim();
 
     const clean_wa_humas = wa_humas.replace(/[^0-9]/g, '');
@@ -836,9 +838,11 @@ export default function AdminDashboardClient({
           nama_humas,
           wa_humas: clean_wa_humas,
           jabatan_humas,
+          nip_humas,
           nama_operator,
           wa_operator: clean_wa_operator,
           jabatan_operator,
+          nip_operator,
           wa_floating: clean_wa_floating
         })
       });
@@ -851,9 +855,11 @@ export default function AdminDashboardClient({
             nama_humas,
             wa_humas: clean_wa_humas,
             jabatan_humas,
+            nip_humas,
             nama_operator,
             wa_operator: clean_wa_operator,
             jabatan_operator,
+            nip_operator,
             wa_floating: clean_wa_floating
           }
         }));
@@ -892,14 +898,16 @@ export default function AdminDashboardClient({
           ...config.ppdb_contacts,
           nama_humas: teacher.name,
           wa_humas: cleanedPhone,
-          jabatan_humas: teacher.role || 'Humas Sekolah'
+          jabatan_humas: teacher.role || 'Humas Sekolah',
+          nip_humas: teacher.nip || ""
         };
       } else {
         updatedContacts = {
           ...config.ppdb_contacts,
           nama_operator: teacher.name,
           wa_operator: cleanedPhone,
-          jabatan_operator: teacher.role || 'Operator Sekolah'
+          jabatan_operator: teacher.role || 'Operator Sekolah',
+          nip_operator: teacher.nip || ""
         };
       }
 
@@ -3386,6 +3394,18 @@ export default function AdminDashboardClient({
                         />
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Opsional)</label>
+                        <input
+                          type="text"
+                          id="nip_humas"
+                          name="nip_humas"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.nip_humas || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: 19820310XXXXXXXXXX"
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                         <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
                         <input
                           type="text"
@@ -3424,6 +3444,18 @@ export default function AdminDashboardClient({
                           defaultValue={config.ppdb_contacts?.jabatan_operator || ''}
                           style={{ width: '100%' }}
                           placeholder="Contoh: Operator Sekolah"
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                        <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Opsional)</label>
+                        <input
+                          type="text"
+                          id="nip_operator"
+                          name="nip_operator"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.nip_operator || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: 19820310XXXXXXXXXX"
                         />
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>

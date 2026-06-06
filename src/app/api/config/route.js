@@ -32,8 +32,8 @@ export async function POST(request) {
     let announcements = [];
     let siswa_aktif, guru_staf, ruang_kelas, akreditasi;
     let force_local_cache;
-    let nama_humas, wa_humas, jabatan_humas;
-    let nama_operator, wa_operator, jabatan_operator;
+    let nama_humas, wa_humas, jabatan_humas, nip_humas;
+    let nama_operator, wa_operator, jabatan_operator, nip_operator;
     let wa_floating;
     let parsedFormData = null;
     let parsedJsonBody = null;
@@ -52,9 +52,11 @@ export async function POST(request) {
       nama_humas = body.nama_humas;
       wa_humas = body.wa_humas;
       jabatan_humas = body.jabatan_humas;
+      nip_humas = body.nip_humas;
       nama_operator = body.nama_operator;
       wa_operator = body.wa_operator;
       jabatan_operator = body.jabatan_operator;
+      nip_operator = body.nip_operator;
       wa_floating = body.wa_floating;
     } else {
       const formData = await request.formData();
@@ -73,9 +75,11 @@ export async function POST(request) {
         nama_humas = formData.get('nama_humas')?.toString().trim();
         wa_humas = formData.get('wa_humas')?.toString().trim();
         jabatan_humas = formData.get('jabatan_humas')?.toString().trim();
+        nip_humas = formData.get('nip_humas')?.toString().trim();
         nama_operator = formData.get('nama_operator')?.toString().trim();
         wa_operator = formData.get('wa_operator')?.toString().trim();
         jabatan_operator = formData.get('jabatan_operator')?.toString().trim();
+        nip_operator = formData.get('nip_operator')?.toString().trim();
         wa_floating = formData.get('wa_floating')?.toString().trim();
       }
     }
@@ -103,9 +107,11 @@ export async function POST(request) {
         nama_humas: nama_humas || '',
         wa_humas: wa_humas || '',
         jabatan_humas: jabatan_humas || '',
+        nip_humas: nip_humas || '',
         nama_operator: nama_operator || '',
         wa_operator: wa_operator || '',
         jabatan_operator: jabatan_operator || '',
+        nip_operator: nip_operator || '',
         wa_floating: wa_floating || ''
       };
     } else if (actionType === 'hero_bg') {
