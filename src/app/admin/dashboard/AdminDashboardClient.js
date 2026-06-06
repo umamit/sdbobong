@@ -261,7 +261,7 @@ export default function AdminDashboardClient({
   const [gradNisn, setGradNisn] = useState('');
   const [gradNoPeserta, setGradNoPeserta] = useState('');
   const [gradName, setGradName] = useState('');
-  const [gradStatus, setGradStatus] = useState('Lulus');
+  const [gradStatus, setGradStatus] = useState('LULUS');
   const [gradSkNumber, setGradSkNumber] = useState('');
   const [gradBirthPlace, setGradBirthPlace] = useState('');
   const [gradBirthDate, setGradBirthDate] = useState('');
@@ -1071,7 +1071,7 @@ export default function AdminDashboardClient({
         setGradNisn('');
         setGradNoPeserta('');
         setGradName('');
-        setGradStatus('Lulus');
+        setGradStatus('LULUS');
         setGradSkNumber('');
         setGradBirthPlace('');
         setGradBirthDate('');
@@ -6683,7 +6683,7 @@ export default function AdminDashboardClient({
                     setGradNisn('');
                     setGradNoPeserta('');
                     setGradName('');
-                    setGradStatus('Lulus');
+                    setGradStatus('LULUS');
                     setGradSkNumber('');
                     setGradBirthPlace('');
                     setGradBirthDate('');
@@ -6745,11 +6745,11 @@ export default function AdminDashboardClient({
                               borderRadius: '6px',
                               fontSize: '0.75rem',
                               fontWeight: 700,
-                              backgroundColor: student.status === 'Lulus' ? '#dcfce7' : '#fee2e2',
-                              color: student.status === 'Lulus' ? '#15803d' : '#b91c1c',
-                              border: student.status === 'Lulus' ? '1px solid #bbf7d0' : '1px solid #fecaca'
+                              backgroundColor: student.status?.toUpperCase() === 'LULUS' ? '#dcfce7' : '#fee2e2',
+                              color: student.status?.toUpperCase() === 'LULUS' ? '#15803d' : '#b91c1c',
+                              border: student.status?.toUpperCase() === 'LULUS' ? '1px solid #bbf7d0' : '1px solid #fecaca'
                             }}>
-                              {student.status === 'Lulus' ? '🎓 Lulus' : '❌ Tidak Lulus'}
+                              {student.status?.toUpperCase() === 'LULUS' ? '🎓 Lulus' : '❌ Tidak Lulus'}
                             </span>
                           </td>
                           <td>
@@ -6761,7 +6761,7 @@ export default function AdminDashboardClient({
                                   setGradNisn(student.nisn || '');
                                   setGradNoPeserta(student.no_peserta || '');
                                   setGradName(student.name || '');
-                                  setGradStatus(student.status || 'Lulus');
+                                  setGradStatus(student.status || 'LULUS');
                                   setGradSkNumber(student.sk_number || '');
                                   setGradBirthPlace(student.birth_place || '');
                                   setGradBirthDate(student.birth_date || '');
@@ -8013,8 +8013,8 @@ export default function AdminDashboardClient({
                     style={{ width: '100%', boxSizing: 'border-box' }}
                     required
                   >
-                    <option value="Lulus">🎓 LULUS</option>
-                    <option value="Tidak Lulus">❌ TIDAK LULUS</option>
+                    <option value="LULUS">🎓 LULUS</option>
+                    <option value="BELUM_LULUS">❌ TIDAK LULUS</option>
                   </select>
                 </div>
 

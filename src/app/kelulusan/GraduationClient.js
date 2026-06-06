@@ -11,7 +11,7 @@ export default function GraduationClient() {
 
   // Generate confetti particles on graduation success
   useEffect(() => {
-    if (student && student.status === 'LULUS') {
+    if (student && student.status?.toUpperCase() === 'LULUS') {
       const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444'];
       const particles = Array.from({ length: 50 }).map((_, i) => ({
         id: i,
@@ -63,7 +63,7 @@ export default function GraduationClient() {
     <div className="container" style={{ padding: 'var(--space-md) var(--space-sm) var(--space-xl)', position: 'relative' }}>
       
       {/* CSS Confetti Fall Overlay */}
-      {student && student.status === 'LULUS' && (
+      {student && student.status?.toUpperCase() === 'LULUS' && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 999, overflow: 'hidden' }}>
           <style>{`
             @keyframes fall {
@@ -159,7 +159,7 @@ export default function GraduationClient() {
       {/* Graduation Results Letter/Certificate */}
       {student && (
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          {student.status === 'LULUS' ? (
+          {student.status?.toUpperCase() === 'LULUS' ? (
             <div 
               className="card-custom"
               style={{
