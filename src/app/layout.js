@@ -211,7 +211,7 @@ export default async function RootLayout({ children }) {
           </div>
         </footer>
 
-        {/* Bobong-AI Virtual Assistant Widget */}
+        {/* aim AI Virtual Assistant Widget */}
         <ChatWidget />
 
         {/* Floating WhatsApp Button */}

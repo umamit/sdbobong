@@ -1651,15 +1651,15 @@ footer {
 }
 
 /* ==========================================================================
-   Bobong-AI Virtual Assistant Styles (Premium Glassmorphism)
+   aim AI Virtual Assistant Styles (Premium Glassmorphism)
    ========================================================================== */
 
 /* Menyembunyikan Asisten AI di Halaman Admin */
-.is-admin .bobong-ai-container {
+.is-admin .aim-ai-container {
     display: none !important;
 }
 
-.bobong-ai-container {
+.aim-ai-container {
     position: fixed;
     bottom: 95px; /* Tepat di atas tombol WhatsApp melayang (bottom: 25px) */
     right: 25px;
@@ -1668,7 +1668,7 @@ footer {
 }
 
 /* 1. Tombol Aktivasi Melayang (Floating AI Trigger Button) */
-.bobong-ai-trigger {
+.aim-ai-trigger {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -1685,23 +1685,23 @@ footer {
     padding: 0;
 }
 
-.bobong-ai-trigger:hover {
+.aim-ai-trigger:hover {
     transform: scale(1.1) rotate(5deg);
     box-shadow: 0 6px 20px rgba(11, 60, 93, 0.5);
     background: linear-gradient(135deg, var(--primary-light), var(--secondary));
 }
 
-.bobong-ai-trigger:active {
+.aim-ai-trigger:active {
     transform: scale(0.95);
 }
 
-.bobong-ai-trigger .ai-icon {
+.aim-ai-trigger .ai-icon {
     width: 28px;
     height: 28px;
     transition: transform 0.3s ease;
 }
 
-.bobong-ai-trigger.active .ai-icon {
+.aim-ai-trigger.active .ai-icon {
     transform: rotate(90deg);
 }
 
@@ -1721,7 +1721,7 @@ footer {
     }
 }
 
-.bobong-ai-trigger:not(.active) {
+.aim-ai-trigger:not(.active) {
     animation: ai-pulse 3s infinite ease-in-out;
 }
 
@@ -1764,7 +1764,7 @@ footer {
 }
 
 /* 2. Jendela Chat Virtual (Chat Window) */
-.bobong-ai-window {
+.aim-ai-window {
     position: absolute;
     bottom: 75px;
     right: 0;
@@ -1786,7 +1786,7 @@ footer {
     z-index: 10000;
 }
 
-.bobong-ai-window.open {
+.aim-ai-window.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
@@ -2135,12 +2135,12 @@ footer {
    Responsivitas Mobile (Mobile Responsive Adaptation)
    ========================================================================== */
 @media (max-width: 480px) {
-    .bobong-ai-container {
+    .aim-ai-container {
         bottom: 85px; /* Sesuaikan posisi trigger button pada layar HP */
         right: 15px;
     }
 
-    .bobong-ai-window {
+    .aim-ai-window {
         position: fixed;
         bottom: 0;
         right: 0;
@@ -2152,7 +2152,7 @@ footer {
         transform: translateY(100%);
     }
 
-    .bobong-ai-window.open {
+    .aim-ai-window.open {
         transform: translateY(0);
     }
 

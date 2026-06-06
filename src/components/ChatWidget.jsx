@@ -8,7 +8,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: '✨ Halo! Saya **Bobong-AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami? 😊'
+      content: '✨ Halo! Saya **aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami? 😊'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -152,13 +152,13 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="bobong-ai-container no-print">
+    <div className="aim-ai-container no-print">
       
       {/* 1. Tombol Aktivasi Melayang (Floating AI Button) */}
       <button 
-        className={`bobong-ai-trigger ${isOpen ? 'active' : ''}`}
+        className={`aim-ai-trigger ${isOpen ? 'active' : ''}`}
         onClick={toggleChat}
-        aria-label="Tanya Asisten AI Bobong"
+        aria-label="Tanya Asisten aim AI"
       >
         {isOpen ? (
           // Icon Silang (Tutup)
@@ -183,17 +183,17 @@ export default function ChatWidget() {
       </button>
 
       {/* 2. Jendela Chat Virtual (Chat Window) */}
-      <div className={`bobong-ai-window ${isOpen ? 'open' : ''}`}>
+      <div className={`aim-ai-window ${isOpen ? 'open' : ''}`}>
         
         {/* Header Jendela Chat */}
         <div className="ai-header">
           <div className="ai-header-profile">
             <div className="ai-avatar-container">
-              <img src="/images/logo_sekolah.png" alt="Logo Bobong AI" className="ai-avatar" />
+              <img src="/images/logo_sekolah.png" alt="Logo aim AI" className="ai-avatar" />
               <span className="ai-online-indicator"></span>
             </div>
             <div className="ai-title-details">
-              <h4>Bobong-AI</h4>
+              <h4>aim AI</h4>
               <span className="ai-subtitle">Asisten Virtual Sekolah</span>
             </div>
           </div>
