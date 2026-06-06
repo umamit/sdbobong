@@ -863,21 +863,38 @@ header {
 
 .extra-card {
     background: #ffffff;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.extra-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
 }
 
 .extra-img {
     height: 200px;
     width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.extra-card:hover .extra-img {
+    transform: scale(1.05);
 }
 
 .extra-body {
     padding: var(--space-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .extra-schedule {
@@ -886,8 +903,93 @@ header {
     color: var(--secondary-dark);
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    margin-top: var(--space-xs);
+    gap: 0.35rem;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-xs);
+    border-top: 1px dashed var(--border-color);
+}
+
+/* Prestasi Cards Custom Style */
+.prestasi-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.prestasi-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.prestasi-medal-bg {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    margin: 0 auto var(--space-sm) auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.prestasi-card:hover .prestasi-medal-bg {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.prestasi-ribbon {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 60px;
+    height: 60px;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.prestasi-ribbon span {
+    color: var(--primary-dark);
+    font-size: 0.8rem;
+    font-weight: 800;
+    transform: rotate(-45deg);
+}
+
+/* Pojok Karya Cards */
+.karya-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: var(--space-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.karya-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.karya-icon {
+    font-size: 3.25rem;
+    margin-bottom: var(--space-xs);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+
+.karya-card:hover .karya-icon {
+    transform: scale(1.18) rotate(-8deg);
 }
 
 /* PPDB Process Section */
@@ -1331,12 +1433,14 @@ footer {
     
     .extra-card {
         flex-direction: row;
-        height: 220px;
+        min-height: 240px;
+        height: auto;
     }
     
     .extra-img {
         width: 40%;
-        height: 100%;
+        height: auto;
+        min-height: 100%;
     }
     
     .extra-body {
@@ -1344,6 +1448,7 @@ footer {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: var(--space-md) var(--space-lg);
     }
     
     .footer-grid {

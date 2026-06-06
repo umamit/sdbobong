@@ -305,6 +305,58 @@ export async function loadWebConfig() {
   return localConfig;
 }
 
+let cachedSupabaseColumns = null;
+
+export async function getAvailableSupabaseColumns() {
+  if (cachedSupabaseColumns) return cachedSupabaseColumns;
+  
+  const defaultColumns = [
+    'id', 'nama_lengkap', 'nik_siswa', 'tempat_lahir', 'tanggal_lahir', 
+    'jenis_kelamin', 'nama_ibu_kandung', 'nomor_hp_orangtua', 'alamat_domisili', 
+    'jalur_ppdb', 'waktu_daftar', 'status'
+  ];
+  
+  if (!supabase || !isSupabaseEnabled()) {
+    cachedSupabaseColumns = defaultColumns;
+    return defaultColumns;
+  }
+  
+  try {
+    const newColumns = [
+      'nama_panggilan', 'agama', 'anak_ke', 'dari_bersaudara', 
+      'nama_ayah', 'pekerjaan_ayah', 'no_hp_ayah', 
+      'pekerjaan_ibu', 'no_hp_ibu', 
+      'nama_wali', 'pekerjaan_wali'
+    ];
+    
+    // Test all 11 new columns at once to minimize queries
+    const colsToProbe = newColumns.join(', ');
+    const { error: probeError } = await supabase.from("ppdb_sdn_bobong")
+      .select(`id, ${colsToProbe}`)
+      .limit(0);
+      
+    if (!probeError) {
+      cachedSupabaseColumns = [...defaultColumns, ...newColumns];
+      return cachedSupabaseColumns;
+    } else {
+      // Test one-by-one to support partially upgraded tables
+      const existing = [...defaultColumns];
+      for (const col of newColumns) {
+        const { error: colError } = await supabase.from("ppdb_sdn_bobong").select(col).limit(0);
+        if (!colError) {
+          existing.push(col);
+        }
+      }
+      cachedSupabaseColumns = existing;
+      return existing;
+    }
+  } catch (e) {
+    console.error("Error probing Supabase columns:", e);
+    cachedSupabaseColumns = defaultColumns;
+    return defaultColumns;
+  }
+}
+
 export function isSupabaseEnabled() {
   if (!supabase) return false;
   if (cachedConfig && cachedConfig.force_local_cache === true) {
@@ -782,10 +834,12 @@ export async function syncLocalToSupabase() {
     }
 
     let syncedToSupabaseCount = 0;
+    const availableCols = await getAvailableSupabaseColumns();
 
     for (const [nik, localR] of Object.entries(localByNik)) {
       if (!supabaseByNik[nik]) {
-        const supabaseData = {
+        // Map all fields
+        const fullMap = {
           nama_lengkap: localR.nama_lengkap || "",
           nik_siswa: nik,
           tempat_lahir: localR.tempat_lahir || "",
@@ -796,8 +850,29 @@ export async function syncLocalToSupabase() {
           nomor_hp_orangtua: localR.no_hp || localR.nomor_hp_orangtua || "",
           jalur_ppdb: localR.jalur_ppdb || "Zonasi",
           waktu_daftar: localR.waktu_daftar || new Date().toISOString().replace('T', ' ').split('.')[0],
-          status: localR.status || "Diterima Sistem"
+          status: localR.status || "Diterima Sistem",
+          
+          nama_panggilan: localR.nama_panggilan || "",
+          agama: localR.agama || "",
+          anak_ke: localR.anak_ke ? parseInt(localR.anak_ke, 10) : null,
+          dari_bersaudara: localR.dari_bersaudara ? parseInt(localR.dari_bersaudara, 10) : null,
+          nama_ayah: localR.nama_ayah || "",
+          pekerjaan_ayah: localR.pekerjaan_ayah || "",
+          no_hp_ayah: localR.no_hp_ayah || "",
+          pekerjaan_ibu: localR.pekerjaan_ibu || "",
+          no_hp_ibu: localR.no_hp_ibu || "",
+          nama_wali: localR.nama_wali || "",
+          pekerjaan_wali: localR.pekerjaan_wali || ""
         };
+
+        // Filter based on columns actually present in the table
+        const supabaseData = {};
+        for (const [col, val] of Object.entries(fullMap)) {
+          if (availableCols.includes(col)) {
+            supabaseData[col] = val;
+          }
+        }
+
         try {
           await supabase.from("ppdb_sdn_bobong").insert(supabaseData);
           syncedToSupabaseCount++;
@@ -832,14 +907,25 @@ export async function syncLocalToSupabase() {
       const localFormat = {
         id: String(supabaseR.id),
         nama_lengkap: supabaseR.nama_lengkap || "",
+        nama_panggilan: supabaseR.nama_panggilan || "",
         nik: nik,
         tempat_lahir: supabaseR.tempat_lahir || "",
         tanggal_lahir: supabaseR.tanggal_lahir || "",
         jenis_kelamin: supabaseR.jenis_kelamin || "",
-        nama_ibu: supabaseR.nama_ibu_kandung || "",
-        no_hp: supabaseR.nomor_hp_orangtua || "",
+        agama: supabaseR.agama || "",
+        anak_ke: supabaseR.anak_ke !== undefined && supabaseR.anak_ke !== null ? String(supabaseR.anak_ke) : "",
+        dari_bersaudara: supabaseR.dari_bersaudara !== undefined && supabaseR.dari_bersaudara !== null ? String(supabaseR.dari_bersaudara) : "",
         alamat: supabaseR.alamat_domisili || "",
         jalur_ppdb: supabaseR.jalur_ppdb || "Zonasi",
+        nama_ayah: supabaseR.nama_ayah || "",
+        pekerjaan_ayah: supabaseR.pekerjaan_ayah || "",
+        no_hp_ayah: supabaseR.no_hp_ayah || "",
+        nama_ibu: supabaseR.nama_ibu_kandung || "",
+        pekerjaan_ibu: supabaseR.pekerjaan_ibu || "",
+        no_hp_ibu: supabaseR.no_hp_ibu || "",
+        no_hp: supabaseR.nomor_hp_orangtua || "",
+        nama_wali: supabaseR.nama_wali || "",
+        pekerjaan_wali: supabaseR.pekerjaan_wali || "",
         waktu_daftar: supabaseR.waktu_daftar || "",
         status: supabaseR.status || "Diterima Sistem"
       };
@@ -855,7 +941,8 @@ export async function syncLocalToSupabase() {
         if (["Terverifikasi", "Ditolak"].includes(existingLocal.status)) {
           localFormat.status = existingLocal.status;
         }
-        localByNik[nik] = localFormat;
+        // Merge remaining local-only details if any
+        localByNik[nik] = { ...existingLocal, ...localFormat };
       } else {
         localByNik[nik] = localFormat;
       }

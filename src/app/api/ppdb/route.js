@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled } from '../../../lib/database';
+import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 import fs from 'fs';
 import path from 'path';
@@ -64,13 +64,24 @@ export async function GET(request) {
           records = localData.map((r, idx) => ({
             id: r.id || r.nik || r.nik_siswa || String(idx + 1),
             nama_lengkap: r.nama_lengkap || "",
+            nama_panggilan: r.nama_panggilan || "",
             nik_siswa: r.nik || r.nik_siswa || "",
             tempat_lahir: r.tempat_lahir || "",
             tanggal_lahir: r.tanggal_lahir || "",
             jenis_kelamin: r.jenis_kelamin || "",
-            nama_ibu_kandung: r.nama_ibu || r.nama_ibu_kandung || "",
-            nomor_hp_orangtua: r.no_hp || r.nomor_hp_orangtua || "",
+            agama: r.agama || "",
+            anak_ke: r.anak_ke !== undefined && r.anak_ke !== null ? String(r.anak_ke) : "",
+            dari_bersaudara: r.dari_bersaudara !== undefined && r.dari_bersaudara !== null ? String(r.dari_bersaudara) : "",
             alamat_domisili: r.alamat || r.alamat_domisili || "",
+            nama_ayah: r.nama_ayah || "",
+            pekerjaan_ayah: r.pekerjaan_ayah || "",
+            no_hp_ayah: r.no_hp_ayah || "",
+            nama_ibu_kandung: r.nama_ibu || r.nama_ibu_kandung || "",
+            pekerjaan_ibu: r.pekerjaan_ibu || "",
+            no_hp_ibu: r.no_hp_ibu || "",
+            nomor_hp_orangtua: r.no_hp || r.nomor_hp_orangtua || "",
+            nama_wali: r.nama_wali || "",
+            pekerjaan_wali: r.pekerjaan_wali || "",
             jalur_ppdb: r.jalur_ppdb || "",
             waktu_daftar: r.waktu_daftar || "",
             status: r.status || "Diterima Sistem"
@@ -416,17 +427,35 @@ export async function POST(request) {
     const body = await request.json();
     const {
       nama_lengkap,
+      nama_panggilan,
       nik,
       tempat_lahir,
       tanggal_lahir,
       jenis_kelamin,
-      nama_ibu,
-      no_hp,
+      agama,
+      anak_ke,
+      dari_bersaudara,
       alamat,
-      jalur_ppdb
+      jalur_ppdb,
+      // Data Orang Tua
+      nama_ayah,
+      pekerjaan_ayah,
+      no_hp_ayah,
+      nama_ibu,
+      pekerjaan_ibu,
+      no_hp_ibu,
+      no_hp,
+      // Data Wali (Opsional)
+      nama_wali,
+      pekerjaan_wali
     } = body;
 
-    if (!nama_lengkap || !nik || !tempat_lahir || !tanggal_lahir || !jenis_kelamin || !nama_ibu || !no_hp || !alamat || !jalur_ppdb) {
+    if (
+      !nama_lengkap || !nama_panggilan || !nik || !tempat_lahir || !tanggal_lahir || 
+      !jenis_kelamin || !agama || !anak_ke || !dari_bersaudara || !alamat || !jalur_ppdb ||
+      !nama_ayah || !pekerjaan_ayah || !no_hp_ayah ||
+      !nama_ibu || !pekerjaan_ibu || !no_hp_ibu || !no_hp
+    ) {
       return NextResponse.json({ error: "Semua kolom formulir wajib diisi!" }, { status: 400 });
     }
 
@@ -440,10 +469,12 @@ export async function POST(request) {
 
     let savedToSupabase = false;
 
-    // 1. Try to save to Supabase
+    // 1. Try to save to Supabase dynamically based on existing columns
     if (supabase) {
       try {
-        const { data, error } = await supabase.from("ppdb_sdn_bobong").insert({
+        const availableCols = await getAvailableSupabaseColumns();
+        
+        const colMap = {
           nama_lengkap,
           nik_siswa: nik,
           tempat_lahir,
@@ -454,8 +485,29 @@ export async function POST(request) {
           nomor_hp_orangtua: no_hp,
           jalur_ppdb,
           waktu_daftar,
-          status
-        }).select();
+          status,
+          
+          nama_panggilan,
+          agama,
+          anak_ke: anak_ke ? parseInt(anak_ke, 10) : null,
+          dari_bersaudara: dari_bersaudara ? parseInt(dari_bersaudara, 10) : null,
+          nama_ayah,
+          pekerjaan_ayah,
+          no_hp_ayah,
+          pekerjaan_ibu,
+          no_hp_ibu,
+          nama_wali: nama_wali || "",
+          pekerjaan_wali: pekerjaan_wali || ""
+        };
+
+        const supabaseData = {};
+        for (const [col, val] of Object.entries(colMap)) {
+          if (availableCols.includes(col)) {
+            supabaseData[col] = val;
+          }
+        }
+
+        const { data, error } = await supabase.from("ppdb_sdn_bobong").insert(supabaseData).select();
 
         if (error) throw error;
         savedToSupabase = true;
@@ -464,7 +516,7 @@ export async function POST(request) {
       }
     }
 
-    // 2. Save/Append to local JSON
+    // 2. Save/Append to local JSON with ALL new fields
     let localSaved = false;
     try {
       let localRecords = [];
@@ -478,14 +530,25 @@ export async function POST(request) {
       const newRecord = {
         id: newId,
         nama_lengkap,
+        nama_panggilan,
         nik,
         tempat_lahir,
         tanggal_lahir,
         jenis_kelamin,
-        nama_ibu,
-        no_hp,
+        agama,
+        anak_ke,
+        dari_bersaudara,
         alamat,
         jalur_ppdb,
+        nama_ayah,
+        pekerjaan_ayah,
+        no_hp_ayah,
+        nama_ibu,
+        pekerjaan_ibu,
+        no_hp_ibu,
+        no_hp,
+        nama_wali: nama_wali || "",
+        pekerjaan_wali: pekerjaan_wali || "",
         waktu_daftar,
         status
       };

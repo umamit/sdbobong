@@ -7457,36 +7457,65 @@ export default function AdminDashboardClient({
                   <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase' }}>B. DATA PENDUKUNG VERIFIKASI (Diisi Manual / Saat Daftar Ulang)</h5>
                 </div>
 
-                {/* Grid Fields Manual */}
+                 {/* Grid Fields Manual -> Terisi Otomatis */}
                 <div className="print-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 1.5rem', marginBottom: '2rem' }}>
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Lengkap Ayah Kandung</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nama_ayah || '-'}</div>
                   </div>
 
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
-                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Pekerjaan Orang Tua</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Pekerjaan Ayah</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.pekerjaan_ayah || '-'}</div>
                   </div>
 
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>No. HP / WA Ayah</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.no_hp_ayah || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Pekerjaan Ibu</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.pekerjaan_ibu || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>No. HP / WA Ibu</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.no_hp_ibu || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Agama Calon Siswa</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.agama || '-'}</div>
                   </div>
 
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
-                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Asal Sekolah (TK / PAUD)</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
-                  </div>
-
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Panggilan Siswa</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>........................................................................</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nama_panggilan || '-'}</div>
                   </div>
 
-                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem' }}>
-                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jumlah Bersaudara (Anak Ke)</div>
-                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '4px' }}>Anak Ke ........ Dari ........ Bersaudara</div>
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jumlah Bersaudara</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>
+                      Anak ke {selectedRecord.anak_ke || '-'} dari {selectedRecord.dari_bersaudara || '-'} bersaudara
+                    </div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Nama Wali (Jika Ada)</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nama_wali || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Pekerjaan Wali</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.pekerjaan_wali || '-'}</div>
+                  </div>
+
+                  <div className="print-field" style={{ borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.5rem', gridColumn: 'span 2' }}>
+                    <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Asal Sekolah (TK / PAUD)</div>
+                    <div className="print-field-value" style={{ fontSize: '0.95rem', color: '#475569', marginTop: '4px' }}>
+                      {selectedRecord.asal_sekolah || '....................................................................................................................'}
+                    </div>
                   </div>
                 </div>
 

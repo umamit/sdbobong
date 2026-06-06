@@ -89,16 +89,16 @@ export default async function Kesiswaan() {
               const borderCol = isFirst ? 'var(--secondary)' : 'var(--border-color)';
               
               return (
-                <div key={idx} style={{ background: 'white', border: `2px solid ${borderCol}`, borderRadius: 'var(--radius-md)', padding: 'var(--space-md)', textAlign: 'center', boxShadow: 'var(--shadow-sm)', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ position: 'absolute', top: '-10px', right: '-10px', width: '60px', height: '60px', backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol, transform: 'rotate(45deg)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingBottom: '5px' }}>
-                    <span style={{ color: 'var(--primary-dark)', fontSize: '0.8rem', fontWeight: 800, transform: 'rotate(-45deg)' }}>{pres.rank}</span>
+                <div key={idx} className="prestasi-card" style={{ border: `2px solid ${borderCol}` }}>
+                  <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
+                    <span>{pres.rank}</span>
                   </div>
-                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: badgeBg, color: badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', margin: '0 auto var(--space-xs) auto', boxShadow: 'var(--shadow-sm)' }}>
+                  <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor }}>
                     {pres.icon || '🏆'}
                   </div>
-                  <h3 style={{ fontSize: '1.15rem', marginBottom: '0.25rem' }}>{pres.title}</h3>
-                  <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{pres.level}</p>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{pres.desc}</p>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '0.35rem', color: 'var(--primary-dark)' }}>{pres.title}</h3>
+                  <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>{pres.level}</p>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 0 }}>{pres.desc}</p>
                 </div>
               );
             })}
@@ -116,11 +116,11 @@ export default async function Kesiswaan() {
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
           <div className="grid-3">
             {kesiswaan.karya && kesiswaan.karya.map((item, idx) => (
-              <div key={idx} className="card" style={{ padding: 'var(--space-md)', textAlign: 'center', borderColor: 'var(--border-color)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 'var(--space-xs)' }}>{item.icon || '🎨'}</div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: 'var(--space-xs)', color: 'var(--primary-dark)' }}>{item.title}</h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: 'var(--space-xs)' }}>{item.category}</p>
-                <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{item.desc}</p>
+              <div key={idx} className="karya-card">
+                <div className="karya-icon">{item.icon || '🎨'}</div>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
+                <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
             ))}
           </div>
