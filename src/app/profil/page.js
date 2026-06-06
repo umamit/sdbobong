@@ -226,6 +226,9 @@ export default async function Profil() {
               {kepalaSekolah ? (
                 <div style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-md)' }}>
                   <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>{kepalaSekolah.name}</div>
+                  {kepalaSekolah.nip && (
+                    <div style={{ fontSize: '0.75rem', opacity: 0.85, fontWeight: 500, margin: '2px 0' }}>NIP. {kepalaSekolah.nip}</div>
+                  )}
                   <div style={{ fontSize: '0.8rem', opacity: 0.9 }}>{kepalaSekolah.role}</div>
                 </div>
               ) : (
@@ -245,6 +248,9 @@ export default async function Profil() {
                   <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{komite.name}</div>
+                    {komite.nip && (
+                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {komite.nip}</div>
+                    )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{komite.role}</div>
                   </div>
                 ) : (
@@ -260,6 +266,9 @@ export default async function Profil() {
                   <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{tataUsaha.name}</div>
+                    {tataUsaha.nip && (
+                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {tataUsaha.nip}</div>
+                    )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{tataUsaha.role}</div>
                   </div>
                 ) : (
@@ -275,6 +284,9 @@ export default async function Profil() {
                   <div style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
+                    {bendahara.nip && (
+                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {bendahara.nip}</div>
+                    )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
                   </div>
                 ) : (
@@ -363,6 +375,11 @@ export default async function Profil() {
                       <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.2, minHeight: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {guru.name}
                       </div>
+                      {guru.nip && (
+                        <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '500', marginTop: '2px', marginBottom: '2px' }}>
+                          NIP. {guru.nip}
+                        </div>
+                      )}
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 600 }}>
                         {guru.role}
                       </div>
