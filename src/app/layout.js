@@ -173,7 +173,7 @@ export default async function RootLayout({ children }) {
               <div className="affiliations-logos">
                 <div className="affiliation-item" title="Pemerintah Kabupaten Pulau Taliabu">
                   <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" />
-                  <span className="affiliation-text">Pemkab Pulau Taliabu</span>
+                  <span className="affiliation-text">Pemerintah Kabupaten Pulau Taliabu</span>
                 </div>
                 <div className="affiliation-item" title="Dinas Pendidikan Kabupaten Pulau Taliabu">
                   <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" />
