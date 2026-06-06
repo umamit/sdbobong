@@ -345,6 +345,8 @@ export default function AdminDashboardClient({
   const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
   const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
   const [editAvatarPreview, setEditAvatarPreview] = useState('');
+  const [showTeacherUrlInput, setShowTeacherUrlInput] = useState(false);
+  const [showEditTeacherUrlInput, setShowEditTeacherUrlInput] = useState(false);
 
   const handleSejarahFileChange = (e) => {
     const file = e.target.files[0];
@@ -1203,6 +1205,7 @@ export default function AdminDashboardClient({
       setEditTeacherImageUrl(t.image || '');
     }
     setEditAvatarPreview(t.image || '');
+    setShowEditTeacherUrlInput(false);
     setEditTeacherModalOpen(true);
   };
 
@@ -3696,8 +3699,8 @@ export default function AdminDashboardClient({
                             <td>{t.role}</td>
                             <td>
                               <span className="badge" style={{
-                                backgroundColor: t.status === 'PNS' ? 'var(--primary)' : t.status === 'PPPK' ? '#E8FAF0' : '#FFF8E6',
-                                color: t.status === 'PNS' ? 'white' : t.status === 'PPPK' ? '#20BA5A' : '#D48408',
+                                backgroundColor: t.status === 'PNS' ? 'var(--primary)' : (t.status === 'PPPK' || t.status === 'PPPK PW') ? '#E8FAF0' : '#FFF8E6',
+                                color: t.status === 'PNS' ? 'white' : (t.status === 'PPPK' || t.status === 'PPPK PW') ? '#20BA5A' : '#D48408',
                                 fontWeight: 600,
                                 padding: '0.2rem 0.4rem',
                                 fontSize: '0.75rem',
@@ -5575,6 +5578,7 @@ export default function AdminDashboardClient({
                   <select id="teacher_status" name="status" className="form-control" style={{ width: '100%', boxSizing: 'border-box' }} required>
                     <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
                     <option value="PPPK">PPPK</option>
+                    <option value="PPPK PW">PPPK PW</option>
                     <option value="Honorer Daerah">Honorer Daerah</option>
                     <option value="Honorer Sekolah">Honorer Sekolah</option>
                     <option value="Komite Sekolah">Komite Sekolah</option>
@@ -5615,17 +5619,14 @@ export default function AdminDashboardClient({
                       <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
                       <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
                       <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
-                      <option value="custom">-- Input URL Gambar Kustom --</option>
+                      <option value="custom">Foto Kustom / Unggahan Aktif</option>
                     </select>
 
                     <input
-                      type="text"
+                      type="hidden"
                       id="teacher_image_url"
                       name="image"
-                      className="form-control"
                       value={teacherImageUrl}
-                      placeholder="Masukkan URL / path gambar custom"
-                      style={{ display: teacherImageSelect === 'custom' ? 'block' : 'none', width: '100%', boxSizing: 'border-box' }}
                       onChange={handleTeacherImageUrlChange}
                     />
                   </div>
@@ -5771,6 +5772,7 @@ export default function AdminDashboardClient({
                   >
                     <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
                     <option value="PPPK">PPPK</option>
+                    <option value="PPPK PW">PPPK PW</option>
                     <option value="Honorer Daerah">Honorer Daerah</option>
                     <option value="Honorer Sekolah">Honorer Sekolah</option>
                     <option value="Komite Sekolah">Komite Sekolah</option>
@@ -5813,17 +5815,14 @@ export default function AdminDashboardClient({
                       <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
                       <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
                       <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
-                      <option value="custom">-- Input URL Gambar Kustom --</option>
+                      <option value="custom">Foto Kustom / Unggahan Aktif</option>
                     </select>
 
                     <input
-                      type="text"
+                      type="hidden"
                       id="edit_teacher_image_url"
                       name="image"
-                      className="form-control"
                       value={editTeacherImageUrl}
-                      placeholder="Masukkan URL / path gambar custom"
-                      style={{ display: editTeacherImageSelect === 'custom' ? 'block' : 'none', width: '100%', boxSizing: 'border-box' }}
                       onChange={handleEditTeacherImageUrlChange}
                     />
                   </div>

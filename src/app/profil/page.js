@@ -444,7 +444,7 @@ export default async function Profil() {
             {nonKomiteTeachers.length > 0 ? (
               nonKomiteTeachers.map((teacher) => {
                 const isPNS = teacher.status === 'PNS';
-                const isPPPK = teacher.status === 'PPPK';
+                const isPPPK = teacher.status === 'PPPK' || teacher.status === 'PPPK PW';
                 const isKomite = teacher.status === 'Komite Sekolah';
                 const statusStyle = isPNS 
                   ? { color: 'white', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }

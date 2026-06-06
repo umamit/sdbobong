@@ -14,6 +14,7 @@ export default function EditTeacherClient({ teacher }) {
   const [teacherImageSelect, setTeacherImageSelect] = useState('');
   const [teacherImageUrl, setTeacherImageUrl] = useState(teacher.image || '');
   const [avatarPreview, setAvatarPreview] = useState(teacher.image || '');
+  const [showUrlInput, setShowUrlInput] = useState(false);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -300,6 +301,7 @@ export default function EditTeacherClient({ teacher }) {
                 >
                   <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
                   <option value="PPPK">PPPK</option>
+                  <option value="PPPK PW">PPPK PW</option>
                   <option value="Honorer Daerah">Honorer Daerah</option>
                   <option value="Honorer Sekolah">Honorer Sekolah</option>
                   <option value="Komite Sekolah">Komite Sekolah</option>
@@ -341,17 +343,14 @@ export default function EditTeacherClient({ teacher }) {
                     <option value="/images/teacher_5.png">Template Pas Foto Hijab (Putih)</option>
                     <option value="/images/teacher_7.jpg">Foto Ibu Guru Husnita (teacher_7.jpg)</option>
                     <option value="/images/principal.svg">Stok Ilustrasi Kepala Sekolah (principal.svg)</option>
-                    <option value="custom">-- Input URL Gambar Kustom --</option>
+                    <option value="custom">Foto Kustom / Unggahan Aktif</option>
                   </select>
                   
                   <input
-                    type="text"
+                    type="hidden"
                     id="teacher_image_url"
-                    className="form-control"
                     value={teacherImageUrl}
                     onChange={handleImageUrlChange}
-                    placeholder="Masukkan URL / path gambar custom"
-                    style={{ width: '100%', display: teacherImageSelect === 'custom' ? 'block' : 'none' }}
                   />
                 </div>
               </div>
