@@ -288,9 +288,16 @@ header {
 }
 
 @media (min-width: 769px) {
+    .nav-menu {
+        align-items: center;
+    }
+
     .nav-link {
         padding: 0.5rem 0.75rem;
         position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
     
     .nav-link::after {
