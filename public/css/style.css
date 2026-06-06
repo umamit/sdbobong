@@ -1384,10 +1384,24 @@ footer {
 }
 
 /* ==========================================================================
-   Header Dropdown Menu Styles (Academic & Student Affairs Menu)
+   Header Dropdown Menu Styles (Academic, Informasi, & Hubungi Kami Menus)
    ========================================================================== */
 .nav-item-dropdown {
     position: relative;
+}
+
+.nav-dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    width: auto;
 }
 
 .dropdown-menu {
@@ -1408,7 +1422,7 @@ footer {
         border: 1px solid rgba(229, 231, 235, 0.5);
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-lg);
-        min-width: 180px;
+        min-width: 200px;
         opacity: 0;
         visibility: hidden;
         transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
@@ -1440,6 +1454,13 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .nav-dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        justify-content: space-between;
+        display: flex;
+    }
+
     .dropdown-menu {
         display: none;
         background-color: rgba(0, 0, 0, 0.02);

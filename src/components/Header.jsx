@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const pathname = usePathname();
 
   // Prevent background scrolling when menu is active on mobile
@@ -24,7 +24,7 @@ export default function Header() {
   // Close menu when navigation path changes
   useEffect(() => {
     setIsOpen(false);
-    setIsDropdownOpen(false);
+    setActiveDropdown(null);
   }, [pathname]);
 
   const navLinks = [
@@ -34,16 +34,26 @@ export default function Header() {
       label: 'Akademik & Kesiswaan',
       dropdown: [
         { href: '/akademik', label: 'Akademik' },
-        { href: '/kesiswaan', label: 'Kesiswaan' }
+        { href: '/kesiswaan', label: 'Kesiswaan' },
+        { href: '/kelulusan', label: 'Kelulusan' }
       ]
     },
-    { href: '/galeri', label: 'Galeri' },
-    { href: '/unduh', label: 'Unduhan' },
-    { href: '/buku-tamu', label: 'Buku Tamu' },
-    { href: '/kelulusan', label: 'Kelulusan' },
-    { href: '/hubungi-kami', label: 'Hubungi' },
+    {
+      label: 'Informasi',
+      dropdown: [
+        { href: '/berita', label: 'Berita Sekolah' },
+        { href: '/galeri', label: 'Galeri Foto & Video' },
+        { href: '/unduh', label: 'Pusat Unduhan' }
+      ]
+    },
     { href: '/ppdb', label: 'PPDB' },
-    { href: '/berita', label: 'Berita' }
+    {
+      label: 'Hubungi Kami',
+      dropdown: [
+        { href: '/hubungi-kami', label: 'Hubungi Kami' },
+        { href: '/buku-tamu', label: 'Buku Tamu' }
+      ]
+    }
   ];
 
   return (
@@ -75,30 +85,16 @@ export default function Header() {
             {navLinks.map((link, idx) => {
               if (link.dropdown) {
                 const isSubActive = link.dropdown.some(sub => pathname === sub.href);
+                const isThisDropdownOpen = activeDropdown === idx;
                 return (
-                  <li key={idx} className={`nav-item nav-item-dropdown ${isDropdownOpen ? 'active' : ''}`}>
+                  <li key={idx} className={`nav-item nav-item-dropdown ${isThisDropdownOpen ? 'active' : ''}`}>
                     <button
                       className={`nav-link nav-dropdown-toggle ${isSubActive ? 'active' : ''}`}
                       onClick={(e) => {
                         e.preventDefault();
-                        setIsDropdownOpen(!isDropdownOpen);
+                        setActiveDropdown(isThisDropdownOpen ? null : idx);
                       }}
-                      aria-expanded={isDropdownOpen}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        width: '100%',
-                        textAlign: 'left',
-                        fontFamily: 'inherit',
-                        fontSize: 'inherit',
-                        fontWeight: 'inherit',
-                        color: 'inherit',
-                        padding: 'inherit'
-                      }}
+                      aria-expanded={isThisDropdownOpen}
                     >
                       {link.label}
                       <svg
@@ -112,7 +108,7 @@ export default function Header() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         style={{
-                          transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transform: isThisDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                           transition: 'transform 0.2s ease',
                           opacity: 0.8
                         }}
@@ -120,7 +116,7 @@ export default function Header() {
                         <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                     </button>
-                    <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
+                    <ul className={`dropdown-menu ${isThisDropdownOpen ? 'show' : ''}`}>
                       {link.dropdown.map((subLink) => {
                         const isChildActive = pathname === subLink.href;
                         return (
@@ -129,7 +125,7 @@ export default function Header() {
                               href={subLink.href}
                               className={`dropdown-link ${isChildActive ? 'active' : ''}`}
                               onClick={() => {
-                                setIsDropdownOpen(false);
+                                setActiveDropdown(null);
                                 setIsOpen(false);
                               }}
                             >
