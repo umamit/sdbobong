@@ -1092,6 +1092,22 @@ export async function loadMessages() {
   try {
     const { data: dbMessages, error } = await supabase.from("messages_sdn_bobong").select("*");
     if (!error && dbMessages) {
+      if (dbMessages.length === 0 && localMessages.length > 0) {
+        console.log("Supabase messages table is empty. Seeding from local JSON...");
+        for (const m of localMessages) {
+          await supabase.from("messages_sdn_bobong").insert({
+            id: m.id,
+            name: m.name,
+            role: m.role,
+            type: m.type,
+            message: m.message,
+            status: m.status,
+            date: m.date
+          });
+        }
+        return localMessages;
+      }
+
       const messagesList = dbMessages.map(m => ({
         id: m.id,
         name: m.name,
@@ -1170,6 +1186,24 @@ export async function loadGraduation() {
   try {
     const { data: dbGraduation, error } = await supabase.from("graduation_sdn_bobong").select("*");
     if (!error && dbGraduation) {
+      if (dbGraduation.length === 0 && localGraduation.length > 0) {
+        console.log("Supabase graduation table is empty. Seeding from local JSON...");
+        for (const g of localGraduation) {
+          await supabase.from("graduation_sdn_bobong").insert({
+            id: g.id,
+            nisn: g.nisn,
+            no_peserta: g.no_peserta,
+            name: g.name,
+            status: g.status,
+            sk_number: g.sk_number,
+            birth_place: g.birth_place,
+            birth_date: g.birth_date,
+            parent_name: g.parent_name
+          });
+        }
+        return localGraduation;
+      }
+
       const gradList = dbGraduation.map(g => ({
         id: g.id,
         nisn: g.nisn,
