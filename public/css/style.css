@@ -1705,15 +1705,27 @@ footer {
     transform: rotate(90deg);
 }
 
-/* Animasi Pulse untuk Tombol AI */
-@keyframes ai-pulse {
+/* Animasi Heartbeat untuk Tombol AI (Diselaraskan dengan Tombol WhatsApp) */
+@keyframes ai-heartbeat {
     0% {
         transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0.4), 0 4px 15px rgba(11, 60, 93, 0.35);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0.6), 0 4px 15px rgba(11, 60, 93, 0.35);
     }
-    50% {
-        transform: scale(1.04);
-        box-shadow: 0 0 0 10px rgba(11, 60, 93, 0), 0 6px 20px rgba(11, 60, 93, 0.45);
+    14% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 12px rgba(11, 60, 93, 0), 0 6px 20px rgba(11, 60, 93, 0.45);
+    }
+    28% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0), 0 4px 15px rgba(11, 60, 93, 0.35);
+    }
+    42% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 12px rgba(11, 60, 93, 0), 0 6px 20px rgba(11, 60, 93, 0.45);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0), 0 4px 15px rgba(11, 60, 93, 0.35);
     }
     100% {
         transform: scale(1);
@@ -1722,7 +1734,7 @@ footer {
 }
 
 .aim-ai-trigger:not(.active) {
-    animation: ai-pulse 3s infinite ease-in-out;
+    animation: ai-heartbeat 2.5s infinite ease-in-out;
 }
 
 /* Dot Notifikasi Penarik Minat */
