@@ -933,18 +933,67 @@ export default function AdminDashboardClient({
   };
 
   // --- 3. Gallery Handlers ---
+  const getCleanVideoUrl = (url) => {
+    if (!url) return '';
+    let cleanUrl = url.trim();
+    
+    // Extract src from iframe string if present
+    if (cleanUrl.includes('<iframe')) {
+      const match = cleanUrl.match(/src=["']([^"']+)["']/i);
+      if (match && match[1]) {
+        cleanUrl = match[1];
+      }
+    }
+    
+    // Extract video ID from youtube URLs
+    let videoId = null;
+    if (cleanUrl.includes('youtube.com/watch')) {
+      try {
+        const urlObj = new URL(cleanUrl);
+        videoId = urlObj.searchParams.get('v');
+      } catch (e) {
+        const match = cleanUrl.match(/[?&]v=([^&#]+)/);
+        if (match) videoId = match[1];
+      }
+    } else if (cleanUrl.includes('youtu.be/')) {
+      const parts = cleanUrl.split('youtu.be/');
+      if (parts.length > 1) {
+        videoId = parts[1].split(/[?#]/)[0];
+      }
+    } else if (cleanUrl.includes('youtube.com/shorts/')) {
+      const parts = cleanUrl.split('youtube.com/shorts/');
+      if (parts.length > 1) {
+        videoId = parts[1].split(/[?#]/)[0];
+      }
+    } else if (cleanUrl.includes('youtube.com/embed/')) {
+      const parts = cleanUrl.split('youtube.com/embed/');
+      if (parts.length > 1) {
+        videoId = parts[1].split(/[?#]/)[0];
+      }
+    }
+    
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    return cleanUrl;
+  };
+
   const handleSaveGalleryItem = async (e) => {
     e.preventDefault();
     const list = config.gallery || [];
     let updatedList;
+    
+    const finalUrl = galleryType === 'video' ? getCleanVideoUrl(galleryUrl) : galleryUrl.trim();
+
     if (editingGalleryItem) {
-      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle, type: galleryType, url: galleryUrl, date: galleryDate } : item);
+      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle.trim(), type: galleryType, url: finalUrl, date: galleryDate } : item);
     } else {
       const newItem = {
         id: `gal-${Date.now()}`,
-        title: galleryTitle,
+        title: galleryTitle.trim(),
         type: galleryType,
-        url: galleryUrl,
+        url: finalUrl,
         date: galleryDate || new Date().toISOString().split('T')[0]
       };
       updatedList = [...list, newItem];

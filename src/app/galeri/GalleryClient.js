@@ -2,6 +2,57 @@
 
 import { useState, useEffect } from 'react';
 
+// Helper function to extract YouTube Video ID from any format
+function getYoutubeId(url) {
+  if (!url) return null;
+  
+  let cleanUrl = url.trim();
+  
+  // 1. If it's a full iframe tag, extract the src attribute
+  if (cleanUrl.includes('<iframe')) {
+    const srcMatch = cleanUrl.match(/src=["']([^"']+)["']/i);
+    if (srcMatch && srcMatch[1]) {
+      cleanUrl = srcMatch[1];
+    }
+  }
+  
+  let videoId = null;
+  
+  // Standard watch URL: youtube.com/watch?v=ID or m.youtube.com/watch?v=ID
+  if (cleanUrl.includes('youtube.com/watch')) {
+    try {
+      const urlObj = new URL(cleanUrl);
+      videoId = urlObj.searchParams.get('v');
+    } catch (e) {
+      const match = cleanUrl.match(/[?&]v=([^&#]+)/);
+      if (match) videoId = match[1];
+    }
+  } 
+  // Short URL: youtu.be/ID
+  else if (cleanUrl.includes('youtu.be/')) {
+    const parts = cleanUrl.split('youtu.be/');
+    if (parts.length > 1) {
+      videoId = parts[1].split(/[?#]/)[0];
+    }
+  } 
+  // Shorts URL: youtube.com/shorts/ID
+  else if (cleanUrl.includes('youtube.com/shorts/')) {
+    const parts = cleanUrl.split('youtube.com/shorts/');
+    if (parts.length > 1) {
+      videoId = parts[1].split(/[?#]/)[0];
+    }
+  }
+  // Embed URL: youtube.com/embed/ID
+  else if (cleanUrl.includes('youtube.com/embed/')) {
+    const parts = cleanUrl.split('youtube.com/embed/');
+    if (parts.length > 1) {
+      videoId = parts[1].split(/[?#]/)[0];
+    }
+  }
+  
+  return videoId;
+}
+
 export default function GalleryClient({ initialGallery }) {
   const [activeItem, setActiveImage] = useState(null);
   const [selectedType, setSelectedType] = useState('Semua');
@@ -85,82 +136,89 @@ export default function GalleryClient({ initialGallery }) {
             gap: 'var(--space-md)' 
           }}
         >
-          {filteredGallery.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setActiveImage(item)}
-              style={{
-                borderRadius: 'var(--radius-md)',
-                overflow: 'hidden',
-                boxShadow: 'var(--shadow-sm)',
-                border: '4px solid white',
-                position: 'relative',
-                cursor: 'pointer',
-                aspectRatio: '4/3',
-                background: '#000'
-              }}
-              className="gallery-grid-item"
-            >
-              {/* Media Thumbnail */}
-              {item.type === 'video' ? (
-                <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                  <img
-                    src={item.thumbnail || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800"}
-                    alt={item.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '0.8' }}
-                    loading="lazy"
-                  />
-                  {/* Play Overlay */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0', left: '0', right: '0', bottom: '0',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0, 0, 0, 0.3)'
-                  }}>
+          {filteredGallery.map((item) => {
+            const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
+            const thumbUrl = ytId 
+              ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
+              : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
+
+            return (
+              <div
+                key={item.id}
+                onClick={() => setActiveImage(item)}
+                style={{
+                  borderRadius: 'var(--radius-md)',
+                  overflow: 'hidden',
+                  boxShadow: 'var(--shadow-sm)',
+                  border: '4px solid white',
+                  position: 'relative',
+                  cursor: 'pointer',
+                  aspectRatio: '4/3',
+                  background: '#000'
+                }}
+                className="gallery-grid-item"
+              >
+                {/* Media Thumbnail */}
+                {item.type === 'video' ? (
+                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    <img
+                      src={thumbUrl}
+                      alt={item.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '0.8' }}
+                      loading="lazy"
+                    />
+                    {/* Play Overlay */}
                     <div style={{
-                      width: '50px', height: '50px', borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.9)', display: 'flex',
-                      alignItems: 'center', justifyContent: 'center',
-                      boxShadow: 'var(--shadow-md)',
-                      transition: 'transform 0.2s ease'
-                    }}
-                    className="play-btn-circle"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--primary-color)" stroke="var(--primary-color)" strokeWidth="2">
-                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                      </svg>
+                      position: 'absolute',
+                      top: '0', left: '0', right: '0', bottom: '0',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: 'rgba(0, 0, 0, 0.3)'
+                    }}>
+                      <div style={{
+                        width: '50px', height: '50px', borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.9)', display: 'flex',
+                        alignItems: 'center', justifyContent: 'center',
+                        boxShadow: 'var(--shadow-md)',
+                        transition: 'transform 0.2s ease'
+                      }}
+                      className="play-btn-circle"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--primary-color)" stroke="var(--primary-color)" strokeWidth="2">
+                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <img
-                  src={item.url}
-                  alt={item.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                  loading="lazy"
-                  className="gallery-thumbnail-img"
-                />
-              )}
+                ) : (
+                  <img
+                    src={item.url}
+                    alt={item.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    loading="lazy"
+                    className="gallery-thumbnail-img"
+                  />
+                )}
 
-              {/* Title Slide up Overlay */}
-              <div 
-                style={{
-                  position: 'absolute',
-                  bottom: '0', left: '0', right: '0',
-                  padding: '12px var(--space-md)',
-                  background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                  color: 'white',
-                  transition: 'opacity 0.3s ease'
-                }}
-                className="gallery-title-overlay"
-              >
-                <p style={{ margin: '0', fontWeight: '600', fontSize: '0.9rem', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{item.title}</p>
-                <p style={{ margin: '0', fontSize: '0.75rem', color: '#ddd' }}>
-                  {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
-                </p>
+                {/* Title Slide up Overlay */}
+                <div 
+                  style={{
+                    position: 'absolute',
+                    bottom: '0', left: '0', right: '0',
+                    padding: '12px var(--space-md)',
+                    background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
+                    color: 'white',
+                    transition: 'opacity 0.3s ease'
+                  }}
+                  className="gallery-title-overlay"
+                >
+                  <p style={{ margin: '0', fontWeight: '600', fontSize: '0.9rem', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{item.title}</p>
+                  <p style={{ margin: '0', fontSize: '0.75rem', color: '#ddd' }}>
+                    {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="card-custom" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#666' }}>
@@ -206,11 +264,11 @@ export default function GalleryClient({ initialGallery }) {
           {/* Media Content */}
           <div style={{ maxWidth: '90%', maxHeight: '80%', display: 'flex', justifyContent: 'center' }}>
             {activeItem.type === 'video' ? (
-              activeItem.url.includes('youtube.com') || activeItem.url.includes('youtu.be') ? (
+              getYoutubeId(activeItem.url) ? (
                 <iframe
                   width="720"
                   height="405"
-                  src={activeItem.url.replace('watch?v=', 'embed/')}
+                  src={`https://www.youtube.com/embed/${getYoutubeId(activeItem.url)}`}
                   title={activeItem.title}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
