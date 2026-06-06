@@ -1382,3 +1382,93 @@ footer {
     padding: 0 !important;
     background-color: #f8fafc !important; /* Matches --admin-bg */
 }
+
+/* ==========================================================================
+   Header Dropdown Menu Styles (Academic & Student Affairs Menu)
+   ========================================================================== */
+.nav-item-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+}
+
+@media (min-width: 769px) {
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(229, 231, 235, 0.5);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        min-width: 180px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+        z-index: 1000;
+    }
+    
+    .nav-item-dropdown:hover .dropdown-menu,
+    .nav-item-dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    .dropdown-link {
+        display: block;
+        padding: 0.6rem 1.25rem;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition-fast);
+        text-align: left;
+    }
+    
+    .dropdown-link:hover,
+    .dropdown-link.active {
+        background-color: rgba(11, 60, 93, 0.05);
+        color: var(--primary);
+    }
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.02);
+        border-radius: var(--radius-md);
+        margin-top: 0.25rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid var(--border-color);
+    }
+    
+    .dropdown-menu.show {
+        display: block;
+    }
+    
+    .dropdown-link {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    
+    .dropdown-link:last-child {
+        border-bottom: none;
+    }
+    
+    .dropdown-link:hover,
+    .dropdown-link.active {
+        color: var(--primary);
+        background-color: rgba(11, 60, 93, 0.05);
+    }
+}

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
 
   // Prevent background scrolling when menu is active on mobile
@@ -23,13 +24,19 @@ export default function Header() {
   // Close menu when navigation path changes
   useEffect(() => {
     setIsOpen(false);
+    setIsDropdownOpen(false);
   }, [pathname]);
 
   const navLinks = [
     { href: '/', label: 'Beranda' },
     { href: '/profil', label: 'Profil' },
-    { href: '/akademik', label: 'Akademik' },
-    { href: '/kesiswaan', label: 'Kesiswaan' },
+    {
+      label: 'Akademik & Kesiswaan',
+      dropdown: [
+        { href: '/akademik', label: 'Akademik' },
+        { href: '/kesiswaan', label: 'Kesiswaan' }
+      ]
+    },
     { href: '/galeri', label: 'Galeri' },
     { href: '/unduh', label: 'Unduhan' },
     { href: '/buku-tamu', label: 'Buku Tamu' },
@@ -65,7 +72,77 @@ export default function Header() {
         {/* Navigation Links */}
         <nav className={`nav-menu-wrapper ${isOpen ? 'active' : ''}`}>
           <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
-            {navLinks.map((link) => {
+            {navLinks.map((link, idx) => {
+              if (link.dropdown) {
+                const isSubActive = link.dropdown.some(sub => pathname === sub.href);
+                return (
+                  <li key={idx} className={`nav-item nav-item-dropdown ${isDropdownOpen ? 'active' : ''}`}>
+                    <button
+                      className={`nav-link nav-dropdown-toggle ${isSubActive ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsDropdownOpen(!isDropdownOpen);
+                      }}
+                      aria-expanded={isDropdownOpen}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        width: '100%',
+                        textAlign: 'left',
+                        fontFamily: 'inherit',
+                        fontSize: 'inherit',
+                        fontWeight: 'inherit',
+                        color: 'inherit',
+                        padding: 'inherit'
+                      }}
+                    >
+                      {link.label}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                          transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.2s ease',
+                          opacity: 0.8
+                        }}
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <ul className={`dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
+                      {link.dropdown.map((subLink) => {
+                        const isChildActive = pathname === subLink.href;
+                        return (
+                          <li key={subLink.href} className="dropdown-item">
+                            <Link
+                              href={subLink.href}
+                              className={`dropdown-link ${isChildActive ? 'active' : ''}`}
+                              onClick={() => {
+                                setIsDropdownOpen(false);
+                                setIsOpen(false);
+                              }}
+                            >
+                              {subLink.label}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                );
+              }
+
               const isActive = pathname === link.href;
               return (
                 <li key={link.href} className="nav-item">
