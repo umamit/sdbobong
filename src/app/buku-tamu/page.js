@@ -1,0 +1,33 @@
+import { loadMessages } from '../../lib/database';
+import BukuTamuClient from './BukuTamuClient';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export const metadata = {
+  title: 'Buku Tamu & Kotak Saran - SD Negeri Bobong',
+  description: 'Kesan dan pesan dari para alumni, wali murid, dan masyarakat untuk SD Negeri Bobong, serta layanan penyampaian saran/aspirasi privat untuk sekolah.',
+};
+
+export default async function BukuTamuPage() {
+  const allMessages = await loadMessages();
+  // Filter only approved guestbook messages for public display
+  const approvedMessages = allMessages.filter(m => m.type === 'guestbook' && m.status === 'approved');
+
+  return (
+    <>
+      {/* Page Header */}
+      <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
+        <div className="container hero-content">
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Buku Tamu & Saran</h1>
+          <p className="hero-text" style={{ marginBottom: 0 }}>
+            Ruang komunikasi terbuka bagi alumni, wali murid, dan masyarakat untuk berbagi pesan positif serta aspirasi untuk peningkatan mutu sekolah.
+          </p>
+        </div>
+      </section>
+
+      {/* Forms & Feed */}
+      <BukuTamuClient initialApprovedMessages={approvedMessages} />
+    </>
+  );
+}

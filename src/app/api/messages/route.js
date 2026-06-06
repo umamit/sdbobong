@@ -1,0 +1,174 @@
+import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+import { createClient } from '../../../lib/supabase/server';
+import { loadMessages, saveMessages } from '../../../lib/database';
+import { verifyAdminToken } from '../../../lib/auth';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+async function checkAuth() {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get('admin_session_token')?.value;
+    if (await verifyAdminToken(token)) {
+      return true;
+    }
+
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    return !!user;
+  } catch {
+    return false;
+  }
+}
+
+// GET: Returns approved guestbook entries for public, or all entries for admin
+export async function GET() {
+  try {
+    const isAdmin = await checkAuth();
+    const allMessages = await loadMessages();
+    
+    if (isAdmin) {
+      return NextResponse.json(allMessages);
+    } else {
+      const approvedGuestbook = allMessages.filter(m => m.type === 'guestbook' && m.status === 'approved');
+      return NextResponse.json(approvedGuestbook);
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Gagal memuat pesan: " + e.message }, { status: 500 });
+  }
+}
+
+// POST: Accepts new Guest Book or Feedback submission
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const name = body.name?.toString().trim();
+    const role = body.role?.toString().trim();
+    const type = body.type?.toString().trim(); // 'guestbook' or 'feedback'
+    const message = body.message?.toString().trim();
+
+    if (!name || !role || !type || !message) {
+      return NextResponse.json({ error: "Semua kolom formulir wajib diisi!" }, { status: 400 });
+    }
+
+    if (!['guestbook', 'feedback'].includes(type)) {
+      return NextResponse.json({ error: "Tipe pesan tidak valid!" }, { status: 400 });
+    }
+
+    const allowedRoles = ['Alumni', 'Wali Murid', 'Masyarakat', 'Siswa'];
+    if (!allowedRoles.includes(role)) {
+      return NextResponse.json({ error: "Kategori pengirim tidak valid!" }, { status: 400 });
+    }
+
+    const allMessages = await loadMessages();
+    const newMsg = {
+      id: `msg-${Date.now()}`,
+      name,
+      role,
+      type,
+      message,
+      status: 'pending', // must be moderated by admin
+      date: new Date().toISOString()
+    };
+
+    allMessages.unshift(newMsg);
+    const saved = await saveMessages(allMessages);
+
+    if (saved) {
+      try {
+        revalidatePath('/buku-tamu');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in messages POST:", cacheErr);
+      }
+      return NextResponse.json({ success: true, message: newMsg });
+    } else {
+      return NextResponse.json({ error: "Gagal menyimpan pesan ke database." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
+// PUT: Moderates a message status (admin only)
+export async function PUT(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { id, status } = body;
+
+    if (!id || !status) {
+      return NextResponse.json({ error: "ID dan status moderasi wajib ditentukan." }, { status: 400 });
+    }
+
+    if (!['approved', 'rejected', 'pending'].includes(status)) {
+      return NextResponse.json({ error: "Status moderasi tidak valid." }, { status: 400 });
+    }
+
+    const allMessages = await loadMessages();
+    const index = allMessages.findIndex(m => m.id === id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: "Pesan tidak ditemukan." }, { status: 404 });
+    }
+
+    allMessages[index].status = status;
+    const saved = await saveMessages(allMessages);
+
+    if (saved) {
+      try {
+        revalidatePath('/buku-tamu');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in messages PUT:", cacheErr);
+      }
+      return NextResponse.json({ success: true, message: allMessages[index] });
+    } else {
+      return NextResponse.json({ error: "Gagal merubah status moderasi pesan." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
+// DELETE: Deletes a message (admin only)
+export async function DELETE(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: "ID pesan tidak ditentukan." }, { status: 400 });
+    }
+
+    const allMessages = await loadMessages();
+    const filteredList = allMessages.filter(m => m.id !== id);
+
+    if (filteredList.length === allMessages.length) {
+      return NextResponse.json({ error: "Pesan tidak ditemukan." }, { status: 404 });
+    }
+
+    const saved = await saveMessages(filteredList);
+
+    if (saved) {
+      try {
+        revalidatePath('/buku-tamu');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in messages DELETE:", cacheErr);
+      }
+      return NextResponse.json({ success: true });
+    } else {
+      return NextResponse.json({ error: "Gagal menghapus pesan." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}

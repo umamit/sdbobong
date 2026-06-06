@@ -194,8 +194,13 @@ export async function POST(request) {
         }
       }
 
-      // Simpan kembali konten halaman yang baru
       config.stats.page_contents[pageName] = pageData;
+    } else if (actionType === 'downloads') {
+      config.downloads = parsedJsonBody?.downloads || [];
+    } else if (actionType === 'faqs') {
+      config.faqs = parsedJsonBody?.faqs || [];
+    } else if (actionType === 'gallery') {
+      config.gallery = parsedJsonBody?.gallery || [];
     } else if (actionType === 'restore_backup') {
       const restoredConfig = parsedJsonBody?.config || parsedJsonBody?.restored_config;
       if (!restoredConfig || typeof restoredConfig !== 'object') {

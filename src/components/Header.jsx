@@ -30,6 +30,11 @@ export default function Header() {
     { href: '/profil', label: 'Profil' },
     { href: '/akademik', label: 'Akademik' },
     { href: '/kesiswaan', label: 'Kesiswaan' },
+    { href: '/galeri', label: 'Galeri' },
+    { href: '/unduh', label: 'Unduhan' },
+    { href: '/buku-tamu', label: 'Buku Tamu' },
+    { href: '/kelulusan', label: 'Kelulusan' },
+    { href: '/hubungi-kami', label: 'Hubungi' },
     { href: '/ppdb', label: 'PPDB' },
     { href: '/berita', label: 'Berita' }
   ];

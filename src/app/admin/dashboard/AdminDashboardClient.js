@@ -162,6 +162,8 @@ export default function AdminDashboardClient({
     totalFormatted: '0 B',
     isSupabaseActive: false
   },
+  initialMessages = [],
+  initialGraduation = [],
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
@@ -170,6 +172,8 @@ export default function AdminDashboardClient({
   const [newsList, setNewsList] = useState(initialNewsList);
   const [teachers, setTeachers] = useState(initialTeachers);
   const [achievements, setAchievements] = useState(initialAchievements || []);
+  const [messages, setMessages] = useState(initialMessages);
+  const [graduation, setGraduation] = useState(initialGraduation);
   const [toast, setToast] = useState(null);
   const [storageInfo, setStorageInfo] = useState(initialStorageInfo);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -219,6 +223,50 @@ export default function AdminDashboardClient({
   const [eventDates, setEventDates] = useState('');
   const [eventDesc, setEventDesc] = useState('');
   const [eventMonth, setEventMonth] = useState('Juli 2025');
+
+  // --- NEW INTEGRATED STATES FOR 5 EXTRA MAIN TABS ---
+  // Downloads States
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [editingDownload, setEditingDownload] = useState(null);
+  const [downloadTitle, setDownloadTitle] = useState('');
+  const [downloadCategory, setDownloadCategory] = useState('PPDB');
+  const [downloadFileUrl, setDownloadFileUrl] = useState('');
+  const [downloadSearch, setDownloadSearch] = useState('');
+
+  // FAQs States
+  const [faqModalOpen, setFaqModalOpen] = useState(false);
+  const [editingFaq, setEditingFaq] = useState(null);
+  const [faqQuestion, setFaqQuestion] = useState('');
+  const [faqAnswer, setFaqAnswer] = useState('');
+  const [faqSearch, setFaqSearch] = useState('');
+
+  // Gallery States
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false);
+  const [editingGalleryItem, setEditingGalleryItem] = useState(null);
+  const [galleryTitle, setGalleryTitle] = useState('');
+  const [galleryType, setGalleryType] = useState('image');
+  const [galleryUrl, setGalleryUrl] = useState('');
+  const [galleryDate, setGalleryDate] = useState('');
+  const [gallerySearch, setGallerySearch] = useState('');
+
+  // Messages States
+  const [messageSearch, setMessageSearch] = useState('');
+  const [messageFilterType, setMessageFilterType] = useState('all');
+  const [messageFilterStatus, setMessageFilterStatus] = useState('all');
+
+  // Graduation States
+  const [gradSearch, setGradSearch] = useState('');
+  const [gradModalOpen, setGradModalOpen] = useState(false);
+  const [editingGrad, setEditingGrad] = useState(null);
+  const [gradNisn, setGradNisn] = useState('');
+  const [gradNoPeserta, setGradNoPeserta] = useState('');
+  const [gradName, setGradName] = useState('');
+  const [gradStatus, setGradStatus] = useState('Lulus');
+  const [gradSkNumber, setGradSkNumber] = useState('');
+  const [gradBirthPlace, setGradBirthPlace] = useState('');
+  const [gradBirthDate, setGradBirthDate] = useState('');
+  const [gradParentName, setGradParentName] = useState('');
+
 
   useEffect(() => {
     if (config?.stats?.page_contents) {
@@ -758,6 +806,303 @@ export default function AdminDashboardClient({
   };
 
   // ================= NEW PREMIUM HANDLERS =================
+  // --- 1. Downloads Handlers ---
+  const handleSaveDownload = async (e) => {
+    e.preventDefault();
+    const list = config.downloads || [];
+    let updatedList;
+    if (editingDownload) {
+      updatedList = list.map(item => item.id === editingDownload.id ? { ...item, title: downloadTitle, category: downloadCategory, fileUrl: downloadFileUrl } : item);
+    } else {
+      const newItem = {
+        id: `dl-${Date.now()}`,
+        title: downloadTitle,
+        category: downloadCategory,
+        fileUrl: downloadFileUrl,
+        date: new Date().toISOString().split('T')[0]
+      };
+      updatedList = [...list, newItem];
+    }
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'downloads', downloads: updatedList })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Pusat Unduhan berhasil diperbarui!');
+        setConfig(prev => ({ ...prev, downloads: updatedList }));
+        setDownloadModalOpen(false);
+        setEditingDownload(null);
+        setDownloadTitle('');
+        setDownloadFileUrl('');
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui Pusat Unduhan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteDownload = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus berkas unduhan ini?')) return;
+    const list = config.downloads || [];
+    const updatedList = list.filter(item => item.id !== id);
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'downloads', downloads: updatedList })
+      });
+      if (res.ok) {
+        showToast('success', 'Berkas unduhan berhasil dihapus!');
+        setConfig(prev => ({ ...prev, downloads: updatedList }));
+        router.refresh();
+      } else {
+        showToast('danger', 'Gagal menghapus berkas unduhan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  // --- 2. FAQs Handlers ---
+  const handleSaveFaq = async (e) => {
+    e.preventDefault();
+    const list = config.faqs || [];
+    let updatedList;
+    if (editingFaq) {
+      updatedList = list.map(item => item.id === editingFaq.id ? { ...item, question: faqQuestion, answer: faqAnswer } : item);
+    } else {
+      const newItem = {
+        id: `faq-${Date.now()}`,
+        question: faqQuestion,
+        answer: faqAnswer
+      };
+      updatedList = [...list, newItem];
+    }
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'faqs', faqs: updatedList })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'FAQ Sekolah berhasil diperbarui!');
+        setConfig(prev => ({ ...prev, faqs: updatedList }));
+        setFaqModalOpen(false);
+        setEditingFaq(null);
+        setFaqQuestion('');
+        setFaqAnswer('');
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui FAQ.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteFaq = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus FAQ ini?')) return;
+    const list = config.faqs || [];
+    const updatedList = list.filter(item => item.id !== id);
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'faqs', faqs: updatedList })
+      });
+      if (res.ok) {
+        showToast('success', 'FAQ berhasil dihapus!');
+        setConfig(prev => ({ ...prev, faqs: updatedList }));
+        router.refresh();
+      } else {
+        showToast('danger', 'Gagal menghapus FAQ.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  // --- 3. Gallery Handlers ---
+  const handleSaveGalleryItem = async (e) => {
+    e.preventDefault();
+    const list = config.gallery || [];
+    let updatedList;
+    if (editingGalleryItem) {
+      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle, type: galleryType, url: galleryUrl, date: galleryDate } : item);
+    } else {
+      const newItem = {
+        id: `gal-${Date.now()}`,
+        title: galleryTitle,
+        type: galleryType,
+        url: galleryUrl,
+        date: galleryDate || new Date().toISOString().split('T')[0]
+      };
+      updatedList = [...list, newItem];
+    }
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'gallery', gallery: updatedList })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Galeri Kegiatan berhasil diperbarui!');
+        setConfig(prev => ({ ...prev, gallery: updatedList }));
+        setGalleryModalOpen(false);
+        setEditingGalleryItem(null);
+        setGalleryTitle('');
+        setGalleryUrl('');
+        setGalleryDate('');
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui galeri.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteGalleryItem = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus item galeri ini?')) return;
+    const list = config.gallery || [];
+    const updatedList = list.filter(item => item.id !== id);
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'gallery', gallery: updatedList })
+      });
+      if (res.ok) {
+        showToast('success', 'Item galeri berhasil dihapus!');
+        setConfig(prev => ({ ...prev, gallery: updatedList }));
+        router.refresh();
+      } else {
+        showToast('danger', 'Gagal menghapus item galeri.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  // --- 4. Messages / Guest Book / Feedback Handlers ---
+  const handleModerateMessage = async (id, status) => {
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `Status pesan berhasil diperbarui menjadi ${status === 'approved' ? 'DISETUJUI' : 'DITOLAK'}`);
+        setMessages(prev => prev.map(m => m.id === id ? { ...m, status } : m));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui status pesan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteMessage = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus pesan ini secara permanen?')) return;
+    try {
+      const res = await fetch(`/api/messages?id=${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Pesan berhasil dihapus secara permanen!');
+        setMessages(prev => prev.filter(m => m.id !== id));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menghapus pesan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  // --- 5. Graduation Handlers ---
+  const handleSaveGraduation = async (e) => {
+    e.preventDefault();
+    const payload = {
+      id: editingGrad ? editingGrad.id : `grad-${Date.now()}`,
+      nisn: gradNisn,
+      no_peserta: gradNoPeserta,
+      name: gradName,
+      status: gradStatus,
+      sk_number: gradSkNumber,
+      birth_place: gradBirthPlace,
+      birth_date: gradBirthDate,
+      parent_name: gradParentName
+    };
+
+    try {
+      const res = await fetch('/api/graduation', {
+        method: editingGrad ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `Data kelulusan ${gradName} berhasil ${editingGrad ? 'diperbarui' : 'ditambahkan'}!`);
+        if (editingGrad) {
+          setGraduation(prev => prev.map(item => item.id === editingGrad.id ? payload : item));
+        } else {
+          setGraduation(prev => [payload, ...prev]);
+        }
+        setGradModalOpen(false);
+        setEditingGrad(null);
+        setGradNisn('');
+        setGradNoPeserta('');
+        setGradName('');
+        setGradStatus('Lulus');
+        setGradSkNumber('');
+        setGradBirthPlace('');
+        setGradBirthDate('');
+        setGradParentName('');
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan data kelulusan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteGraduation = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus data kelulusan siswa ini secara permanen?')) return;
+    try {
+      const res = await fetch(`/api/graduation?id=${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Data kelulusan berhasil dihapus secara permanen!');
+        setGraduation(prev => prev.filter(item => item.id !== id));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menghapus data kelulusan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
   // Change Password Handler
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -1621,6 +1966,47 @@ export default function AdminDashboardClient({
            (evt.desc || '').toLowerCase().includes(query);
   });
 
+  // Computed states for Downloads Tab Search
+  const filteredDownloads = (config.downloads || []).filter(item => {
+    const q = downloadSearch.toLowerCase();
+    return (item.title || '').toLowerCase().includes(q) ||
+           (item.category || '').toLowerCase().includes(q);
+  });
+
+  // Computed states for FAQs Tab Search
+  const filteredFaqs = (config.faqs || []).filter(item => {
+    const q = faqSearch.toLowerCase();
+    return (item.question || '').toLowerCase().includes(q) ||
+           (item.answer || '').toLowerCase().includes(q);
+  });
+
+  // Computed states for Gallery Tab Search
+  const filteredGallery = (config.gallery || []).filter(item => {
+    const q = gallerySearch.toLowerCase();
+    return (item.title || '').toLowerCase().includes(q) ||
+           (item.type || '').toLowerCase().includes(q);
+  });
+
+  // Computed states for Messages Tab Search
+  const filteredMessages = messages.filter(item => {
+    const q = messageSearch.toLowerCase();
+    const matchesSearch = (item.name || '').toLowerCase().includes(q) ||
+                          (item.message || '').toLowerCase().includes(q) ||
+                          (item.role || '').toLowerCase().includes(q);
+    const matchesType = messageFilterType === 'all' || item.type === messageFilterType;
+    const matchesStatus = messageFilterStatus === 'all' || item.status === messageFilterStatus;
+    return matchesSearch && matchesType && matchesStatus;
+  });
+
+  // Computed states for Graduation Tab Search
+  const filteredGraduation = graduation.filter(item => {
+    const q = gradSearch.toLowerCase();
+    return (item.name || '').toLowerCase().includes(q) ||
+           (item.nisn || '').toLowerCase().includes(q) ||
+           (item.no_peserta || '').toLowerCase().includes(q) ||
+           (item.sk_number || '').toLowerCase().includes(q);
+  });
+
   const getPageTitle = () => {
     const titles = {
       overview: 'Ringkasan Dashboard',
@@ -1630,7 +2016,12 @@ export default function AdminDashboardClient({
       teachers: 'Manajemen Guru & Kepala Sekolah',
       achievements: 'Manajemen Prestasi Sekolah',
       pages: 'Kelola Konten Halaman',
-      agenda: 'Sistem Agenda & Kegiatan Sekolah'
+      agenda: 'Sistem Agenda & Kegiatan Sekolah',
+      downloads: 'Manajemen Pusat Unduhan',
+      faqs: 'Manajemen FAQ & Hubungi',
+      gallery: 'Manajemen Galeri Kegiatan',
+      messages: 'Moderasi Kotak Masuk & Buku Tamu',
+      graduation: 'Kelola Portal Kelulusan Siswa'
     };
     return titles[activeTab] || 'Dashboard Admin';
   };
@@ -2852,6 +3243,46 @@ export default function AdminDashboardClient({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
               </svg>
               <span>Agenda Sekolah</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Pusat Unduhan</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'faqs' ? 'active' : ''}`} onClick={() => setActiveTab('faqs')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+              </svg>
+              <span>FAQ & Hubungi</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'gallery' ? 'active' : ''}`} onClick={() => setActiveTab('gallery')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375 0 1 1-.75 0 .375 0 0 1 .75 0Z" />
+              </svg>
+              <span>Galeri Kegiatan</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'messages' ? 'active' : ''}`} onClick={() => setActiveTab('messages')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+              </svg>
+              <span>Kotak Masuk & Tamu</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'graduation' ? 'active' : ''}`} onClick={() => setActiveTab('graduation')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A5.905 5.905 0 0 1 1.151 6.07a50.29 50.29 0 0 1 5.36-1.04m4.007-.115a50.4 50.4 0 0 0-3.61-.195m0 0a50.259 50.259 0 0 1 10.374 0m0 0a50.4 50.4 0 0 0-3.61.195m0 0a50.814 50.814 0 0 0-3.61.195m0 0a50.259 50.259 0 0 0-10.374 0M12 14v7m-7.5-7h15" />
+              </svg>
+              <span>Kelulusan Kelas 6</span>
             </a>
           </li>
         </ul>
@@ -5720,6 +6151,652 @@ export default function AdminDashboardClient({
               </div>
             </div>
           </section>
+
+          {/* ================= TAB: PUSAT UNDUHAN ================= */}
+          <section id="tab-downloads" className={`tab-pane ${activeTab === 'downloads' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Pusat Unduhan Berkas & Dokumen</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola berkas kurikulum, brosur pendaftaran, formulir, dan dokumen resmi sekolah.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingDownload(null);
+                    setDownloadTitle('');
+                    setDownloadCategory('Kurikulum');
+                    setDownloadFileUrl('');
+                    setDownloadModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah Berkas Baru
+                </button>
+              </div>
+
+              {/* Downloads Search Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Cari berkas berdasarkan judul atau kategori..."
+                  value={downloadSearch}
+                  onChange={(e) => setDownloadSearch(e.target.value)}
+                  className="form-control"
+                  style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ position: 'absolute', left: '2rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+              </div>
+
+              {/* Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th>Nama Dokumen / Berkas</th>
+                      <th style={{ width: '180px' }}>Kategori</th>
+                      <th style={{ width: '250px' }}>Tautan Berkas</th>
+                      <th style={{ width: '150px', textAlign: 'center' }}>Tanggal Upload</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredDownloads.length > 0 ? (
+                      filteredDownloads.map((dl, idx) => (
+                        <tr key={dl.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>📄 {dl.title || '-'}</td>
+                          <td>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              backgroundColor: dl.category === 'Kurikulum' ? '#eff6ff' : dl.category === 'Pendaftaran' ? '#f0fdf4' : '#f8fafc',
+                              color: dl.category === 'Kurikulum' ? '#2563eb' : dl.category === 'Pendaftaran' ? '#16a34a' : '#475569',
+                              border: dl.category === 'Kurikulum' ? '1px solid #bfdbfe' : dl.category === 'Pendaftaran' ? '1px solid #bbf7d0' : '1px solid #cbd5e1'
+                            }}>
+                              {dl.category || 'Umum'}
+                            </span>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            <a href={dl.fileUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: 500, textDecoration: 'underline', wordBreak: 'break-all' }}>
+                              {dl.fileUrl || '-'}
+                            </a>
+                          </td>
+                          <td style={{ textAlign: 'center', color: '#64748b' }}>{dl.date || '-'}</td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingDownload(dl);
+                                  setDownloadTitle(dl.title || '');
+                                  setDownloadCategory(dl.category || 'Kurikulum');
+                                  setDownloadFileUrl(dl.fileUrl || '');
+                                  setDownloadModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteDownload(dl.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada berkas unduhan yang cocok dengan pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: FAQ & HUBUNGI ================= */}
+          <section id="tab-faqs" className={`tab-pane ${activeTab === 'faqs' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Kelola FAQ Sekolah</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Sunting daftar tanya jawab umum untuk membantu calon siswa, alumni, dan orang tua wali murid.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingFaq(null);
+                    setFaqQuestion('');
+                    setFaqAnswer('');
+                    setFaqModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah FAQ Baru
+                </button>
+              </div>
+
+              {/* FAQs Search Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Cari FAQ berdasarkan pertanyaan atau jawaban..."
+                  value={faqSearch}
+                  onChange={(e) => setFaqSearch(e.target.value)}
+                  className="form-control"
+                  style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ position: 'absolute', left: '2rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+              </div>
+
+              {/* Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '300px' }}>Pertanyaan</th>
+                      <th>Jawaban</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredFaqs.length > 0 ? (
+                      filteredFaqs.map((faq, idx) => (
+                        <tr key={faq.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ fontWeight: 700, color: 'var(--primary-dark)', verticalAlign: 'top' }}>❓ {faq.question || '-'}</td>
+                          <td style={{ fontWeight: 500, color: '#475569', whiteSpace: 'pre-wrap', lineHeight: '1.5', verticalAlign: 'top' }}>{faq.answer || '-'}</td>
+                          <td style={{ verticalAlign: 'top' }}>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingFaq(faq);
+                                  setFaqQuestion(faq.question || '');
+                                  setFaqAnswer(faq.answer || '');
+                                  setFaqModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteFaq(faq.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada FAQ yang cocok dengan pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: GALERI KEGIATAN ================= */}
+          <section id="tab-gallery" className={`tab-pane ${activeTab === 'gallery' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Aset Galeri Multimedia Sekolah</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola koleksi foto dan video kegiatan, sarana prasarana, serta dokumentasi SDN Bobong.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingGalleryItem(null);
+                    setGalleryTitle('');
+                    setGalleryType('image');
+                    setGalleryUrl('');
+                    setGalleryDate(new Date().toISOString().split('T')[0]);
+                    setGalleryModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah Media Baru
+                </button>
+              </div>
+
+              {/* Gallery Search Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Cari dokumentasi media berdasarkan judul atau jenis..."
+                  value={gallerySearch}
+                  onChange={(e) => setGallerySearch(e.target.value)}
+                  className="form-control"
+                  style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ position: 'absolute', left: '2rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+              </div>
+
+              {/* Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '100px', textAlign: 'center' }}>Pratinjau</th>
+                      <th>Judul Dokumentasi / Kegiatan</th>
+                      <th style={{ width: '130px', textAlign: 'center' }}>Tipe</th>
+                      <th style={{ width: '220px' }}>Tautan Media</th>
+                      <th style={{ width: '140px', textAlign: 'center' }}>Tanggal Kegiatan</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredGallery.length > 0 ? (
+                      filteredGallery.map((gal, idx) => (
+                        <tr key={gal.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ textAlign: 'center' }}>
+                            {gal.type === 'video' ? (
+                              <div style={{ width: '60px', height: '60px', borderRadius: '8px', backgroundColor: '#0f172a', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 'bold', margin: '0 auto' }}>
+                                🎥
+                              </div>
+                            ) : (
+                              <img 
+                                src={gal.url || '/images/default-meta.jpg'} 
+                                alt={gal.title} 
+                                style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #cbd5e1', margin: '0 auto', display: 'block' }} 
+                                onError={(e) => { e.target.onerror = null; e.target.src = '/images/default-meta.jpg'; }}
+                              />
+                            )}
+                          </td>
+                          <td style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>{gal.title || '-'}</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              backgroundColor: gal.type === 'video' ? '#fff7ed' : '#eff6ff',
+                              color: gal.type === 'video' ? '#c2410c' : '#2563eb',
+                              border: gal.type === 'video' ? '1px solid #ffedd5' : '1px solid #bfdbfe'
+                            }}>
+                              {gal.type === 'video' ? '🎥 VIDEO' : '🖼️ FOTO'}
+                            </span>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            <a href={gal.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: 500, textDecoration: 'underline', wordBreak: 'break-all' }}>
+                              {gal.url ? (gal.url.length > 30 ? gal.url.substring(0, 30) + '...' : gal.url) : '-'}
+                            </a>
+                          </td>
+                          <td style={{ textAlign: 'center', color: '#64748b' }}>{gal.date || '-'}</td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingGalleryItem(gal);
+                                  setGalleryTitle(gal.title || '');
+                                  setGalleryType(gal.type || 'image');
+                                  setGalleryUrl(gal.url || '');
+                                  setGalleryDate(gal.date || '');
+                                  setGalleryModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteGalleryItem(gal.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada dokumentasi media yang cocok dengan pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: KOTAK MASUK & BUKU TAMU ================= */}
+          <section id="tab-messages" className={`tab-pane ${activeTab === 'messages' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Kotak Masuk Hubungi Kami & Buku Tamu</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Moderasi pesan testimoni Buku Tamu dan baca pesan privat/saran yang dikirimkan oleh publik.</p>
+                </div>
+              </div>
+
+              {/* Messages Filters Row */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+                
+                {/* Search Bar */}
+                <div style={{ flex: '1 1 300px', position: 'relative' }}>
+                  <input
+                    type="text"
+                    placeholder="Cari pengirim, isi pesan, atau hubungan..."
+                    value={messageSearch}
+                    onChange={(e) => setMessageSearch(e.target.value)}
+                    className="form-control"
+                    style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                  />
+                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', fontSize: '1rem' }}>🔍</span>
+                </div>
+
+                {/* Filter Type Selector */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <label htmlFor="msg-filter-type" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Tipe:</label>
+                  <select
+                    id="msg-filter-type"
+                    value={messageFilterType}
+                    onChange={(e) => setMessageFilterType(e.target.value)}
+                    className="form-control"
+                    style={{ padding: '0.5rem', borderRadius: '8px', minWidth: '130px' }}
+                  >
+                    <option value="all">📁 Semua</option>
+                    <option value="guestbook">💬 Buku Tamu</option>
+                    <option value="feedback">🔒 Kotak Saran</option>
+                  </select>
+                </div>
+
+                {/* Filter Status Selector */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <label htmlFor="msg-filter-status" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Status:</label>
+                  <select
+                    id="msg-filter-status"
+                    value={messageFilterStatus}
+                    onChange={(e) => setMessageFilterStatus(e.target.value)}
+                    className="form-control"
+                    style={{ padding: '0.5rem', borderRadius: '8px', minWidth: '130px' }}
+                  >
+                    <option value="all">📂 Semua</option>
+                    <option value="pending">⏳ Menunggu</option>
+                    <option value="approved">✅ Disetujui</option>
+                    <option value="rejected">❌ Ditolak</option>
+                  </select>
+                </div>
+
+              </div>
+
+              {/* Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '50px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '180px' }}>Nama & Hubungan</th>
+                      <th style={{ width: '130px', textAlign: 'center' }}>Tipe Saluran</th>
+                      <th>Isi Pesan / Kritik & Saran</th>
+                      <th style={{ width: '120px', textAlign: 'center' }}>Tanggal</th>
+                      <th style={{ width: '120px', textAlign: 'center' }}>Status</th>
+                      <th style={{ width: '220px', textAlign: 'center' }}>Moderasi / Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredMessages.length > 0 ? (
+                      filteredMessages.map((msg, idx) => (
+                        <tr key={msg.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
+                            <div>{msg.name || '-'}</div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 500, color: '#64748b', marginTop: '2px' }}>👤 {msg.role || '-'}</div>
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              backgroundColor: msg.type === 'feedback' ? '#fee2e2' : '#f0fdf4',
+                              color: msg.type === 'feedback' ? '#991b1b' : '#166534',
+                              border: msg.type === 'feedback' ? '1px solid #fecaca' : '1px solid #bbf7d0'
+                            }}>
+                              {msg.type === 'feedback' ? '🔒 PRIVATE' : '💬 PUBLIC'}
+                            </span>
+                          </td>
+                          <td style={{ fontSize: '0.85rem', color: '#1e293b', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>
+                            {msg.message || '-'}
+                          </td>
+                          <td style={{ textAlign: 'center', color: '#64748b', fontSize: '0.8rem' }}>
+                            {msg.created_at ? msg.created_at.split('T')[0] : (msg.date || '-')}
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            {msg.type === 'feedback' ? (
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>n/a (Privat)</span>
+                            ) : (
+                              <span className="badge" style={{ 
+                                display: 'inline-block',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '6px',
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                backgroundColor: msg.status === 'approved' ? '#dcfce7' : msg.status === 'rejected' ? '#fee2e2' : '#fef9c3',
+                                color: msg.status === 'approved' ? '#15803d' : msg.status === 'rejected' ? '#b91c1c' : '#a16207',
+                                border: msg.status === 'approved' ? '1px solid #bbf7d0' : msg.status === 'rejected' ? '1px solid #fecaca' : '1px solid #fef08a'
+                              }}>
+                                {msg.status === 'approved' ? '✅ Disetujui' : msg.status === 'rejected' ? '❌ Ditolak' : '⏳ Menunggu'}
+                              </span>
+                            )}
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center', flexDirection: 'column' }}>
+                              {msg.type === 'guestbook' && (
+                                <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '4px' }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleModerateMessage(msg.id, 'approved')}
+                                    disabled={msg.status === 'approved'}
+                                    className="btn btn-primary"
+                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', opacity: msg.status === 'approved' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}
+                                  >
+                                    👍 Setujui
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleModerateMessage(msg.id, 'rejected')}
+                                    disabled={msg.status === 'rejected'}
+                                    className="btn-action-delete"
+                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', backgroundColor: '#fef3c7', color: '#b45309', border: '1px solid #fde68a', opacity: msg.status === 'rejected' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', margin: 0 }}
+                                  >
+                                    👎 Tolak
+                                  </button>
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteMessage(msg.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0, width: '100%', alignSelf: 'center' }}
+                              >
+                                🗑️ Hapus Permanen
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada pesan masuk yang cocok dengan filter atau pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          {/* ================= TAB: KELULUSAN KELAS 6 ================= */}
+          <section id="tab-graduation" className={`tab-pane ${activeTab === 'graduation' ? 'active' : ''}`}>
+            <div className="admin-table">
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Kelulusan Mandiri Siswa Kelas 6</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola basis data kelulusan mandiri kelas 6. Siswa dapat mencari NISN mereka untuk mengecek kelulusan.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingGrad(null);
+                    setGradNisn('');
+                    setGradNoPeserta('');
+                    setGradName('');
+                    setGradStatus('Lulus');
+                    setGradSkNumber('');
+                    setGradBirthPlace('');
+                    setGradBirthDate('');
+                    setGradParentName('');
+                    setGradModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah Siswa Baru
+                </button>
+              </div>
+
+              {/* Graduation Search Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                <input
+                  type="text"
+                  placeholder="Cari siswa berdasarkan NISN, nomor peserta ujian, nama lengkap, atau nomor SK..."
+                  value={gradSearch}
+                  onChange={(e) => setGradSearch(e.target.value)}
+                  className="form-control"
+                  style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ position: 'absolute', left: '2rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+              </div>
+
+              {/* Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '110px' }}>NISN</th>
+                      <th style={{ width: '140px' }}>No. Peserta</th>
+                      <th>Nama Lengkap Siswa</th>
+                      <th style={{ width: '220px' }}>TTL & Orang Tua</th>
+                      <th style={{ width: '180px' }}>Nomor SK Kelulusan</th>
+                      <th style={{ width: '120px', textAlign: 'center' }}>Status</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredGraduation.length > 0 ? (
+                      filteredGraduation.map((student, idx) => (
+                        <tr key={student.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td style={{ fontWeight: 700, color: 'var(--primary-dark)' }}>{student.nisn || '-'}</td>
+                          <td style={{ fontWeight: 500, color: 'var(--primary)' }}>{student.no_peserta || '-'}</td>
+                          <td style={{ fontWeight: 700, color: '#0f172a' }}>{student.name || '-'}</td>
+                          <td style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.4' }}>
+                            <div>📍 {student.birth_place || '-'}, {student.birth_date || '-'}</div>
+                            <div style={{ color: '#64748b', fontStyle: 'italic', marginTop: '2px' }}>Ortu: {student.parent_name || '-'}</div>
+                          </td>
+                          <td style={{ fontWeight: 500, color: '#1e293b', fontSize: '0.85rem' }}>📄 {student.sk_number || '-'}</td>
+                          <td style={{ textAlign: 'center' }}>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              backgroundColor: student.status === 'Lulus' ? '#dcfce7' : '#fee2e2',
+                              color: student.status === 'Lulus' ? '#15803d' : '#b91c1c',
+                              border: student.status === 'Lulus' ? '1px solid #bbf7d0' : '1px solid #fecaca'
+                            }}>
+                              {student.status === 'Lulus' ? '🎓 Lulus' : '❌ Tidak Lulus'}
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingGrad(student);
+                                  setGradNisn(student.nisn || '');
+                                  setGradNoPeserta(student.no_peserta || '');
+                                  setGradName(student.name || '');
+                                  setGradStatus(student.status || 'Lulus');
+                                  setGradSkNumber(student.sk_number || '');
+                                  setGradBirthPlace(student.birth_place || '');
+                                  setGradBirthDate(student.birth_date || '');
+                                  setGradParentName(student.parent_name || '');
+                                  setGradModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteGraduation(student.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada data siswa kelas 6 yang cocok dengan pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
 
@@ -6537,6 +7614,412 @@ export default function AdminDashboardClient({
                   style={{ flex: 1, padding: '0.65rem' }}
                 >
                   💾 Simpan Agenda
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT DOWNLOAD ================= */}
+      {downloadModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingDownload ? '✏️ Edit Berkas Unduhan' : '➕ Tambah Berkas Unduhan Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => { setDownloadModalOpen(false); setEditingDownload(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveDownload} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="dl_title" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Berkas / Judul Dokumen</label>
+                  <input
+                    type="text"
+                    id="dl_title"
+                    className="form-control"
+                    placeholder="Contoh: Kalender Akademik 2025/2026"
+                    value={downloadTitle}
+                    onChange={(e) => setDownloadTitle(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="dl_category" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Kategori</label>
+                  <select
+                    id="dl_category"
+                    className="form-control"
+                    value={downloadCategory}
+                    onChange={(e) => setDownloadCategory(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="Kurikulum">Kurikulum</option>
+                    <option value="Pendaftaran">Pendaftaran (PPDB)</option>
+                    <option value="Kesiswaan">Kesiswaan</option>
+                    <option value="Keuangan">Keuangan</option>
+                    <option value="Sarpras">Sarpras</option>
+                    <option value="Umum">Umum / Lainnya</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="dl_url" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tautan Berkas (URL/PDF/Drive)</label>
+                  <input
+                    type="text"
+                    id="dl_url"
+                    className="form-control"
+                    placeholder="Contoh: /downloads/kalender_akademik.pdf atau URL GDrive"
+                    value={downloadFileUrl}
+                    onChange={(e) => setDownloadFileUrl(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => { setDownloadModalOpen(false); setEditingDownload(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Berkas
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT FAQ ================= */}
+      {faqModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingFaq ? '✏️ Edit FAQ' : '➕ Tambah FAQ Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => { setFaqModalOpen(false); setEditingFaq(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveFaq} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="faq_ques" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Pertanyaan</label>
+                  <textarea
+                    id="faq_ques"
+                    className="form-control"
+                    placeholder="Contoh: Bagaimana prosedur pendaftaran siswa baru di SDN Bobong?"
+                    value={faqQuestion}
+                    onChange={(e) => setFaqQuestion(e.target.value)}
+                    rows="2"
+                    style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="faq_ans" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Jawaban</label>
+                  <textarea
+                    id="faq_ans"
+                    className="form-control"
+                    placeholder="Tuliskan penjelasan atau jawaban lengkap di sini..."
+                    value={faqAnswer}
+                    onChange={(e) => setFaqAnswer(e.target.value)}
+                    rows="4"
+                    style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => { setFaqModalOpen(false); setEditingFaq(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan FAQ
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT GALLERY ITEM ================= */}
+      {galleryModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingGalleryItem ? '✏️ Edit Item Galeri' : '➕ Tambah Media Galeri Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => { setGalleryModalOpen(false); setEditingGalleryItem(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveGalleryItem} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="gal_title" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Judul Kegiatan / Dokumentasi</label>
+                  <input
+                    type="text"
+                    id="gal_title"
+                    className="form-control"
+                    placeholder="Contoh: Upacara Bendera HUT RI ke-78"
+                    value={galleryTitle}
+                    onChange={(e) => setGalleryTitle(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="gal_type" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tipe Media</label>
+                  <select
+                    id="gal_type"
+                    className="form-control"
+                    value={galleryType}
+                    onChange={(e) => setGalleryType(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="image">🖼️ FOTO (Gambar)</option>
+                    <option value="video">🎥 VIDEO (Youtube Embed / MP4)</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="gal_url" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tautan Berkas Media (URL / Path Gambar)</label>
+                  <input
+                    type="text"
+                    id="gal_url"
+                    className="form-control"
+                    placeholder={galleryType === 'video' ? "Contoh: https://www.youtube.com/embed/XXXXX" : "Contoh: https://images.unsplash.com/... atau path lokal"}
+                    value={galleryUrl}
+                    onChange={(e) => setGalleryUrl(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="gal_date" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tanggal Kegiatan</label>
+                  <input
+                    type="date"
+                    id="gal_date"
+                    className="form-control"
+                    value={galleryDate}
+                    onChange={(e) => setGalleryDate(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => { setGalleryModalOpen(false); setEditingGalleryItem(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Media
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT GRADUATION STUDENT ================= */}
+      {gradModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '650px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingGrad ? '✏️ Edit Data Kelulusan Siswa' : '➕ Tambah Data Kelulusan Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => { setGradModalOpen(false); setEditingGrad(null); }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveGraduation} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', boxSizing: 'border-box' }}>
+                
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_nisn" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NISN Siswa</label>
+                  <input
+                    type="text"
+                    id="grad_nisn"
+                    className="form-control"
+                    placeholder="Contoh: 0123456789 (10 digit)"
+                    value={gradNisn}
+                    onChange={(e) => setGradNisn(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_no_peserta" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>No. Peserta Ujian</label>
+                  <input
+                    type="text"
+                    id="grad_no_peserta"
+                    className="form-control"
+                    placeholder="Contoh: DN-27/D-SD/06/001"
+                    value={gradNoPeserta}
+                    onChange={(e) => setGradNoPeserta(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0, gridColumn: 'span 2' }}>
+                  <label htmlFor="grad_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Lengkap Siswa</label>
+                  <input
+                    type="text"
+                    id="grad_name"
+                    className="form-control"
+                    placeholder="Tulis nama lengkap siswa kelas 6..."
+                    value={gradName}
+                    onChange={(e) => setGradName(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_birth_place" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tempat Lahir</label>
+                  <input
+                    type="text"
+                    id="grad_birth_place"
+                    className="form-control"
+                    placeholder="Contoh: Bobong"
+                    value={gradBirthPlace}
+                    onChange={(e) => setGradBirthPlace(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_birth_date" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tanggal Lahir</label>
+                  <input
+                    type="text"
+                    id="grad_birth_date"
+                    className="form-control"
+                    placeholder="Contoh: 12 Desember 2012"
+                    value={gradBirthDate}
+                    onChange={(e) => setGradBirthDate(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_parent_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Orang Tua / Wali</label>
+                  <input
+                    type="text"
+                    id="grad_parent_name"
+                    className="form-control"
+                    placeholder="Contoh: Usman Bobong"
+                    value={gradParentName}
+                    onChange={(e) => setGradParentName(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="grad_status" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Status Kelulusan</label>
+                  <select
+                    id="grad_status"
+                    className="form-control"
+                    value={gradStatus}
+                    onChange={(e) => setGradStatus(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="Lulus">🎓 LULUS</option>
+                    <option value="Tidak Lulus">❌ TIDAK LULUS</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0, gridColumn: 'span 2' }}>
+                  <label htmlFor="grad_sk_number" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nomor Surat Keputusan (SK) Kelulusan Kepala Sekolah</label>
+                  <input
+                    type="text"
+                    id="grad_sk_number"
+                    className="form-control"
+                    placeholder="Contoh: 421.2/024/SDN-BB/VI/2026"
+                    value={gradSkNumber}
+                    onChange={(e) => setGradSkNumber(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => { setGradModalOpen(false); setEditingGrad(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Data Siswa
                 </button>
               </div>
             </form>

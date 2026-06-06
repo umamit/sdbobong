@@ -38,7 +38,15 @@ try {
   }
 
   if (isServerless) {
-    const filesToCopy = ['website_config.json', 'news.json', 'teachers.json', 'pendaftaran.json', 'achievements.json'];
+    const filesToCopy = [
+      'website_config.json',
+      'news.json',
+      'teachers.json',
+      'pendaftaran.json',
+      'achievements.json',
+      'messages.json',
+      'graduation.json'
+    ];
     filesToCopy.forEach(file => {
       const srcPath = path.join(BUNDLED_DATA_DIR, file);
       const destPath = path.join(DATA_DIR, file);
@@ -61,6 +69,8 @@ export const NEWS_JSON = path.join(DATA_DIR, 'news.json');
 export const TEACHERS_JSON = path.join(DATA_DIR, 'teachers.json');
 export const PENDAFTARAN_JSON = path.join(DATA_DIR, 'pendaftaran.json');
 export const ACHIEVEMENTS_JSON = path.join(DATA_DIR, 'achievements.json');
+export const MESSAGES_JSON = path.join(DATA_DIR, 'messages.json');
+export const GRADUATION_JSON = path.join(DATA_DIR, 'graduation.json');
 
 // --- Helper Utilities ---
 
@@ -211,12 +221,31 @@ export async function loadWebConfig() {
       wa_operator: "6281234567890",
       jabatan_operator: "Operator Sekolah SD Negeri Bobong"
     },
+    downloads: [
+      { id: "dl-1", title: "Brosur Informasi PPDB 2026/2027", category: "PPDB", fileUrl: "/files/brosur-ppdb-2026.pdf", date: "2026-05-01" },
+      { id: "dl-2", title: "Kalender Akademik 2026/2027", category: "Akademik", fileUrl: "/files/kalender-akademik-2026.pdf", date: "2026-05-15" },
+      { id: "dl-3", title: "Formulir Pendaftaran PPDB Offline", category: "PPDB", fileUrl: "/files/formulir-ppdb-2026.pdf", date: "2026-05-01" }
+    ],
+    faqs: [
+      { id: "faq-1", question: "Kapan pendaftaran PPDB online SDN Bobong dibuka?", answer: "Pendaftaran PPDB online SDN Bobong dibuka mulai tanggal 1 Mei hingga 30 Juni 2026 untuk Tahun Ajaran 2026/2027." },
+      { id: "faq-2", question: "Apakah pendaftaran di SDN Bobong dipungut biaya?", answer: "Sama sekali tidak. Seluruh proses pendaftaran dan seleksi PPDB di SDN Bobong gratis tanpa biaya apa pun (Rp 0)." },
+      { id: "faq-3", question: "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?", answer: "Anda dapat mengunjungi halaman 'Kelulusan' di website ini dan memasukkan nomor NISN atau nomor ujian peserta untuk melihat status kelulusan secara mandiri." }
+    ],
+    gallery: [
+      { id: "gal-1", title: "Upacara Bendera Hari Senin", type: "image", url: "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg", date: "2026-05-24" },
+      { id: "gal-2", title: "Kegiatan Belajar Mengajar Outdoor", type: "image", url: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800", date: "2026-05-18" },
+      { id: "gal-3", title: "Lomba Pramuka Tingkat Kabupaten", type: "image", url: "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800", date: "2026-05-10" }
+    ],
     force_local_cache: false
   };
 
   if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
     try {
-      localConfig = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
+      const loaded = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
+      localConfig = { ...localConfig, ...loaded };
+      if (!localConfig.downloads) localConfig.downloads = [];
+      if (!localConfig.faqs) localConfig.faqs = [];
+      if (!localConfig.gallery) localConfig.gallery = [];
     } catch (e) {
       console.error("Error loading local web config:", e);
     }
@@ -235,7 +264,10 @@ export async function loadWebConfig() {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
           stats: data.stats || localConfig.stats,
           ppdb_contacts: data.ppdb_contacts || localConfig.ppdb_contacts,
-          force_local_cache: data.force_local_cache === true
+          force_local_cache: data.force_local_cache === true,
+          downloads: data.downloads || localConfig.downloads || [],
+          faqs: data.faqs || localConfig.faqs || [],
+          gallery: data.gallery || localConfig.gallery || []
         };
         cachedConfig = dbConfig;
         
@@ -246,13 +278,23 @@ export async function loadWebConfig() {
         return dbConfig;
       } else if (error && error.code === 'PGRST116') {
         console.log("Config record not found in Supabase. Seeding config...");
-        await supabase.from("config_sdn_bobong").insert({
+        const seedData = {
           id: "global_config",
           marquee_announcements: localConfig.marquee_announcements,
           stats: localConfig.stats,
           ppdb_contacts: localConfig.ppdb_contacts,
           force_local_cache: localConfig.force_local_cache === true
-        });
+        };
+        try {
+          await supabase.from("config_sdn_bobong").insert({
+            ...seedData,
+            downloads: localConfig.downloads,
+            faqs: localConfig.faqs,
+            gallery: localConfig.gallery
+          });
+        } catch (e2) {
+          await supabase.from("config_sdn_bobong").insert(seedData);
+        }
       }
     } catch (e) {
       console.error("Error loading web config from Supabase:", e.message || e);
@@ -294,18 +336,33 @@ export async function saveWebConfig(config) {
 
   if (isSupabaseEnabled()) {
     try {
-      const { error } = await supabase.from("config_sdn_bobong").upsert({
+      const fullPayload = {
         id: "global_config",
         marquee_announcements: config.marquee_announcements,
         stats: config.stats,
         ppdb_contacts: config.ppdb_contacts,
-        force_local_cache: config.force_local_cache === true
-      });
-      if (error) throw error;
+        force_local_cache: config.force_local_cache === true,
+        downloads: config.downloads || [],
+        faqs: config.faqs || [],
+        gallery: config.gallery || []
+      };
+      
+      const { error } = await supabase.from("config_sdn_bobong").upsert(fullPayload);
+      if (error) {
+        console.warn("Full config upsert failed, retrying with basic columns:", error.message || error);
+        const { error: retryError } = await supabase.from("config_sdn_bobong").upsert({
+          id: "global_config",
+          marquee_announcements: config.marquee_announcements,
+          stats: config.stats,
+          ppdb_contacts: config.ppdb_contacts,
+          force_local_cache: config.force_local_cache === true
+        });
+        if (retryError) throw retryError;
+      }
       return true;
     } catch (e) {
       console.error("Error saving config to Supabase:", e.message || e);
-      return false; // Strict synchronization: fail if Supabase is enabled but fails
+      return false;
     }
   }
   return localSaved;
@@ -1018,6 +1075,166 @@ export async function getStorageUsage() {
     isSupabaseActive: supabaseActive,
     error: supabaseError
   };
+}
+
+export async function loadMessages() {
+  let localMessages = [];
+  if (fs.existsSync(MESSAGES_JSON)) {
+    try {
+      localMessages = JSON.parse(fs.readFileSync(MESSAGES_JSON, 'utf-8'));
+    } catch (e) {
+      console.error("Error loading local messages:", e);
+    }
+  }
+
+  if (!isSupabaseEnabled()) return localMessages;
+
+  try {
+    const { data: dbMessages, error } = await supabase.from("messages_sdn_bobong").select("*");
+    if (!error && dbMessages) {
+      const messagesList = dbMessages.map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role,
+        type: m.type,
+        message: m.message,
+        status: m.status,
+        date: m.date
+      }));
+      try {
+        fs.writeFileSync(MESSAGES_JSON, JSON.stringify(messagesList, null, 4), 'utf-8');
+      } catch (fsErr) {}
+      return messagesList;
+    }
+  } catch (e) {
+    console.error("Supabase loadMessages failed, falling back to local:", e.message || e);
+  }
+
+  return localMessages;
+}
+
+export async function saveMessages(messagesList) {
+  let localSaved = false;
+  try {
+    fs.writeFileSync(MESSAGES_JSON, JSON.stringify(messagesList, null, 4), 'utf-8');
+    localSaved = true;
+  } catch (e) {
+    console.error("Error saving messages locally:", e);
+  }
+
+  if (isSupabaseEnabled()) {
+    try {
+      for (const m of messagesList) {
+        const { error } = await supabase.from("messages_sdn_bobong").upsert({
+          id: m.id,
+          name: m.name,
+          role: m.role,
+          type: m.type,
+          message: m.message,
+          status: m.status,
+          date: m.date
+        });
+        if (error) throw error;
+      }
+      
+      const localIds = new Set(messagesList.map(m => m.id));
+      const { data: dbMessages, error: selectError } = await supabase.from("messages_sdn_bobong").select("id");
+      if (!selectError && dbMessages) {
+        for (const row of dbMessages) {
+          if (!localIds.has(row.id)) {
+            await supabase.from("messages_sdn_bobong").delete().eq("id", row.id);
+          }
+        }
+      }
+      return true;
+    } catch (e) {
+      console.error("Supabase saveMessages failed:", e.message || e);
+      return false;
+    }
+  }
+  return localSaved;
+}
+
+export async function loadGraduation() {
+  let localGraduation = [];
+  if (fs.existsSync(GRADUATION_JSON)) {
+    try {
+      localGraduation = JSON.parse(fs.readFileSync(GRADUATION_JSON, 'utf-8'));
+    } catch (e) {
+      console.error("Error loading local graduation list:", e);
+    }
+  }
+
+  if (!isSupabaseEnabled()) return localGraduation;
+
+  try {
+    const { data: dbGraduation, error } = await supabase.from("graduation_sdn_bobong").select("*");
+    if (!error && dbGraduation) {
+      const gradList = dbGraduation.map(g => ({
+        id: g.id,
+        nisn: g.nisn,
+        no_peserta: g.no_peserta,
+        name: g.name,
+        status: g.status,
+        sk_number: g.sk_number,
+        birth_place: g.birth_place,
+        birth_date: g.birth_date,
+        parent_name: g.parent_name
+      }));
+      try {
+        fs.writeFileSync(GRADUATION_JSON, JSON.stringify(gradList, null, 4), 'utf-8');
+      } catch (fsErr) {}
+      return gradList;
+    }
+  } catch (e) {
+    console.error("Supabase loadGraduation failed, falling back to local:", e.message || e);
+  }
+
+  return localGraduation;
+}
+
+export async function saveGraduation(gradList) {
+  let localSaved = false;
+  try {
+    fs.writeFileSync(GRADUATION_JSON, JSON.stringify(gradList, null, 4), 'utf-8');
+    localSaved = true;
+  } catch (e) {
+    console.error("Error saving graduation locally:", e);
+  }
+
+  if (isSupabaseEnabled()) {
+    try {
+      for (const g of gradList) {
+        const { error } = await supabase.from("graduation_sdn_bobong").upsert({
+          id: g.id,
+          nisn: g.nisn,
+          no_peserta: g.no_peserta,
+          name: g.name,
+          status: g.status,
+          sk_number: g.sk_number,
+          birth_place: g.birth_place,
+          birth_date: g.birth_date,
+          parent_name: g.parent_name
+        });
+        if (error) throw error;
+      }
+
+      const localIds = new Set(gradList.map(g => g.id));
+      const { data: dbGrad, error: selectError } = await supabase.from("graduation_sdn_bobong").select("id");
+      if (!selectError && dbGrad) {
+        for (const row of dbGrad) {
+          if (!localIds.has(row.id)) {
+            await supabase.from("graduation_sdn_bobong").delete().eq("id", row.id);
+          }
+        }
+      }
+      return true;
+    } catch (e) {
+      console.error("Supabase saveGraduation failed:", e.message || e);
+      return false;
+    }
+  }
+  return localSaved;
 }
 
 
