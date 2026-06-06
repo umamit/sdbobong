@@ -15,7 +15,12 @@ export default async function sitemap() {
     '/ppdb',
     '/berita',
     '/ppdb-online',
-    '/formulir-ppdb'
+    '/formulir-ppdb',
+    '/buku-tamu',
+    '/galeri',
+    '/hubungi-kami',
+    '/kelulusan',
+    '/unduh'
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
