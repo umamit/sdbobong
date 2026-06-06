@@ -273,6 +273,7 @@ export default function AdminDashboardClient({
       if (res.ok) {
         showToast('success', `Konten halaman ${pageName.toUpperCase()} berhasil diperbarui!`);
         setConfig(data.config);
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan konten halaman.');
       }
@@ -433,6 +434,7 @@ export default function AdminDashboardClient({
       if (res.ok) {
         showToast('success', `Status pendaftar berhasil diperbarui menjadi: ${newStatus}`);
         setRecords(prev => prev.map(r => r.id === recordId ? { ...r, status: newStatus } : r));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui status pendaftaran.');
       }
@@ -512,6 +514,7 @@ export default function AdminDashboardClient({
         if (res.ok) {
           showToast('success', `Semua data pendaftar berhasil dihapus secara permanen (Metode: ${scope === 'both' ? 'Lokal & Supabase' : scope === 'local' ? 'Hanya Lokal' : 'Hanya Supabase'}).`);
           setRecords([]);
+          router.refresh();
         } else {
           showToast('danger', data.error || 'Gagal menghapus semua data pendaftaran.');
         }
@@ -524,6 +527,7 @@ export default function AdminDashboardClient({
         if (res.ok) {
           showToast('success', `Data pendaftar berhasil dihapus secara permanen (Metode: ${scope === 'both' ? 'Lokal & Supabase' : scope === 'local' ? 'Hanya Lokal' : 'Hanya Supabase'}).`);
           setRecords(prev => prev.filter(r => r.id !== deleteTargetId));
+          router.refresh();
         } else {
           showToast('danger', data.error || 'Gagal menghapus data pendaftaran.');
         }
@@ -557,6 +561,7 @@ export default function AdminDashboardClient({
       if (res.ok) {
         showToast('success', 'Konfigurasi website berhasil disimpan.');
         setConfig(prev => ({ ...prev, marquee_announcements: announcements }));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan konfigurasi.');
       }
@@ -673,6 +678,7 @@ export default function AdminDashboardClient({
           } else if (backupData.achievements) {
             setAchievements(backupData.achievements);
           }
+          router.refresh();
         } else {
           showToast('danger', data.error || 'Gagal memulihkan dari berkas cadangan.');
         }
@@ -768,6 +774,7 @@ export default function AdminDashboardClient({
           ...prev,
           stats: { siswa_aktif, guru_staf, ruang_kelas, akreditasi }
         }));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan data statistik.');
       }
@@ -791,6 +798,7 @@ export default function AdminDashboardClient({
         showToast('success', 'Background selamat datang berhasil diperbarui!');
         setConfig(data.config);
         form.reset();
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui background.');
       }
@@ -863,6 +871,7 @@ export default function AdminDashboardClient({
             wa_floating: clean_wa_floating
           }
         }));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan data kontak.');
       }
@@ -926,6 +935,7 @@ export default function AdminDashboardClient({
           ...prev,
           ppdb_contacts: updatedContacts
         }));
+        router.refresh();
       } else {
         showToast('danger', data.error || `Gagal mengatur ${contactName}.`);
       }
@@ -949,6 +959,7 @@ export default function AdminDashboardClient({
         showToast('success', 'Berita baru berhasil diterbitkan!');
         setNewsList(prev => [data.article, ...prev]);
         form.reset();
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan berita baru.');
       }
@@ -967,6 +978,7 @@ export default function AdminDashboardClient({
       if (res.ok) {
         showToast('success', 'Artikel berita berhasil dihapus.');
         setNewsList(prev => prev.filter(n => n.id !== newsId));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menghapus artikel berita.');
       }
@@ -1005,6 +1017,7 @@ export default function AdminDashboardClient({
         setTeacherImageUrl('/images/teacher_1.png');
         setAvatarPreview('/images/teacher_1.png');
         setAddTeacherModalOpen(false);
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan data guru baru.');
       }
@@ -1023,6 +1036,7 @@ export default function AdminDashboardClient({
       if (res.ok) {
         showToast('success', 'Data guru berhasil dihapus.');
         setTeachers(prev => prev.filter(t => t.id !== teacherId));
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menghapus data guru.');
       }
@@ -1077,6 +1091,7 @@ export default function AdminDashboardClient({
       }
 
       handleAchievementCancel();
+      router.refresh();
     } catch (err) {
       showToast('danger', err.message || "Terjadi kesalahan koneksi.");
     }
@@ -1114,6 +1129,7 @@ export default function AdminDashboardClient({
 
       setAchievements(prev => prev.filter(a => a.id !== id));
       showToast('success', 'Berhasil menghapus data prestasi.');
+      router.refresh();
     } catch (err) {
       showToast('danger', err.message || "Terjadi kesalahan koneksi.");
     }
@@ -1287,6 +1303,7 @@ export default function AdminDashboardClient({
         // Update the teachers local state
         setTeachers(prev => prev.map(t => t.id === editTeacherId ? data.teacher : t));
         setEditTeacherModalOpen(false);
+        router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui data guru.');
       }

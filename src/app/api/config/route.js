@@ -5,6 +5,9 @@ import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function checkAuth() {
   try {
     const cookieStore = cookies();
