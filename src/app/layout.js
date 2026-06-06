@@ -2,6 +2,7 @@ import '../../public/css/style.css';
 import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
+import ChatWidget from '../components/ChatWidget';
 import Script from 'next/script';
 import Link from 'next/link';
 
@@ -209,6 +210,9 @@ export default async function RootLayout({ children }) {
             </div>
           </div>
         </footer>
+
+        {/* Bobong-AI Virtual Assistant Widget */}
+        <ChatWidget />
 
         {/* Floating WhatsApp Button */}
         <a href={`https://wa.me/${floatingPhone}?text=Halo%20SDN%20Bobong,%20saya%20ingin%20bertanya%20informasi...`} className="floating-wa-btn no-print public-layout-wa-btn" target="_blank" rel="noreferrer" aria-label="Hubungi Sekolah di WhatsApp">
