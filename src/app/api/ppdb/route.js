@@ -35,6 +35,15 @@ function escapeCSV(val) {
   return str;
 }
 
+function getAcademicYear(dateStr) {
+  if (dateStr && /^\d{4}/.test(dateStr)) {
+    const year = parseInt(dateStr.substring(0, 4), 10);
+    return `${year}/${year + 1}`;
+  }
+  const year = new Date().getFullYear();
+  return `${year}/${year + 1}`;
+}
+
 export async function GET(request) {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -109,11 +118,12 @@ export async function GET(request) {
       }
       if (!status) status = "Diterima Sistem";
       r.status = status;
+      r.tahun_ajaran = r.tahun_ajaran || getAcademicYear(r.waktu_daftar);
     });
 
     if (isExport) {
       const headers = [
-        "No", "Nama Lengkap", "NIK Siswa", "Tempat Lahir", "Tanggal Lahir",
+        "No", "Nama Lengkap", "NIK Siswa", "Tahun Ajaran", "Tempat Lahir", "Tanggal Lahir",
         "Jenis Kelamin", "Nama Ibu Kandung", "Nomor HP Orang Tua", "Alamat Domisili",
         "Jalur PPDB", "Waktu Daftar", "Status"
       ];
@@ -125,6 +135,7 @@ export async function GET(request) {
           idx + 1,
           r.nama_lengkap || '',
           r.nik_siswa || r.nik || '',
+          r.tahun_ajaran || '',
           r.tempat_lahir || '',
           r.tanggal_lahir || '',
           r.jenis_kelamin || '',
@@ -466,6 +477,7 @@ export async function POST(request) {
     const waktu_daftar = new Date().toISOString().replace('T', ' ').split('.')[0];
     const status = "Diterima Sistem";
     const newId = `ppdb-${Math.floor(Date.now() / 1000)}`;
+    const tahun_ajaran = getAcademicYear(waktu_daftar);
 
     let savedToSupabase = false;
 
@@ -486,6 +498,7 @@ export async function POST(request) {
           jalur_ppdb,
           waktu_daftar,
           status,
+          tahun_ajaran,
           
           nama_panggilan,
           agama,
@@ -550,7 +563,8 @@ export async function POST(request) {
         nama_wali: nama_wali || "",
         pekerjaan_wali: pekerjaan_wali || "",
         waktu_daftar,
-        status
+        status,
+        tahun_ajaran
       };
 
       localRecords.unshift(newRecord);

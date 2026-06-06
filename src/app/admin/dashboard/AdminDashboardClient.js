@@ -247,6 +247,7 @@ export default function AdminDashboardClient({
   const [ppdbSearch, setPpdbSearch] = useState('');
   const [ppdbFilterJalur, setPpdbFilterJalur] = useState('Semua');
   const [ppdbFilterStatus, setPpdbFilterStatus] = useState('Semua');
+  const [ppdbFilterTahun, setPpdbFilterTahun] = useState('Semua');
   const [ppdbPage, setPpdbPage] = useState(1);
   const [ppdbPerPage, setPpdbPerPage] = useState(10);
 
@@ -2041,6 +2042,13 @@ export default function AdminDashboardClient({
   };
 
   // Computed states for PPDB Search, Filter, and Pagination
+  const availableTahunAjaran = Array.from(
+    new Set([
+      '2026/2027',
+      ...records.map(r => r.tahun_ajaran || '2026/2027')
+    ])
+  ).filter(Boolean).sort();
+
   const filteredPPDB = records.filter(r => {
     const searchLower = ppdbSearch.toLowerCase();
     const matchesSearch = (r.nama_lengkap || '').toLowerCase().includes(searchLower) ||
@@ -2048,7 +2056,8 @@ export default function AdminDashboardClient({
                           (r.nomor_hp_orangtua || r.no_hp || '').toLowerCase().includes(searchLower);
     const matchesJalur = ppdbFilterJalur === 'Semua' || r.jalur_ppdb === ppdbFilterJalur;
     const matchesStatus = ppdbFilterStatus === 'Semua' || r.status === ppdbFilterStatus;
-    return matchesSearch && matchesJalur && matchesStatus;
+    const matchesTahun = ppdbFilterTahun === 'Semua' || (r.tahun_ajaran === ppdbFilterTahun || (!r.tahun_ajaran && ppdbFilterTahun === '2026/2027'));
+    return matchesSearch && matchesJalur && matchesStatus && matchesTahun;
   });
 
   const totalPPDBPages = Math.ceil(filteredPPDB.length / ppdbPerPage) || 1;
@@ -3886,6 +3895,21 @@ export default function AdminDashboardClient({
                   </select>
                 </div>
 
+                <div style={{ minWidth: '150px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Filter Tahun Ajaran</label>
+                  <select
+                    value={ppdbFilterTahun}
+                    onChange={(e) => { setPpdbFilterTahun(e.target.value); setPpdbPage(1); }}
+                    className="form-control"
+                    style={{ width: '100%', height: '42px', boxSizing: 'border-box' }}
+                  >
+                    <option value="Semua">Semua Tahun</option>
+                    {availableTahunAjaran.map(th => (
+                      <option key={th} value={th}>{th}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <div style={{ minWidth: '100px' }}>
                   <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '6px' }}>Per Halaman</label>
                   <select
@@ -3909,6 +3933,7 @@ export default function AdminDashboardClient({
                     <tr>
                       <th style={{ width: '40px', textAlign: 'center' }}>No</th>
                       <th>Nama Siswa (NIK)</th>
+                      <th>Tahun Ajaran</th>
                       <th>Orang Tua (HP)</th>
                       <th>Lahir / Kelamin</th>
                       <th>Jalur</th>
@@ -3929,6 +3954,9 @@ export default function AdminDashboardClient({
                             <td>
                               <strong style={{ color: 'var(--primary-dark)', fontSize: '0.9rem' }}>{r.nama_lengkap}</strong><br />
                               <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>NIK: {r.nik_siswa || r.nik}</span>
+                            </td>
+                            <td>
+                              <span style={{ fontWeight: 600, color: '#334155', fontSize: '0.85rem' }}>{r.tahun_ajaran || '2026/2027'}</span>
                             </td>
                             <td>
                               <span>Ibu: {r.nama_ibu_kandung || r.nama_ibu}</span><br />

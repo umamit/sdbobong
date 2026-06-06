@@ -336,10 +336,10 @@ export async function getAvailableSupabaseColumns() {
       'nama_panggilan', 'agama', 'anak_ke', 'dari_bersaudara', 
       'nama_ayah', 'pekerjaan_ayah', 'no_hp_ayah', 
       'pekerjaan_ibu', 'no_hp_ibu', 
-      'nama_wali', 'pekerjaan_wali'
+      'nama_wali', 'pekerjaan_wali', 'tahun_ajaran'
     ];
     
-    // Test all 11 new columns at once to minimize queries
+    // Test all 12 new columns at once to minimize queries
     const colsToProbe = newColumns.join(', ');
     const { error: probeError } = await supabase.from("ppdb_sdn_bobong")
       .select(`id, ${colsToProbe}`)
@@ -883,6 +883,7 @@ export async function syncLocalToSupabase() {
           jalur_ppdb: localR.jalur_ppdb || "Zonasi",
           waktu_daftar: localR.waktu_daftar || new Date().toISOString().replace('T', ' ').split('.')[0],
           status: localR.status || "Diterima Sistem",
+          tahun_ajaran: localR.tahun_ajaran || (localR.waktu_daftar && /^\d{4}/.test(localR.waktu_daftar) ? `${localR.waktu_daftar.substring(0, 4)}/${parseInt(localR.waktu_daftar.substring(0, 4), 10) + 1}` : "2026/2027"),
           
           nama_panggilan: localR.nama_panggilan || "",
           agama: localR.agama || "",
@@ -959,7 +960,8 @@ export async function syncLocalToSupabase() {
         nama_wali: supabaseR.nama_wali || "",
         pekerjaan_wali: supabaseR.pekerjaan_wali || "",
         waktu_daftar: supabaseR.waktu_daftar || "",
-        status: supabaseR.status || "Diterima Sistem"
+        status: supabaseR.status || "Diterima Sistem",
+        tahun_ajaran: supabaseR.tahun_ajaran || ""
       };
 
       if (localFormat.waktu_daftar && localFormat.waktu_daftar.includes('T')) {
