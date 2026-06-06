@@ -66,7 +66,7 @@ export default async function Profil() {
               <p>{profil.sejarah_p2}</p>
             </div>
             <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} />
+              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} decoding="async" />
             </div>
           </div>
         </div>
@@ -370,6 +370,8 @@ export default async function Profil() {
                           src={guru.image || '/images/teacher_1.png'} 
                           alt={guru.name} 
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                       <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.2, minHeight: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -478,6 +480,8 @@ export default async function Profil() {
                         src={teacher.image} 
                         alt={`Foto ${teacher.name}`} 
                         className="teacher-img" 
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="teacher-info">

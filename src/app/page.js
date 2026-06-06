@@ -205,6 +205,7 @@ export default async function Home() {
                 alt={`Foto ${kepalaSekolah.name}`} 
                 className="welcome-img" 
                 style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '320px' }}
+                decoding="async"
               />
             ) : (
               <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>
@@ -275,7 +276,7 @@ export default async function Home() {
             {newsList.length > 0 ? (
               newsList.map((news) => (
                 <article key={news.id} className="card">
-                  <img src={news.image} alt={news.title} className="card-img" />
+                  <img src={news.image} alt={news.title} className="card-img" loading="lazy" decoding="async" />
                   <div className="card-body">
                     <div className="card-meta">
                       <span>📅 {news.date}</span>

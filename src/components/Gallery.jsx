@@ -58,6 +58,8 @@ export default function Gallery({ initialItems }) {
               alt={item.alt}
               className="gallery-img"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              loading="lazy"
+              decoding="async"
             />
           </div>
         ))}
@@ -83,6 +85,7 @@ export default function Gallery({ initialItems }) {
             className="lightbox-content" 
             src={activeImage.src} 
             alt={activeImage.alt} 
+            decoding="async"
           />
         </div>
       )}

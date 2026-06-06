@@ -36,6 +36,8 @@ export default async function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: `
           if (window.location.pathname.startsWith('/admin')) {
             document.documentElement.classList.add('is-admin');
@@ -127,7 +129,7 @@ export default async function RootLayout({ children }) {
           <div className="container footer-grid">
             <div className="footer-widget">
               <a href="/" className="logo-container" style={{ marginBottom: 'var(--space-xs)', textDecoration: 'none' }}>
-                <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" />
+                <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" loading="lazy" decoding="async" />
                 <span className="logo-title" style={{ color: 'white' }}>SD NEGERI BOBONG</span>
               </a>
               <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
@@ -172,15 +174,15 @@ export default async function RootLayout({ children }) {
               <span className="affiliations-label">Afiliasi Resmi:</span>
               <div className="affiliations-logos">
                 <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className="affiliation-item" title="Pemerintah Kabupaten Pulau Taliabu" style={{ textDecoration: 'none' }}>
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" />
+                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" loading="lazy" decoding="async" />
                   <span className="affiliation-text">Pemerintah Kabupaten Pulau Taliabu</span>
                 </a>
                 <div className="affiliation-item" title="Dinas Pendidikan Kabupaten Pulau Taliabu">
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" />
+                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" loading="lazy" decoding="async" />
                   <span className="affiliation-text">Dinas Pendidikan Pulau Taliabu</span>
                 </div>
                 <div className="affiliation-item" title="Kurikulum Merdeka - Merdeka Belajar">
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className="affiliation-logo" />
+                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className="affiliation-logo" loading="lazy" decoding="async" />
                   <span className="affiliation-text">Kurikulum Merdeka</span>
                 </div>
               </div>

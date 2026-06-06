@@ -55,7 +55,7 @@ export default async function Akademik() {
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
             <div style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src={akademik.kurikulum_image} alt="Aktivitas Kurikulum Merdeka" style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
+              <img src={akademik.kurikulum_image} alt="Aktivitas Kurikulum Merdeka" style={{ width: '100%', height: '300px', objectFit: 'cover' }} loading="lazy" decoding="async" />
             </div>
             <div style={{ order: 1 }}>
               <span className="welcome-badge">{akademik.kurikulum_badge}</span>

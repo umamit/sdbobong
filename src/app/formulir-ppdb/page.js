@@ -54,7 +54,7 @@ export default function FormulirPPDBPrint() {
           marginBottom: 'var(--space-md)',
           gap: 'var(--space-sm)'
         }}>
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'cover' }} decoding="async" />
           <div className="form-title-container" style={{ flex: 1, textAlign: 'center' }}>
             <h1 style={{ fontSize: '1.4rem', color: 'var(--primary-dark)', marginBottom: '0.25rem', textTransform: 'uppercase' }}>Pemerintah Kabupaten Pulau Taliabu</h1>
             <h1 style={{ fontSize: '1.6rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)' }}>SD Negeri Bobong</h1>

@@ -31,7 +31,7 @@ export default async function Berita() {
             {newsList.length > 0 ? (
               newsList.map((news) => (
                 <article key={news.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <img src={news.image} alt={news.title} className="card-img" style={{ height: '240px' }} />
+                  <img src={news.image} alt={news.title} className="card-img" style={{ height: '240px' }} loading="lazy" decoding="async" />
                   <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
                       <div className="card-meta">
