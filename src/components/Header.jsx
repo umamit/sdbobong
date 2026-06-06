@@ -31,7 +31,7 @@ export default function Header() {
     { href: '/', label: 'Beranda' },
     { href: '/profil', label: 'Profil' },
     {
-      label: 'Akademik & Kesiswaan',
+      label: 'Akademik',
       dropdown: [
         { href: '/akademik', label: 'Akademik' },
         { href: '/kesiswaan', label: 'Kesiswaan' },
