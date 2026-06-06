@@ -3204,13 +3204,15 @@ export default function AdminDashboardClient({
               {/* Print-Only Official School Header */}
               <div className="print-only" style={{ marginBottom: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', borderBottom: '3px double #0f172a', paddingBottom: '1.5rem' }}>
-                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" style={{ width: '70px', height: '75px', objectFit: 'contain' }} />
+                  <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" style={{ width: '70px', height: '75px', objectFit: 'contain' }} />
                   <div style={{ flexGrow: 1, textAlign: 'center' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
-                    <h3 style={{ margin: '2px 0', fontSize: '1.15rem', fontWeight: 700, color: '#4f46e5' }}>SD NEGERI BOBONG</h3>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', fontWeight: 500 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+                    <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px', lineHeight: '1.2' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
+                    <h3 style={{ margin: '1px 0', fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
+                    <h3 style={{ margin: '2px 0 4px 0', fontSize: '1.4rem', fontWeight: 800, color: '#4f46e5', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SD NEGERI BOBONG</h3>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', fontWeight: 500, lineHeight: '1.4' }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
                     <p style={{ margin: '2px 0 0 0', fontSize: '0.7rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
                   </div>
+                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" style={{ width: '70px', height: '75px', objectFit: 'contain' }} />
                 </div>
                 <div style={{ textAlign: 'center', marginTop: '1.5rem', marginBottom: '1rem' }}>
                   <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, textTransform: 'uppercase', color: '#0f172a', letterSpacing: '1px' }}>LAPORAN DAFTAR LENGKAP FORMULIR MASUK SISWA (PPDB)</h4>
@@ -6219,13 +6221,15 @@ export default function AdminDashboardClient({
               <div id="print-slip-container" className="print-slip" style={{ backgroundColor: '#ffffff', padding: '2.5rem', borderRadius: '12px', border: '1px dashed #cbd5e1', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', boxSizing: 'border-box' }}>
                 {/* Kop Surat Sekolah */}
                 <div className="print-header" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', borderBottom: '3px double #0f172a', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
+                  <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
                   <div className="print-title" style={{ flexGrow: 1, textAlign: 'center' }}>
-                    <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
-                    <h3 style={{ margin: '2px 0', fontSize: '1.2rem', fontWeight: 700, color: 'var(--primary-dark)' }}>SD NEGERI BOBONG</h3>
-                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+                    <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px', lineHeight: '1.2' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h2>
+                    <h3 style={{ margin: '1px 0', fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
+                    <h3 style={{ margin: '2px 0 4px 0', fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-dark)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SD NEGERI BOBONG</h3>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500, lineHeight: '1.4' }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
                     <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
                   </div>
+                  <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
                 </div>
 
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>

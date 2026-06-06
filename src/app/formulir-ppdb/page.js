@@ -54,13 +54,15 @@ export default function FormulirPPDBPrint() {
           marginBottom: 'var(--space-md)',
           gap: 'var(--space-sm)'
         }}>
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'cover' }} decoding="async" />
+          <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} decoding="async" />
           <div className="form-title-container" style={{ flex: 1, textAlign: 'center' }}>
-            <h1 style={{ fontSize: '1.4rem', color: 'var(--primary-dark)', marginBottom: '0.25rem', textTransform: 'uppercase' }}>Pemerintah Kabupaten Pulau Taliabu</h1>
-            <h1 style={{ fontSize: '1.6rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)' }}>SD Negeri Bobong</h1>
+            <h1 style={{ fontSize: '1.25rem', color: 'var(--text-main)', marginBottom: '0.15rem', textTransform: 'uppercase', fontWeight: 800, lineHeight: 1.2 }}>Pemerintah Kabupaten Pulau Taliabu</h1>
+            <h2 style={{ fontSize: '1.1rem', color: 'var(--text-main)', marginBottom: '0.15rem', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1.2 }}>Dinas Pendidikan dan Kebudayaan</h2>
+            <h1 style={{ fontSize: '1.5rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 800, marginBottom: '0.25rem' }}>SD Negeri Bobong</h1>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
             <p style={{ fontSize: '0.75rem', marginTop: '0.15rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
           </div>
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} decoding="async" />
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: 'var(--space-md)' }}>
