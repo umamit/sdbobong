@@ -362,7 +362,7 @@ export async function saveWebConfig(config) {
       return true;
     } catch (e) {
       console.error("Error saving config to Supabase:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
@@ -507,7 +507,7 @@ export async function saveNews(newsList) {
       return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving news to Supabase:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
@@ -729,7 +729,7 @@ export async function saveTeachers(teachersList) {
       return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving teachers to Supabase:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
@@ -977,7 +977,7 @@ export async function saveAchievements(achievementsList) {
       return true; // Supabase write succeeded
     } catch (e) {
       console.error("Error saving achievements to Supabase:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
@@ -1149,7 +1149,7 @@ export async function saveMessages(messagesList) {
       return true;
     } catch (e) {
       console.error("Supabase saveMessages failed:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
@@ -1231,7 +1231,7 @@ export async function saveGraduation(gradList) {
       return true;
     } catch (e) {
       console.error("Supabase saveGraduation failed:", e.message || e);
-      return false;
+      return localSaved;
     }
   }
   return localSaved;
