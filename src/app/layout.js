@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
 import Script from 'next/script';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -139,12 +140,14 @@ export default async function RootLayout({ children }) {
             <div className="footer-widget">
               <h3>Navigasi Cepat</h3>
               <ul className="footer-links">
-                <li><a href="/">Beranda</a></li>
-                <li><a href="/profil">Profil Sekolah</a></li>
-                <li><a href="/akademik">Informasi Akademik</a></li>
-                <li><a href="/kesiswaan">Kesiswaan & Ekskul</a></li>
-                <li><a href="/ppdb">Portal PPDB</a></li>
-                <li><a href="/berita">Berita & Galeri</a></li>
+                <li><Link href="/">Beranda</Link></li>
+                <li><Link href="/profil">Profil Sekolah</Link></li>
+                <li><Link href="/akademik">Informasi Akademik</Link></li>
+                <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
+                <li><Link href="/ppdb">Portal Info PPDB</Link></li>
+                <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>
+                <li><Link href="/formulir-ppdb">Formulir PPDB Offline</Link></li>
+                <li><Link href="/berita">Berita &amp; Galeri</Link></li>
               </ul>
             </div>
             <div className="footer-widget">
