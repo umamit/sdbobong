@@ -599,13 +599,21 @@ export default function PPDBOnlineForm() {
                   borderRadius: '30px',
                   fontWeight: 700,
                   boxShadow: '0 10px 15px -3px rgba(11, 60, 93, 0.3)',
-                  transition: 'transform 0.2s ease'
+                  transition: 'transform 0.2s ease',
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer'
                 }}
                 disabled={isSubmitting}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                onMouseEnter={(e) => !isSubmitting && (e.currentTarget.style.transform = 'translateY(-2px)')}
+                onMouseLeave={(e) => !isSubmitting && (e.currentTarget.style.transform = 'translateY(0)')}
               >
-                {isSubmitting ? "⚡ Mengirim data pendaftaran..." : "✉️ Kirim Pendaftaran Online"}
+                {isSubmitting ? (
+                  <span className="btn-loading-container">
+                    <span className="btn-spinner"></span>
+                    Mengirim Formulir PPDB...
+                  </span>
+                ) : (
+                  "✉️ Kirim Pendaftaran Online"
+                )}
               </button>
             </div>
           </form>

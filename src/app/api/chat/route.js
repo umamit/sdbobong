@@ -16,10 +16,12 @@ export async function POST(req) {
     // Ambil pesan terbaru dari pengguna
     const latestMessage = messages[messages.length - 1]?.content || "";
 
-    // 1. Muat data dinamis dari database untuk pengetahuan asisten
-    const config = await loadWebConfig();
-    const teachersList = await loadTeachers();
-    const achievementsList = await loadAchievements();
+    // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel
+    const [config, teachersList, achievementsList] = await Promise.all([
+      loadWebConfig(),
+      loadTeachers(),
+      loadAchievements()
+    ]);
 
     const contacts = config.ppdb_contacts || {};
     const stats = config.stats || {};

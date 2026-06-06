@@ -186,7 +186,14 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                   className="btn-primary"
                   style={{ width: '100%', padding: '12px', fontWeight: '600', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.2s' }}
                 >
-                  {gtStatus.type === 'loading' ? 'Mengirim...' : 'Kirim Buku Tamu'}
+                  {gtStatus.type === 'loading' ? (
+                    <span className="btn-loading-container">
+                      <span className="btn-spinner"></span>
+                      Mengirim Kesan & Pesan...
+                    </span>
+                  ) : (
+                    'Kirim Buku Tamu'
+                  )}
                 </button>
               </form>
             </div>
@@ -257,7 +264,14 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                   className="btn-primary"
                   style={{ width: '100%', padding: '12px', fontWeight: '600', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.2s' }}
                 >
-                  {srStatus.type === 'loading' ? 'Mengirim...' : 'Kirim Saran Privat'}
+                  {srStatus.type === 'loading' ? (
+                    <span className="btn-loading-container">
+                      <span className="btn-spinner"></span>
+                      Mengirim Saran Privat...
+                    </span>
+                  ) : (
+                    'Kirim Saran Privat'
+                  )}
                 </button>
               </form>
             </div>

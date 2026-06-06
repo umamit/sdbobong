@@ -8,14 +8,16 @@ export default async function AdminDashboardPage() {
   // 1. Sync local status with Supabase on dashboard access
   await syncLocalToSupabase();
 
-  // 2. Fetch config, news, teachers, achievements, and storage usage
-  const config = await loadWebConfig();
-  const newsList = await loadNews();
-  const teachers = await loadTeachers();
-  const achievements = await loadAchievements();
-  const storageInfo = await getStorageUsage();
-  const messagesList = await loadMessages();
-  const graduationList = await loadGraduation();
+  // 2. Fetch config, news, teachers, achievements, storage, messages, and graduation in parallel
+  const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList] = await Promise.all([
+    loadWebConfig(),
+    loadNews(),
+    loadTeachers(),
+    loadAchievements(),
+    getStorageUsage(),
+    loadMessages(),
+    loadGraduation()
+  ]);
 
   // 3. Load PPDB records
   let records = [];

@@ -5,9 +5,12 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
 
 export default async function Home() {
-  const allNews = await loadNews();
+  const [allNews, config, teachers] = await Promise.all([
+    loadNews(),
+    loadWebConfig(),
+    loadTeachers()
+  ]);
   const newsList = allNews.slice(0, 3);
-  const config = await loadWebConfig();
   const stats = config.stats || {
     siswa_aktif: 205,
     guru_staf: 14,
@@ -17,7 +20,6 @@ export default async function Home() {
   const contacts = config.ppdb_contacts || {};
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
-  const teachers = await loadTeachers();
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
   const beranda = config.stats?.page_contents?.beranda || {

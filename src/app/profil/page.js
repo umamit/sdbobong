@@ -4,9 +4,11 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
 
 export default async function Profil() {
-  const teachers = await loadTeachers();
-  const achievements = await loadAchievements();
-  const config = await loadWebConfig();
+  const [teachers, achievements, config] = await Promise.all([
+    loadTeachers(),
+    loadAchievements(),
+    loadWebConfig()
+  ]);
 
   const profil = config.stats?.page_contents?.profil || {
     banner_title: "Profil Sekolah",

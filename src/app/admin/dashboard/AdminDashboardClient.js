@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
 
 // Client-side image compression using HTML5 Canvas (Zero-dependency, lightweight)
 const compressImage = (file, maxW = 1920, maxH = 1080, quality = 0.8) => {
@@ -166,6 +167,50 @@ export default function AdminDashboardClient({
   initialGraduation = [],
 }) {
   const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingMessage, setProcessingMessage] = useState('Memproses...');
+
+  // Intercept all write/mutation fetch requests to show premium loading overlay
+  const fetch = async (input, init) => {
+    const url = typeof input === 'string' ? input : (input?.url || '');
+    const method = (init?.method || 'GET').toUpperCase();
+
+    if (method !== 'GET') {
+      let msg = 'Sedang memproses...';
+      if (url.includes('/api/config')) {
+        msg = 'Menyimpan konfigurasi sekolah...';
+      } else if (url.includes('/api/teachers')) {
+        msg = 'Memperbarui data guru & staf...';
+      } else if (url.includes('/api/news')) {
+        msg = 'Memproses berita & pengumuman...';
+      } else if (url.includes('/api/achievements')) {
+        msg = 'Menyimpan data prestasi siswa...';
+      } else if (url.includes('/api/agenda')) {
+        msg = 'Memperbarui agenda kegiatan...';
+      } else if (url.includes('/api/messages')) {
+        msg = 'Memproses kotak masuk & saran...';
+      } else if (url.includes('/api/graduation')) {
+        msg = 'Memperbarui data kelulusan...';
+      } else if (url.includes('/api/ppdb')) {
+        msg = 'Memperbarui status pendaftaran...';
+      } else if (url.includes('/api/backup') || url.includes('backup')) {
+        msg = 'Mencadangkan / memulihkan data...';
+      } else if (url.includes('/api/auth')) {
+        msg = 'Memproses keamanan sesi...';
+      }
+
+      setIsProcessing(true);
+      setProcessingMessage(msg);
+    }
+
+    try {
+      return await window.fetch(input, init);
+    } finally {
+      if (method !== 'GET') {
+        setIsProcessing(false);
+      }
+    }
+  };
   const [activeTab, setActiveTab] = useState('overview');
   const [records, setRecords] = useState(initialRecords);
   const [config, setConfig] = useState(initialConfig);
@@ -8323,6 +8368,7 @@ export default function AdminDashboardClient({
           </div>
         </div>
       )}
+      <PremiumLoadingOverlay active={isProcessing} message={processingMessage} />
     </div>
   );
 }
