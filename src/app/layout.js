@@ -27,6 +27,11 @@ export default async function RootLayout({ children }) {
   const contacts = config.ppdb_contacts || {};
   const schoolEmail = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
 
+  const profil = config.stats?.page_contents?.profil || {};
+  const schoolDesc = profil.footer_description || "SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.";
+  const schoolAddress = profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
+  const schoolNpsn = profil.npsn || "60200589";
+
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
   const floatingPhone = (contacts.wa_floating || contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
@@ -135,7 +140,7 @@ export default async function RootLayout({ children }) {
                 <span className="logo-title" style={{ color: 'white' }}>SD NEGERI BOBONG</span>
               </a>
               <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
-                SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.
+                {schoolDesc}
               </p>
             </div>
             <div className="footer-widget">
@@ -156,11 +161,11 @@ export default async function RootLayout({ children }) {
               <div className="footer-contact-info">
                 <a href="https://maps.google.com/?q=SD+Negeri+Bobong+Pulau+Taliabu" target="_blank" rel="noreferrer" className="footer-contact-item">
                   <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                  <span>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara, 97791</span>
+                  <span>{schoolAddress}</span>
                 </a>
                 <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/20537440-2AF5-E011-B59C-D593D31F215F" target="_blank" rel="noreferrer" className="footer-contact-item">
                   <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                  <span>NPSN: 60200589 (Sekolah Kita)</span>
+                  <span>NPSN: {schoolNpsn} (Sekolah Kita)</span>
                 </a>
                 <a href={`mailto:${schoolEmail}`} className="footer-contact-item">
                   <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>

@@ -23,7 +23,21 @@ export default async function Profil() {
       "Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.",
       "Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.",
       "Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak."
-    ]
+    ],
+    nama_resmi: "SD Negeri Bobong",
+    npsn: "60200589",
+    status_sekolah: "Negeri",
+    sk_pendirian: "04 Oktober 1971 (SK: 420/04/10/1971)",
+    akreditasi: "B (Baik)",
+    kurikulum_operasional: "Kurikulum Merdeka",
+    alamat_lengkap: "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791",
+    kepemilikan_lahan: "Pemerintah Daerah Kabupaten Pulau Taliabu",
+    ruang_belajar_desc: "9 Ruang Kelas belajar (6 Rombel Aktif) yang bersih, kondusif, dan nyaman untuk proses KBM.",
+    ruang_guru_desc: "1 Ruang Guru dan Kepala Sekolah sebagai pusat administrasi, koordinasi, dan pelayanan pendidikan.",
+    sanitasi_desc: "2 Ruang Toilet bersih dan nyaman yang terawat dengan baik untuk guru dan murid.",
+    gudang_desc: "1 Ruang Gudang penyimpanan inventaris, peralatan belajar mengajar, serta perlengkapan sekolah.",
+    olahraga_desc: "Halaman Olahraga & Upacara yang luas di bagian tengah sekolah untuk melatih ketangkasan fisik siswa.",
+    literasi_desc: "Sekolah mengoptimalkan Pojok Baca Kelas dan koleksi literasi untuk meningkatkan minat baca murid harian."
   };
 
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
@@ -84,35 +98,35 @@ export default async function Profil() {
               <tbody>
                 <tr>
                   <td><strong>Nama Resmi Sekolah</strong></td>
-                  <td>SD Negeri Bobong</td>
+                  <td>{profil.nama_resmi || "SD Negeri Bobong"}</td>
                 </tr>
                 <tr>
                   <td><strong>NPSN</strong></td>
-                  <td><strong>60200589</strong> (Terdaftar resmi di Dapodik Kemendikbudristek)</td>
+                  <td><strong>{profil.npsn || "60200589"}</strong> (Terdaftar resmi di Dapodik Kemendikbudristek)</td>
                 </tr>
                 <tr>
                   <td><strong>Status Sekolah</strong></td>
-                  <td>Negeri</td>
+                  <td>{profil.status_sekolah || "Negeri"}</td>
                 </tr>
                 <tr>
                   <td><strong>Tanggal & No. SK Pendirian</strong></td>
-                  <td>04 Oktober 1971 (SK: 420/04/10/1971)</td>
+                  <td>{profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)"}</td>
                 </tr>
                 <tr>
                   <td><strong>Akreditasi</strong></td>
-                  <td><span className="badge badge-accent" style={{ backgroundColor: '#FFF8E6', color: '#D48408' }}>B (Baik)</span></td>
+                  <td><span className="badge badge-accent" style={{ backgroundColor: '#FFF8E6', color: '#D48408' }}>{profil.akreditasi || "B (Baik)"}</span></td>
                 </tr>
                 <tr>
                   <td><strong>Kurikulum Operasional</strong></td>
-                  <td>Kurikulum Merdeka</td>
+                  <td>{profil.kurikulum_operasional || "Kurikulum Merdeka"}</td>
                 </tr>
                 <tr>
                   <td><strong>Alamat Lengkap</strong></td>
-                  <td>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791</td>
+                  <td>{profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}</td>
                 </tr>
                 <tr>
                   <td><strong>Status Kepemilikan Lahan</strong></td>
-                  <td>Pemerintah Daerah Kabupaten Pulau Taliabu</td>
+                  <td>{profil.kepemilikan_lahan || "Pemerintah Daerah Kabupaten Pulau Taliabu"}</td>
                 </tr>
               </tbody>
             </table>
@@ -131,32 +145,32 @@ export default async function Profil() {
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏫</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Belajar</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}><strong>9 Ruang Kelas</strong> belajar (6 Rombel Aktif) yang bersih, kondusif, dan nyaman untuk proses KBM.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_belajar_desc || "9 Ruang Kelas belajar (6 Rombel Aktif) yang bersih, kondusif, dan nyaman untuk proses KBM."}</p>
             </div>
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>👥</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Guru</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}><strong>1 Ruang Guru</strong> dan Kepala Sekolah sebagai pusat administrasi, koordinasi, dan pelayanan pendidikan.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_guru_desc || "1 Ruang Guru dan Kepala Sekolah sebagai pusat administrasi, koordinasi, dan pelayanan pendidikan."}</p>
             </div>
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🚻</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Sanitasi</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}><strong>2 Ruang Toilet</strong> bersih dan nyaman yang terawat dengan baik untuk guru dan murid.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.sanitasi_desc || "2 Ruang Toilet bersih dan nyaman yang terawat dengan baik untuk guru dan murid."}</p>
             </div>
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📦</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Gudang</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}><strong>1 Ruang Gudang</strong> penyimpanan inventaris, peralatan belajar mengajar, serta perlengkapan sekolah.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.gudang_desc || "1 Ruang Gudang penyimpanan inventaris, peralatan belajar mengajar, serta perlengkapan sekolah."}</p>
             </div>
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏃</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Olahraga</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}><strong>Halaman Olahraga & Upacara</strong> yang luas di bagian tengah sekolah untuk melatih ketangkasan fisik siswa.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.olahraga_desc || "Halaman Olahraga & Upacara yang luas di bagian tengah sekolah untuk melatih ketangkasan fisik siswa."}</p>
             </div>
             <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📖</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Pojok Baca & Literasi</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>Sekolah mengoptimalkan <strong>Pojok Baca Kelas</strong> dan koleksi literasi untuk meningkatkan minat baca murid harian.</p>
+              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.literasi_desc || "Sekolah mengoptimalkan Pojok Baca Kelas dan koleksi literasi untuk meningkatkan minat baca murid harian."}</p>
             </div>
           </div>
         </div>
