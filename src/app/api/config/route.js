@@ -37,7 +37,7 @@ export async function POST(request) {
     let force_local_cache;
     let nama_humas, wa_humas, jabatan_humas, nip_humas;
     let nama_operator, wa_operator, jabatan_operator, nip_operator;
-    let wa_floating;
+    let wa_floating, email_sekolah;
     let parsedFormData = null;
     let parsedJsonBody = null;
 
@@ -61,6 +61,7 @@ export async function POST(request) {
       jabatan_operator = body.jabatan_operator;
       nip_operator = body.nip_operator;
       wa_floating = body.wa_floating;
+      email_sekolah = body.email_sekolah;
     } else {
       const formData = await request.formData();
       parsedFormData = formData;
@@ -84,6 +85,7 @@ export async function POST(request) {
         jabatan_operator = formData.get('jabatan_operator')?.toString().trim();
         nip_operator = formData.get('nip_operator')?.toString().trim();
         wa_floating = formData.get('wa_floating')?.toString().trim();
+        email_sekolah = formData.get('email_sekolah')?.toString().trim();
       }
     }
 
@@ -115,7 +117,8 @@ export async function POST(request) {
         wa_operator: wa_operator || '',
         jabatan_operator: jabatan_operator || '',
         nip_operator: nip_operator || '',
-        wa_floating: wa_floating || ''
+        wa_floating: wa_floating || '',
+        email_sekolah: email_sekolah || ''
       };
     } else if (actionType === 'hero_bg') {
       const file = parsedFormData ? parsedFormData.get('hero_bg_image') : null;

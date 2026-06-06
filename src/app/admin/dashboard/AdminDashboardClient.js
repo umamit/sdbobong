@@ -1406,6 +1406,7 @@ export default function AdminDashboardClient({
     const wa_operator = form.wa_operator.value.trim();
     const jabatan_operator = form.jabatan_operator.value.trim();
     const wa_floating = form.wa_floating.value.trim();
+    const email_sekolah = form.email_sekolah.value.trim();
 
     // Dynamically look up current teacher list NIP
     const matchedHumas = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_humas));
@@ -1445,7 +1446,8 @@ export default function AdminDashboardClient({
           wa_operator: clean_wa_operator,
           jabatan_operator,
           nip_operator,
-          wa_floating: clean_wa_floating
+          wa_floating: clean_wa_floating,
+          email_sekolah
         })
       });
       const data = await res.json();
@@ -1462,7 +1464,8 @@ export default function AdminDashboardClient({
             wa_operator: clean_wa_operator,
             jabatan_operator,
             nip_operator,
-            wa_floating: clean_wa_floating
+            wa_floating: clean_wa_floating,
+            email_sekolah
           }
         }));
         router.refresh();
@@ -3707,7 +3710,7 @@ export default function AdminDashboardClient({
                     <h3 style={{ margin: '1px 0', fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
                     <h3 style={{ margin: '2px 0 4px 0', fontSize: '1.4rem', fontWeight: 800, color: '#4f46e5', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SD NEGERI BOBONG</h3>
                     <p style={{ margin: 0, fontSize: '0.75rem', color: '#475569', fontWeight: 500, lineHeight: '1.4' }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
-                    <p style={{ margin: '2px 0 0 0', fontSize: '0.7rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.7rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: {config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}</p>
                   </div>
                   <img src="/images/logo_sekolah.png" alt="Logo Sekolah" style={{ width: '70px', height: '75px', objectFit: 'contain' }} />
                 </div>
@@ -4219,22 +4222,37 @@ export default function AdminDashboardClient({
 
                   <hr style={{ border: '0', borderTop: '1px solid var(--border-color)', margin: 'var(--space-md) 0' }} />
                   
-                  <div style={{ marginBottom: 'var(--space-md)' }}>
-                    <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang (Floating Button)</h4>
+                   <div style={{ marginBottom: 'var(--space-md)' }}>
+                    <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang & Email Resmi</h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-xs)' }}>
-                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau yang tampil di sudut kanan bawah semua halaman publik. Jika dikosongkan, tombol melayang akan otomatis menggunakan nomor <strong>Operator Sekolah</strong> di atas sebagai cadangan.
+                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
                     </p>
-                    <div className="form-group" style={{ maxWidth: '500px' }}>
-                      <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Gunakan Format Angka: 628xxx)</label>
-                      <input
-                        type="text"
-                        id="wa_floating"
-                        name="wa_floating"
-                        className="form-control"
-                        defaultValue={config.ppdb_contacts?.wa_floating || ''}
-                        style={{ width: '100%' }}
-                        placeholder="Contoh: 6281234567890"
-                      />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginTop: '10px' }}>
+                      <div className="form-group">
+                        <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
+                        <input
+                          type="text"
+                          id="wa_floating"
+                          name="wa_floating"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.wa_floating || ''}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: 6281234567890"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
+                        <input
+                          type="email"
+                          id="email_sekolah"
+                          name="email_sekolah"
+                          className="form-control"
+                          defaultValue={config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}
+                          style={{ width: '100%' }}
+                          placeholder="Contoh: sdn.bobong.taliabu@gmail.com"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -7370,7 +7388,7 @@ export default function AdminDashboardClient({
                     <h3 style={{ margin: '1px 0', fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
                     <h3 style={{ margin: '2px 0 4px 0', fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-dark)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>SD NEGERI BOBONG</h3>
                     <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b', fontWeight: 500, lineHeight: '1.4' }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
-                    <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: sdn.bobong@gmail.com</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>NPSN: 60200589 | Email: {config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}</p>
                   </div>
                   <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="print-logo" style={{ width: '75px', height: '75px', objectFit: 'contain' }} />
                 </div>

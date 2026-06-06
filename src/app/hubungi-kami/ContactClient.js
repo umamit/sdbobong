@@ -2,7 +2,10 @@
 
 import { useState } from 'react';
 
-export default function ContactClient({ initialFaqs }) {
+export default function ContactClient({ initialFaqs, contacts = {} }) {
+  const schoolEmail = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
+  const operatorPhone = contacts.wa_operator ? `+${contacts.wa_operator}` : "+62 822-9211-1638";
+  const operatorName = contacts.nama_operator || "Operator Humas";
   // FAQ accordion state: stores the ID of the currently expanded item, or null
   const [expandedFaq, setExpandedFaq] = useState(null);
 
@@ -230,7 +233,7 @@ export default function ContactClient({ initialFaqs }) {
                 <span style={{ fontSize: '1.2rem' }}>📞</span>
                 <div>
                   <strong>Telepon / Whatsapp:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>+62 822-9211-1638 (Operator Humas)</p>
+                  <p style={{ margin: 0, color: '#555' }}>{operatorPhone} ({operatorName})</p>
                 </div>
               </div>
 
@@ -238,7 +241,7 @@ export default function ContactClient({ initialFaqs }) {
                 <span style={{ fontSize: '1.2rem' }}>✉️</span>
                 <div>
                   <strong>Email Resmi:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>sdn.bobong.taliabu@gmail.com</p>
+                  <p style={{ margin: 0, color: '#555' }}>{schoolEmail}</p>
                 </div>
               </div>
             </div>
