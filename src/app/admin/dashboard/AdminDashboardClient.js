@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { createClient } from '@supabase/supabase-js';
 import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
 
 // Client-side image compression using HTML5 Canvas (Zero-dependency, lightweight)
@@ -146,6 +147,11 @@ const sortTeachersListClient = (teachersList) => {
     return nameA.localeCompare(nameB);
   });
 };
+
+// Initialize client-side Supabase client for Realtime subscription
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const clientSupabase = (supabaseUrl && supabaseAnonKey) ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 export default function AdminDashboardClient({
   initialConfig,
@@ -675,6 +681,75 @@ export default function AdminDashboardClient({
       }
     };
   }, [isDetailModalOpen]);
+
+  // Realtime subscription for PPDB and Guestbook
+  useEffect(() => {
+    if (!clientSupabase) return;
+
+    console.log('Establishing Realtime connections...');
+
+    // Listen to new registrations in ppdb_sdn_bobong table
+    const ppdbChannel = clientSupabase
+      .channel('ppdb-changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'ppdb_sdn_bobong' },
+        (payload) => {
+          console.log('Realtime PPDB INSERT payload:', payload);
+          const newRecord = payload.new;
+          if (newRecord) {
+            // Ensure ID is set properly
+            newRecord.id = newRecord.id || newRecord.nik_siswa || newRecord.nik;
+            // Map status
+            newRecord.status = newRecord.status || 'Diterima Sistem';
+            // Auto calculate tahun_ajaran if missing
+            if (!newRecord.tahun_ajaran && newRecord.waktu_daftar) {
+              const year = parseInt(newRecord.waktu_daftar.substring(0, 4), 10);
+              newRecord.tahun_ajaran = !isNaN(year) ? `${year}/${year + 1}` : '2026/2027';
+            } else if (!newRecord.tahun_ajaran) {
+              newRecord.tahun_ajaran = '2026/2027';
+            }
+
+            // Append to local records state
+            setRecords(prev => {
+              const exists = prev.some(r => (r.nik_siswa || r.nik || r.id) === (newRecord.nik_siswa || newRecord.nik || newRecord.id));
+              if (exists) return prev;
+              return [newRecord, ...prev];
+            });
+
+            showToast('success', `🔔 Pendaftar baru terdeteksi: ${newRecord.nama_lengkap}!`);
+          }
+        }
+      )
+      .subscribe();
+
+    // Listen to new guestbook entries
+    const guestbookChannel = clientSupabase
+      .channel('guestbook-changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages_sdn_bobong' },
+        (payload) => {
+          console.log('Realtime Guestbook INSERT payload:', payload);
+          const newMsg = payload.new;
+          if (newMsg) {
+            setMessages(prev => {
+              const exists = prev.some(m => m.id === newMsg.id);
+              if (exists) return prev;
+              return [newMsg, ...prev];
+            });
+            showToast('success', `✉️ Pesan baru di Buku Tamu dari: ${newMsg.nama}!`);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('Cleaning up Realtime channels...');
+      clientSupabase.removeChannel(ppdbChannel);
+      clientSupabase.removeChannel(guestbookChannel);
+    };
+  }, []);
 
   const showToast = (type, message) => {
     setToast({ type, message });
