@@ -84,6 +84,27 @@ export default function AdminDashboardClient({
     }
   }, [config]);
 
+  const normalizeTeacherName = (name) => {
+    if (!name) return "";
+    return name
+      .toLowerCase()
+      .replace(/\b(s\.?pd\.?|m\.?pd\.?|s\.?kom\.?|gr\.?|h\.)\b/gi, "")
+      .replace(/[^a-z0-9]/gi, "")
+      .trim();
+  };
+
+  const syncNipHumas = (() => {
+    const name = config.ppdb_contacts?.nama_humas || "";
+    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
+    return matched ? matched.nip : (config.ppdb_contacts?.nip_humas || "");
+  })();
+
+  const syncNipOperator = (() => {
+    const name = config.ppdb_contacts?.nama_operator || "";
+    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
+    return matched ? matched.nip : (config.ppdb_contacts?.nip_operator || "");
+  })();
+
   const handleFieldChange = (page, key, value) => {
     setPageContents(prev => ({
       ...prev,
@@ -813,12 +834,17 @@ export default function AdminDashboardClient({
     const nama_humas = form.nama_humas.value.trim();
     const wa_humas = form.wa_humas.value.trim();
     const jabatan_humas = form.jabatan_humas.value.trim();
-    const nip_humas = form.nip_humas.value.trim();
     const nama_operator = form.nama_operator.value.trim();
     const wa_operator = form.wa_operator.value.trim();
     const jabatan_operator = form.jabatan_operator.value.trim();
-    const nip_operator = form.nip_operator.value.trim();
     const wa_floating = form.wa_floating.value.trim();
+
+    // Dynamically look up current teacher list NIP
+    const matchedHumas = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_humas));
+    const matchedOperator = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_operator));
+
+    const nip_humas = matchedHumas ? matchedHumas.nip : "";
+    const nip_operator = matchedOperator ? matchedOperator.nip : "";
 
     const clean_wa_humas = wa_humas.replace(/[^0-9]/g, '');
     const clean_wa_operator = wa_operator.replace(/[^0-9]/g, '');
@@ -3411,16 +3437,20 @@ export default function AdminDashboardClient({
                         />
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Opsional)</label>
+                        <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Disinkronkan Otomatis)</label>
                         <input
                           type="text"
                           id="nip_humas"
                           name="nip_humas"
                           className="form-control"
-                          defaultValue={config.ppdb_contacts?.nip_humas || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: 19820310XXXXXXXXXX"
+                          value={syncNipHumas}
+                          style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
+                          placeholder="Terisi otomatis dari daftar guru"
+                          readOnly
                         />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
+                          ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Humas.
+                        </span>
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                         <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
@@ -3464,16 +3494,20 @@ export default function AdminDashboardClient({
                         />
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Opsional)</label>
+                        <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Disinkronkan Otomatis)</label>
                         <input
                           type="text"
                           id="nip_operator"
                           name="nip_operator"
                           className="form-control"
-                          defaultValue={config.ppdb_contacts?.nip_operator || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: 19820310XXXXXXXXXX"
+                          value={syncNipOperator}
+                          style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
+                          placeholder="Terisi otomatis dari daftar guru"
+                          readOnly
                         />
+                        <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
+                          ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Operator.
+                        </span>
                       </div>
                       <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                         <label htmlFor="wa_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>

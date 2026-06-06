@@ -1,4 +1,4 @@
-import { supabase, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, anonymizeName, cleanAddress, formatWaktuDaftar, loadWebConfig } from '../../lib/database';
+import { supabase, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, anonymizeName, cleanAddress, formatWaktuDaftar, loadWebConfig, loadTeachers } from '../../lib/database';
 import fs from 'fs';
 import PPDBPortal from '../../components/PPDBPortal';
 
@@ -92,6 +92,7 @@ export default async function PPDBPage() {
   }
 
   const config = await loadWebConfig();
+  const teachers = await loadTeachers();
 
-  return <PPDBPortal pendaftarList={pendaftarList} config={config} />;
+  return <PPDBPortal pendaftarList={pendaftarList} config={config} teachers={teachers} />;
 }

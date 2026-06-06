@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function PPDBPortal({ pendaftarList, config }) {
+export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const contacts = config?.ppdb_contacts || {
@@ -16,6 +16,24 @@ export default function PPDBPortal({ pendaftarList, config }) {
     jabatan_operator: "",
     nip_operator: ""
   };
+
+  // Helper function to normalize teacher names for matching
+  const normalizeName = (name) => {
+    if (!name) return "";
+    return name
+      .toLowerCase()
+      .replace(/\b(s\.?pd\.?|m\.?pd\.?|s\.?kom\.?|gr\.?|h\.)\b/gi, "")
+      .replace(/[^a-z0-9]/gi, "")
+      .trim();
+  };
+
+  // Dynamically lookup the humas and operator teachers in the live teachers list
+  const matchedHumas = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_humas));
+  const matchedOperator = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_operator));
+
+  // Prioritize live database NIP, fallback to contacts' saved NIP if no match
+  const nip_humas = matchedHumas ? matchedHumas.nip : contacts.nip_humas;
+  const nip_operator = matchedOperator ? matchedOperator.nip : contacts.nip_operator;
 
   const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim());
   const hasOperator = !!(contacts.nama_operator?.trim() && contacts.wa_operator?.trim());
@@ -319,9 +337,9 @@ export default function PPDBPortal({ pendaftarList, config }) {
             {hasHumas ? (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
                 <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
-                <p style={{ fontWeight: 700, marginBottom: contacts.nip_humas ? '2px' : 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_humas}</p>
-                {contacts.nip_humas && (
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: 'var(--space-md)' }}>NIP. {contacts.nip_humas}</p>
+                <p style={{ fontWeight: 700, marginBottom: nip_humas ? '2px' : 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_humas}</p>
+                {nip_humas && (
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: 'var(--space-md)' }}>NIP. {nip_humas}</p>
                 )}
                 <a href={`https://wa.me/${contacts.wa_humas.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_humas)},%20saya%20ingin%20bertanya%20mengenai%20syarat%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ width: '100%' }}>Tanya {contacts.nama_humas.split(',')[0]} (WA)</a>
               </div>
@@ -340,9 +358,9 @@ export default function PPDBPortal({ pendaftarList, config }) {
             {hasOperator ? (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
                 <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
-                <p style={{ fontWeight: 700, marginBottom: contacts.nip_operator ? '2px' : 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_operator}</p>
-                {contacts.nip_operator && (
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: 'var(--space-md)' }}>NIP. {contacts.nip_operator}</p>
+                <p style={{ fontWeight: 700, marginBottom: nip_operator ? '2px' : 'var(--space-md)', color: 'var(--text-main)' }}>{contacts.nama_operator}</p>
+                {nip_operator && (
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: 'var(--space-md)' }}>NIP. {nip_operator}</p>
                 )}
                 <a href={`https://wa.me/${contacts.wa_operator.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(contacts.nama_operator)},%20saya%20mengalami%20kendala%20teknis%20daring%20PPDB%20SDN%20Bobong...`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ width: '100%', color: 'white' }}>Tanya {contacts.nama_operator.split(',')[0]} (WA)</a>
               </div>
