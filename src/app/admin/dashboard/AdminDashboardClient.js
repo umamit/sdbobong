@@ -494,6 +494,22 @@ export default function AdminDashboardClient({
     }
   }, []);
 
+  // Sync body class with detail modal open state for robust print preview styling
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (isDetailModalOpen) {
+        document.body.classList.add('print-detail-open');
+      } else {
+        document.body.classList.remove('print-detail-open');
+      }
+    }
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('print-detail-open');
+      }
+    };
+  }, [isDetailModalOpen]);
+
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => {
@@ -2430,17 +2446,35 @@ export default function AdminDashboardClient({
                 font-family: 'Plus Jakarta Sans', sans-serif !important;
             }
 
+            /* Force exact colors and backgrounds on print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
             /* 1. SCENARIO A: Printing the Individual Student Registration Slip (Modal is Open) */
             body:has(#print-slip-container), 
             body.print-detail-open {
                 background: #ffffff !important;
+                color: #000000 !important;
             }
             
-            .print-detail-open .admin-dashboard-layout,
-            .print-detail-open .main-wrapper,
-            .print-detail-open .content-body,
-            .print-detail-open .modal-backdrop,
-            .print-detail-open .modal-content {
+            /* Completely hide non-printable layout containers when printing the slip */
+            body.print-detail-open .sidebar,
+            body.print-detail-open .main-wrapper,
+            body:has(#print-slip-container) .sidebar,
+            body:has(#print-slip-container) .main-wrapper {
+                display: none !important;
+            }
+
+            /* Reset ancestral containers to standard block flow during print to avoid flexbox/height constraints */
+            .admin-dashboard-layout.print-detail-open,
+            body.print-detail-open .admin-dashboard-layout,
+            body.print-detail-open .modal-backdrop,
+            body.print-detail-open .modal-content,
+            body:has(#print-slip-container) .admin-dashboard-layout,
+            body:has(#print-slip-container) .modal-backdrop,
+            body:has(#print-slip-container) .modal-content {
                 position: static !important;
                 display: block !important;
                 width: 100% !important;
@@ -2456,7 +2490,8 @@ export default function AdminDashboardClient({
                 -webkit-backdrop-filter: none !important;
             }
 
-            .print-detail-open .modal-content > div {
+            body.print-detail-open .modal-content > div,
+            body:has(#print-slip-container) .modal-content > div {
                 overflow: visible !important;
                 padding: 0 !important;
                 height: auto !important;
