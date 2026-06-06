@@ -179,6 +179,10 @@ export default async function RootLayout({ children }) {
                   <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" />
                   <span className="affiliation-text">Dinas Pendidikan Taliabu</span>
                 </div>
+                <div className="affiliation-item" title="Kurikulum Merdeka - Merdeka Belajar">
+                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className="affiliation-logo" />
+                  <span className="affiliation-text">Kurikulum Merdeka</span>
+                </div>
               </div>
             </div>
           </div>
