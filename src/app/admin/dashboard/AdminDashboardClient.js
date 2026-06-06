@@ -74,6 +74,78 @@ const compressImage = (file, maxW = 1920, maxH = 1080, quality = 0.8) => {
   });
 };
 
+// Client-side teacher sorting helpers matching the server-side logic in database.js
+const getTeacherSortWeightClient = (teacher) => {
+  const role = (teacher.role || "").toLowerCase();
+  const details = (teacher.details || "").toLowerCase();
+
+  // 1. Kepala Sekolah
+  if (role.includes("kepala sekolah")) {
+    return { priority: 1, classNum: 0 };
+  }
+
+  // 2. Tata Usaha
+  if (role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) {
+    return { priority: 2, classNum: 0 };
+  }
+
+  // 3. Bendahara
+  if (role.includes("bendahara")) {
+    return { priority: 3, classNum: 0 };
+  }
+
+  // 4. Komite
+  if (role.includes("komite")) {
+    return { priority: 4, classNum: 0 };
+  }
+
+  // 5. Guru Kelas / Wali Kelas (Wali Kelas)
+  let classMatch = role.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i) || details.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i);
+  if (classMatch) {
+    const rawClass = classMatch[1].toLowerCase();
+    const romanMap = {
+      'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6,
+      '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6
+    };
+    const classNum = romanMap[rawClass] || 99;
+    return { priority: 5, classNum: classNum };
+  }
+
+  if (role.includes("guru kelas") || role.includes("wali kelas")) {
+    return { priority: 5, classNum: 99 };
+  }
+
+  // 6. Guru Mata Pelajaran / Bidang Studi / generic Guru
+  if (role.includes("guru") || details.includes("pendidik bidang studi") || details.includes("guru") || role.includes("bidang studi")) {
+    return { priority: 6, classNum: 0 };
+  }
+
+  // 7. Others
+  return { priority: 7, classNum: 0 };
+};
+
+const sortTeachersListClient = (teachersList) => {
+  if (!Array.isArray(teachersList)) return [];
+  return [...teachersList].sort((a, b) => {
+    const weightA = getTeacherSortWeightClient(a);
+    const weightB = getTeacherSortWeightClient(b);
+
+    if (weightA.priority !== weightB.priority) {
+      return weightA.priority - weightB.priority;
+    }
+
+    if (weightA.priority === 5) {
+      if (weightA.classNum !== weightB.classNum) {
+        return weightA.classNum - weightB.classNum;
+      }
+    }
+
+    const nameA = (a.name || "").toLowerCase().trim();
+    const nameB = (b.name || "").toLowerCase().trim();
+    return nameA.localeCompare(nameB);
+  });
+};
+
 export default function AdminDashboardClient({
   initialConfig,
   initialNewsList,
@@ -783,9 +855,9 @@ export default function AdminDashboardClient({
           }
 
           if (data.teachers) {
-            setTeachers(data.teachers);
+            setTeachers(sortTeachersListClient(data.teachers));
           } else if (backupData.teachers) {
-            setTeachers(backupData.teachers);
+            setTeachers(sortTeachersListClient(backupData.teachers));
           }
 
           if (data.achievements) {
@@ -1199,12 +1271,7 @@ export default function AdminDashboardClient({
       const data = await res.json();
       if (res.ok) {
         showToast('success', 'Data guru berhasil ditambahkan!');
-        const role = data.teacher.role || '';
-        if (role.toLowerCase().includes('kepala sekolah')) {
-          setTeachers(prev => [data.teacher, ...prev]);
-        } else {
-          setTeachers(prev => [...prev, data.teacher]);
-        }
+        setTeachers(prev => sortTeachersListClient([...prev, data.teacher]));
         form.reset();
         setTeacherImageSelect('/images/teacher_1.png');
         setTeacherImageUrl('/images/teacher_1.png');
@@ -1501,8 +1568,7 @@ export default function AdminDashboardClient({
       const data = await res.json();
       if (res.ok) {
         showToast('success', 'Data guru berhasil diperbarui!');
-        // Update the teachers local state
-        setTeachers(prev => prev.map(t => t.id === editTeacherId ? data.teacher : t));
+        setTeachers(prev => sortTeachersListClient(prev.map(t => t.id === editTeacherId ? data.teacher : t)));
         setEditTeacherModalOpen(false);
         router.refresh();
       } else {

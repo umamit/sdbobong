@@ -456,6 +456,77 @@ export async function saveNews(newsList) {
   return localSaved;
 }
 
+function getTeacherSortWeight(teacher) {
+  const role = (teacher.role || "").toLowerCase();
+  const details = (teacher.details || "").toLowerCase();
+
+  // 1. Kepala Sekolah
+  if (role.includes("kepala sekolah")) {
+    return { priority: 1, classNum: 0 };
+  }
+
+  // 2. Tata Usaha
+  if (role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) {
+    return { priority: 2, classNum: 0 };
+  }
+
+  // 3. Bendahara
+  if (role.includes("bendahara")) {
+    return { priority: 3, classNum: 0 };
+  }
+
+  // 4. Komite
+  if (role.includes("komite")) {
+    return { priority: 4, classNum: 0 };
+  }
+
+  // 5. Guru Kelas / Wali Kelas (Wali Kelas)
+  let classMatch = role.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i) || details.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i);
+  if (classMatch) {
+    const rawClass = classMatch[1].toLowerCase();
+    const romanMap = {
+      'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6,
+      '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6
+    };
+    const classNum = romanMap[rawClass] || 99;
+    return { priority: 5, classNum: classNum };
+  }
+
+  if (role.includes("guru kelas") || role.includes("wali kelas")) {
+    return { priority: 5, classNum: 99 };
+  }
+
+  // 6. Guru Mata Pelajaran / Bidang Studi / generic Guru
+  if (role.includes("guru") || details.includes("pendidik bidang studi") || details.includes("guru") || role.includes("bidang studi")) {
+    return { priority: 6, classNum: 0 };
+  }
+
+  // 7. Others
+  return { priority: 7, classNum: 0 };
+}
+
+export function sortTeachersList(teachersList) {
+  if (!Array.isArray(teachersList)) return [];
+  return [...teachersList].sort((a, b) => {
+    const weightA = getTeacherSortWeight(a);
+    const weightB = getTeacherSortWeight(b);
+
+    if (weightA.priority !== weightB.priority) {
+      return weightA.priority - weightB.priority;
+    }
+
+    if (weightA.priority === 5) {
+      if (weightA.classNum !== weightB.classNum) {
+        return weightA.classNum - weightB.classNum;
+      }
+    }
+
+    const nameA = (a.name || "").toLowerCase().trim();
+    const nameB = (b.name || "").toLowerCase().trim();
+    return nameA.localeCompare(nameB);
+  });
+}
+
 export async function loadTeachers() {
   let localTeachers = [];
   if (fs.existsSync(TEACHERS_JSON)) {
@@ -466,7 +537,9 @@ export async function loadTeachers() {
     }
   }
 
-  if (!isSupabaseEnabled()) return localTeachers;
+  if (!isSupabaseEnabled()) {
+    return sortTeachersList(localTeachers);
+  }
 
   try {
     const { data: supabaseTeachers, error } = await supabase.from("teachers_sdn_bobong").select("*");
@@ -485,7 +558,8 @@ export async function loadTeachers() {
 
     if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0) {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
-      for (const t of localTeachers) {
+      const sortedLocal = sortTeachersList(localTeachers);
+      for (const t of sortedLocal) {
         const insertObj = {
           id: t.id,
           name: t.name,
@@ -499,7 +573,7 @@ export async function loadTeachers() {
         }
         await supabase.from("teachers_sdn_bobong").insert(insertObj);
       }
-      return localTeachers;
+      return sortedLocal;
     }
 
     if (supabaseTeachers) {
@@ -526,39 +600,28 @@ export async function loadTeachers() {
         return obj;
       });
 
-      teachersList.sort((a, b) => {
-        const roleA = (a.role || "").toLowerCase();
-        const roleB = (b.role || "").toLowerCase();
-        if (roleA.includes("kepala sekolah")) return -1;
-        if (roleB.includes("kepala sekolah")) return 1;
-        if (roleA.includes("tata usaha") || roleA.includes("tu")) return -1;
-        if (roleB.includes("tata usaha") || roleB.includes("tu")) return 1;
-        const matchA = (a.id || "").match(/\d+/);
-        const matchB = (b.id || "").match(/\d+/);
-        const idA = matchA ? parseInt(matchA[0]) : 9999;
-        const idB = matchB ? parseInt(matchB[0]) : 9999;
-        return idA - idB;
-      });
+      const sortedList = sortTeachersList(teachersList);
 
       try {
-        fs.writeFileSync(TEACHERS_JSON, JSON.stringify(teachersList, null, 4), 'utf-8');
+        fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8');
       } catch (e) {
         console.error("Error writing teachers cache:", e);
       }
 
-      return teachersList;
+      return sortedList;
     }
   } catch (e) {
     console.error("Error loading teachers from Supabase:", e.message || e, ". Falling back to local cache.");
   }
 
-  return localTeachers;
+  return sortTeachersList(localTeachers);
 }
 
 export async function saveTeachers(teachersList) {
+  const sortedList = sortTeachersList(teachersList);
   let localSaved = false;
   try {
-    fs.writeFileSync(TEACHERS_JSON, JSON.stringify(teachersList, null, 4), 'utf-8');
+    fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8');
     localSaved = true;
   } catch (e) {
     console.error("Error saving teachers locally:", e);
@@ -577,7 +640,7 @@ export async function saveTeachers(teachersList) {
         hasNipColumn = false;
       }
 
-      for (const t of teachersList) {
+      for (const t of sortedList) {
         const upsertObj = {
           id: t.id,
           name: t.name,
@@ -593,7 +656,7 @@ export async function saveTeachers(teachersList) {
         if (error) throw error;
       }
 
-      const localIds = new Set(teachersList.map(t => t.id));
+      const localIds = new Set(sortedList.map(t => t.id));
       const { data: supabaseTeachers, error: selectError } = await supabase.from("teachers_sdn_bobong").select("id");
       if (selectError) throw selectError;
 
