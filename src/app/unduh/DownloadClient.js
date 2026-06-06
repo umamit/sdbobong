@@ -157,6 +157,7 @@ export default function DownloadClient({ initialDownloads }) {
                       fontSize: '0.95rem',
                       textDecoration: 'none',
                       textAlign: 'center',
+                      cursor: 'pointer',
                       transition: 'opacity 0.2s ease'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
@@ -186,6 +187,7 @@ export default function DownloadClient({ initialDownloads }) {
                       fontSize: '0.95rem',
                       textDecoration: 'none',
                       textAlign: 'center',
+                      cursor: 'pointer',
                       transition: 'opacity 0.2s ease'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
