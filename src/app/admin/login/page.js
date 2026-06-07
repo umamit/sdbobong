@@ -40,7 +40,6 @@ export default function AdminLogin() {
       router.refresh();
     } catch (err) {
       setErrorMsg(err.message);
-    } finally {
       setIsSubmitting(false);
     }
   };
