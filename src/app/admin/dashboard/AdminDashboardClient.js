@@ -945,6 +945,34 @@ export default function AdminDashboardClient({
     }
   };
 
+  const handleMaintenanceModeToggle = async (e) => {
+    const isMaintenance = e.target.checked;
+    
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'toggle_maintenance', maintenance_mode: isMaintenance })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', isMaintenance ? '🛠️ Mode Pemeliharaan AKTIF. Seluruh halaman publik dikunci.' : '✅ Mode Pemeliharaan NONAKTIF. Website dapat diakses publik.');
+        setConfig(prev => ({
+          ...prev,
+          stats: {
+            ...(prev.stats || {}),
+            maintenance_mode: isMaintenance
+          }
+        }));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal mengubah mode pemeliharaan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   // ================= NEW PREMIUM HANDLERS =================
   // --- 1. Downloads Handlers ---
   const handleSaveDownload = async (e) => {
@@ -4300,6 +4328,48 @@ export default function AdminDashboardClient({
           {/* ================= TAB: CONTENT CONTROL ================= */}
           <section id="tab-content" className={`tab-pane ${activeTab === 'content' ? 'active' : ''}`}>
             <div className="settings-grid">
+              {/* Mode Pemeliharaan (Maintenance Mode) */}
+              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config.stats?.maintenance_mode ? '#f59e0b' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
+                  <div style={{ flex: '1', minWidth: '280px' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config.stats?.maintenance_mode ? '#f59e0b' : 'var(--text-color)', transition: 'color 0.3s' }}>
+                      🛠️ Mode Pemeliharaan (Maintenance Mode)
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
+                      Saat diaktifkan, seluruh halaman publik akan dikunci otomatis dan dialihkan ke halaman pemeliharaan premium. Anda sebagai admin tetap bisa mengakses dashboard ini secara penuh.
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <label style={{ display: 'inline-block', position: 'relative', width: '50px', height: '28px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={!!config.stats?.maintenance_mode}
+                        onChange={handleMaintenanceModeToggle}
+                        style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
+                      />
+                      <span style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: config.stats?.maintenance_mode ? '#f59e0b' : '#ccc',
+                        transition: '0.4s',
+                        borderRadius: '34px',
+                        boxShadow: config.stats?.maintenance_mode ? '0 0 10px rgba(245, 158, 11, 0.4)' : 'none'
+                      }}>
+                        <span style={{
+                          position: 'absolute',
+                          height: '20px', width: '20px',
+                          left: config.stats?.maintenance_mode ? '26px' : '4px',
+                          bottom: '4px',
+                          backgroundColor: 'white',
+                          transition: '0.4s',
+                          borderRadius: '50%'
+                        }} />
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               {/* Announcements */}
               <div className="settings-card">
                 <h3>Edit Pengumuman Berjalan (Marquee Banner)</h3>

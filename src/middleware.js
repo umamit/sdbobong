@@ -5,6 +5,10 @@ import { verifyAdminToken } from './lib/auth';
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
 
+  // Clone request headers to inject pathname for server components
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', path);
+
   // 1. Markdown Content Negotiation (Accept: text/markdown) for Agents
   const acceptHeader = request.headers.get('accept') || '';
   const isMarkdownRequest = acceptHeader.includes('text/markdown');
@@ -89,7 +93,11 @@ export async function middleware(request) {
     const isValidToken = await verifyAdminToken(adminToken);
 
     if (isValidToken) {
-      return NextResponse.next();
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        }
+      });
     }
 
     const { user, response } = await updateSession(request);
@@ -101,7 +109,11 @@ export async function middleware(request) {
   }
 
   // 3. For public pages, we bypass updateSession to optimize speed and database limits
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    }
+  });
 }
 
 export const config = {
