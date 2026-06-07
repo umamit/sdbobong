@@ -41,7 +41,8 @@ export default async function RootLayout({ children }) {
   const headersList = headers();
   const pathname = headersList.get('x-pathname') || '';
   
-  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
+  const isDev = process.env.NODE_ENV === 'development';
+  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api') && !isDev;
 
   if (isMaintenanceActive) {
     return (
@@ -424,7 +425,7 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: `
-          document.cookie = "maintenance_mode=${config.stats?.maintenance_mode === true ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
+          document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true && !isDev) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
         `}} />
         {/* Google tag (gtag.js) */}
         <Script

@@ -12,6 +12,7 @@
         "guru_staf": 23,
         "akreditasi": "B",
         "cuci_tangan": 4,
+        "news_seeded": true,
         "ruang_kelas": 8,
         "siswa_aktif": 340,
         "_faqs_fallback": [
@@ -32,7 +33,9 @@
             }
         ],
         "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
-        "maintenance_mode": false,
+        "messages_seeded": true,
+        "teachers_seeded": true,
+        "maintenance_mode": true,
         "_gallery_fallback": [
             {
                 "id": "gal-1",
@@ -56,6 +59,7 @@
                 "title": "Apresiasi GTK Kategori Guru SD Transformatif Tahun 2025: \"Halal-Haram Detective\""
             }
         ],
+        "graduation_seeded": true,
         "_downloads_fallback": [
             {
                 "id": "dl-1780755902142",
@@ -65,11 +69,7 @@
                 "category": "Kurikulum"
             }
         ],
-        "news_seeded": true,
-        "teachers_seeded": true,
-        "achievements_seeded": true,
-        "messages_seeded": true,
-        "graduation_seeded": true
+        "achievements_seeded": true
     },
     "ppdb_contacts": {
         "wa_humas": "6281340123496",
