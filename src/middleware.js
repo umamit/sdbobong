@@ -105,7 +105,18 @@ export async function middleware(request) {
     if (!user) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
-    return response;
+
+    const finalResponse = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      }
+    });
+
+    response.cookies.getAll().forEach(cookie => {
+      finalResponse.cookies.set(cookie);
+    });
+
+    return finalResponse;
   }
 
   // 3. For public pages, we bypass updateSession to optimize speed and database limits
