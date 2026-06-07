@@ -1,5 +1,5 @@
 import AdminDashboardClient from './AdminDashboardClient';
-import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation } from '../../../lib/database';
+import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation, loadStudents } from '../../../lib/database';
 import { loadAuditLogs } from '../../../lib/audit';
 import fs from 'fs';
 
@@ -9,8 +9,8 @@ export default async function AdminDashboardPage() {
   // 1. Run local to Supabase sync in the background (non-blocking) to optimize load speed
   syncLocalToSupabase().catch(err => console.error("Error in background database sync on dashboard access:", err));
 
-  // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, and audit logs in parallel
-  const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs] = await Promise.all([
+  // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, students, and audit logs in parallel
+  const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs, studentsList] = await Promise.all([
     loadWebConfig(),
     loadNews(),
     loadTeachers(),
@@ -18,7 +18,8 @@ export default async function AdminDashboardPage() {
     getStorageUsage(),
     loadMessages(),
     loadGraduation(),
-    loadAuditLogs()
+    loadAuditLogs(),
+    loadStudents()
   ]);
 
   // 3. Load PPDB records
@@ -106,6 +107,7 @@ export default async function AdminDashboardPage() {
       initialMessages={messagesList}
       initialGraduation={graduationList}
       initialAuditLogs={auditLogs}
+      initialStudents={studentsList}
     />
   );
 }

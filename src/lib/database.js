@@ -45,7 +45,8 @@ try {
       'pendaftaran.json',
       'achievements.json',
       'messages.json',
-      'graduation.json'
+      'graduation.json',
+      'students.json'
     ];
     filesToCopy.forEach(file => {
       const srcPath = path.join(BUNDLED_DATA_DIR, file);
@@ -71,6 +72,7 @@ export const PENDAFTARAN_JSON = path.join(DATA_DIR, 'pendaftaran.json');
 export const ACHIEVEMENTS_JSON = path.join(DATA_DIR, 'achievements.json');
 export const MESSAGES_JSON = path.join(DATA_DIR, 'messages.json');
 export const GRADUATION_JSON = path.join(DATA_DIR, 'graduation.json');
+export const STUDENTS_JSON = path.join(DATA_DIR, 'students.json');
 
 // --- Helper Utilities ---
 
@@ -1463,6 +1465,121 @@ export async function saveGraduation(gradList) {
       return true;
     } catch (e) {
       console.error("Supabase saveGraduation failed:", e.message || e);
+      return localSaved;
+    }
+  }
+  return localSaved;
+}
+
+export async function loadStudents() {
+  let localStudents = [];
+  if (fs.existsSync(STUDENTS_JSON)) {
+    try {
+      localStudents = JSON.parse(fs.readFileSync(STUDENTS_JSON, 'utf-8'));
+    } catch (e) {
+      console.error("Error loading local students list:", e);
+    }
+  }
+
+  if (!isSupabaseEnabled()) return localStudents;
+
+  try {
+    const { data: dbStudents, error } = await supabase.from("students_sdn_bobong").select("*");
+    if (!error && dbStudents) {
+      const studentsSeeded = await isTableSeeded("students");
+      if (dbStudents.length === 0 && localStudents.length > 0 && !studentsSeeded) {
+        console.log("Supabase students table is empty. Seeding from local JSON...");
+        for (const s of localStudents) {
+          await supabase.from("students_sdn_bobong").insert({
+            id: s.id,
+            nisn: s.nisn,
+            nis: s.nis,
+            name: s.name,
+            class: s.class,
+            gender: s.gender,
+            birth_place: s.birth_place,
+            birth_date: s.birth_date,
+            address: s.address,
+            parent_name: s.parent_name,
+            parent_phone: s.parent_phone,
+            status: s.status
+          });
+        }
+        await markTableSeeded("students");
+        return localStudents;
+      }
+
+      if (dbStudents && dbStudents.length > 0 && !studentsSeeded) {
+        await markTableSeeded("students");
+      }
+
+      const studList = dbStudents.map(s => ({
+        id: s.id,
+        nisn: s.nisn,
+        nis: s.nis,
+        name: s.name,
+        class: s.class,
+        gender: s.gender,
+        birth_place: s.birth_place,
+        birth_date: s.birth_date,
+        address: s.address,
+        parent_name: s.parent_name,
+        parent_phone: s.parent_phone,
+        status: s.status
+      }));
+      try {
+        fs.writeFileSync(STUDENTS_JSON, JSON.stringify(studList, null, 4), 'utf-8');
+      } catch (fsErr) {}
+      return studList;
+    }
+  } catch (e) {
+    console.error("Supabase loadStudents failed, falling back to local:", e.message || e);
+  }
+
+  return localStudents;
+}
+
+export async function saveStudents(studentsList) {
+  let localSaved = false;
+  try {
+    fs.writeFileSync(STUDENTS_JSON, JSON.stringify(studentsList, null, 4), 'utf-8');
+    localSaved = true;
+  } catch (e) {
+    console.error("Error saving students locally:", e);
+  }
+
+  if (isSupabaseEnabled()) {
+    try {
+      for (const s of studentsList) {
+        const { error } = await supabase.from("students_sdn_bobong").upsert({
+          id: s.id,
+          nisn: s.nisn,
+          nis: s.nis,
+          name: s.name,
+          class: s.class,
+          gender: s.gender,
+          birth_place: s.birth_place,
+          birth_date: s.birth_date,
+          address: s.address,
+          parent_name: s.parent_name,
+          parent_phone: s.parent_phone,
+          status: s.status
+        });
+        if (error) throw error;
+      }
+
+      const localIds = new Set(studentsList.map(s => s.id));
+      const { data: dbStud, error: selectError } = await supabase.from("students_sdn_bobong").select("id");
+      if (!selectError && dbStud) {
+        for (const row of dbStud) {
+          if (!localIds.has(row.id)) {
+            await supabase.from("students_sdn_bobong").delete().eq("id", row.id);
+          }
+        }
+      }
+      return true;
+    } catch (e) {
+      console.error("Supabase saveStudents failed:", e.message || e);
       return localSaved;
     }
   }

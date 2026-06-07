@@ -172,6 +172,7 @@ export default function AdminDashboardClient({
   initialMessages = [],
   initialGraduation = [],
   initialAuditLogs = [],
+  initialStudents = [],
 }) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -262,6 +263,29 @@ export default function AdminDashboardClient({
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [messages, setMessages] = useState(initialMessages);
   const [graduation, setGraduation] = useState(initialGraduation);
+  const [students, setStudents] = useState(initialStudents);
+  const [studentSearch, setStudentSearch] = useState('');
+  const [studentClassFilter, setStudentClassFilter] = useState('Semua');
+  const [studentGenderFilter, setStudentGenderFilter] = useState('Semua');
+  const [studentStatusFilter, setStudentStatusFilter] = useState('Semua');
+
+  // Modal and Form States
+  const [studentModalOpen, setStudentModalOpen] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
+
+  // Form Fields
+  const [studNisn, setStudNisn] = useState('');
+  const [studNis, setStudNis] = useState('');
+  const [studName, setStudName] = useState('');
+  const [studClass, setStudClass] = useState('1');
+  const [studGender, setStudGender] = useState('Laki-laki');
+  const [studBirthPlace, setStudBirthPlace] = useState('');
+  const [studBirthDate, setStudBirthDate] = useState('');
+  const [studAddress, setStudAddress] = useState('');
+  const [studParentName, setStudParentName] = useState('');
+  const [studParentPhone, setStudParentPhone] = useState('');
+  const [studStatus, setStudStatus] = useState('Aktif');
+
   const [toast, setToast] = useState(null);
   const [storageInfo, setStorageInfo] = useState(initialStorageInfo);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -1393,6 +1417,104 @@ export default function AdminDashboardClient({
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
   };
+
+  const handleSaveStudent = async (e) => {
+    e.preventDefault();
+    if (!studNisn || !studNis || !studName || !studClass || !studGender) {
+      showToast('danger', 'Kolom NISN, NIS, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!');
+      return;
+    }
+    if (!/^\d{10}$/.test(studNisn)) {
+      showToast('danger', 'NISN harus berupa 10 digit angka!');
+      return;
+    }
+
+    const payload = {
+      id: editingStudent ? editingStudent.id : `stud-${Math.floor(Date.now() / 1000)}`,
+      nisn: studNisn,
+      nis: studNis,
+      name: studName,
+      class: studClass,
+      gender: studGender,
+      birth_place: studBirthPlace,
+      birth_date: studBirthDate,
+      address: studAddress,
+      parent_name: studParentName,
+      parent_phone: studParentPhone,
+      status: studStatus
+    };
+
+    try {
+      const res = await fetch('/api/students', {
+        method: editingStudent ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `Data siswa ${studName} berhasil ${editingStudent ? 'diperbarui' : 'ditambahkan'}!`);
+        if (editingStudent) {
+          setStudents(prev => prev.map(item => item.id === editingStudent.id ? payload : item));
+        } else {
+          setStudents(prev => [payload, ...prev]);
+        }
+        setStudentModalOpen(false);
+        setEditingStudent(null);
+        setStudNisn('');
+        setStudNis('');
+        setStudName('');
+        setStudClass('1');
+        setStudGender('Laki-laki');
+        setStudBirthPlace('');
+        setStudBirthDate('');
+        setStudAddress('');
+        setStudParentName('');
+        setStudParentPhone('');
+        setStudStatus('Aktif');
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan data siswa.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleDeleteStudent = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus data siswa ini secara permanen?')) return;
+    try {
+      const res = await fetch(`/api/students?id=${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Data siswa berhasil dihapus secara permanen!');
+        setStudents(prev => prev.filter(item => item.id !== id));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menghapus data siswa.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  // Filter students based on search and selected filters
+  const filteredStudents = (students || []).filter(student => {
+    const matchesSearch = studentSearch === '' || 
+      (student.name || '').toLowerCase().includes(studentSearch.toLowerCase()) ||
+      (student.nisn || '').includes(studentSearch) ||
+      (student.nis || '').includes(studentSearch) ||
+      (student.address || '').toLowerCase().includes(studentSearch.toLowerCase()) ||
+      (student.parent_name || '').toLowerCase().includes(studentSearch.toLowerCase());
+
+    const matchesClass = studentClassFilter === 'Semua' || student.class === studentClassFilter;
+    const matchesGender = studentGenderFilter === 'Semua' || student.gender === studentGenderFilter;
+    const matchesStatus = studentStatusFilter === 'Semua' || student.status === studentStatusFilter;
+
+    return matchesSearch && matchesClass && matchesGender && matchesStatus;
+  });
+
   // --- 6. Security & Audit Threat Resolution Handler ---
   const handleResolveThreat = async (ip) => {
     try {
@@ -4323,6 +4445,14 @@ export default function AdminDashboardClient({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.57 50.57 0 0 0-2.658-.813A5.905 5.905 0 0 1 1.151 6.07a50.29 50.29 0 0 1 5.36-1.04m4.007-.115a50.4 50.4 0 0 0-3.61-.195m0 0a50.259 50.259 0 0 1 10.374 0m0 0a50.4 50.4 0 0 0-3.61.195m0 0a50.814 50.814 0 0 0-3.61.195m0 0a50.259 50.259 0 0 0-10.374 0M12 14v7m-7.5-7h15" />
               </svg>
               <span>Kelulusan Kelas 6</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'students' ? 'active' : ''}`} onClick={() => setActiveTab('students')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.109A11.386 11.386 0 0012 20c-2.31 0-4.47-.684-6.3-1.857M5.105 17.915a1.13 1.13 0 11-1.697-1.494c.3-.341.696-.6 1.137-.749M19.5 17.915a1.13 1.13 0 101.697-1.494c-.3-.341-.696-.6-1.137-.749M18 14c0 2.21-2.686 4-6 4s-6-1.79-6-4M12 2a3 3 0 100 6 3 3 0 000-6zm6 4h.008v.008H18V6zm-12 0h.008v.008H6V6z" />
+              </svg>
+              <span>Kelola Siswa (DB)</span>
             </a>
           </li>
           <li className="sidebar-item">
@@ -8321,6 +8451,274 @@ export default function AdminDashboardClient({
             </div>
           </section>
 
+          {/* ================= TAB: KELOLA SISWA ================= */}
+          <section id="tab-students" className={`tab-pane ${activeTab === 'students' ? 'active' : ''}`}>
+            <div className="admin-table">
+              
+              {/* Premium Stat Cards */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ backgroundColor: '#dcfce7', color: '#15803d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👥</div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Total Siswa Aktif</h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.status === 'Aktif').length} Siswa</p>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ backgroundColor: '#e0f2fe', color: '#0369a1', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👦</div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Laki-laki (Aktif)</h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Laki-laki' && s.status === 'Aktif').length} Siswa</p>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ backgroundColor: '#fce7f3', color: '#be185d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👧</div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Perempuan (Aktif)</h4>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Perempuan' && s.status === 'Aktif').length} Siswa</p>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ backgroundColor: '#f1f5f9', color: '#475569', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>🏫</div>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Sebaran Kelas</h4>
+                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
+                      {[1, 2, 3, 4, 5, 6].map(cls => (
+                        <span key={cls} title={`Kelas ${cls}`} style={{ display: 'inline-block', padding: '2px 6px', borderRadius: '4px', backgroundColor: '#f1f5f9', color: '#334155' }}>
+                          K{cls}: {students.filter(s => s.class === String(cls) && s.status === 'Aktif').length}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Toolbar */}
+              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ margin: 0 }}>Daftar Database Siswa SDN Bobong</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola basis data lengkap seluruh siswa terdaftar, riwayat perpindahan, dan status akademik.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingStudent(null);
+                    setStudNisn('');
+                    setStudNis('');
+                    setStudName('');
+                    setStudClass('1');
+                    setStudGender('Laki-laki');
+                    setStudBirthPlace('');
+                    setStudBirthDate('');
+                    setStudAddress('');
+                    setStudParentName('');
+                    setStudParentPhone('');
+                    setStudStatus('Aktif');
+                    setStudentModalOpen(true);
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  ➕ Tambah Siswa Baru
+                </button>
+              </div>
+
+              {/* Search & Multi Filter Bar */}
+              <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                
+                {/* Search Bar */}
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Cari siswa berdasarkan NISN, NIS, nama lengkap, alamat, atau nama orang tua..."
+                    value={studentSearch}
+                    onChange={(e) => setStudentSearch(e.target.value)}
+                    className="form-control"
+                    style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
+                  />
+                  <span style={{ position: 'absolute', left: '1rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+                </div>
+
+                {/* Filters Row */}
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  
+                  <div style={{ flex: '1 1 180px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>Filter Kelas</label>
+                    <select
+                      value={studentClassFilter}
+                      onChange={(e) => setStudentClassFilter(e.target.value)}
+                      className="form-control"
+                      style={{ width: '100%', height: '40px' }}
+                    >
+                      <option value="Semua">Semua Kelas</option>
+                      <option value="1">Kelas 1</option>
+                      <option value="2">Kelas 2</option>
+                      <option value="3">Kelas 3</option>
+                      <option value="4">Kelas 4</option>
+                      <option value="5">Kelas 5</option>
+                      <option value="6">Kelas 6</option>
+                    </select>
+                  </div>
+
+                  <div style={{ flex: '1 1 180px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>Filter Jenis Kelamin</label>
+                    <select
+                      value={studentGenderFilter}
+                      onChange={(e) => setStudentGenderFilter(e.target.value)}
+                      className="form-control"
+                      style={{ width: '100%', height: '40px' }}
+                    >
+                      <option value="Semua">Semua Gender</option>
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+
+                  <div style={{ flex: '1 1 180px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>Filter Status</label>
+                    <select
+                      value={studentStatusFilter}
+                      onChange={(e) => setStudentStatusFilter(e.target.value)}
+                      className="form-control"
+                      style={{ width: '100%', height: '40px' }}
+                    >
+                      <option value="Semua">Semua Status</option>
+                      <option value="Aktif">Aktif</option>
+                      <option value="Lulus">Lulus</option>
+                      <option value="Pindah">Pindah</option>
+                      <option value="Cuti">Cuti</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Responsive Table */}
+              <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
+                <table className="table-custom" style={{ fontSize: '0.9rem', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px', textAlign: 'center' }}>No</th>
+                      <th style={{ width: '110px' }}>NISN / NIS</th>
+                      <th style={{ width: '80px', textAlign: 'center' }}>Kelas</th>
+                      <th>Nama Lengkap Siswa</th>
+                      <th style={{ width: '100px', textAlign: 'center' }}>L/P</th>
+                      <th style={{ width: '220px' }}>TTL & Alamat</th>
+                      <th style={{ width: '200px' }}>Orang Tua & Kontak</th>
+                      <th style={{ width: '110px', textAlign: 'center' }}>Status</th>
+                      <th style={{ width: '160px', textAlign: 'center' }}>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredStudents.length > 0 ? (
+                      filteredStudents.map((stud, idx) => (
+                        <tr key={stud.id || idx}>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
+                          <td>
+                            <div style={{ fontWeight: 700, color: 'var(--primary-dark)' }}>{stud.nisn || '-'}</div>
+                            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>NIS: {stud.nis || '-'}</div>
+                          </td>
+                          <td style={{ textAlign: 'center', fontWeight: 700 }}>
+                            <span style={{ display: 'inline-block', padding: '0.25rem 0.6rem', borderRadius: '6px', backgroundColor: '#f1f5f9', color: '#1e293b', fontWeight: 800 }}>
+                              {stud.class || '-'}
+                            </span>
+                          </td>
+                          <td style={{ fontWeight: 700, color: '#0f172a' }}>{stud.name || '-'}</td>
+                          <td style={{ textAlign: 'center', fontWeight: 600 }}>
+                            <span style={{ 
+                              display: 'inline-block',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontSize: '0.75rem',
+                              backgroundColor: stud.gender === 'Laki-laki' ? '#e0f2fe' : '#fce7f3',
+                              color: stud.gender === 'Laki-laki' ? '#0369a1' : '#be185d'
+                            }}>
+                              {stud.gender === 'Laki-laki' ? 'L' : 'P'}
+                            </span>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.4' }}>
+                            <div>📍 {stud.birth_place || '-'}, {stud.birth_date || '-'}</div>
+                            <div style={{ color: '#64748b', fontStyle: 'italic', marginTop: '2px' }}>🏠 {stud.address || '-'}</div>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.4' }}>
+                            <div style={{ fontWeight: 600 }}>👨‍👦 {stud.parent_name || '-'}</div>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, marginTop: '2px' }}>📞 {stud.parent_phone || '-'}</div>
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              backgroundColor: 
+                                stud.status === 'Aktif' ? '#dcfce7' : 
+                                stud.status === 'Lulus' ? '#e0f2fe' : 
+                                stud.status === 'Pindah' ? '#fee2e2' : '#f1f5f9',
+                              color: 
+                                stud.status === 'Aktif' ? '#15803d' : 
+                                stud.status === 'Lulus' ? '#0369a1' : 
+                                stud.status === 'Pindah' ? '#b91c1c' : '#475569',
+                              border: 
+                                stud.status === 'Aktif' ? '1px solid #bbf7d0' : 
+                                stud.status === 'Lulus' ? '1px solid #bae6fd' : 
+                                stud.status === 'Pindah' ? '1px solid #fecaca' : '1px solid #cbd5e1'
+                            }}>
+                              {stud.status || 'Aktif'}
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center' }}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingStudent(stud);
+                                  setStudNisn(stud.nisn || '');
+                                  setStudNis(stud.nis || '');
+                                  setStudName(stud.name || '');
+                                  setStudClass(stud.class || '1');
+                                  setStudGender(stud.gender || 'Laki-laki');
+                                  setStudBirthPlace(stud.birth_place || '');
+                                  setStudBirthDate(stud.birth_date || '');
+                                  setStudAddress(stud.address || '');
+                                  setStudParentName(stud.parent_name || '');
+                                  setStudParentPhone(stud.parent_phone || '');
+                                  setStudStatus(stud.status || 'Aktif');
+                                  setStudentModalOpen(true);
+                                }}
+                                className="btn btn-secondary"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteStudent(stud.id)}
+                                className="btn-action-delete"
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                              >
+                                🗑️ Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="9" style={{ textAlign: 'center', padding: 'var(--space-md)', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Belum ada data siswa yang cocok dengan kriteria pencarian Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
           <section id="tab-security" className={`tab-pane ${activeTab === 'security' ? 'active' : ''}`}>
             {/* Health Summary Cards */}
             <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)' }}>
@@ -10251,6 +10649,235 @@ export default function AdminDashboardClient({
                   className="btn btn-secondary" 
                   style={{ flex: 1, padding: '0.65rem' }} 
                   onClick={() => { setGradModalOpen(false); setEditingGrad(null); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ flex: 1, padding: '0.65rem' }}
+                >
+                  💾 Simpan Data Siswa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ADD / EDIT STUDENT ================= */}
+      {studentModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '650px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingStudent ? '✏️ Edit Data Siswa' : '➕ Tambah Siswa Baru'}</h3>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setStudentModalOpen(false);
+                  setEditingStudent(null);
+                  setStudNisn('');
+                  setStudNis('');
+                  setStudName('');
+                  setStudClass('1');
+                  setStudGender('Laki-laki');
+                  setStudBirthPlace('');
+                  setStudBirthDate('');
+                  setStudAddress('');
+                  setStudParentName('');
+                  setStudParentPhone('');
+                  setStudStatus('Aktif');
+                }} 
+                style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveStudent} style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', boxSizing: 'border-box' }}>
+                
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_nisn" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NISN Siswa (10 Digit)</label>
+                  <input
+                    type="text"
+                    id="stud_nisn"
+                    className="form-control"
+                    placeholder="Contoh: 0123456789"
+                    maxLength={10}
+                    value={studNisn}
+                    onChange={(e) => setStudNisn(e.target.value.replace(/\D/g, ''))}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_nis" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NIS Lokal</label>
+                  <input
+                    type="text"
+                    id="stud_nis"
+                    className="form-control"
+                    placeholder="Contoh: 2024001"
+                    value={studNis}
+                    onChange={(e) => setStudNis(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0, gridColumn: 'span 2' }}>
+                  <label htmlFor="stud_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Lengkap Siswa</label>
+                  <input
+                    type="text"
+                    id="stud_name"
+                    className="form-control"
+                    placeholder="Tulis nama lengkap sesuai akta lahir/ijazah..."
+                    value={studName}
+                    onChange={(e) => setStudName(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_class" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Kelas</label>
+                  <select
+                    id="stud_class"
+                    className="form-control"
+                    value={studClass}
+                    onChange={(e) => setStudClass(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="1">Kelas 1</option>
+                    <option value="2">Kelas 2</option>
+                    <option value="3">Kelas 3</option>
+                    <option value="4">Kelas 4</option>
+                    <option value="5">Kelas 5</option>
+                    <option value="6">Kelas 6</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_gender" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Jenis Kelamin</label>
+                  <select
+                    id="stud_gender"
+                    className="form-control"
+                    value={studGender}
+                    onChange={(e) => setStudGender(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_birth_place" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tempat Lahir</label>
+                  <input
+                    type="text"
+                    id="stud_birth_place"
+                    className="form-control"
+                    placeholder="Contoh: Bobong"
+                    value={studBirthPlace}
+                    onChange={(e) => setStudBirthPlace(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_birth_date" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tanggal Lahir</label>
+                  <input
+                    type="text"
+                    id="stud_birth_date"
+                    className="form-control"
+                    placeholder="Contoh: 12 Desember 2012"
+                    value={studBirthDate}
+                    onChange={(e) => setStudBirthDate(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_parent_name" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Nama Orang Tua / Wali</label>
+                  <input
+                    type="text"
+                    id="stud_parent_name"
+                    className="form-control"
+                    placeholder="Contoh: Usman"
+                    value={studParentName}
+                    onChange={(e) => setStudParentName(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="stud_parent_phone" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>No. HP / WhatsApp Orang Tua</label>
+                  <input
+                    type="text"
+                    id="stud_parent_phone"
+                    className="form-control"
+                    placeholder="Contoh: 081234567890"
+                    value={studParentPhone}
+                    onChange={(e) => setStudParentPhone(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0, gridColumn: 'span 2' }}>
+                  <label htmlFor="stud_address" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Alamat Lengkap</label>
+                  <textarea
+                    id="stud_address"
+                    className="form-control"
+                    placeholder="Tulis alamat rumah lengkap siswa saat ini..."
+                    value={studAddress}
+                    onChange={(e) => setStudAddress(e.target.value)}
+                    rows="2"
+                    style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                  ></textarea>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0, gridColumn: 'span 2' }}>
+                  <label htmlFor="stud_status" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Status Siswa</label>
+                  <select
+                    id="stud_status"
+                    className="form-control"
+                    value={studStatus}
+                    onChange={(e) => setStudStatus(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="Aktif">🟢 Aktif</option>
+                    <option value="Lulus">🎓 Lulus</option>
+                    <option value="Pindah">🔴 Pindah Sekolah</option>
+                    <option value="Cuti">🟡 Cuti / Non-Aktif</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ flex: 1, padding: '0.65rem' }} 
+                  onClick={() => {
+                    setStudentModalOpen(false);
+                    setEditingStudent(null);
+                    setStudNisn('');
+                    setStudNis('');
+                    setStudName('');
+                    setStudClass('1');
+                    setStudGender('Laki-laki');
+                    setStudBirthPlace('');
+                    setStudBirthDate('');
+                    setStudAddress('');
+                    setStudParentName('');
+                    setStudParentPhone('');
+                    setStudStatus('Aktif');
+                  }}
                 >
                   Batalkan
                 </button>
