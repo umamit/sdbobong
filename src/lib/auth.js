@@ -37,7 +37,7 @@ async function signHmacSha256(message, secret) {
  */
 export async function createAdminToken() {
   const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
-  const expiry = Date.now() + 2 * 60 * 60 * 1000; // 2 hours expiration
+  const expiry = Date.now() + 1 * 60 * 60 * 1000; // 1 hour expiration
   const payload = JSON.stringify({ role: 'admin', expiry });
   
   const signature = await signHmacSha256(payload, secret);

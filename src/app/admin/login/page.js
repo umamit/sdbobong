@@ -31,6 +31,10 @@ export default function AdminLogin() {
         throw new Error(resData.error || "Email atau password salah!");
       }
 
+      // Store session expiration time (1 hour from now)
+      const sessionExpiryTime = Date.now() + 60 * 60 * 1000;
+      localStorage.setItem('admin_session_expiry', String(sessionExpiryTime));
+
       // Refresh and redirect to dashboard
       router.push('/admin/dashboard');
       router.refresh();

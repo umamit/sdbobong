@@ -676,6 +676,45 @@ export default function AdminDashboardClient({
   };
 
 
+  // 1-Hour Session Auto-Logout Check
+  useEffect(() => {
+    let expiry = localStorage.getItem('admin_session_expiry');
+    // Safe default fallback if not set yet (1 hour from current initial access)
+    if (!expiry) {
+      expiry = String(Date.now() + 60 * 60 * 1000);
+      localStorage.setItem('admin_session_expiry', expiry);
+    }
+
+    const checkSessionExpiry = async () => {
+      const now = Date.now();
+      if (now >= Number(expiry)) {
+        clearInterval(sessionCheckInterval);
+        alert('Sesi login Anda telah habis (1 jam). Anda akan otomatis di-logout demi keamanan.');
+        try {
+          const res = await fetch('/api/auth', { method: 'DELETE' });
+          if (res.ok) {
+            localStorage.removeItem('admin_session_expiry');
+            router.push('/admin/login');
+            router.refresh();
+          } else {
+            window.location.href = '/admin/login';
+          }
+        } catch (err) {
+          console.error("Gagal otomatis logout:", err);
+          window.location.href = '/admin/login';
+        }
+      }
+    };
+
+    // Run initial check immediately
+    checkSessionExpiry();
+
+    // Check periodically every 15 seconds
+    const sessionCheckInterval = setInterval(checkSessionExpiry, 15000);
+
+    return () => clearInterval(sessionCheckInterval);
+  }, [router]);
+
   // Load active tab from URL query param if present
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -783,6 +822,7 @@ export default function AdminDashboardClient({
     try {
       const res = await fetch('/api/auth', { method: 'DELETE' });
       if (res.ok) {
+        localStorage.removeItem('admin_session_expiry');
         router.push('/admin/login');
         router.refresh();
       } else {
