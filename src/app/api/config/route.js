@@ -232,7 +232,48 @@ export async function POST(request) {
     } else if (actionType === 'faqs') {
       config.faqs = parsedJsonBody?.faqs || [];
     } else if (actionType === 'gallery') {
-      config.gallery = parsedJsonBody?.gallery || [];
+      if (parsedJsonBody) {
+        config.gallery = parsedJsonBody.gallery || [];
+      } else if (parsedFormData) {
+        const itemId = parsedFormData.get('item_id')?.toString().trim() || '';
+        const title = parsedFormData.get('title')?.toString().trim() || '';
+        const type = parsedFormData.get('type')?.toString().trim() || 'image';
+        const date = parsedFormData.get('date')?.toString().trim() || new Date().toISOString().split('T')[0];
+        const category = parsedFormData.get('category')?.toString().trim() || 'umum';
+        let url = parsedFormData.get('url')?.toString().trim() || '';
+
+        const file = parsedFormData.get('gallery_file');
+        if (file && typeof file === 'object' && file.size > 0) {
+          const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg', 'gif', 'mp4', 'webm', 'ogg', 'mov', 'm4v']);
+          if (uploadedUrl === 'INVALID_TYPE') {
+            return NextResponse.json({ error: 'Format berkas tidak valid. Harus berupa gambar (png, jpg, jpeg, svg, gif) atau video (mp4, webm, ogg, mov, m4v).' }, { status: 400 });
+          } else if (uploadedUrl === 'ERROR') {
+            return NextResponse.json({ error: 'Gagal mengunggah berkas ke server.' }, { status: 500 });
+          }
+          url = uploadedUrl;
+        }
+
+        const list = config.gallery || [];
+        if (itemId) {
+          // Edit existing item
+          config.gallery = list.map(item => 
+            item.id === itemId 
+              ? { ...item, title, type, url: url || item.url, date, category } 
+              : item
+          );
+        } else {
+          // Add new item
+          const newItem = {
+            id: `gal-${Date.now()}`,
+            title,
+            type,
+            url,
+            date,
+            category
+          };
+          config.gallery = [...list, newItem];
+        }
+      }
     } else if (actionType === 'resolve_security_threat') {
       const targetIp = parsedJsonBody?.ip;
       if (!targetIp) {

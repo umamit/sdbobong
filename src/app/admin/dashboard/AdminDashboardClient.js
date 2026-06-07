@@ -338,6 +338,9 @@ export default function AdminDashboardClient({
   const [galleryUrl, setGalleryUrl] = useState('');
   const [galleryDate, setGalleryDate] = useState('');
   const [gallerySearch, setGallerySearch] = useState('');
+  const [galleryFile, setGalleryFile] = useState(null);
+  const [galleryPreview, setGalleryPreview] = useState('');
+  const [gallerySourceType, setGallerySourceType] = useState('url'); // 'url' or 'upload'
 
   // Messages States
   const [messageSearch, setMessageSearch] = useState('');
@@ -1192,47 +1195,55 @@ export default function AdminDashboardClient({
 
   const handleSaveGalleryItem = async (e) => {
     e.preventDefault();
-    const list = config.gallery || [];
-    let updatedList;
-    
-    const finalUrl = galleryType === 'video' ? getCleanVideoUrl(galleryUrl) : galleryUrl.trim();
-
-    if (editingGalleryItem) {
-      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle.trim(), type: galleryType, url: finalUrl, date: galleryDate, category: galleryCategory } : item);
-    } else {
-      const newItem = {
-        id: `gal-${Date.now()}`,
-        title: galleryTitle.trim(),
-        type: galleryType,
-        url: finalUrl,
-        date: galleryDate || new Date().toISOString().split('T')[0],
-        category: galleryCategory
-      };
-      updatedList = [...list, newItem];
-    }
 
     try {
+      setIsProcessing(true);
+      setProcessingMessage(editingGalleryItem ? 'Menyimpan perubahan...' : 'Menambahkan media galeri...');
+
+      const formData = new FormData();
+      formData.append('action_type', 'gallery');
+      if (editingGalleryItem) {
+        formData.append('item_id', editingGalleryItem.id);
+      }
+      formData.append('title', galleryTitle.trim());
+      formData.append('type', galleryType);
+      formData.append('category', galleryCategory);
+      formData.append('date', galleryDate || new Date().toISOString().split('T')[0]);
+
+      if (gallerySourceType === 'upload' && galleryFile) {
+        formData.append('gallery_file', galleryFile);
+      } else {
+        const finalUrl = galleryType === 'video' ? getCleanVideoUrl(galleryUrl) : galleryUrl.trim();
+        formData.append('url', finalUrl);
+      }
+
       const res = await fetch('/api/config', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action_type: 'gallery', gallery: updatedList })
+        body: formData
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', 'Galeri Kegiatan berhasil diperbarui!');
-        setConfig(prev => ({ ...prev, gallery: updatedList }));
+        showToast('success', editingGalleryItem ? 'Galeri Kegiatan berhasil diperbarui!' : 'Media galeri berhasil ditambahkan!');
+        if (data.config) {
+          setConfig(data.config);
+        }
         setGalleryModalOpen(false);
         setEditingGalleryItem(null);
         setGalleryTitle('');
         setGalleryUrl('');
         setGalleryDate('');
         setGalleryCategory('umum');
+        setGalleryFile(null);
+        setGalleryPreview('');
+        setGallerySourceType('url');
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui galeri.');
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -7711,6 +7722,9 @@ export default function AdminDashboardClient({
                     setGalleryCategory('umum');
                     setGalleryUrl('');
                     setGalleryDate(new Date().toISOString().split('T')[0]);
+                    setGallerySourceType('url');
+                    setGalleryFile(null);
+                    setGalleryPreview('');
                     setGalleryModalOpen(true);
                   }}
                   className="btn btn-primary"
@@ -7814,6 +7828,10 @@ export default function AdminDashboardClient({
                                   setGalleryCategory(gal.category || 'umum');
                                   setGalleryUrl(gal.url || '');
                                   setGalleryDate(gal.date || '');
+                                  const isUploaded = gal.url && (gal.url.startsWith('/') || gal.url.includes('/images/uploads'));
+                                  setGallerySourceType(isUploaded ? 'upload' : 'url');
+                                  setGalleryFile(null);
+                                  setGalleryPreview(isUploaded ? gal.url : '');
                                   setGalleryModalOpen(true);
                                 }}
                                 className="btn btn-secondary"
@@ -9567,19 +9585,110 @@ export default function AdminDashboardClient({
                   </select>
                 </div>
 
+                {/* Media Source Selector */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label htmlFor="gal_url" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tautan Berkas Media (URL / Path Gambar)</label>
-                  <input
-                    type="text"
-                    id="gal_url"
-                    className="form-control"
-                    placeholder={galleryType === 'video' ? "Contoh: https://www.youtube.com/embed/XXXXX" : "Contoh: https://images.unsplash.com/... atau path lokal"}
-                    value={galleryUrl}
-                    onChange={(e) => setGalleryUrl(e.target.value)}
-                    style={{ width: '100%', boxSizing: 'border-box' }}
-                    required
-                  />
+                  <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Sumber Media</label>
+                  <div style={{ display: 'flex', backgroundColor: '#f1f5f9', borderRadius: '10px', padding: '4px', gap: '4px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setGallerySourceType('url')}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem 1rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        backgroundColor: gallerySourceType === 'url' ? '#ffffff' : 'transparent',
+                        color: gallerySourceType === 'url' ? 'var(--primary)' : '#64748b',
+                        boxShadow: gallerySourceType === 'url' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                      }}
+                    >
+                      🔗 Tautan Link (Copas)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGallerySourceType('upload')}
+                      style={{
+                        flex: 1,
+                        padding: '0.5rem 1rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        backgroundColor: gallerySourceType === 'upload' ? '#ffffff' : 'transparent',
+                        color: gallerySourceType === 'upload' ? 'var(--primary)' : '#64748b',
+                        boxShadow: gallerySourceType === 'upload' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                      }}
+                    >
+                      📤 Unggah File Lokal
+                    </button>
+                  </div>
                 </div>
+
+                {gallerySourceType === 'url' ? (
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label htmlFor="gal_url" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>
+                      {galleryType === 'video' ? 'Tautan Video Youtube (URL)' : 'Tautan Gambar (URL)'}
+                    </label>
+                    <input
+                      type="text"
+                      id="gal_url"
+                      className="form-control"
+                      placeholder={galleryType === 'video' ? "Contoh: https://www.youtube.com/embed/XXXXX atau https://youtu.be/XXXXX" : "Contoh: https://images.unsplash.com/... atau path/link gambar"}
+                      value={galleryUrl}
+                      onChange={(e) => setGalleryUrl(e.target.value)}
+                      style={{ width: '100%', boxSizing: 'border-box' }}
+                      required={gallerySourceType === 'url'}
+                    />
+                  </div>
+                ) : (
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label htmlFor="gal_file" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>
+                      {galleryType === 'video' ? 'Pilih Berkas Video (MP4/WebM)' : 'Pilih Berkas Gambar (PNG/JPG/JPEG/GIF)'}
+                    </label>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <input
+                        type="file"
+                        id="gal_file"
+                        accept={galleryType === 'video' ? "video/*" : "image/*"}
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            setGalleryFile(file);
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setGalleryPreview(reader.result);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        style={{
+                          padding: '0.5rem',
+                          border: '1px dashed #cbd5e1',
+                          borderRadius: '8px',
+                          width: '100%',
+                          boxSizing: 'border-box',
+                          cursor: 'pointer'
+                        }}
+                        required={gallerySourceType === 'upload' && !editingGalleryItem}
+                      />
+                      {galleryPreview && (
+                        <div style={{ marginTop: '0.5rem', borderRadius: '12px', overflow: 'hidden', border: '1px solid #e2e8f0', maxWidth: '100%', height: '150px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f8fafc' }}>
+                          {galleryType === 'video' ? (
+                            <video src={galleryPreview} controls style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                          ) : (
+                            <img src={galleryPreview} alt="Preview media" style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label htmlFor="gal_date" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Tanggal Kegiatan</label>
