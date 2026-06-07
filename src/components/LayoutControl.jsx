@@ -19,6 +19,17 @@ export default function LayoutControl() {
     // 2. Premium Scroll Reveal Setup
     if (typeof window === 'undefined') return;
 
+    // Register Service Worker for PWA (Offline capability)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('[PWA] Service Worker registered with scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.error('[PWA] Service Worker registration failed:', err);
+        });
+    }
+
     // Check if browser supports IntersectionObserver
     const hasObserver = 'IntersectionObserver' in window;
 

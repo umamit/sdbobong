@@ -14,8 +14,14 @@ export default function ChatWidget() {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
+  // Voice States
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [activeSpeakingIndex, setActiveSpeakingIndex] = useState(null);
+
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   // Auto-scroll ke pesan terbaru
   useEffect(() => {
@@ -31,10 +37,150 @@ export default function ChatWidget() {
     }
   }, [isOpen]);
 
+  // Hentikan suara jika asisten ditutup atau dilepaskan
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  // Memutar suara otomatis jika sound diaktifkan
+  useEffect(() => {
+    if (messages.length > 1) {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg.role === 'assistant' && isSoundEnabled) {
+        speakText(lastMsg.content, messages.length - 1);
+      }
+    }
+  }, [messages]);
+
   const toggleChat = () => {
-    setIsOpen(!isOpen);
+    const nextOpen = !isOpen;
+    setIsOpen(nextOpen);
+    if (!nextOpen) {
+      stopSpeaking();
+      if (isRecording) {
+        stopRecording();
+      }
+    }
     if (showBadge) {
       setShowBadge(false);
+    }
+  };
+
+  // Helper TTS: Menghentikan Pembacaan Suara
+  const stopSpeaking = () => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setActiveSpeakingIndex(null);
+  };
+
+  // Helper TTS: Membersihkan markdown untuk pengucapan yang natural
+  const cleanTextForSpeech = (rawText) => {
+    if (!rawText) return '';
+    return rawText
+      .replace(/\*\*(.*?)\*\*/g, '$1') // bersihkan bold
+      .replace(/\*(.*?)\*/g, '$1') // bersihkan italic
+      .replace(/✨/g, '')
+      .replace(/🏫/g, 'sekolah')
+      .replace(/🎒/g, 'tas sekolah')
+      .replace(/📞/g, 'telepon')
+      .replace(/📍/g, 'lokasi')
+      .replace(/💰/g, 'biaya')
+      .replace(/😊/g, '')
+      .replace(/😊/g, '')
+      .replace(/👍/g, 'baik')
+      .replace(/👋/g, 'halo')
+      .replace(/⚠️/g, 'Peringatan, ')
+      .replace(/🤖/g, 'asisten ai')
+      .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, ''); // hapus emoji lain
+  };
+
+  // Helper TTS: Melisankan Balasan Asisten
+  const speakText = (text, index) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    stopSpeaking();
+    setActiveSpeakingIndex(index);
+
+    const cleanedText = cleanTextForSpeech(text);
+    const utterance = new SpeechSynthesisUtterance(cleanedText);
+    utterance.lang = 'id-ID';
+
+    // Pilih suara berbahasa Indonesia terbaik jika tersedia
+    if (window.speechSynthesis) {
+      const voices = window.speechSynthesis.getVoices();
+      const idVoice = voices.find(v => v.lang.startsWith('id') || v.lang.includes('ID'));
+      if (idVoice) {
+        utterance.voice = idVoice;
+      }
+    }
+
+    utterance.onend = () => {
+      setActiveSpeakingIndex(null);
+    };
+
+    utterance.onerror = () => {
+      setActiveSpeakingIndex(null);
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Helper STT: Memulai Perekaman Suara (Speech-to-Text)
+  const startRecording = () => {
+    if (typeof window === 'undefined') return;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('⚠️ Browser Anda tidak mendukung input suara (Speech Recognition). Silakan gunakan Google Chrome!');
+      return;
+    }
+
+    stopSpeaking();
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'id-ID';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setIsRecording(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInputValue(prev => prev ? `${prev} ${transcript}` : transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error('[PWA Speech STT Error]', event.error);
+      setIsRecording(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  };
+
+  const stopRecording = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setIsRecording(false);
+  };
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
     }
   };
 
@@ -45,6 +191,9 @@ export default function ChatWidget() {
     if (!textToSend) {
       setInputValue('');
     }
+
+    // Hentikan suara yang sedang berbunyi sebelum merespon yang baru
+    stopSpeaking();
 
     // 1. Tambahkan pesan pengguna ke chat
     const userMessage = { role: 'user', content: text };
@@ -197,11 +346,51 @@ export default function ChatWidget() {
               <span className="ai-subtitle">Asisten Virtual Sekolah</span>
             </div>
           </div>
-          <button className="ai-close-btn" onClick={toggleChat} title="Tutup Chat">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {/* Global TTS Sound Toggle */}
+            <button 
+              className={`ai-sound-btn ${isSoundEnabled ? 'active' : ''}`}
+              onClick={() => {
+                const newVal = !isSoundEnabled;
+                setIsSoundEnabled(newVal);
+                if (!newVal) stopSpeaking();
+              }}
+              title={isSoundEnabled ? "Matikan Pengisi Suara Otomatis" : "Aktifkan Pengisi Suara Otomatis"}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'white',
+                cursor: 'pointer',
+                padding: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: '8px',
+                borderRadius: '50%',
+                transition: 'all 0.2s ease',
+                opacity: isSoundEnabled ? 1 : 0.6,
+                backgroundColor: isSoundEnabled ? 'rgba(255, 255, 255, 0.15)' : 'transparent'
+              }}
+            >
+              {isSoundEnabled ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+                  <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                  <line x1="23" y1="9" x2="17" y2="15"/>
+                  <line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              )}
+            </button>
+            <button className="ai-close-btn" onClick={toggleChat} title="Tutup Chat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Area Percakapan */}
@@ -211,8 +400,58 @@ export default function ChatWidget() {
               {msg.role === 'assistant' && (
                 <img src="/images/logo_sekolah.png" alt="Avatar" className="ai-message-avatar" />
               )}
-              <div className="ai-message-content">
-                {renderMessageContent(msg.content)}
+              <div className="ai-message-bubble-body" style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="ai-message-content">
+                  {renderMessageContent(msg.content)}
+                </div>
+                {msg.role === 'assistant' && (
+                  <button
+                    className={`ai-bubble-speak-btn ${activeSpeakingIndex === index ? 'speaking' : ''}`}
+                    onClick={() => {
+                      if (activeSpeakingIndex === index) {
+                        stopSpeaking();
+                      } else {
+                        speakText(msg.content, index);
+                      }
+                    }}
+                    title={activeSpeakingIndex === index ? "Hentikan Suara" : "Dengarkan Jawaban"}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: activeSpeakingIndex === index ? 'var(--primary-color)' : '#9ca3af',
+                      cursor: 'pointer',
+                      padding: '4px 0px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      marginTop: '4px',
+                      alignSelf: 'flex-start',
+                      transition: 'color 0.2s ease',
+                      opacity: 0.8
+                    }}
+                  >
+                    {activeSpeakingIndex === index ? (
+                      <>
+                        <span className="ai-voice-equalizer">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </span>
+                        <span>Berhenti membaca</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '12px', height: '12px' }}>
+                          <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        </svg>
+                        <span>Dengarkan suara</span>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -251,12 +490,42 @@ export default function ChatWidget() {
             ref={inputRef}
             type="text"
             className="ai-chat-input"
-            placeholder="Tanyakan sesuatu tentang sekolah..."
+            placeholder={isRecording ? "Mendengarkan suara Anda..." : "Tanyakan sesuatu tentang sekolah..."}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={isTyping}
           />
+          
+          {/* Microphone button for STT */}
+          <button
+            type="button"
+            className={`ai-mic-btn ${isRecording ? 'recording' : ''}`}
+            onClick={toggleRecording}
+            title={isRecording ? "Selesai Merekam" : "Bicara Bahasa Indonesia"}
+            disabled={isTyping}
+            style={{
+              background: isRecording ? 'rgba(239, 68, 68, 0.15)' : 'none',
+              border: 'none',
+              color: isRecording ? '#ef4444' : '#6b7280',
+              cursor: 'pointer',
+              padding: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '50%',
+              marginRight: '4px',
+              transition: 'all 0.3s ease',
+              position: 'relative'
+            }}
+          >
+            {isRecording && <span className="ai-mic-pulse"></span>}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px' }}>
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+            </svg>
+          </button>
+
           <button 
             className="ai-send-btn"
             onClick={() => handleSendMessage()}

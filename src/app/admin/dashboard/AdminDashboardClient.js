@@ -218,6 +218,25 @@ export default function AdminDashboardClient({
     }
   };
   const [activeTab, setActiveTab] = useState('overview');
+  const [chartTooltip, setChartTooltip] = useState({ show: false, x: 0, y: 0, title: '', value: '' });
+
+  const handleMouseMove = (e, title, value) => {
+    const container = e.currentTarget.closest('.analytics-card');
+    if (container) {
+      const rect = container.getBoundingClientRect();
+      setChartTooltip({
+        show: true,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        title,
+        value
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setChartTooltip(prev => ({ ...prev, show: false }));
+  };
   const [records, setRecords] = useState(initialRecords);
   const [config, setConfig] = useState(initialConfig);
   const [newsList, setNewsList] = useState(initialNewsList);
@@ -3612,100 +3631,213 @@ export default function AdminDashboardClient({
               const perpindahanPct = totalPPDB > 0 ? Math.round((perpindahan / totalPPDB) * 100) : 0;
 
               return (
-                <div className="analytics-card" style={{ marginTop: '1.5rem' }}>
+                <div className="analytics-card" style={{ marginTop: '1.5rem', position: 'relative' }}>
                   <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
                     <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>📊 Analisis Data PPDB Real-time</h3>
                     <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Visualisasi statistik pendaftar siswa baru berdasarkan gender dan jalur masuk.</p>
                   </div>
 
-                  <div className="analytics-grid">
+                  <div className="analytics-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', marginTop: '1.5rem' }}>
                     {/* Donut Chart */}
-                    <div className="donut-container" style={{ borderRight: '1px solid #f1f5f9', paddingRight: '1rem' }}>
-                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Sebaran Jenis Kelamin</h4>
-                      <div style={{ position: 'relative', width: '160px', height: '160px' }}>
-                        <svg width="160" height="160" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
-                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#e2e8f0" strokeWidth="12" />
+                    <div className="donut-container" style={{ flex: '0 0 220px', borderRight: '1px solid #f1f5f9', paddingRight: '1.5rem' }}>
+                      <h4 style={{ margin: '0 0 1rem 0', color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Sebaran Jenis Kelamin</h4>
+                      <div style={{ position: 'relative', width: '160px', height: '160px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
+                        <svg width="160" height="160" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)', overflow: 'visible' }}>
+                          <defs>
+                            <linearGradient id="donutMaleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="#6366f1" />
+                              <stop offset="100%" stopColor="#3b82f6" />
+                            </linearGradient>
+                            <linearGradient id="donutFemaleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor="#8b5cf6" />
+                              <stop offset="100%" stopColor="#ec4899" />
+                            </linearGradient>
+                          </defs>
+                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f1f5f9" strokeWidth="12" />
                           {totalGender > 0 ? (
                             <>
                               <circle 
                                 cx="50" cy="50" r="40" fill="transparent" 
-                                stroke="#6366f1" strokeWidth="12" 
-                                strokeDasharray={`${maleDash} 251.32`} 
+                                stroke="url(#donutMaleGrad)" strokeWidth="12" 
+                                strokeDasharray={`${maleDash} 251.32`}
+                                className="svg-chart-donut-segment"
+                                onMouseMove={(e) => handleMouseMove(e, 'Laki-laki', `${maleCount} Siswa (${malePercent}%)`)}
+                                onMouseLeave={handleMouseLeave}
+                                style={{ strokeLinecap: 'round' }}
                               />
                               <circle 
                                 cx="50" cy="50" r="40" fill="transparent" 
-                                stroke="#8b5cf6" strokeWidth="12" 
+                                stroke="url(#donutFemaleGrad)" strokeWidth="12" 
                                 strokeDasharray={`${femaleDash} 251.32`} 
                                 strokeDashoffset={-maleDash} 
+                                className="svg-chart-donut-segment"
+                                onMouseMove={(e) => handleMouseMove(e, 'Perempuan', `${femaleCount} Siswa (${femalePercent}%)`)}
+                                onMouseLeave={handleMouseLeave}
+                                style={{ strokeLinecap: 'round' }}
                               />
                             </>
                           ) : (
-                            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#94a3b8" strokeWidth="12" />
+                            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#cbd5e1" strokeWidth="12" />
                           )}
                         </svg>
-                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                          <span style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', display: 'block' }}>{totalGender}</span>
-                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Siswa</span>
+                        <div style={{ position: 'absolute', textAlign: 'center', pointerEvents: 'none' }}>
+                          <span style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', display: 'block', lineHeight: 1 }}>{totalGender}</span>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Siswa</span>
                         </div>
                       </div>
 
-                      <div className="donut-legends">
-                        <div className="legend-item">
-                          <span style={{ fontWeight: 600 }}><span className="legend-color-dot" style={{ backgroundColor: '#6366f1' }}></span>Laki-laki</span>
+                      <div className="donut-legends" style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div className="legend-item" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                          <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span className="legend-color-dot" style={{ backgroundColor: '#6366f1', width: '10px', height: '10px', borderRadius: '50%', display: 'inline-block' }}></span>
+                            Laki-laki
+                          </span>
                           <span style={{ fontWeight: 700, color: '#475569' }}>{maleCount} ({malePercent}%)</span>
                         </div>
-                        <div className="legend-item">
-                          <span style={{ fontWeight: 600 }}><span className="legend-color-dot" style={{ backgroundColor: '#8b5cf6' }}></span>Perempuan</span>
+                        <div className="legend-item" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                          <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span className="legend-color-dot" style={{ backgroundColor: '#8b5cf6', width: '10px', height: '10px', borderRadius: '50%', display: 'inline-block' }}></span>
+                            Perempuan
+                          </span>
                           <span style={{ fontWeight: 700, color: '#475569' }}>{femaleCount} ({femalePercent}%)</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Bar Chart */}
-                    <div className="bar-chart-container">
-                      <h4 style={{ margin: 0, color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Distribusi Jalur Pendaftaran</h4>
+                    <div className="bar-chart-container" style={{ flex: 1, minWidth: '280px' }}>
+                      <h4 style={{ margin: '0 0 1rem 0', color: '#334155', fontSize: '0.9rem', fontWeight: 700 }}>Distribusi Jalur Pendaftaran</h4>
                       
-                      <div className="chart-bar-item">
-                        <div className="chart-bar-info">
-                          <span>🛣️ Jalur Zonasi</span>
-                          <span>{zonasi} Pendaftar ({zonasiPct}%)</span>
-                        </div>
-                        <div className="chart-bar-bg">
-                          <div className="chart-bar-fill" style={{ width: `${zonasiPct}%`, backgroundColor: '#f59e0b' }}></div>
-                        </div>
-                      </div>
+                      <div style={{ height: '170px', width: '100%' }}>
+                        <svg width="100%" height="100%" viewBox="0 0 400 160" className="svg-chart-container" style={{ overflow: 'visible' }}>
+                          <defs>
+                            <linearGradient id="barZonasiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#f59e0b" />
+                              <stop offset="100%" stopColor="#f97316" />
+                            </linearGradient>
+                            <linearGradient id="barAfirmasiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#10b981" />
+                              <stop offset="100%" stopColor="#059669" />
+                            </linearGradient>
+                            <linearGradient id="barPrestasiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#8b5cf6" />
+                              <stop offset="100%" stopColor="#6d28d9" />
+                            </linearGradient>
+                            <linearGradient id="barPerpindahanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#06b6d4" />
+                              <stop offset="100%" stopColor="#0891b2" />
+                            </linearGradient>
+                          </defs>
 
-                      <div className="chart-bar-item">
-                        <div className="chart-bar-info">
-                          <span>❤️ Jalur Afirmasi</span>
-                          <span>{afirmasi} Pendaftar ({afirmasiPct}%)</span>
-                        </div>
-                        <div className="chart-bar-bg">
-                          <div className="chart-bar-fill" style={{ width: `${afirmasiPct}%`, backgroundColor: '#10b981' }}></div>
-                        </div>
-                      </div>
+                          {/* Grid Lines */}
+                          <line x1="90" y1="10" x2="90" y2="135" stroke="#cbd5e1" strokeWidth="1" />
+                          <line x1="162.5" y1="10" x2="162.5" y2="135" className="svg-chart-grid-line" />
+                          <line x1="235" y1="10" x2="235" y2="135" className="svg-chart-grid-line" />
+                          <line x1="307.5" y1="10" x2="307.5" y2="135" className="svg-chart-grid-line" />
+                          <line x1="380" y1="10" x2="380" y2="135" className="svg-chart-grid-line" />
 
-                      <div className="chart-bar-item">
-                        <div className="chart-bar-info">
-                          <span>🏆 Jalur Prestasi</span>
-                          <span>{prestasi} Pendaftar ({prestasiPct}%)</span>
-                        </div>
-                        <div className="chart-bar-bg">
-                          <div className="chart-bar-fill" style={{ width: `${prestasiPct}%`, backgroundColor: '#8b5cf6' }}></div>
-                        </div>
-                      </div>
+                          {/* X-axis labels */}
+                          <text x="90" y="150" fill="#94a3b8" fontSize="9" textAnchor="middle">0%</text>
+                          <text x="162.5" y="150" fill="#94a3b8" fontSize="9" textAnchor="middle">25%</text>
+                          <text x="235" y="150" fill="#94a3b8" fontSize="9" textAnchor="middle">50%</text>
+                          <text x="307.5" y="150" fill="#94a3b8" fontSize="9" textAnchor="middle">75%</text>
+                          <text x="380" y="150" fill="#94a3b8" fontSize="9" textAnchor="middle">100%</text>
 
-                      <div className="chart-bar-item">
-                        <div className="chart-bar-info">
-                          <span>💼 Perpindahan Tugas Orang Tua</span>
-                          <span>{perpindahan} Pendaftar ({perpindahanPct}%)</span>
-                        </div>
-                        <div className="chart-bar-bg">
-                          <div className="chart-bar-fill" style={{ width: `${perpindahanPct}%`, backgroundColor: '#06b6d4' }}></div>
-                        </div>
+                          {/* Y-axis Labels & Bars */}
+                          {/* 1. Zonasi */}
+                          <text x="80" y="27" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">🛣️ Zonasi</text>
+                          <rect 
+                            x="90" y="15" 
+                            width={totalPPDB > 0 ? (zonasiPct / 100) * 290 : 0} 
+                            height="18" 
+                            rx="4" ry="4"
+                            fill="url(#barZonasiGrad)"
+                            className="svg-chart-bar"
+                            onMouseMove={(e) => handleMouseMove(e, 'Jalur Zonasi', `${zonasi} Pendaftar (${zonasiPct}%)`)}
+                            onMouseLeave={handleMouseLeave}
+                          />
+                          <text 
+                            x={totalPPDB > 0 ? 90 + ((zonasiPct / 100) * 290) + 8 : 98} 
+                            y="27" fill="#334155" fontSize="10" fontWeight="700"
+                          >
+                            {zonasi}
+                          </text>
+
+                          {/* 2. Afirmasi */}
+                          <text x="80" y="57" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">❤️ Afirmasi</text>
+                          <rect 
+                            x="90" y="45" 
+                            width={totalPPDB > 0 ? (afirmasiPct / 100) * 290 : 0} 
+                            height="18" 
+                            rx="4" ry="4"
+                            fill="url(#barAfirmasiGrad)"
+                            className="svg-chart-bar"
+                            onMouseMove={(e) => handleMouseMove(e, 'Jalur Afirmasi', `${afirmasi} Pendaftar (${afirmasiPct}%)`)}
+                            onMouseLeave={handleMouseLeave}
+                          />
+                          <text 
+                            x={totalPPDB > 0 ? 90 + ((afirmasiPct / 100) * 290) + 8 : 98} 
+                            y="57" fill="#334155" fontSize="10" fontWeight="700"
+                          >
+                            {afirmasi}
+                          </text>
+
+                          {/* 3. Prestasi */}
+                          <text x="80" y="87" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">🏆 Prestasi</text>
+                          <rect 
+                            x="90" y="75" 
+                            width={totalPPDB > 0 ? (prestasiPct / 100) * 290 : 0} 
+                            height="18" 
+                            rx="4" ry="4"
+                            fill="url(#barPrestasiGrad)"
+                            className="svg-chart-bar"
+                            onMouseMove={(e) => handleMouseMove(e, 'Jalur Prestasi', `${prestasi} Pendaftar (${prestasiPct}%)`)}
+                            onMouseLeave={handleMouseLeave}
+                          />
+                          <text 
+                            x={totalPPDB > 0 ? 90 + ((prestasiPct / 100) * 290) + 8 : 98} 
+                            y="87" fill="#334155" fontSize="10" fontWeight="700"
+                          >
+                            {prestasi}
+                          </text>
+
+                          {/* 4. Perpindahan */}
+                          <text x="80" y="117" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">💼 Pindahan</text>
+                          <rect 
+                            x="90" y="105" 
+                            width={totalPPDB > 0 ? (perpindahanPct / 100) * 290 : 0} 
+                            height="18" 
+                            rx="4" ry="4"
+                            fill="url(#barPerpindahanGrad)"
+                            className="svg-chart-bar"
+                            onMouseMove={(e) => handleMouseMove(e, 'Jalur Perpindahan', `${perpindahan} Pendaftar (${perpindahanPct}%)`)}
+                            onMouseLeave={handleMouseLeave}
+                          />
+                          <text 
+                            x={totalPPDB > 0 ? 90 + ((perpindahanPct / 100) * 290) + 8 : 98} 
+                            y="117" fill="#334155" fontSize="10" fontWeight="700"
+                          >
+                            {perpindahan}
+                          </text>
+                        </svg>
                       </div>
                     </div>
                   </div>
+
+                  {/* Absolute Floating Tooltip Card */}
+                  {chartTooltip.show && (
+                    <div 
+                      className="svg-chart-tooltip" 
+                      style={{ 
+                        left: chartTooltip.x, 
+                        top: chartTooltip.y,
+                        transform: 'translate(-50%, -100%) translateY(-10px)'
+                      }}
+                    >
+                      <div style={{ fontWeight: 700, marginBottom: '2px', color: '#a5b4fc' }}>{chartTooltip.title}</div>
+                      <div>{chartTooltip.value}</div>
+                    </div>
+                  )}
                 </div>
               );
             })()}

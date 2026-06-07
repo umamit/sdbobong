@@ -76,14 +76,49 @@ export default function GalleryClient({ initialGallery }) {
     };
   }, [activeItem]);
 
-  // Escape key support to close lightbox
+  // Keyboard support for Lightbox
   useEffect(() => {
+    if (!activeItem) return;
+
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setActiveImage(null);
+      if (e.key === 'Escape') {
+        setActiveImage(null);
+      } else if (e.key === 'ArrowLeft') {
+        const idx = filteredGallery.findIndex(item => item.id === activeItem.id);
+        if (idx !== -1) {
+          const prevIdx = (idx - 1 + filteredGallery.length) % filteredGallery.length;
+          setActiveImage(filteredGallery[prevIdx]);
+        }
+      } else if (e.key === 'ArrowRight') {
+        const idx = filteredGallery.findIndex(item => item.id === activeItem.id);
+        if (idx !== -1) {
+          const nextIdx = (idx + 1) % filteredGallery.length;
+          setActiveImage(filteredGallery[nextIdx]);
+        }
+      }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [activeItem, filteredGallery]);
+
+  const handlePrev = (e) => {
+    if (e) e.stopPropagation();
+    const idx = filteredGallery.findIndex(item => item.id === activeItem?.id);
+    if (idx !== -1) {
+      const prevIdx = (idx - 1 + filteredGallery.length) % filteredGallery.length;
+      setActiveImage(filteredGallery[prevIdx]);
+    }
+  };
+
+  const handleNext = (e) => {
+    if (e) e.stopPropagation();
+    const idx = filteredGallery.findIndex(item => item.id === activeItem?.id);
+    if (idx !== -1) {
+      const nextIdx = (idx + 1) % filteredGallery.length;
+      setActiveImage(filteredGallery[nextIdx]);
+    }
+  };
 
   return (
     <div className="container" style={{ padding: 'var(--space-md) var(--space-sm) var(--space-xl)' }}>
@@ -230,7 +265,7 @@ export default function GalleryClient({ initialGallery }) {
       {/* Lightbox Overlay */}
       {activeItem && (
         <div
-          className="lightbox active"
+          className="lightbox active glassmorphic-lightbox"
           id="gallery-lightbox"
           onClick={(e) => {
             if (e.target.id === 'gallery-lightbox') setActiveImage(null);
@@ -238,7 +273,6 @@ export default function GalleryClient({ initialGallery }) {
           style={{
             position: 'fixed',
             top: 0, left: 0, width: '100%', height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
             zIndex: 9999,
             display: 'flex',
             flexDirection: 'column',
@@ -255,14 +289,31 @@ export default function GalleryClient({ initialGallery }) {
               top: '20px', right: '20px',
               border: 'none', background: 'none',
               color: 'white', fontSize: '2.5rem',
-              cursor: 'pointer', outline: 'none'
+              cursor: 'pointer', outline: 'none',
+              zIndex: 10003
             }}
           >
             &times;
           </button>
 
+          {/* Navigation Slider Buttons */}
+          {filteredGallery.length > 1 && (
+            <>
+              <button className="lightbox-nav-btn prev" onClick={handlePrev} aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+              <button className="lightbox-nav-btn next" onClick={handleNext} aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </>
+          )}
+
           {/* Media Content */}
-          <div style={{ maxWidth: '90%', maxHeight: '80%', display: 'flex', justifyContent: 'center' }}>
+          <div className="lightbox-media-wrapper" style={{ maxWidth: '90%', maxHeight: '80%', display: 'flex', justifyContent: 'center' }}>
             {activeItem.type === 'video' ? (
               getYoutubeId(activeItem.url) ? (
                 <iframe
@@ -299,9 +350,9 @@ export default function GalleryClient({ initialGallery }) {
           </div>
 
           {/* Caption */}
-          <div style={{ color: 'white', textAlign: 'center', marginTop: 'var(--space-sm)' }}>
-            <h3 style={{ margin: '0', fontSize: '1.2rem' }}>{activeItem.title}</h3>
-            <p style={{ margin: '0', fontSize: '0.9rem', color: '#ccc' }}>
+          <div className="lightbox-caption-card" style={{ color: 'white', textAlign: 'center' }}>
+            <h3 style={{ margin: '0', fontSize: '1.1rem', fontWeight: 700 }}>{activeItem.title}</h3>
+            <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)' }}>
               {activeItem.date ? new Date(activeItem.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
             </p>
           </div>

@@ -1,0 +1,22 @@
+{
+  "name": "SD Negeri Bobong",
+  "short_name": "SDN Bobong",
+  "description": "Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logo_sekolah.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo_sekolah.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
