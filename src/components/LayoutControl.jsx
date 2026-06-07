@@ -16,48 +16,85 @@ export default function LayoutControl() {
       document.documentElement.classList.remove('is-admin');
     }
 
-    // 2. IntersectionObserver for Premium Scroll Reveal
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    // 2. Premium Scroll Reveal Setup
+    if (typeof window === 'undefined') return;
 
-    // Timeout to ensure Next.js has completed rendering and mounting the new DOM nodes
-    const timeoutId = setTimeout(() => {
-      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    // Check if browser supports IntersectionObserver
+    const hasObserver = 'IntersectionObserver' in window;
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            observer.unobserve(entry.target); // Premium: only animate once
-          }
-        });
-      }, {
-        root: null, // viewport
-        rootMargin: '0px 0px -40px 0px', // trigger slightly before fully entered
-        threshold: 0.10 // 10% visible
-      });
+    // Helper to make elements visible
+    const revealElement = (el) => {
+      el.classList.add('in-view');
+    };
 
-      revealElements.forEach((el) => {
-        // Reset state for clean transitions when switching routes
-        el.classList.remove('in-view');
-        
-        const rect = el.getBoundingClientRect();
-        const isInViewport = (
-          rect.top >= 0 &&
-          rect.left >= 0 &&
-          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-          rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+    if (!hasObserver) {
+      // Fallback if IntersectionObserver is not supported: reveal everything instantly
+      document.querySelectorAll('.reveal-on-scroll').forEach(revealElement);
+      return;
+    }
 
-        if (isInViewport) {
-          el.classList.add('in-view');
-        } else {
-          observer.observe(el);
+    // Set up a clean IntersectionObserver with high compatibility settings
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          revealElement(entry.target);
+          intersectionObserver.unobserve(entry.target); // Stop observing once visible
         }
       });
-    }, 150);
+    }, {
+      root: null, // use viewport
+      rootMargin: '0px 0px -20px 0px', // trigger slightly before coming fully into view
+      threshold: 0.02 // trigger when at least 2% of the element is visible
+    });
+
+    // Function to find and observe elements
+    const observeElements = () => {
+      const elements = document.querySelectorAll('.reveal-on-scroll');
+      elements.forEach((el) => {
+        // If it already has in-view, ignore
+        if (el.classList.contains('in-view')) return;
+
+        // Observe
+        intersectionObserver.observe(el);
+      });
+    };
+
+    // 1. Observe initially
+    observeElements();
+
+    // 2. Observe again at intervals to catch late-rendering or dynamic content
+    const intervalId = setInterval(observeElements, 250);
+
+    // 3. MutationObserver to instantly watch for dynamically loaded DOM elements
+    let mutationObserver = null;
+    if ('MutationObserver' in window) {
+      mutationObserver = new MutationObserver(() => {
+        observeElements();
+      });
+      mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    // 4. Absolute Fail-safe: Reveal everything if still hidden after 1.2 seconds
+    // This is the bulletproof "anti-blank" safety net
+    const fallbackId = setTimeout(() => {
+      document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+        if (!el.classList.contains('in-view')) {
+          revealElement(el);
+          intersectionObserver.unobserve(el);
+        }
+      });
+    }, 1200);
 
     return () => {
-      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+      if (mutationObserver) {
+        mutationObserver.disconnect();
+      }
+      intersectionObserver.disconnect();
+      clearTimeout(fallbackId);
     };
   }, [pathname]);
 
