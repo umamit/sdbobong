@@ -3,160 +3,162 @@
 import React, { useState } from 'react';
 
 const FACILITIES_DATA = {
-  // FLOOR 1 (LANTAI 1)
+  // GEDUNG BARAT (PAVILIUN KIRI - ATAP BIRU)
   l1_kelas_1: {
-    title: "Ruang Kelas 1 (Lantai 1)",
-    desc: "Ruang kelas belajar bagi siswa Kelas 1, dirancang dengan sirkulasi udara optimal, tinggi meja kursi ramah anak, serta pojok literasi dasar bergambar guna merangsang kecintaan belajar sejak dini.",
+    title: "Ruang Kelas 1",
+    desc: "Ruang kelas belajar bagi siswa Kelas 1, terletak di Gedung Barat Paviliun Bawah. Dirancang dengan sirkulasi udara optimal, tinggi meja kursi ramah anak, serta pojok literasi dasar bergambar guna merangsang kecintaan belajar sejak dini.",
     stats: {
       kapasitas: "28 Siswa",
-      lokasi: "Lantai 1, Sayap Kiri Luar",
+      lokasi: "Gedung Barat, Paviliun Bawah (Lantai Dasar)",
       kondisi: "Sangat Layak (Bersih & Terawat)",
       fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku Bergambar", "Alat Peraga Edukatif Dasar (APE)", "Kipas Angin Dinding"]
     },
     icon: "🎒",
-    color: "#0B3C5D",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
   },
   l1_kelas_2: {
-    title: "Ruang Kelas 2 (Lantai 1)",
-    desc: "Ruang kelas belajar khusus siswa Kelas 2, dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas untuk mendorong rasa percaya diri dan antusiasme belajar harian.",
+    title: "Ruang Kelas 2",
+    desc: "Ruang kelas belajar khusus siswa Kelas 2, terletak di Gedung Barat Paviliun Bawah. Dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas untuk mendorong rasa percaya diri dan antusiasme belajar harian.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Lantai 1, Sayap Kiri Dalam",
+      lokasi: "Gedung Barat, Paviliun Bawah (Lantai Dasar)",
       kondisi: "Sangat Baik",
       fasilitas: ["Papan Tulis Whiteboard", "Pojok Literasi Tematik", "Mading Karya Seni Murid", "Almari Penyimpanan Buku Paket", "Sirkulasi Udara Alami"]
     },
     icon: "🏫",
-    color: "#1E6F9F",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
   },
-  l1_kantor: {
-    title: "Pusat Kantor Guru & Kepala Sekolah",
-    desc: "Pusat administrasi sekolah, tempat pelayanan dewan guru, dan ruang Kepala Sekolah yang menyatu di lantai bawah (persis di area pintu masuk tengah utama seperti yang tampak pada foto). Berfungsi melayani koordinasi pembelajaran serta menyambut wali murid dan tamu dinas secara prima.",
-    stats: {
-      kapasitas: "14 Guru & Staf Kependidikan",
-      lokasi: "Lantai 1, Bagian Tengah Utama",
-      kondisi: "Sangat Layak & Berpendingin Ruangan",
-      fasilitas: ["Meja Kerja Guru & Kursi Putar", "Ruang Tamu Kepala Sekolah", "Komputer Administrasi Utama (Dapodik)", "Printer & Scanner Multi-Fungsi", "Sistem Arsip Inventarisasi BOS", "Air Conditioner (AC) & Wifi Mandiri"]
-    },
-    icon: "💻",
-    color: "#329D9C",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
-  },
-  l1_perpus: {
-    title: "Ruang Perpustakaan & Pojok Literasi",
-    desc: "Tempat eksplorasi imajinasi anak dengan koleksi buku pelajaran lengkap, ensiklopedia edukatif, buku dongeng moral, serta majalah anak yang ramah dibaca di area lesehan berkarpet empuk.",
-    stats: {
-      koleksi: "600+ Buku Bacaan & Referensi",
-      lokasi: "Lantai 1, Sayap Kanan Dalam",
-      kondisi: "Tenang, Bersih & Nyaman",
-      fasilitas: ["Rak Buku Klasifikasi Kayu", "Meja Baca Kelompok", "Karpet Puzzle Lesehan", "Pendingin Udara", "Katalog Pencarian Buku Manual"]
-    },
-    icon: "📚",
-    color: "#4F46E5",
-    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
-  },
-  l1_toilet: {
-    title: "Fasilitas Toilet & Sanitasi Bersih",
-    desc: "Kompleks sanitasi air bersih yang dirawat dan dibersihkan secara terjadwal setiap hari. Terbagi menjadi bilik terpisah demi menjamin kebersihan, kehigienisan, serta kenyamanan siswa maupun tenaga pengajar.",
-    stats: {
-      sumber_air: "Sumur Bor Bersih Jetpump",
-      lokasi: "Lantai 1, Sayap Kanan Luar",
-      kondisi: "Sangat Higienis",
-      fasilitas: ["Wastafel Keramik Putih", "Cermin Dinding", "Sabun Cuci Tangan Cair", "Ember & Gayung Higienis", "Sirkulasi Udara & Pengharum Otomatis"]
-    },
-    icon: "🧼",
-    color: "#E53E3E",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-  },
-
-  // FLOOR 2 (LANTAI 2)
   l2_kelas_3: {
-    title: "Ruang Kelas 3 (Lantai 2)",
-    desc: "Ruang kelas belajar siswa Kelas 3 yang terletak di lantai atas sisi kiri. Memberikan suasana belajar yang sejuk karena mendapat terpaan angin sepoi-sepoi dan pemandangan hijau langsung ke luar halaman.",
+    title: "Ruang Kelas 3",
+    desc: "Ruang kelas belajar siswa Kelas 3 yang terletak di Gedung Barat Paviliun Tengah. Memberikan suasana belajar yang sejuk dan rindang dengan pemandangan hijau langsung mengarah ke lapangan utama.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Lantai 2, Sayap Kiri Luar",
+      lokasi: "Gedung Barat, Paviliun Tengah (Lantai Dasar)",
       kondisi: "Sangat Kondusif",
-      fasilitas: ["Balkon Pengaman Tinggi", "Papan Tulis Whiteboard", "Peta Nusantara & Dunia Dinding", "Rak Penyimpanan Tas Murid", "Meja Belajar Solid Wood"]
+      fasilitas: ["Papan Tulis Whiteboard", "Peta Nusantara & Dunia Dinding", "Rak Penyimpanan Tas Murid", "Meja Belajar Solid Wood", "Kipas Angin Angin Silang"]
     },
     icon: "📖",
-    color: "#0F766E",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
   },
   l2_kelas_4: {
-    title: "Ruang Kelas 4 (Lantai 2)",
-    desc: "Ruang kelas belajar bagi siswa Kelas 4, dirancang untuk mendukung pembelajaran interaktif kelompok kecil melalui tata letak meja diskusi melingkar yang dinamis.",
+    title: "Ruang Kelas 4",
+    desc: "Ruang kelas belajar bagi siswa Kelas 4, terletak di Gedung Barat Paviliun Tengah. Dirancang untuk mendukung pembelajaran interaktif kelompok kecil melalui tata letak meja diskusi melingkar yang dinamis.",
     stats: {
       kapasitas: "32 Siswa",
-      lokasi: "Lantai 2, Sayap Kiri Dalam",
+      lokasi: "Gedung Barat, Paviliun Tengah (Lantai Dasar)",
       kondisi: "Sangat Baik (Terang & Bersih)",
       fasilitas: ["Whiteboard", "Pojok Baca Buku Pelajaran", "Media Peraga Matematika & IPA", "Mading Kelas Aktif", "Kipas Angin Dinding"]
     },
     icon: "📐",
-    color: "#0369A1",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop"
   },
   l2_kelas_5: {
-    title: "Ruang Kelas 5 (Lantai 2)",
-    desc: "Ruang belajar siswa Kelas 5 di bagian tengah lantai atas. Ruangan ini memiliki sirkulasi cahaya matahari pagi yang melimpah, mendukung semangat fokus belajar siswa tingkat lanjut.",
+    title: "Ruang Kelas 5",
+    desc: "Ruang belajar siswa Kelas 5 di Gedung Barat Paviliun Atas. Ruangan ini memiliki sirkulasi cahaya matahari pagi yang melimpah, mendukung semangat fokus belajar siswa tingkat lanjut.",
     stats: {
       kapasitas: "32 Siswa",
-      lokasi: "Lantai 2, Bagian Tengah Utama",
+      lokasi: "Gedung Barat, Paviliun Atas (Lantai Dasar)",
       kondisi: "Sangat Baik & Teduh",
       fasilitas: ["Papan Tulis Magnetik", "Almari Buku Referensi Murid", "Satu Set Alat Musik Suling & Pianika", "Display Portofolio Karya Seni", "Ventilasi Silang Optimal"]
     },
     icon: "🎨",
-    color: "#7C3AED",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop"
   },
   l2_kelas_6: {
-    title: "Ruang Kelas 6 (Lantai 2)",
-    desc: "Ruang kelas siswa Kelas 6 sebagai sarana persiapan pematangan mental menuju jenjang SMP. Suasana diatur lebih tenang dan terfokus, lengkap dengan grafik target kelulusan serta bank soal latihan.",
+    title: "Ruang Kelas 6",
+    desc: "Ruang kelas siswa Kelas 6 sebagai sarana persiapan pematangan mental menuju jenjang SMP, terletak di Gedung Barat Paviliun Atas. Suasana diatur lebih tenang dan terfokus, lengkap dengan grafik target kelulusan serta bank soal latihan.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Lantai 2, Sayap Kanan Dalam",
+      lokasi: "Gedung Barat, Paviliun Atas (Lantai Dasar)",
       kondisi: "Kondusif & Tenang",
       fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Alat Peraga Bangun Ruang Matematika", "Mading Informasi Pendaftaran SMP", "Loker Arsip Soal Latihan"]
     },
     icon: "🎓",
-    color: "#4338CA",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // GEDUNG SELATAN (UTAMA / BAWAH - ATAP MERAH - 2 LANTAI)
+  l1_kantor: {
+    title: "Kantor Guru & Kepala Sekolah",
+    desc: "Pusat administrasi sekolah, tempat pelayanan dewan guru, dan ruang Kepala Sekolah yang terletak di Gedung Selatan Utama (Lantai 1). Berfungsi melayani koordinasi pembelajaran serta menyambut wali murid dan tamu dinas secara prima.",
+    stats: {
+      kapasitas: "14 Guru & Staf Kependidikan",
+      lokasi: "Gedung Selatan Utama, Lantai 1 (Sayap Kiri)",
+      kondisi: "Sangat Layak & Ber-AC",
+      fasilitas: ["Meja Kerja Guru & Kursi Putar", "Ruang Tamu Kepala Sekolah", "Komputer Administrasi Utama (Dapodik)", "Printer & Scanner Multi-Fungsi", "Sistem Arsip Inventarisasi BOS", "Air Conditioner (AC) & Wifi Mandiri"]
+    },
+    icon: "💻",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
+  },
+  l1_perpus: {
+    title: "Perpustakaan & Pojok Literasi",
+    desc: "Tempat eksplorasi imajinasi anak di Gedung Selatan Utama (Lantai 1 - Sisi Kanan). Berisi koleksi buku pelajaran lengkap, ensiklopedia edukatif, buku dongeng moral, serta majalah anak yang ramah dibaca di area lesehan berkarpet empuk.",
+    stats: {
+      koleksi: "600+ Buku Bacaan & Referensi",
+      lokasi: "Gedung Selatan Utama, Lantai 1 (Sayap Kanan)",
+      kondisi: "Tenang, Bersih & Nyaman",
+      fasilitas: ["Rak Buku Klasifikasi Kayu", "Meja Baca Kelompok", "Karpet Puzzle Lesehan", "Pendingin Udara", "Katalog Pencarian Buku Manual"]
+    },
+    icon: "📚",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
   l2_lab_uks: {
     title: "Laboratorium Komputer & Klinik UKS",
-    desc: "Ruang terpadu di lantai atas yang difungsikan sebagai lab komputer mini dengan perangkat Chromebook edukatif, sekaligus sebagai area Unit Kesehatan Sekolah (UKS) bersih yang tenang untuk penanganan awal medis siswa sakit.",
+    desc: "Ruang terpadu di Lantai 2 Gedung Selatan Utama yang difungsikan sebagai lab komputer mini dengan perangkat Chromebook edukatif, sekaligus sebagai area Unit Kesehatan Sekolah (UKS) bersih yang tenang untuk penanganan medis awal siswa sakit.",
     stats: {
       kapasitas: "20 Chromebook & 2 Ranjang UKS",
-      lokasi: "Lantai 2, Sayap Kanan Luar",
+      lokasi: "Gedung Selatan Utama, Lantai 2 (Sisi Kanan)",
       kondisi: "Steril, Bersih, Dingin (Ber-AC)",
       fasilitas: ["Laptop Chromebook Sekolah", "Akses Wifi Berkecepatan Tinggi", "Kotak Obat P3K Lengkap", "Timbangan Badan & Pengukur Tinggi", "Ranjang Pasien Kasur Empuk & Bantal", "Termometer & Pengukur Tekanan Darah"]
     },
     icon: "🩹",
-    color: "#BE123C",
+    color: "#C53030",
     image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // GEDUNG TIMUR (PAVILIUN KANAN - ATAP BIRU KECIL)
+  l1_toilet: {
+    title: "Toilet & Sanitasi Bersih",
+    desc: "Kompleks sanitasi air bersih terpisah di Gedung Timur (sisi kanan halaman). Dirawat dan dibersihkan secara terjadwal setiap hari demi menjamin kebersihan, kehigienisan, serta kenyamanan seluruh warga sekolah.",
+    stats: {
+      sumber_air: "Sumur Bor Bersih Jetpump",
+      lokasi: "Gedung Timur, Paviliun Sanitasi",
+      kondisi: "Sangat Higienis",
+      fasilitas: ["Wastafel Keramik Putih", "Cermin Dinding", "Sabun Cuci Tangan Cair", "Ember & Gayung Higienis", "Sirkulasi Udara & Pengharum Otomatis"]
+    },
+    icon: "🧼",
+    color: "#3B82F6",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
   },
 
   // OUTDOOR / LAPANGAN UTAMA
   olahraga: {
     title: "Lapangan Utama & Area Pramuka",
-    desc: "Halaman tanah luas terbuka di depan gedung utama sekolah (sebagaimana terlihat nyata pada foto). Berfungsi sebagai pusat upacara bendera hari Senin, tempat berolahraga jasmani, area kemah pramuka dengan tiang bendera bambu, serta tempat bermain bebas siswa yang menyenangkan di waktu istirahat.",
+    desc: "Halaman terbuka yang luas di bagian tengah kompleks sekolah, dikelilingi oleh bangunan kelas (sebagaimana terlihat nyata dari satelit Google Maps). Berfungsi sebagai pusat upacara bendera, lapangan futsal/voli, area kemah pramuka, serta tempat bermain bebas siswa yang gembira.",
     stats: {
       ukuran: "28 x 22 Meter",
-      lokasi: "Area Terbuka Depan Gedung Sekolah",
-      kondisi: "Lapang & Alami",
+      lokasi: "Area Courtyard Tengah Kompleks Sekolah",
+      kondisi: "Lapang, Bersih & Alami",
       fasilitas: ["Tiang Bendera Utama", "Gapura Bambu Pramuka (Pionering)", "Gawang Futsal Mini", "Net Bola Voli & Bulutangkis", "Taman Pojok Hijau Sekolah"]
     },
     icon: "⛺",
-    color: "#D97706",
+    color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   }
 };
 
 export default function InteractiveFacilityMap() {
-  const [activeFloor, setActiveFloor] = useState(1); // 1 = Lantai 1, 2 = Lantai 2
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [hoveredRoom, setHoveredRoom] = useState(null);
+  const [southFloor, setSouthFloor] = useState(1); // 1 = Lantai 1, 2 = Lantai 2 (Gedung Selatan memanjang adalah 2 lantai)
 
   const handleRoomClick = (roomKey) => {
     setSelectedRoom(FACILITIES_DATA[roomKey] ? { key: roomKey, ...FACILITIES_DATA[roomKey] } : null);
@@ -168,7 +170,7 @@ export default function InteractiveFacilityMap() {
 
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-      {/* Map Header Instructions and Floor Selector */}
+      {/* Map Header Instructions and Floor Switcher for South 2-Story Building */}
       <div style={{ 
         display: 'flex', 
         flexDirection: 'column', 
@@ -182,68 +184,84 @@ export default function InteractiveFacilityMap() {
           gap: '6px', 
           backgroundColor: 'var(--accent-bg)', 
           color: 'var(--primary)', 
-          padding: '8px 20px', 
+          padding: '10px 24px', 
           borderRadius: 'var(--radius-full)', 
           fontSize: '0.9rem', 
           fontWeight: 600, 
           margin: 0, 
-          border: '1px solid var(--accent-light)' 
+          border: '1px solid var(--accent-light)',
+          textAlign: 'center',
+          boxShadow: 'var(--shadow-sm)'
         }}>
-          <span>👉 Klik ruangan pada denah gedung 2 lantai di bawah ini untuk melihat detail fasilitas sekolah!</span>
+          <span>👉 Arahkan kursor atau ketuk bangunan pada denah satelit di bawah ini untuk melihat detail fasilitas!</span>
         </p>
 
-        {/* Tab Selector Lantai 1 / Lantai 2 (Sleek Glassmorphic Design) */}
+        {/* Dynamic Floor Switcher (Khusus untuk Gedung Selatan Atap Merah yang memiliki 2 Lantai) */}
         <div style={{
           display: 'flex',
-          background: '#F1F5F9',
-          padding: '6px',
-          borderRadius: 'var(--radius-full)',
+          flexDirection: 'column',
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+          padding: '12px 24px',
+          borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--border-color)',
-          boxShadow: 'var(--shadow-sm)',
-          marginTop: '6px',
-          gap: '4px'
+          boxShadow: 'var(--shadow-md)',
+          marginTop: '8px',
+          gap: '8px'
         }}>
-          <button
-            onClick={() => setActiveFloor(1)}
-            style={{
-              padding: '8px 24px',
-              borderRadius: 'var(--radius-full)',
-              border: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              backgroundColor: activeFloor === 1 ? 'var(--primary)' : 'transparent',
-              color: activeFloor === 1 ? 'white' : 'var(--text-muted)',
-              boxShadow: activeFloor === 1 ? '0 4px 10px rgba(11,60,93,0.2)' : 'none',
-            }}
-          >
-            🏢 Lantai 1 (Bawah)
-          </button>
-          <button
-            onClick={() => setActiveFloor(2)}
-            style={{
-              padding: '8px 24px',
-              borderRadius: 'var(--radius-full)',
-              border: 'none',
-              fontSize: '0.9rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              backgroundColor: activeFloor === 2 ? 'var(--primary)' : 'transparent',
-              color: activeFloor === 2 ? 'white' : 'var(--text-muted)',
-              boxShadow: activeFloor === 2 ? '0 4px 10px rgba(11,60,93,0.2)' : 'none',
-            }}
-          >
-            🏢 Lantai 2 (Atas)
-          </button>
+          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            🏢 <span>Tingkat Gedung Utama (Selatan - Atap Merah 2 Lantai):</span>
+          </span>
+          <div style={{
+            display: 'flex',
+            backgroundColor: '#F1F5F9',
+            padding: '4px',
+            borderRadius: 'var(--radius-full)',
+            border: '1px solid #E2E8F0',
+            gap: '4px'
+          }}>
+            <button
+              onClick={() => setSouthFloor(1)}
+              style={{
+                padding: '8px 20px',
+                borderRadius: 'var(--radius-full)',
+                border: 'none',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                backgroundColor: southFloor === 1 ? 'var(--primary)' : 'transparent',
+                color: southFloor === 1 ? 'white' : 'var(--text-muted)',
+                boxShadow: southFloor === 1 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
+              }}
+            >
+              Lantai 1 (Kantor & Perpustakaan)
+            </button>
+            <button
+              onClick={() => setSouthFloor(2)}
+              style={{
+                padding: '8px 20px',
+                borderRadius: 'var(--radius-full)',
+                border: 'none',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                backgroundColor: southFloor === 2 ? 'var(--primary)' : 'transparent',
+                color: southFloor === 2 ? 'white' : 'var(--text-muted)',
+                boxShadow: southFloor === 2 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
+              }}
+            >
+              Lantai 2 (Lab Komputer & UKS)
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="grid-2" style={{ gridTemplateColumns: 'minmax(320px, 1.3fr) minmax(280px, 0.7fr)', gap: 'var(--space-md)' }}>
-        {/* Left Side: SVG Floor Map representing the 2-story building */}
+      <div className="grid-2" style={{ gridTemplateColumns: 'minmax(320px, 1.4fr) minmax(280px, 0.6fr)', gap: 'var(--space-md)' }}>
+        {/* Left Side: SVG Campus Site Map (Aligned with Google Maps Satellite View) */}
         <div style={{ 
-          backgroundColor: '#FAFBFD', 
+          backgroundColor: '#E8ECE9', // Soft grassy green background border
           border: '1px solid var(--border-color)', 
           borderRadius: 'var(--radius-lg)', 
           padding: 'var(--space-md)', 
@@ -254,371 +272,482 @@ export default function InteractiveFacilityMap() {
           justifyContent: 'center',
           position: 'relative',
           overflow: 'hidden',
-          minHeight: '420px'
+          minHeight: '480px'
         }}>
-          {/* Ambient Grid Background */}
-          <div style={{ position: 'absolute', inset: 0, opacity: 0.02, pointerEvents: 'none', background: 'radial-gradient(circle, #000 10%, transparent 10%)', backgroundSize: '16px 16px' }}></div>
+          {/* Faint Technical Grid Background overlay */}
+          <div style={{ position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none', background: 'radial-gradient(circle, #000 10%, transparent 10%)', backgroundSize: '20px 20px' }}></div>
           
           <svg 
-            viewBox="0 0 850 480" 
+            viewBox="0 0 850 540" 
             width="100%" 
             height="100%" 
-            style={{ maxWidth: '800px', filter: 'drop-shadow(0px 8px 16px rgba(11,60,93,0.1))' }}
+            style={{ maxWidth: '800px', filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.08))' }}
           >
-            {/* SVG Filter Effects */}
+            {/* SVG Definitions */}
             <defs>
-              <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              <filter id="glow-blue" x="-10%" y="-10%" width="120%" height="120%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feComponentTransfer in="blur" result="glow">
+                  <feFuncA type="linear" slope="0.5" />
+                </feComponentTransfer>
+                <feComposite in="SourceGraphic" in2="glow" operator="over" />
               </filter>
-              <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
-                <feDropShadow dx="2" dy="5" stdDeviation="4" floodColor="#0B3C5D" floodOpacity="0.2"/>
+              <filter id="glow-red" x="-10%" y="-10%" width="120%" height="120%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feComponentTransfer in="blur" result="glow">
+                  <feFuncA type="linear" slope="0.5" />
+                </feComponentTransfer>
+                <feComposite in="SourceGraphic" in2="glow" operator="over" />
+              </filter>
+              <filter id="shadow-premium" x="-5%" y="-5%" width="110%" height="110%">
+                <feDropShadow dx="3" dy="6" stdDeviation="5" floodColor="#07253B" floodOpacity="0.15"/>
               </filter>
             </defs>
 
-            {/* DEKORASI ATAP MERAH (Hanya muncul jika di Lantai 2 untuk menyimulasikan atap pada foto) */}
-            {activeFloor === 2 && (
-              <polygon 
-                points="30,40 50,20 800,20 820,40" 
-                fill="#C53030" 
-                stroke="#9B2C2C" 
-                strokeWidth="2" 
-                filter="url(#shadow)"
-              />
-            )}
+            {/* AREA RUMPUT PERIMETER (Landscape base) */}
+            <rect x="0" y="0" width="850" height="540" rx="16" fill="#E3ECDA" />
 
-            {/* STRUKTUR UTAMA DINDING GEDUNG (Warna Kuning Gading seperti foto nyata) */}
-            <rect 
-              x="40" y="50" width="770" height="200" rx="6"
-              fill="#FEFCBF" 
-              stroke="#E9D8FD" 
-              strokeWidth="1.5"
-              opacity="0.3"
-            />
+            {/* AREA PAGAR PEMBATAS SEKOLAH */}
+            <rect x="15" y="15" width="820" height="510" rx="14" fill="none" stroke="#BACAB3" strokeWidth="2.5" strokeDasharray="6,4" />
 
-            {/* SEPARATOR LANTAI / BALKON */}
-            {/* Lantai 1: Selasar Depan */}
-            {activeFloor === 1 && (
-              <rect 
-                x="40" y="220" width="770" height="30" 
-                fill="#EDF2F7" 
-                stroke="#CBD5E0" 
-                strokeWidth="1.5"
-              />
-            )}
-            
-            {/* Lantai 2: Balkon Hijau (Meniru pagar beton hijau muda di foto) */}
-            {activeFloor === 2 && (
-              <g>
-                <rect 
-                  x="40" y="220" width="770" height="30" 
-                  fill="#C6F6D5" 
-                  stroke="#9AE6B4" 
-                  strokeWidth="1.5"
-                />
-                {/* Garis-garis dekoratif pagar beton hijau */}
-                <line x1="100" y1="225" x2="100" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="200" y1="225" x2="200" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="300" y1="225" x2="300" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="400" y1="225" x2="400" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="500" y1="225" x2="500" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="600" y1="225" x2="600" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-                <line x1="700" y1="225" x2="700" y2="245" stroke="#48BB78" strokeWidth="2" strokeDasharray="2,2" />
-              </g>
-            )}
+            {/* JALUR SETAPAK / PEDESTRIAN PAVING BLOCK */}
+            {/* Jalur barat */}
+            <rect x="155" y="55" width="20" height="390" fill="#CBD5E1" opacity="0.8" />
+            {/* Jalur selatan */}
+            <rect x="155" y="365" width="515" height="20" fill="#CBD5E1" opacity="0.8" />
+            {/* Jalur timur */}
+            <rect x="670" y="245" width="55" height="20" fill="#CBD5E1" opacity="0.8" />
 
-            {/* TIANG BETON PENYANGGA (Kuning Gading seperti di foto) */}
-            <rect x="42" y="50" width="12" height="200" fill="#ECC94B" />
-            <rect x="195" y="50" width="12" height="200" fill="#ECC94B" />
-            <rect x="345" y="50" width="12" height="200" fill="#ECC94B" />
-            <rect x="500" y="50" width="12" height="200" fill="#ECC94B" />
-            <rect x="650" y="50" width="12" height="200" fill="#ECC94B" />
-            <rect x="796" y="50" width="12" height="200" fill="#ECC94B" />
-
-            {/* ==================== RENDERING LANTAI 1 ==================== */}
-            {activeFloor === 1 && (
-              <g>
-                {/* 1. L1 - Ruang Kelas 1 (Sisi Kiri Luar) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l1_kelas_1')}
-                  onMouseEnter={() => setHoveredRoom('l1_kelas_1')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="56" y="60" width="137" height="158" rx="8"
-                    fill={hoveredRoom === 'l1_kelas_1' ? '#1E6F9F' : '#E8F3FC'}
-                    stroke="#0B3C5D"
-                    strokeWidth={hoveredRoom === 'l1_kelas_1' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l1_kelas_1' ? 'url(#glow)' : ''}
-                  />
-                  <text x="124" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l1_kelas_1' ? '#ffffff' : '#0B3C5D'} textAnchor="middle">🎒 KELAS 1</text>
-                  <text x="124" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l1_kelas_1' ? '#93C5FD' : '#64748B'} textAnchor="middle">(Lantai 1)</text>
-                  {/* Jendela & Pintu Simbol */}
-                  <rect x="80" y="195" width="22" height="24" fill="#3B82F6" opacity="0.4" />
-                  <rect x="130" y="190" width="18" height="28" fill="#78350F" />
-                </g>
-
-                {/* 2. L1 - Ruang Kelas 2 (Sisi Kiri Dalam) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l1_kelas_2')}
-                  onMouseEnter={() => setHoveredRoom('l1_kelas_2')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="209" y="60" width="134" height="158" rx="8"
-                    fill={hoveredRoom === 'l1_kelas_2' ? '#1E6F9F' : '#E8F3FC'}
-                    stroke="#0B3C5D"
-                    strokeWidth={hoveredRoom === 'l1_kelas_2' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l1_kelas_2' ? 'url(#glow)' : ''}
-                  />
-                  <text x="276" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l1_kelas_2' ? '#ffffff' : '#0B3C5D'} textAnchor="middle">🏫 KELAS 2</text>
-                  <text x="276" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l1_kelas_2' ? '#93C5FD' : '#64748B'} textAnchor="middle">(Lantai 1)</text>
-                  {/* Jendela & Pintu Simbol */}
-                  <rect x="235" y="195" width="22" height="24" fill="#3B82F6" opacity="0.4" />
-                  <rect x="285" y="190" width="18" height="28" fill="#78350F" />
-                </g>
-
-                {/* 3. L1 - Pusat Kantor Guru & Kepsek (Tengah - Sesuai area bendera di foto) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l1_kantor')}
-                  onMouseEnter={() => setHoveredRoom('l1_kantor')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="359" y="60" width="139" height="158" rx="8"
-                    fill={hoveredRoom === 'l1_kantor' ? '#329D9C' : '#E8F6F6'}
-                    stroke="#2C7A7B"
-                    strokeWidth={hoveredRoom === 'l1_kantor' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l1_kantor' ? 'url(#glow)' : ''}
-                  />
-                  <text x="428" y="125" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l1_kantor' ? '#ffffff' : '#2D3748'} textAnchor="middle">💻 RUANG GURU</text>
-                  <text x="428" y="142" fontFamily="var(--font-heading)" fontWeight="700" fontSize="11" fill={hoveredRoom === 'l1_kantor' ? '#e2f3f3' : '#1A202C'} textAnchor="middle">& KEPALA SEKOLAH</text>
-                  <text x="428" y="160" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l1_kantor' ? '#EBF8FF' : '#4A5568'} textAnchor="middle">(Lantai 1 - Utama)</text>
-                  {/* Pintu Utama Mewah di Tengah */}
-                  <rect x="415" y="186" width="26" height="32" fill="#4A5568" rx="2" />
-                  <rect x="420" y="192" width="6" height="10" fill="#ECC94B" />
-                  <rect x="428" y="192" width="6" height="10" fill="#ECC94B" />
-                </g>
-
-                {/* 4. L1 - Ruang Perpustakaan & Pojok Literasi */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l1_perpus')}
-                  onMouseEnter={() => setHoveredRoom('l1_perpus')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="514" y="60" width="134" height="158" rx="8"
-                    fill={hoveredRoom === 'l1_perpus' ? '#6366F1' : '#EEF2FF'}
-                    stroke="#4F46E5"
-                    strokeWidth={hoveredRoom === 'l1_perpus' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l1_perpus' ? 'url(#glow)' : ''}
-                  />
-                  <text x="581" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l1_perpus' ? '#ffffff' : '#3730A3'} textAnchor="middle">📚 PERPUSTAKAAN</text>
-                  <text x="581" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l1_perpus' ? '#C7D2FE' : '#4338CA'} textAnchor="middle">(Pojok Baca L1)</text>
-                  {/* Jendela & Pintu Simbol */}
-                  <rect x="540" y="195" width="22" height="24" fill="#3B82F6" opacity="0.4" />
-                  <rect x="590" y="190" width="18" height="28" fill="#78350F" />
-                </g>
-
-                {/* 5. L1 - Toilet & Sanitasi Bersih (Kanan Luar) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l1_toilet')}
-                  onMouseEnter={() => setHoveredRoom('l1_toilet')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="664" y="60" width="130" height="158" rx="8"
-                    fill={hoveredRoom === 'l1_toilet' ? '#EF4444' : '#FEE2E2'}
-                    stroke="#B91C1C"
-                    strokeWidth={hoveredRoom === 'l1_toilet' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l1_toilet' ? 'url(#glow)' : ''}
-                  />
-                  <text x="729" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l1_toilet' ? '#ffffff' : '#991B1B'} textAnchor="middle">🧼 TOILET</text>
-                  <text x="729" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l1_toilet' ? '#FCA5A5' : '#7F1D1D'} textAnchor="middle">(Guru & Murid)</text>
-                  {/* Jendela & Pintu Simbol */}
-                  <rect x="690" y="195" width="22" height="24" fill="#3B82F6" opacity="0.4" />
-                  <rect x="740" y="190" width="18" height="28" fill="#78350F" />
-                </g>
-              </g>
-            )}
-
-            {/* ==================== RENDERING LANTAI 2 ==================== */}
-            {activeFloor === 2 && (
-              <g>
-                {/* 1. L2 - Ruang Kelas 3 (Kiri Luar) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l2_kelas_3')}
-                  onMouseEnter={() => setHoveredRoom('l2_kelas_3')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="56" y="60" width="137" height="158" rx="8"
-                    fill={hoveredRoom === 'l2_kelas_3' ? '#0F766E' : '#E6FFFA'}
-                    stroke="#0D9488"
-                    strokeWidth={hoveredRoom === 'l2_kelas_3' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l2_kelas_3' ? 'url(#glow)' : ''}
-                  />
-                  <text x="124" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l2_kelas_3' ? '#ffffff' : '#0D9488'} textAnchor="middle">📖 KELAS 3</text>
-                  <text x="124" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l2_kelas_3' ? '#99F6E4' : '#0F766E'} textAnchor="middle">(Lantai 2 - Atas)</text>
-                  {/* Simbol Jendela Kaca Atas */}
-                  <rect x="85" y="70" width="25" height="18" fill="#E2F1FF" stroke="#0D9488" strokeWidth="1" />
-                  <rect x="135" y="70" width="25" height="18" fill="#E2F1FF" stroke="#0D9488" strokeWidth="1" />
-                </g>
-
-                {/* 2. L2 - Ruang Kelas 4 (Kiri Dalam) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l2_kelas_4')}
-                  onMouseEnter={() => setHoveredRoom('l2_kelas_4')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="209" y="60" width="134" height="158" rx="8"
-                    fill={hoveredRoom === 'l2_kelas_4' ? '#0369A1' : '#F0F9FF'}
-                    stroke="#0284C7"
-                    strokeWidth={hoveredRoom === 'l2_kelas_4' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l2_kelas_4' ? 'url(#glow)' : ''}
-                  />
-                  <text x="276" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l2_kelas_4' ? '#ffffff' : '#0284C7'} textAnchor="middle">📐 KELAS 4</text>
-                  <text x="276" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l2_kelas_4' ? '#BAE6FD' : '#0369A1'} textAnchor="middle">(Lantai 2 - Atas)</text>
-                  {/* Simbol Jendela Kaca Atas */}
-                  <rect x="235" y="70" width="25" height="18" fill="#E2F1FF" stroke="#0284C7" strokeWidth="1" />
-                  <rect x="285" y="70" width="25" height="18" fill="#E2F1FF" stroke="#0284C7" strokeWidth="1" />
-                </g>
-
-                {/* 3. L2 - Ruang Kelas 5 (Tengah) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l2_kelas_5')}
-                  onMouseEnter={() => setHoveredRoom('l2_kelas_5')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="359" y="60" width="139" height="158" rx="8"
-                    fill={hoveredRoom === 'l2_kelas_5' ? '#7C3AED' : '#F5F3FF'}
-                    stroke="#6D28D9"
-                    strokeWidth={hoveredRoom === 'l2_kelas_5' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l2_kelas_5' ? 'url(#glow)' : ''}
-                  />
-                  <text x="428" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l2_kelas_5' ? '#ffffff' : '#6D28D9'} textAnchor="middle">🎨 KELAS 5</text>
-                  <text x="428" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l2_kelas_5' ? '#DDD6FE' : '#7C3AED'} textAnchor="middle">(Lantai 2 - Atas)</text>
-                  {/* Simbol Jendela Kaca Atas */}
-                  <rect x="385" y="70" width="25" height="18" fill="#E2F1FF" stroke="#6D28D9" strokeWidth="1" />
-                  <rect x="445" y="70" width="25" height="18" fill="#E2F1FF" stroke="#6D28D9" strokeWidth="1" />
-                </g>
-
-                {/* 4. L2 - Ruang Kelas 6 (Kanan Dalam) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l2_kelas_6')}
-                  onMouseEnter={() => setHoveredRoom('l2_kelas_6')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="514" y="60" width="134" height="158" rx="8"
-                    fill={hoveredRoom === 'l2_kelas_6' ? '#4338CA' : '#EEF2FF'}
-                    stroke="#3730A3"
-                    strokeWidth={hoveredRoom === 'l2_kelas_6' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l2_kelas_6' ? 'url(#glow)' : ''}
-                  />
-                  <text x="581" y="130" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l2_kelas_6' ? '#ffffff' : '#3730A3'} textAnchor="middle">🎓 KELAS 6</text>
-                  <text x="581" y="150" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l2_kelas_6' ? '#C7D2FE' : '#4338CA'} textAnchor="middle">(Lantai 2 - Atas)</text>
-                  {/* Simbol Jendela Kaca Atas */}
-                  <rect x="540" y="70" width="25" height="18" fill="#E2F1FF" stroke="#3730A3" strokeWidth="1" />
-                  <rect x="590" y="70" width="25" height="18" fill="#E2F1FF" stroke="#3730A3" strokeWidth="1" />
-                </g>
-
-                {/* 5. L2 - Lab Komputer & UKS (Kanan Luar) */}
-                <g 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRoomClick('l2_lab_uks')}
-                  onMouseEnter={() => setHoveredRoom('l2_lab_uks')}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <rect 
-                    x="664" y="60" width="130" height="158" rx="8"
-                    fill={hoveredRoom === 'l2_lab_uks' ? '#BE123C' : '#FFF1F2'}
-                    stroke="#9F1239"
-                    strokeWidth={hoveredRoom === 'l2_lab_uks' ? '3.5' : '1.5'}
-                    style={{ transition: 'all 0.25s ease' }}
-                    filter={hoveredRoom === 'l2_lab_uks' ? 'url(#glow)' : ''}
-                  />
-                  <text x="729" y="120" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'l2_lab_uks' ? '#ffffff' : '#9F1239'} textAnchor="middle">🩹 LAB MULTIMEDIA</text>
-                  <text x="729" y="136" fontFamily="var(--font-heading)" fontWeight="700" fontSize="11" fill={hoveredRoom === 'l2_lab_uks' ? '#FECDD3' : '#E11D48'} textAnchor="middle">& RUANG UKS</text>
-                  <text x="729" y="155" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'l2_lab_uks' ? '#FFE4E6' : '#BE123C'} textAnchor="middle">(Lantai 2 - Atas)</text>
-                  {/* Simbol Jendela Kaca Atas */}
-                  <rect x="690" y="70" width="25" height="18" fill="#E2F1FF" stroke="#9F1239" strokeWidth="1" />
-                  <rect x="740" y="70" width="25" height="18" fill="#E2F1FF" stroke="#9F1239" strokeWidth="1" />
-                </g>
-              </g>
-            )}
-
-            {/* ==================== OUTDOOR / LAPANGAN UPACARA & PRAMUKA ==================== */}
-            {/* Area Lapangan di bagian bawah (Paving & Tanah liat subur seperti di foto) */}
+            {/* ======================================================== */}
+            {/* INTERACTIVE COMPONENT: LAPANGAN TENGAH (olahraga)        */}
+            {/* ======================================================== */}
             <g 
               style={{ cursor: 'pointer' }}
               onClick={() => handleRoomClick('olahraga')}
               onMouseEnter={() => setHoveredRoom('olahraga')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
+              {/* Lapangan Sandy-Clay base */}
               <rect 
-                x="160" y="290" width="530" height="110" rx="10"
-                fill={hoveredRoom === 'olahraga' ? '#F59E0B' : '#FEF3C7'}
-                stroke="#D97706"
-                strokeWidth={hoveredRoom === 'olahraga' ? '3.5' : '1.5'}
-                strokeDasharray="6,4"
-                style={{ transition: 'all 0.25s ease' }}
-                filter={hoveredRoom === 'olahraga' ? 'url(#glow)' : ''}
+                x="175" y="125" width="490" height="240" rx="8"
+                fill={hoveredRoom === 'olahraga' ? '#E9D3C0' : '#EFE3D3'}
+                stroke={hoveredRoom === 'olahraga' ? '#B45309' : '#D6C5B3'}
+                strokeWidth={hoveredRoom === 'olahraga' ? '2.5' : '1.5'}
+                style={{ transition: 'all 0.2s ease' }}
+                filter={hoveredRoom === 'olahraga' ? 'url(#shadow-premium)' : ''}
               />
-              
-              {/* Tiang Bendera SVG Tengah Lapangan */}
-              <circle cx="425" cy="345" r="10" fill="#64748B" opacity="0.3" />
-              <circle cx="425" cy="345" r="4" fill="#475569" />
-              <line x1="425" y1="345" x2="425" y2="310" stroke="#475569" strokeWidth="2.5" />
-              <polygon points="425,310 445,316 425,322" fill="#EF4444" />
-              
-              {/* Bambu Gapura Pramuka Simbol (Sesuai dengan gerbang kayu bambu di foto!) */}
-              <line x1="280" y1="385" x2="310" y2="310" stroke="#15803D" strokeWidth="3.5" />
-              <line x1="340" y1="385" x2="310" y2="310" stroke="#15803D" strokeWidth="3.5" />
-              <line x1="270" y1="335" x2="350" y2="335" stroke="#15803D" strokeWidth="3" />
-              <polygon points="310,310 322,315 310,320" fill="#9333EA" /> {/* Bendera Pramuka Ungu */}
+              {/* Garis-garis Lapangan Olahraga */}
+              <rect x="230" y="175" width="380" height="140" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
+              <line x1="420" y1="175" x2="420" y2="315" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
+              <circle cx="420" cy="245" r="30" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
 
-              <text x="425" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#B45309" textAnchor="middle">⛺ LAPANGAN UPACARA & KEMAH PRAMUKA</text>
-              <text x="425" y="394" fontFamily="var(--font-body)" fontSize="9" fill="#D97706" textAnchor="middle">(Area Outdoor Terbuka Depan Gedung)</text>
+              {/* Tiang Bendera Bendera Waving */}
+              <g transform="translate(420, 245)">
+                <circle cx="0" cy="0" r="10" fill="#4A5568" opacity="0.2" />
+                <circle cx="0" cy="0" r="4" fill="#334155" />
+                <line x1="0" y1="0" x2="0" y2="-60" stroke="#334155" strokeWidth="3" strokeLinecap="round" />
+                {/* Waving Merah Putih Flag */}
+                <path d="M0,-60 C8,-64 16,-56 24,-60 L24,-52 C16,-48 8,-56 0,-52 Z" fill="#EF4444" />
+                <path d="M0,-52 C8,-56 16,-48 24,-52 L24,-44 C16,-40 8,-48 0,-44 Z" fill="#F9FAFB" stroke="#E2E8F0" strokeWidth="0.5" />
+              </g>
+
+              {/* Gapura Pramuka (Pionering Bamboo) */}
+              <g transform="translate(250, 310)">
+                <line x1="-15" y1="40" x2="15" y2="-10" stroke="#854D0E" strokeWidth="3" />
+                <line x1="15" y1="40" x2="-15" y2="-10" stroke="#854D0E" strokeWidth="3" />
+                <line x1="-20" y1="15" x2="20" y2="15" stroke="#854D0E" strokeWidth="2.5" />
+                <polygon points="15,-10 25,-12 15,-5" fill="#7C3AED" /> {/* WOSM Flag */}
+              </g>
+
+              {/* Lapangan Labels */}
+              <text x="420" y="335" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle" style={{ transition: 'all 0.2s' }}>
+                ⛺ LAPANGAN UTAMA & KEMAH PRAMUKA
+              </text>
+              <text x="420" y="350" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'olahraga' ? '#78350F' : '#A18276'} textAnchor="middle">
+                (Area Tanah Liat / Pasir Terbuka)
+              </text>
             </g>
 
-            {/* Gerbang Masuk Utama SDN Bobong */}
-            <line x1="425" y1="425" x2="425" y2="450" stroke="#0B3C5D" strokeWidth="5" strokeLinecap="round" />
-            <text 
-              x="425" y="465" 
-              fontFamily="var(--font-heading)" 
-              fontWeight="800" 
-              fontSize="11" 
-              fill="#0B3C5D" 
-              textAnchor="middle"
-              style={{ pointerEvents: 'none', userSelect: 'none' }}
-            >
-              🚪 GERBANG MASUK SEKOLAH (WAYO)
-            </text>
+            {/* DEKORASI: AREA PARKIR UTAMA (Paving Stone Yard) */}
+            <g transform="translate(280, 45)" filter="url(#shadow-premium)">
+              {/* Ground base of parking area */}
+              <rect x="0" y="0" width="120" height="55" rx="6" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1.5" />
+              {/* Parking slot white divider lines */}
+              <line x1="20" y1="3" x2="20" y2="30" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" opacity="0.8" />
+              <line x1="40" y1="3" x2="40" y2="30" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" opacity="0.8" />
+              <line x1="60" y1="3" x2="60" y2="30" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" opacity="0.8" />
+              <line x1="80" y1="3" x2="80" y2="30" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" opacity="0.8" />
+              <line x1="100" y1="3" x2="100" y2="30" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" opacity="0.8" />
+              
+              {/* Blue Parking "P" Icon Circle */}
+              <circle cx="20" cy="42" r="7" fill="#2563EB" />
+              <text x="20" y="45" fontFamily="var(--font-heading)" fontWeight="900" fontSize="8" fill="#FFFFFF" textAnchor="middle">P</text>
+              
+              {/* Texts */}
+              <text x="70" y="41" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">🏎️ PARKIRAN</text>
+              <text x="70" y="50" fontFamily="var(--font-body)" fontSize="7.5" fill="#475569" textAnchor="middle">Pendidik & Tamu</text>
+            </g>
+
+            {/* ======================================================== */}
+            {/* AREA GEDUNG BARAT: 3 BANGUNAN ATAP BIRU                  */}
+            {/* ======================================================== */}
+            
+            {/* --- GEDUNG BARAT ATAS (Kelas 6 & Kelas 5) --- */}
+            <g filter="url(#shadow-premium)">
+              {/* 1. Kelas 6 (l2_kelas_6) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_6')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_6')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,55 95,55 95,110 40,110" 
+                  fill={hoveredRoom === 'l2_kelas_6' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,55 150,55 150,110 95,110" 
+                  fill={hoveredRoom === 'l2_kelas_6' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="55" x2="95" y2="110" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="85" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎓 KELAS 6</text>
+                {hoveredRoom === 'l2_kelas_6' && <rect x="42" y="57" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+
+              {/* 2. Kelas 5 (l2_kelas_5) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_5')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_5')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,110 95,110 95,165 40,165" 
+                  fill={hoveredRoom === 'l2_kelas_5' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,110 150,110 150,165 95,165" 
+                  fill={hoveredRoom === 'l2_kelas_5' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="110" x2="95" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="140" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎨 KELAS 5</text>
+                {hoveredRoom === 'l2_kelas_5' && <rect x="42" y="112" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* --- GEDUNG BARAT TENGAH (Kelas 4 & Kelas 3) --- */}
+            <g filter="url(#shadow-premium)">
+              {/* 3. Kelas 4 (l2_kelas_4) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_4')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_4')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,195 95,195 95,250 40,250" 
+                  fill={hoveredRoom === 'l2_kelas_4' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,195 150,195 150,250 95,250" 
+                  fill={hoveredRoom === 'l2_kelas_4' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="195" x2="95" y2="250" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="225" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📐 KELAS 4</text>
+                {hoveredRoom === 'l2_kelas_4' && <rect x="42" y="197" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+
+              {/* 4. Kelas 3 (l2_kelas_3) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_3')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_3')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,250 95,250 95,305 40,305" 
+                  fill={hoveredRoom === 'l2_kelas_3' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,250 150,250 150,305 95,305" 
+                  fill={hoveredRoom === 'l2_kelas_3' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="250" x2="95" y2="305" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="280" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📖 KELAS 3</text>
+                {hoveredRoom === 'l2_kelas_3' && <rect x="42" y="252" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* --- GEDUNG BARAT BAWAH (Kelas 2 & Kelas 1) --- */}
+            <g filter="url(#shadow-premium)">
+              {/* 5. Kelas 2 (l1_kelas_2) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l1_kelas_2')}
+                onMouseEnter={() => setHoveredRoom('l1_kelas_2')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,335 95,335 95,390 40,390" 
+                  fill={hoveredRoom === 'l1_kelas_2' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,335 150,335 150,390 95,390" 
+                  fill={hoveredRoom === 'l1_kelas_2' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="335" x2="95" y2="390" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="365" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 2</text>
+                {hoveredRoom === 'l1_kelas_2' && <rect x="42" y="337" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+
+              {/* 6. Kelas 1 (l1_kelas_1) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l1_kelas_1')}
+                onMouseEnter={() => setHoveredRoom('l1_kelas_1')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,390 95,390 95,445 40,445" 
+                  fill={hoveredRoom === 'l1_kelas_1' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,390 150,390 150,445 95,445" 
+                  fill={hoveredRoom === 'l1_kelas_1' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="390" x2="95" y2="445" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="420" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎒 KELAS 1</text>
+                {hoveredRoom === 'l1_kelas_1' && <rect x="42" y="392" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* ======================================================== */}
+            {/* AREA GEDUNG SELATAN (UTAMA): 2 LANTAI DENGAN TOGGLE      */}
+            {/* ======================================================== */}
+            <g filter="url(#shadow-premium)">
+              
+              {/* --- VIEW GEDUNG SELATAN: LANTAI 1 --- */}
+              {southFloor === 1 && (
+                <g>
+                  {/* 7. Kantor Guru (l1_kantor) - Lantai 1 Kiri */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l1_kantor')}
+                    onMouseEnter={() => setHoveredRoom('l1_kantor')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="180,395 395,395 395,435 180,435" 
+                      fill={hoveredRoom === 'l1_kantor' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="180,435 395,435 395,475 180,475" 
+                      fill={hoveredRoom === 'l1_kantor' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Interior wall line */}
+                    <line x1="395" y1="395" x2="395" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+                    
+                    <text x="287" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">💻 KANTOR GURU (L1)</text>
+                    {hoveredRoom === 'l1_kantor' && <rect x="182" y="397" width="211" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+
+                  {/* 8. Perpustakaan (l1_perpus) - Lantai 1 Kanan */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l1_perpus')}
+                    onMouseEnter={() => setHoveredRoom('l1_perpus')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="395,395 670,395 670,435 395,435" 
+                      fill={hoveredRoom === 'l1_perpus' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="395,435 670,435 670,475 395,475" 
+                      fill={hoveredRoom === 'l1_perpus' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    
+                    <text x="532" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📚 PERPUSTAKAAN (L1)</text>
+                    {hoveredRoom === 'l1_perpus' && <rect x="397" y="397" width="271" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+                </g>
+              )}
+
+              {/* --- VIEW GEDUNG SELATAN: LANTAI 2 --- */}
+              {southFloor === 2 && (
+                <g>
+                  {/* Aula / R. Pertemuan Serbaguna (Dekorasi / Non-interactive L2 Kiri) */}
+                  <g style={{ opacity: 0.8 }}>
+                    {/* Roof Top Slope */}
+                    <polygon points="180,395 395,395 395,435 180,435" fill="#64748B" />
+                    {/* Roof Bottom Slope */}
+                    <polygon points="180,435 395,435 395,475 180,475" fill="#475569" />
+                    <line x1="395" y1="395" x2="395" y2="475" stroke="#334155" strokeWidth="1.5" opacity="0.4" />
+                    <text x="287" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle" opacity="0.85">🏛️ AULA / R. SERBAGUNA (L2)</text>
+                  </g>
+
+                  {/* 9. Lab Komputer & UKS (l2_lab_uks) - Lantai 2 Kanan */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l2_lab_uks')}
+                    onMouseEnter={() => setHoveredRoom('l2_lab_uks')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="395,395 670,395 670,435 395,435" 
+                      fill={hoveredRoom === 'l2_lab_uks' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="395,435 670,435 670,475 395,475" 
+                      fill={hoveredRoom === 'l2_lab_uks' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    
+                    <text x="532" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🩹 LAB & RUANG UKS (L2)</text>
+                    {hoveredRoom === 'l2_lab_uks' && <rect x="397" y="397" width="271" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+                </g>
+              )}
+
+              {/* Garis Punggungan Atap Utama Panjang Merah Bata */}
+              <line x1="180" y1="435" x2="670" y2="435" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.8" />
+              
+              {/* Penanda Lantai / Tag Teks Mini */}
+              <rect x="390" y="458" width="80" height="15" rx="3" fill="#1E293B" opacity="0.9" />
+              <text x="430" y="469" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#F8FAFC" textAnchor="middle">
+                {southFloor === 1 ? "MENUJU L2 ➔" : "MENUJU L1 ➔"}
+              </text>
+              <rect 
+                x="390" y="458" width="80" height="15" rx="3" 
+                fill="transparent" 
+                style={{ cursor: 'pointer' }} 
+                onClick={() => setSouthFloor(southFloor === 1 ? 2 : 1)} 
+              />
+            </g>
+
+            {/* ======================================================== */}
+            {/* AREA GEDUNG TIMUR (KANAN): TOILET ATAP BIRU KECIL         */}
+            {/* ======================================================== */}
+            <g filter="url(#shadow-premium)">
+              {/* 10. Toilet & Sanitasi (l1_toilet) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l1_toilet')}
+                onMouseEnter={() => setHoveredRoom('l1_toilet')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="725,235 765,235 765,315 725,315" 
+                  fill={hoveredRoom === 'l1_toilet' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="765,235 805,235 805,315 765,315" 
+                  fill={hoveredRoom === 'l1_toilet' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="765" y1="235" x2="765" y2="315" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="765" y="280" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🧼 TOILET</text>
+                {hoveredRoom === 'l1_toilet' && <rect x="727" y="237" width="76" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* ======================================================== */}
+            {/* AKSESORIS DEKORASI PETA TAMBAHAN (Premium Feel)           */}
+            {/* ======================================================== */}
+            
+            {/* DEKORASI: GERBANG UTAMA SDN BOBONG (Dipindahkan ke samping parkiran) */}
+            <g transform="translate(410, 45)" filter="url(#shadow-premium)">
+              <rect x="0" y="0" width="120" height="55" rx="6" fill="#E2E8F0" stroke="#CBD5E1" strokeWidth="1.5" />
+              
+              {/* Pillar Left */}
+              <rect x="10" y="5" width="12" height="45" rx="2" fill="#475569" stroke="#1E293B" strokeWidth="1" />
+              {/* Pillar Right */}
+              <rect x="98" y="5" width="12" height="45" rx="2" fill="#475569" stroke="#1E293B" strokeWidth="1" />
+              
+              {/* Gate crossbar / fence */}
+              <line x1="22" y1="20" x2="98" y2="20" stroke="#D97706" strokeWidth="3" />
+              <line x1="22" y1="35" x2="98" y2="35" stroke="#334155" strokeWidth="2" strokeDasharray="4,2" />
+              
+              {/* Label */}
+              <text x="60" y="24" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#0F172A" textAnchor="middle">🚪 GERBANG SDN BOBONG</text>
+              <text x="60" y="40" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#475569" textAnchor="middle">(Akses Masuk Utama)</text>
+            </g>
+
+            {/* KOMPAS ARAH MATA ANGIN (Wind Compass Rose) */}
+            <g transform="translate(760, 95)" opacity="0.8">
+              <circle cx="0" cy="0" r="28" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="1.5" />
+              <line x1="0" y1="-26" x2="0" y2="26" stroke="#475569" strokeWidth="1" />
+              <line x1="-26" y1="0" x2="26" y2="0" stroke="#475569" strokeWidth="1" />
+              {/* Star arrows */}
+              <polygon points="0,-24 4,-6 0,0" fill="#EF4444" />
+              <polygon points="0,-24 -4,-6 0,0" fill="#F87171" />
+              <polygon points="0,24 4,6 0,0" fill="#475569" />
+              <polygon points="0,24 -4,6 0,0" fill="#64748B" />
+              <polygon points="24,0 6,4 0,0" fill="#475569" />
+              <polygon points="24,0 6,-4 0,0" fill="#64748B" />
+              <polygon points="-24,0 -6,4 0,0" fill="#475569" />
+              <polygon points="-24,0 -6,-4 0,0" fill="#64748B" />
+              {/* Compass texts */}
+              <text x="0" y="-30" fontFamily="var(--font-heading)" fontWeight="900" fontSize="11" fill="#EF4444" textAnchor="middle">U</text>
+              <text x="0" y="38" fontFamily="var(--font-heading)" fontWeight="700" fontSize="9" fill="#475569" textAnchor="middle">S</text>
+              <text x="34" y="3" fontFamily="var(--font-heading)" fontWeight="700" fontSize="9" fill="#475569" textAnchor="middle">T</text>
+              <text x="-36" y="3" fontFamily="var(--font-heading)" fontWeight="700" fontSize="9" fill="#475569" textAnchor="middle">B</text>
+            </g>
+
+            {/* DETAIL TAMAN & POHON HIJAU (Vegetation Clusters) */}
+            {/* Top Right Tree */}
+            <g transform="translate(680, 70)">
+              <circle cx="0" cy="0" r="14" fill="#15803D" opacity="0.9" />
+              <circle cx="10" cy="-5" r="12" fill="#166534" opacity="0.9" />
+              <circle cx="-10" cy="-4" r="11" fill="#22C55E" opacity="0.8" />
+            </g>
+            {/* Top Left Tree */}
+            <g transform="translate(200, 70)">
+              <circle cx="0" cy="0" r="14" fill="#15803D" opacity="0.9" />
+              <circle cx="10" cy="-5" r="12" fill="#166534" opacity="0.9" />
+              <circle cx="-10" cy="-4" r="11" fill="#22C55E" opacity="0.8" />
+            </g>
+            {/* Bottom Right Tree */}
+            <g transform="translate(710, 380)">
+              <circle cx="0" cy="0" r="15" fill="#15803D" opacity="0.9" />
+              <circle cx="12" cy="-6" r="12" fill="#166534" opacity="0.9" />
+              <circle cx="-12" cy="-4" r="12" fill="#22C55E" opacity="0.8" />
+            </g>
           </svg>
         </div>
 
-        {/* Right Side: Informational Widget / Panel */}
+        {/* Right Side: Informational Panel / Interactive Widget */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
           <div style={{ 
             backgroundColor: 'white', 
@@ -630,10 +759,10 @@ export default function InteractiveFacilityMap() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            minHeight: '240px'
+            minHeight: '260px'
           }}>
             {hoveredRoom ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', animation: 'fadeIn 0.2s ease-out' }}>
                 <span style={{ fontSize: '2.5rem', alignSelf: 'flex-start' }}>{FACILITIES_DATA[hoveredRoom].icon}</span>
                 <h3 style={{ color: 'var(--primary)', fontFamily: 'var(--font-heading)', fontSize: '1.25rem', marginBottom: '2px', fontWeight: 800 }}>
                   {FACILITIES_DATA[hoveredRoom].title}
@@ -641,9 +770,9 @@ export default function InteractiveFacilityMap() {
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: 0, textAlign: 'justify' }}>
                   {FACILITIES_DATA[hoveredRoom].desc}
                 </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '10px' }}>
                   {FACILITIES_DATA[hoveredRoom].stats.fasilitas.slice(0, 2).map((item, idx) => (
-                    <span key={idx} className="badge badge-accent" style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', fontWeight: 600 }}>
+                    <span key={idx} className="badge badge-accent" style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem', fontWeight: 600 }}>
                       ✓ {item}
                     </span>
                   ))}
@@ -651,24 +780,24 @@ export default function InteractiveFacilityMap() {
               </div>
             ) : (
               <div style={{ textAlign: 'center', color: 'var(--text-light)', padding: 'var(--space-sm) 0' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '8px' }}>🗺️</div>
-                <h4 style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '1rem', marginBottom: '4px' }}>Arahkan Kursor Ke Denah</h4>
+                <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🗺️</div>
+                <h4 style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '1rem', marginBottom: '6px' }}>Sentuh Peta Kampus</h4>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-light)', margin: 0, lineHeight: '1.4' }}>
-                  Gerakkan tetikus atau tekan ruangan pada denah gedung sekolah 2 lantai di sebelah kiri untuk melihat rangkuman fasilitas.
+                  Arahkan tetikus atau ketuk bangunan pada denah interaktif di sebelah kiri untuk meninjau fasilitas SD Negeri Bobong secara langsung.
                 </p>
               </div>
             )}
           </div>
 
-          {/* Quick Statistics Mini Cards */}
+          {/* Real-world School Map Stats */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <div style={{ background: 'white', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Tinggi Gedung</span>
-              <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>2 Lantai</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Layout Kampus</span>
+              <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-heading)', marginTop: '2px', textAlign: 'center' }}>U-Shape (Campuran)</span>
             </div>
             <div style={{ background: 'white', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Kondisi Fisik</span>
-              <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'var(--font-heading)', marginTop: '2px' }}>Kokoh & Layak</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Gedung Utama</span>
+              <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'var(--font-heading)', marginTop: '2px', textAlign: 'center' }}>Struktur 2 Lantai</span>
             </div>
           </div>
         </div>
