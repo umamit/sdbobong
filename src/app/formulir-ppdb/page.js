@@ -62,7 +62,7 @@ export default function FormulirPPDBPrint() {
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
             <p style={{ fontSize: '0.75rem', marginTop: '0.15rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
           </div>
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} decoding="async" />
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '105px', height: '105px', objectFit: 'contain', marginTop: '-12.5px', marginBottom: '-12.5px' }} decoding="async" />
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: 'var(--space-md)' }}>
