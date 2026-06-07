@@ -47,7 +47,7 @@ export default async function Kesiswaan() {
 
           <div className="extra-grid">
             {kesiswaan.ekstrakurikuler && kesiswaan.ekstrakurikuler.map((ekskul, idx) => (
-              <div key={ekskul.id || idx} className="extra-card">
+              <div key={ekskul.id || idx} className={`extra-card reveal-on-scroll reveal-delay-${((idx % 2) + 1) * 150}`}>
                 <img src={ekskul.image} alt={`Aktivitas ${ekskul.nama} SD Negeri Bobong`} className="extra-img" style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
                 <div className="extra-body">
                   {ekskul.is_wajib ? (
@@ -89,7 +89,7 @@ export default async function Kesiswaan() {
               const borderCol = isFirst ? 'var(--secondary)' : 'var(--border-color)';
               
               return (
-                <div key={idx} className="prestasi-card" style={{ border: `2px solid ${borderCol}` }}>
+                <div key={idx} className={`prestasi-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`} style={{ border: `2px solid ${borderCol}` }}>
                   <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
                     <span>{pres.rank}</span>
                   </div>
@@ -116,7 +116,7 @@ export default async function Kesiswaan() {
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
           <div className="grid-3">
             {kesiswaan.karya && kesiswaan.karya.map((item, idx) => (
-              <div key={idx} className="karya-card">
+              <div key={idx} className={`karya-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`}>
                 <div className="karya-icon">{item.icon || '🎨'}</div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>

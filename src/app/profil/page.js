@@ -75,13 +75,13 @@ export default async function Profil() {
       <section className="section-padding">
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
-            <div>
+            <div className="reveal-on-scroll">
               <span className="welcome-badge">{profil.sejarah_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{profil.sejarah_title}</h2>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p1}</p>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2}</p>
             </div>
-            <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
+            <div className="reveal-on-scroll reveal-delay-200" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
               <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} decoding="async" />
             </div>
           </div>
@@ -95,7 +95,7 @@ export default async function Profil() {
             <span className="section-subtitle">Data Pokok Pendidikan</span>
             <h2>Profil Administrasi & Legalitas</h2>
           </div>
-          <div className="table-responsive">
+          <div className="table-responsive reveal-on-scroll">
             <table className="table-custom">
               <tbody>
                 <tr>
@@ -144,32 +144,32 @@ export default async function Profil() {
             <h2>Sarana & Prasarana Sekolah</h2>
           </div>
           <div className="grid-3">
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-100" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏫</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Belajar</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_belajar_desc || "9 Ruang Kelas belajar (6 Rombel Aktif) yang bersih, kondusif, dan nyaman untuk proses KBM."}</p>
             </div>
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-200" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>👥</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Guru</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_guru_desc || "1 Ruang Guru dan Kepala Sekolah sebagai pusat administrasi, koordinasi, dan pelayanan pendidikan."}</p>
             </div>
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-300" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🚻</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Sanitasi</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.sanitasi_desc || "2 Ruang Toilet bersih dan nyaman yang terawat dengan baik untuk guru dan murid."}</p>
             </div>
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-100" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📦</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Gudang</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.gudang_desc || "1 Ruang Gudang penyimpanan inventaris, peralatan belajar mengajar, serta perlengkapan sekolah."}</p>
             </div>
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-200" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏃</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Olahraga</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.olahraga_desc || "Halaman Olahraga & Upacara yang luas di bagian tengah sekolah untuk melatih ketangkasan fisik siswa."}</p>
             </div>
-            <div className="card" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
+            <div className="card reveal-on-scroll reveal-delay-300" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📖</div>
               <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Pojok Baca & Literasi</h3>
               <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.literasi_desc || "Sekolah mengoptimalkan Pojok Baca Kelas dan koleksi literasi untuk meningkatkan minat baca murid harian."}</p>
@@ -186,7 +186,7 @@ export default async function Profil() {
             <h2>Visi & Misi Sekolah</h2>
           </div>
           <div className="visimisi-layout">
-            <div className="visimisi-box">
+            <div className="visimisi-box reveal-on-scroll reveal-delay-100">
               <div className="visimisi-header">
                 <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                 <h3>Visi Sekolah</h3>
@@ -195,7 +195,7 @@ export default async function Profil() {
                 {profil.visi}
               </p>
             </div>
-            <div className="visimisi-box">
+            <div className="visimisi-box reveal-on-scroll reveal-delay-300">
               <div className="visimisi-header">
                 <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
                 <h3>Misi Sekolah</h3>
@@ -236,7 +236,7 @@ export default async function Profil() {
             <span>↔️ Geser ke samping untuk melihat bagan lengkap</span>
           </div>
 
-          <div style={{ backgroundColor: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
+          <div className="reveal-on-scroll" style={{ backgroundColor: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
             <div style={{ minWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-sm)' }}>
               {/* Kepala Sekolah */}
               {kepalaSekolah ? (
@@ -424,7 +424,7 @@ export default async function Profil() {
           </div>
           <div className="grid-3" style={{ marginTop: 'var(--space-md)' }}>
             {achievements.length > 0 ? (
-              achievements.map((ach) => {
+              achievements.map((ach, index) => {
                 const lvl = (ach.level || "").toLowerCase();
                 const isNasional = lvl.includes("nasional");
                 const isProvinsi = lvl.includes("provinsi");
@@ -444,7 +444,7 @@ export default async function Profil() {
                 const icon = isNasional ? '🎓' : isProvinsi ? '🥇' : '🏆';
 
                 return (
-                  <div key={ach.id} className="card" style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', transition: 'var(--transition-normal)', ...cardStyle }}>
+                  <div key={ach.id} className={`card reveal-on-scroll reveal-delay-${((index % 3) + 1) * 100}`} style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', position: 'relative', overflow: 'hidden', transition: 'var(--transition-normal)', ...cardStyle }}>
                     <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>{icon}</div>
                     <span className="badge" style={{ alignSelf: 'flex-start', fontSize: '0.75rem', fontWeight: 700, padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)', ...badgeStyle }}>
                       {ach.level} {ach.year ? `(${ach.year})` : ''}
@@ -477,7 +477,7 @@ export default async function Profil() {
 
           <div className="teachers-grid">
             {nonKomiteTeachers.length > 0 ? (
-              nonKomiteTeachers.map((teacher) => {
+              nonKomiteTeachers.map((teacher, index) => {
                 const isPNS = teacher.status === 'PNS';
                 const isPPPK = teacher.status === 'PPPK' || teacher.status === 'PPPK PW';
                 const isKomite = teacher.status === 'Komite Sekolah';
@@ -490,7 +490,7 @@ export default async function Profil() {
                   : { backgroundColor: '#FFF8E6', color: '#D48408', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 };
 
                 return (
-                  <div key={teacher.id} className="teacher-card">
+                  <div key={teacher.id} className={`teacher-card reveal-on-scroll reveal-delay-${((index % 3) + 1) * 100}`}>
                     <div className="teacher-img-container">
                       <img 
                         src={teacher.image} 

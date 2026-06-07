@@ -54,10 +54,10 @@ export default async function Akademik() {
       <section className="section-padding">
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
-            <div style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
+            <div className="reveal-on-scroll reveal-delay-200" style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
               <img src={akademik.kurikulum_image} alt="Aktivitas Kurikulum Merdeka" style={{ width: '100%', height: '300px', objectFit: 'cover' }} loading="lazy" decoding="async" />
             </div>
-            <div style={{ order: 1 }}>
+            <div className="reveal-on-scroll" style={{ order: 1 }}>
               <span className="welcome-badge">{akademik.kurikulum_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{akademik.kurikulum_title}</h2>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p1}</p>
@@ -83,7 +83,7 @@ export default async function Akademik() {
 
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Berikut adalah perkiraan agenda penting sekolah sepanjang tahun ajaran berjalan. Baris bertanda khusus mendeteksi bulan yang sedang berjalan secara otomatis.</p>
 
-          <div className="table-responsive">
+          <div className="table-responsive reveal-on-scroll">
             <table className="table-custom">
               <thead>
                 <tr>
@@ -128,7 +128,7 @@ export default async function Akademik() {
 
           <div className="grid-2">
             {/* Tata Tertib */}
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="reveal-on-scroll reveal-delay-100" style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
               <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
                 Ketentuan Kedisiplinan
@@ -141,7 +141,7 @@ export default async function Akademik() {
             </div>
 
             {/* Panduan Seragam */}
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="reveal-on-scroll reveal-delay-300" style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
               <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Jadwal Penggunaan Seragam

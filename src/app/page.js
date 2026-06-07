@@ -155,7 +155,7 @@ export default async function Home() {
 
       {/* Quick Links (Thumb-Friendly for Mobile) */}
       <section className="container" style={{ position: 'relative', zIndex: 20 }}>
-        <div className="quick-links-section">
+        <div className="quick-links-section reveal-on-scroll">
           <div className="quick-links-grid">
             {/* Card 1: Portal PPDB */}
             <Link href="/ppdb" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -212,10 +212,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Sambutan Kepala Sekolah */}
       <section className="section-padding welcome-section">
         <div className="container welcome-layout">
-          <div className="welcome-img-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
+          <div className="welcome-img-container reveal-on-scroll" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
             {kepalaSekolah ? (
               <img 
                 src={kepalaSekolah.image} 
@@ -232,7 +231,7 @@ export default async function Home() {
               </div>
             )}
           </div>
-          <div className="welcome-info">
+          <div className="welcome-info reveal-on-scroll reveal-delay-200">
             <span className="welcome-badge">{beranda.welcome_badge}</span>
             <h2>{beranda.welcome_title}</h2>
             <div className="welcome-quote" style={{ maxWidth: '75ch' }}>
@@ -262,19 +261,19 @@ export default async function Home() {
       {/* Stats Counter */}
       <section className="section-padding stats-section">
         <div className="container stats-grid">
-          <div className="stat-item">
+          <div className="stat-item reveal-on-scroll reveal-delay-100">
             <div className="stat-number">{stats.siswa_aktif}</div>
             <div className="stat-label">Siswa Aktif</div>
           </div>
-          <div className="stat-item">
+          <div className="stat-item reveal-on-scroll reveal-delay-200">
             <div className="stat-number">{stats.guru_staf}</div>
             <div className="stat-label">Guru & Staf</div>
           </div>
-          <div className="stat-item">
+          <div className="stat-item reveal-on-scroll reveal-delay-300">
             <div className="stat-number">{stats.ruang_kelas}</div>
             <div className="stat-label">Ruang Kelas</div>
           </div>
-          <div className="stat-item">
+          <div className="stat-item reveal-on-scroll reveal-delay-400">
             <div className="stat-number">{stats.akreditasi}</div>
             <div className="stat-label">Akreditasi Sekolah</div>
           </div>
@@ -291,8 +290,8 @@ export default async function Home() {
 
           <div className="grid-3">
             {newsList.length > 0 ? (
-              newsList.map((news) => (
-                <article key={news.id} className="card">
+              newsList.map((news, index) => (
+                <article key={news.id} className={`card reveal-on-scroll reveal-delay-${(index + 1) * 100}`}>
                   <img src={news.image} alt={news.title} className="card-img" loading="lazy" decoding="async" />
                   <div className="card-body">
                     <div className="card-meta">

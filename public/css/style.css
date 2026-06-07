@@ -2392,4 +2392,27 @@ footer {
     80%, 100% { content: ''; }
 }
 
+/* --- Premium Scroll Reveal Effects --- */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+        opacity: 0 !important;
+        transform: translateY(25px) scale(0.99);
+        transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        will-change: transform, opacity;
+    }
+
+    .reveal-on-scroll.in-view {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+    }
+    
+    /* Reveal with Staggered Delays for lists/cards */
+    .reveal-delay-100 { transition-delay: 100ms !important; }
+    .reveal-delay-200 { transition-delay: 200ms !important; }
+    .reveal-delay-300 { transition-delay: 300ms !important; }
+    .reveal-delay-400 { transition-delay: 400ms !important; }
+    .reveal-delay-500 { transition-delay: 500ms !important; }
+}
+
 
