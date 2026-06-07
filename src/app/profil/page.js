@@ -136,47 +136,7 @@ export default async function Profil() {
         </div>
       </section>
 
-      {/* Sarana & Prasarana */}
-      <section className="section-padding">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-subtitle">Fasilitas</span>
-            <h2>Sarana & Prasarana Sekolah</h2>
-          </div>
-          <div className="grid-3">
-            <div className="card reveal-on-scroll reveal-delay-100" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏫</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Belajar</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_belajar_desc || "9 Ruang Kelas belajar (6 Rombel Aktif) yang bersih, kondusif, dan nyaman untuk proses KBM."}</p>
-            </div>
-            <div className="card reveal-on-scroll reveal-delay-200" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>👥</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Guru</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.ruang_guru_desc || "1 Ruang Guru dan Kepala Sekolah sebagai pusat administrasi, koordinasi, dan pelayanan pendidikan."}</p>
-            </div>
-            <div className="card reveal-on-scroll reveal-delay-300" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🚻</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Sanitasi</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.sanitasi_desc || "2 Ruang Toilet bersih dan nyaman yang terawat dengan baik untuk guru dan murid."}</p>
-            </div>
-            <div className="card reveal-on-scroll reveal-delay-100" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📦</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Ruang Gudang</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.gudang_desc || "1 Ruang Gudang penyimpanan inventaris, peralatan belajar mengajar, serta perlengkapan sekolah."}</p>
-            </div>
-            <div className="card reveal-on-scroll reveal-delay-200" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>🏃</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Fasilitas Olahraga</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.olahraga_desc || "Halaman Olahraga & Upacara yang luas di bagian tengah sekolah untuk melatih ketangkasan fisik siswa."}</p>
-            </div>
-            <div className="card reveal-on-scroll reveal-delay-300" style={{ padding: 'var(--space-sm)', textAlign: 'center' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>📖</div>
-              <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary)' }}>Pojok Baca & Literasi</h3>
-              <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)' }}>{profil.literasi_desc || "Sekolah mengoptimalkan Pojok Baca Kelas dan koleksi literasi untuk meningkatkan minat baca murid harian."}</p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Visi & Misi */}
       <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
