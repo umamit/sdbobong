@@ -275,7 +275,7 @@ export async function POST(request) {
         }
       }
     } else if (actionType === 'resolve_security_threat') {
-      const targetIp = parsedJsonBody?.ip;
+      const targetIp = parsedJsonBody?.ip || parsedFormData?.get('ip')?.toString().trim();
       if (!targetIp) {
         return NextResponse.json({ error: 'IP target tidak ditentukan.' }, { status: 400 });
       }
@@ -287,6 +287,79 @@ export async function POST(request) {
         config.suspicious_attempts[attemptIndex].resolvedAt = new Date().toISOString();
         config.suspicious_attempts[attemptIndex].blockedUntil = null;
       }
+    } else if (actionType === 'add_blacklist_ip') {
+      const targetIp = parsedJsonBody?.ip || parsedFormData?.get('ip')?.toString().trim();
+      const reason = parsedJsonBody?.reason || parsedFormData?.get('reason')?.toString().trim() || 'Pelanggaran keamanan';
+      
+      if (!targetIp) {
+        return NextResponse.json({ error: 'IP target tidak ditentukan.' }, { status: 400 });
+      }
+      
+      if (!config.manual_blacklist) config.manual_blacklist = [];
+      
+      const exists = config.manual_blacklist.some(b => b.ip === targetIp);
+      if (exists) {
+        config.manual_blacklist = config.manual_blacklist.map(b => 
+          b.ip === targetIp ? { ...b, reason, timestamp: new Date().toISOString() } : b
+        );
+      } else {
+        config.manual_blacklist.push({
+          ip: targetIp,
+          reason,
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Also automatically resolve any temporary block for this IP
+      if (config.suspicious_attempts) {
+        const attemptIndex = config.suspicious_attempts.findIndex(a => a.ip === targetIp);
+        if (attemptIndex !== -1) {
+          config.suspicious_attempts[attemptIndex].attempts = 0;
+          config.suspicious_attempts[attemptIndex].resolved = true;
+          config.suspicious_attempts[attemptIndex].resolvedAt = new Date().toISOString();
+        }
+      }
+    } else if (actionType === 'remove_blacklist_ip') {
+      const targetIp = parsedJsonBody?.ip || parsedFormData?.get('ip')?.toString().trim();
+      if (!targetIp) {
+        return NextResponse.json({ error: 'IP target tidak ditentukan.' }, { status: 400 });
+      }
+      if (!config.manual_blacklist) config.manual_blacklist = [];
+      config.manual_blacklist = config.manual_blacklist.filter(b => b.ip !== targetIp);
+    } else if (actionType === 'update_security_settings') {
+      const maxAttempts = parseInt(parsedJsonBody?.max_attempts || parsedFormData?.get('max_attempts') || '5', 10);
+      const blockDurationMin = parseInt(parsedJsonBody?.block_duration_min || parsedFormData?.get('block_duration_min') || '5', 10);
+      const autoPruneDays = parseInt(parsedJsonBody?.auto_prune_days || parsedFormData?.get('auto_prune_days') || '0', 10);
+      
+      if (isNaN(maxAttempts) || maxAttempts < 3 || maxAttempts > 15) {
+        return NextResponse.json({ error: 'Batas toleransi login gagal harus antara 3 - 15 kali.' }, { status: 400 });
+      }
+      if (isNaN(blockDurationMin) || blockDurationMin < 1 || blockDurationMin > 1440) {
+        return NextResponse.json({ error: 'Durasi blokir sementara harus antara 1 - 1440 menit.' }, { status: 400 });
+      }
+      if (isNaN(autoPruneDays) || autoPruneDays < 0) {
+        return NextResponse.json({ error: 'Pembersihan otomatis tidak valid.' }, { status: 400 });
+      }
+      
+      config.security_settings = {
+        max_attempts: maxAttempts,
+        block_duration_min: blockDurationMin,
+        auto_prune_days: autoPruneDays
+      };
+      
+      // Execute auto prune immediately if set
+      if (autoPruneDays > 0) {
+        const { pruneAuditLogs } = await import('../../../lib/audit');
+        await pruneAuditLogs(autoPruneDays);
+      }
+    } else if (actionType === 'purge_audit_logs') {
+      const confirmation = parsedJsonBody?.confirmation || parsedFormData?.get('confirmation')?.toString().trim();
+      if (confirmation !== 'KOSONGKAN JURNAL AUDIT') {
+        return NextResponse.json({ error: 'Konfirmasi pembersihan jurnal tidak valid. Silakan ketik dengan benar.' }, { status: 400 });
+      }
+      
+      const { purgeAuditLogs } = await import('../../../lib/audit');
+      await purgeAuditLogs("Pembersihan jurnal audit dilakukan secara manual oleh Administrator.", request);
     } else if (actionType === 'restore_backup') {
       const restoredConfig = parsedJsonBody?.config || parsedJsonBody?.restored_config;
       if (!restoredConfig || typeof restoredConfig !== 'object') {
@@ -343,10 +416,20 @@ export async function POST(request) {
       else if (actionType === 'downloads') details = 'Memperbarui katalog berkas pusat unduhan publik';
       else if (actionType === 'faqs') details = 'Memperbarui daftar tanya jawab (FAQ) sekolah';
       else if (actionType === 'gallery') details = 'Memperbarui kumpulan foto galeri kegiatan siswa';
-      else if (actionType === 'resolve_security_threat') details = `Menghapus pemblokiran dan menyelesaikan ancaman untuk IP: ${parsedJsonBody?.ip}`;
+      else if (actionType === 'resolve_security_threat') details = `Menghapus pemblokiran dan menyelesaikan ancaman untuk IP: ${parsedJsonBody?.ip || parsedFormData?.get('ip')}`;
+      else if (actionType === 'add_blacklist_ip') details = `Memblokir IP ${parsedJsonBody?.ip || parsedFormData?.get('ip')} secara manual. Alasan: ${parsedJsonBody?.reason || parsedFormData?.get('reason') || 'Pelanggaran keamanan'}`;
+      else if (actionType === 'remove_blacklist_ip') details = `Membatalkan pemblokiran manual untuk IP: ${parsedJsonBody?.ip || parsedFormData?.get('ip')}`;
+      else if (actionType === 'update_security_settings') details = `Memperbarui parameter kebijakan keamanan: Max Gagal=${parsedJsonBody?.max_attempts || parsedFormData?.get('max_attempts')} kali, durasi=${parsedJsonBody?.block_duration_min || parsedFormData?.get('block_duration_min')} mnt, Auto-Prune=${parsedJsonBody?.auto_prune_days || parsedFormData?.get('auto_prune_days')} hari`;
+      else if (actionType === 'purge_audit_logs') details = `Melakukan pembersihan total jurnal audit (manual purge)`;
       else if (actionType === 'restore_backup') details = 'Melakukan pemulihan (restore) data website dari berkas cadangan JSON';
 
-      const actionName = actionType === 'resolve_security_threat' ? 'SECURITY_RESOLVE' : `CONFIG_${actionType.toUpperCase()}`;
+      let actionName = `CONFIG_${actionType.toUpperCase()}`;
+      if (actionType === 'resolve_security_threat') actionName = 'SECURITY_RESOLVE';
+      else if (actionType === 'add_blacklist_ip') actionName = 'SECURITY_BLACKLIST_ADD';
+      else if (actionType === 'remove_blacklist_ip') actionName = 'SECURITY_BLACKLIST_REMOVE';
+      else if (actionType === 'update_security_settings') actionName = 'SECURITY_SETTINGS_UPDATE';
+      else if (actionType === 'purge_audit_logs') actionName = 'SECURITY_PURGE_LOGS';
+
       await createAuditLog(actionName, details, request);
     } catch (auditErr) {
       console.error("Failed to write config audit log:", auditErr);

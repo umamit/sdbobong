@@ -365,6 +365,23 @@ export default function AdminDashboardClient({
   const [securitySearch, setSecuritySearch] = useState('');
   const [securityFilter, setSecurityFilter] = useState('all');
 
+  // Security Form & Modal States
+  const [blacklistIp, setBlacklistIp] = useState('');
+  const [blacklistReason, setBlacklistReason] = useState('');
+  const [maxAttempts, setMaxAttempts] = useState(5);
+  const [blockDurationMin, setBlockDurationMin] = useState(5);
+  const [autoPruneDays, setAutoPruneDays] = useState(0);
+  const [purgeLogsConfirmation, setPurgeLogsConfirmation] = useState('');
+  const [isPurgeModalOpen, setIsPurgeModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (config?.security_settings) {
+      setMaxAttempts(config.security_settings.max_attempts ?? 5);
+      setBlockDurationMin(config.security_settings.block_duration_min ?? 5);
+      setAutoPruneDays(config.security_settings.auto_prune_days ?? 0);
+    }
+  }, [config]);
+
   const activeThreats = (config?.suspicious_attempts || []).filter(a => a.attempts >= 3 && a.resolved !== true);
 
 
@@ -1420,6 +1437,145 @@ export default function AdminDashboardClient({
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan saat memuat ulang: ' + err.message);
     }
+  };
+
+  // --- Security Blacklist, Policy, and Purge Action Handlers ---
+  const handleAddBlacklist = async (e) => {
+    e.preventDefault();
+    if (!blacklistIp.trim()) {
+      showToast('danger', 'Silakan masukkan alamat IP yang ingin diblokir.');
+      return;
+    }
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'add_blacklist_ip',
+          ip: blacklistIp.trim(),
+          reason: blacklistReason.trim() || undefined
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `IP ${blacklistIp} berhasil dimasukkan ke daftar hitam manual.`);
+        setConfig(data.config);
+        setBlacklistIp('');
+        setBlacklistReason('');
+        // Refresh audit logs
+        const logRes = await fetch('/api/config/audit_logs');
+        if (logRes.ok) {
+          const logData = await logRes.json();
+          setAuditLogs(logData.auditLogs || []);
+        }
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menambahkan IP ke daftar hitam.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleRemoveBlacklist = async (ip) => {
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'remove_blacklist_ip',
+          ip: ip
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `IP ${ip} berhasil dibebaskan dari daftar hitam.`);
+        setConfig(data.config);
+        // Refresh audit logs
+        const logRes = await fetch('/api/config/audit_logs');
+        if (logRes.ok) {
+          const logData = await logRes.json();
+          setAuditLogs(logData.auditLogs || []);
+        }
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal membebaskan IP dari daftar hitam.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleSaveSecuritySettings = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'update_security_settings',
+          max_attempts: Number(maxAttempts),
+          block_duration_min: Number(blockDurationMin),
+          auto_prune_days: Number(autoPruneDays)
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Konfigurasi kebijakan keamanan berhasil diperbarui!');
+        setConfig(data.config);
+        // Refresh audit logs
+        const logRes = await fetch('/api/config/audit_logs');
+        if (logRes.ok) {
+          const logData = await logRes.json();
+          setAuditLogs(logData.auditLogs || []);
+        }
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui konfigurasi kebijakan keamanan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handlePurgeAuditLogs = async (e) => {
+    e.preventDefault();
+    if (purgeLogsConfirmation !== 'KOSONGKAN JURNAL AUDIT') {
+      showToast('danger', 'Kata kunci konfirmasi salah. Silakan ketik KOSONGKAN JURNAL AUDIT dengan benar.');
+      return;
+    }
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'purge_audit_logs',
+          confirmation: purgeLogsConfirmation
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Seluruh jurnal audit berhasil dikosongkan!');
+        setPurgeLogsConfirmation('');
+        setIsPurgeModalOpen(false);
+        // Reload logs
+        const logRes = await fetch('/api/config/audit_logs');
+        if (logRes.ok) {
+          const logData = await logRes.json();
+          setAuditLogs(logData.auditLogs || []);
+        }
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal mengosongkan jurnal audit.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleExportCsv = () => {
+    window.open('/api/config/audit_logs?export=true', '_blank');
+    showToast('success', 'Mengekspor jurnal audit ke format CSV...');
   };
   // Change Password Handler
   const handleChangePassword = async (e) => {
@@ -8262,6 +8418,190 @@ export default function AdminDashboardClient({
 
             </div>
 
+            {/* Security Settings & IP Blacklist Column Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)' }}>
+              
+              {/* Security Settings Card */}
+              <div className="card shadow-lg" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                  <span style={{ fontSize: '1.25rem' }}>⚙️</span>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Kebijakan Parameter Keamanan</h3>
+                </div>
+                
+                <form onSubmit={handleSaveSecuritySettings} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                      Batas Toleransi Login Gagal:
+                    </label>
+                    <select
+                      value={maxAttempts}
+                      onChange={(e) => setMaxAttempts(Number(e.target.value))}
+                      className="form-control"
+                      style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px', color: 'var(--text-primary)' }}
+                    >
+                      {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(v => (
+                        <option key={v} value={v}>{v} kali percobaan gagal</option>
+                      ))}
+                    </select>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                      Jumlah maksimal percobaan login yang salah berturut-turut sebelum IP terblokir sementara.
+                    </span>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                      Durasi Blokir IP Sementara (menit):
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="1440"
+                      value={blockDurationMin}
+                      onChange={(e) => setBlockDurationMin(Number(e.target.value))}
+                      className="form-control"
+                      style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px', color: 'var(--text-primary)' }}
+                      required
+                    />
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                      Rentang waktu pemblokiran IP sementara setelah melewati batas login gagal (1 - 1440 menit).
+                    </span>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                      Pembersihan Otomatis Jurnal Audit:
+                    </label>
+                    <select
+                      value={autoPruneDays}
+                      onChange={(e) => setAutoPruneDays(Number(e.target.value))}
+                      className="form-control"
+                      style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px', color: 'var(--text-primary)' }}
+                    >
+                      <option value={0}>Nonaktif (Simpan Semua)</option>
+                      <option value={30}>Hapus log lebih dari 30 Hari</option>
+                      <option value={90}>Hapus log lebih dari 90 Hari</option>
+                      <option value={180}>Hapus log lebih dari 180 Hari</option>
+                      <option value={365}>Hapus log lebih dari 365 Hari</option>
+                    </select>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                      Log audit yang usianya melebihi masa ini akan dibersihkan secara otomatis untuk menjaga performa.
+                    </span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="btn-action-view"
+                    style={{
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      marginTop: '0.5rem',
+                      backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                      color: '#60a5fa',
+                      border: '1px solid rgba(59, 130, 246, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      alignSelf: 'flex-start',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    💾 Simpan Kebijakan Keamanan
+                  </button>
+                </form>
+              </div>
+
+              {/* Manual IP Blacklist Card */}
+              <div className="card shadow-lg" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '1.25rem' }}>🚫</span>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>Daftar Hitam IP Manual</h3>
+                </div>
+
+                <form onSubmit={handleAddBlacklist} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ flex: 1, minWidth: '160px' }}>
+                      <input
+                        type="text"
+                        value={blacklistIp}
+                        onChange={(e) => setBlacklistIp(e.target.value)}
+                        placeholder="Alamat IP (e.g. 192.168.1.5)"
+                        className="form-control"
+                        style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px', color: 'var(--text-primary)' }}
+                        required
+                      />
+                    </div>
+                    <div style={{ flex: 1.5, minWidth: '200px' }}>
+                      <input
+                        type="text"
+                        value={blacklistReason}
+                        onChange={(e) => setBlacklistReason(e.target.value)}
+                        placeholder="Alasan blokir permanen..."
+                        className="form-control"
+                        style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px', color: 'var(--text-primary)' }}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn-action-delete"
+                    style={{
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                      color: '#ef4444',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      alignSelf: 'flex-start',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    ➕ Blokir IP Manual
+                  </button>
+                </form>
+
+                {/* Blacklisted IPs List */}
+                <div style={{ flex: 1, overflowY: 'auto', maxHeight: '180px', border: '1px solid rgba(255, 255, 255, 0.05)', borderRadius: '8px', background: 'rgba(15, 23, 42, 0.3)', padding: '0.5rem' }}>
+                  {config?.manual_blacklist && config.manual_blacklist.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {config.manual_blacklist.map((item, index) => (
+                        <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255, 255, 255, 0.02)', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f87171' }}>{item.ip}</span>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Alasan: {item.reason || 'Tidak ada alasan'}</span>
+                            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Waktu: {item.timestamp ? new Date(item.timestamp).toLocaleString('id-ID') : '-'}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveBlacklist(item.ip)}
+                            className="btn-action-view"
+                            style={{
+                              padding: '0.25rem 0.5rem',
+                              fontSize: '0.72rem',
+                              margin: 0,
+                              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                              color: '#22c55e',
+                              border: '1px solid rgba(34, 197, 94, 0.3)',
+                              cursor: 'pointer',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            🔓 Bebaskan
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ padding: '2rem 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', fontStyle: 'italic' }}>
+                      Tidak ada IP terblokir manual.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </div>
+
             {/* Threat Management Panel */}
             {(config?.suspicious_attempts || []).filter(a => a.resolved !== true).length > 0 && (
               <div className="card" style={{
@@ -8377,15 +8717,61 @@ export default function AdminDashboardClient({
                   </button>
                 </div>
 
-                <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap', width: '100%', maxWidth: '400px' }}>
+                <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap', alignItems: 'center' }}>
                   <input
                     type="text"
                     value={securitySearch}
                     onChange={(e) => setSecuritySearch(e.target.value)}
                     placeholder="Cari kata kunci, IP, aksi, detail..."
                     className="form-control"
-                    style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px' }}
+                    style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '180px', borderRadius: '8px', color: 'var(--text-primary)' }}
                   />
+                  
+                  <button
+                    type="button"
+                    onClick={handleExportCsv}
+                    className="btn-action-view"
+                    style={{
+                      padding: '0.45rem 0.9rem',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                      color: '#60a5fa',
+                      border: '1px solid rgba(59, 130, 246, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      transition: 'all 0.2s',
+                      margin: 0
+                    }}
+                  >
+                    📥 Ekspor CSV
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsPurgeModalOpen(true)}
+                    className="btn-action-delete"
+                    style={{
+                      padding: '0.45rem 0.9rem',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                      color: '#ef4444',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      transition: 'all 0.2s',
+                      margin: 0
+                    }}
+                  >
+                    🧹 Kosongkan Jurnal
+                  </button>
                 </div>
               </div>
 
@@ -9874,6 +10260,68 @@ export default function AdminDashboardClient({
                   style={{ flex: 1, padding: '0.65rem' }}
                 >
                   💾 Simpan Data Siswa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: PURGE AUDIT LOGS ================= */}
+      {isPurgeModalOpen && (
+        <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(12px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
+          <div className="modal-content animate-slideUp" style={{ backgroundColor: '#1e293b', borderRadius: '16px', maxWidth: '500px', width: '100%', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>⚠️ Kosongkan Jurnal Jejak Audit</h3>
+              <button 
+                type="button" 
+                onClick={() => { setIsPurgeModalOpen(false); setPurgeLogsConfirmation(''); }} 
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handlePurgeAuditLogs} style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1rem', borderRadius: '8px', color: '#f87171', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                <strong>PERINGATAN KERAS!</strong> Tindakan ini akan menghapus seluruh rekaman jejak audit selamanya dari server (termasuk Supabase DB jika aktif). Tindakan ini tidak dapat dibatalkan.
+              </div>
+
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label htmlFor="purge_confirm" style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                  Ketik frasa di bawah ini untuk mengonfirmasi:
+                </label>
+                <div style={{ color: '#ef4444', fontWeight: 700, fontSize: '0.95rem', letterSpacing: '0.05em', marginBottom: '8px', padding: '0.45rem 1rem', background: 'rgba(15, 23, 42, 0.4)', borderRadius: '6px', textAlign: 'center', userSelect: 'none' }}>
+                  KOSONGKAN JURNAL AUDIT
+                </div>
+                <input
+                  type="text"
+                  id="purge_confirm"
+                  className="form-control"
+                  placeholder="Ketik persis frasa di atas..."
+                  value={purgeLogsConfirmation}
+                  onChange={(e) => setPurgeLogsConfirmation(e.target.value)}
+                  style={{ width: '100%', boxSizing: 'border-box', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.6rem 1rem', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.85rem' }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '1.25rem' }}>
+                <button 
+                  type="button" 
+                  className="btn-action-view" 
+                  style={{ flex: 1, padding: '0.65rem', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' }} 
+                  onClick={() => { setIsPurgeModalOpen(false); setPurgeLogsConfirmation(''); }}
+                >
+                  Batalkan
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn-action-delete" 
+                  style={{ flex: 1, padding: '0.65rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.4)', background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' }}
+                  disabled={purgeLogsConfirmation !== 'KOSONGKAN JURNAL AUDIT'}
+                >
+                  🧹 Kosongkan Sekarang
                 </button>
               </div>
             </form>

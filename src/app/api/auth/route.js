@@ -18,10 +18,34 @@ export async function POST(request) {
     const config = await loadWebConfig();
     if (!config.suspicious_attempts) config.suspicious_attempts = [];
 
-    // Check if IP is currently blocked (attempts >= 5)
+    // 1. Check if IP is in the manual blacklist
+    if (config.manual_blacklist && Array.isArray(config.manual_blacklist)) {
+      const blacklistRecord = config.manual_blacklist.find(b => b.ip === ip);
+      if (blacklistRecord) {
+        // Log blocked access attempt
+        await createAuditLog(
+          'SECURITY_BLACKLIST_BYPASS_ATTEMPT',
+          `IP daftar hitam ${ip} mencoba masuk. Alasan blokir: ${blacklistRecord.reason || 'Tanpa alasan'}.`,
+          request
+        );
+        return NextResponse.json({
+          error: `Akses ditolak. IP Anda (${ip}) telah diblokir secara permanen oleh administrator. Alasan: ${blacklistRecord.reason || 'Pelanggaran keamanan'}.`
+        }, { status: 403 });
+      }
+    }
+
+    // 2. Load dynamic security settings
+    const maxAttempts = (config.security_settings && typeof config.security_settings.max_attempts === 'number')
+      ? config.security_settings.max_attempts
+      : 5;
+    const blockDurationMin = (config.security_settings && typeof config.security_settings.block_duration_min === 'number')
+      ? config.security_settings.block_duration_min
+      : 5;
+    const blockDuration = blockDurationMin * 60 * 1000; // in milliseconds
+
+    // Check if IP is currently blocked (attempts >= maxAttempts)
     let ipRecord = config.suspicious_attempts.find(a => a.ip === ip && a.resolved !== true);
-    if (ipRecord && ipRecord.attempts >= 5) {
-      const blockDuration = 5 * 60 * 1000; // 5 minutes
+    if (ipRecord && ipRecord.attempts >= maxAttempts) {
       const timeElapsed = Date.now() - new Date(ipRecord.lastAttempt || ipRecord.timestamp).getTime();
       
       if (timeElapsed < blockDuration) {
@@ -30,12 +54,12 @@ export async function POST(request) {
         // Log block check bypass attempt
         await createAuditLog(
           'SECURITY_BLOCK_BYPASS_ATTEMPT',
-          `IP terblokir ${ip} mencoba masuk kembali (tersisa ${remainingTimeSec} detik).`,
+          `IP terblokir sementara ${ip} mencoba masuk kembali (tersisa ${remainingTimeSec} detik).`,
           request
         );
 
         return NextResponse.json({ 
-          error: `IP Anda (${ip}) diblokir sementara demi keamanan selama ${remainingTimeSec} detik karena mendeteksi 5+ kegagalan login berturut-turut.` 
+          error: `IP Anda (${ip}) diblokir sementara demi keamanan selama ${remainingTimeSec} detik karena mendeteksi ${maxAttempts}+ kegagalan login berturut-turut.` 
         }, { status: 429 });
       } else {
         // Exceeded block duration, reset counter and resolved status
@@ -101,10 +125,10 @@ export async function POST(request) {
       }
 
       // Log status level based on attempts count
-      if (ipRecord.attempts >= 5) {
+      if (ipRecord.attempts >= maxAttempts) {
         await createAuditLog(
           'SECURITY_IP_BLOCKED', 
-          `IP ${ip} telah DIBLOKIR sementara (5 menit) setelah gagal masuk ${ipRecord.attempts} kali.`, 
+          `IP ${ip} telah DIBLOKIR sementara (${blockDurationMin} menit) setelah gagal masuk ${ipRecord.attempts} kali.`, 
           request
         );
       } else if (ipRecord.attempts >= 3) {

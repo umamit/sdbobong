@@ -197,3 +197,110 @@ export async function createAuditLog(action, details, request) {
     return null;
   }
 }
+
+/**
+ * Safely purges all audit logs, keeping only one entry.
+ */
+export async function purgeAuditLogs(actionDetails = "Pembersihan log audit dilakukan oleh Administrator.", request = null) {
+  const ip = getClientIp(request);
+  let userAgent = "Unknown Device";
+  if (request) {
+    if (typeof request.headers?.get === 'function') {
+      userAgent = request.headers.get('user-agent') || 'Unknown Device';
+    } else if (request.headers) {
+      userAgent = request.headers['user-agent'] || 'Unknown Device';
+    }
+  }
+
+  const username = "Admin SDN Bobong";
+  const timestamp = new Date().toISOString();
+  const id = `log-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  const singlePurgeLog = {
+    id,
+    timestamp,
+    username,
+    action: 'SECURITY_PURGE_LOGS',
+    details: actionDetails,
+    ip,
+    userAgent
+  };
+
+  // 1. Save locally
+  try {
+    fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify([singlePurgeLog], null, 4), 'utf-8');
+  } catch (e) {
+    console.error("Error writing purge log locally:", e);
+  }
+
+  // 2. Sync to Supabase if active
+  if (isSupabaseEnabled()) {
+    try {
+      // First delete all existing logs
+      await supabase.from("audit_logs_sdn_bobong").delete().neq("id", "none");
+      
+      // Then insert the purge log
+      await supabase.from("audit_logs_sdn_bobong").insert({
+        id: singlePurgeLog.id,
+        timestamp: singlePurgeLog.timestamp,
+        username: singlePurgeLog.username,
+        action: singlePurgeLog.action,
+        details: singlePurgeLog.details,
+        ip: singlePurgeLog.ip,
+        user_agent: singlePurgeLog.userAgent
+      });
+    } catch (e) {
+      console.error("Supabase purgeAuditLogs failed:", e.message || e);
+    }
+  }
+
+  return [singlePurgeLog];
+}
+
+/**
+ * Prunes audit logs older than a given number of days.
+ */
+export async function pruneAuditLogs(days) {
+  if (!days || days <= 0) return 0;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+  const cutoffTime = cutoffDate.getTime();
+
+  // 1. Prune local logs
+  let logs = [];
+  if (fs.existsSync(AUDIT_LOGS_JSON)) {
+    try {
+      logs = JSON.parse(fs.readFileSync(AUDIT_LOGS_JSON, 'utf-8'));
+    } catch (e) {}
+  }
+
+  const originalLength = logs.length;
+  logs = logs.filter(log => {
+    const logTime = new Date(log.timestamp).getTime();
+    return logTime >= cutoffTime;
+  });
+
+  const prunedCount = originalLength - logs.length;
+  if (prunedCount > 0) {
+    try {
+      fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify(logs, null, 4), 'utf-8');
+    } catch (e) {}
+  }
+
+  // 2. Prune Supabase logs
+  if (isSupabaseEnabled()) {
+    try {
+      const isoCutoff = cutoffDate.toISOString();
+      await supabase
+        .from("audit_logs_sdn_bobong")
+        .delete()
+        .lt("timestamp", isoCutoff);
+    } catch (e) {
+      console.error("Supabase pruneAuditLogs failed:", e);
+    }
+  }
+
+  return prunedCount;
+}
+
