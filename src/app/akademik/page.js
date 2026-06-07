@@ -1,4 +1,5 @@
 import { loadWebConfig } from '../../lib/database';
+import AcademicPortal from '../../components/AcademicPortal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -37,9 +38,6 @@ export default async function Akademik() {
     ]
   };
 
-  const months = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
-  const currentMonth = months[new Date().getMonth()];
-
   return (
     <>
       {/* Page Banner */}
@@ -73,47 +71,16 @@ export default async function Akademik() {
         </div>
       </section>
 
-      {/* Kalender Pendidikan */}
+      {/* Kalender Pendidikan & Portal P5 */}
       <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="container">
           <div className="section-header">
-            <span className="section-subtitle">Kalender Belajar</span>
-            <h2>Kalender Pendidikan Berjalan</h2>
+            <span className="section-subtitle">Portal Kemitraan Orang Tua</span>
+            <h2>Kalender Belajar & Projek P5</h2>
           </div>
 
-          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Berikut adalah perkiraan agenda penting sekolah sepanjang tahun ajaran berjalan. Baris bertanda khusus mendeteksi bulan yang sedang berjalan secara otomatis.</p>
-
-          <div className="table-responsive reveal-on-scroll">
-            <table className="table-custom">
-              <thead>
-                <tr>
-                  <th>Bulan</th>
-                  <th>Agenda / Kegiatan Utama</th>
-                  <th>Status / Tanggal Penting</th>
-                </tr>
-              </thead>
-              <tbody>
-                {akademik.calendar && akademik.calendar.map((row) => {
-                  const isCurrent = row.id === currentMonth;
-                  const rowStyle = isCurrent ? {
-                    borderLeft: '4px solid var(--secondary)',
-                    backgroundColor: 'var(--accent-bg)'
-                  } : {};
-
-                  return (
-                    <tr key={row.id} className="calendar-row" style={rowStyle}>
-                      <td>
-                        <span className={`badge ${isCurrent ? 'badge-secondary' : 'badge-accent'} calendar-month-badge`}>
-                          {row.month} {isCurrent && '(Bulan Ini)'}
-                        </span>
-                      </td>
-                      <td>{row.desc}</td>
-                      <td>{row.dates}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="reveal-on-scroll">
+            <AcademicPortal initialCalendar={akademik.calendar} />
           </div>
         </div>
       </section>

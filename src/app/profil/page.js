@@ -1,4 +1,5 @@
 import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
+import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -136,10 +137,21 @@ export default async function Profil() {
         </div>
       </section>
 
-
+      {/* Peta Fasilitas Sekolah Interaktif */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
+        <div className="container">
+          <div className="section-header">
+            <span className="section-subtitle">Sarana & Prasarana</span>
+            <h2>Eksplorasi Denah & Fasilitas Sekolah</h2>
+          </div>
+          <div className="reveal-on-scroll">
+            <InteractiveFacilityMap />
+          </div>
+        </div>
+      </section>
 
       {/* Visi & Misi */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
+      <section className="section-padding" style={{ backgroundColor: 'white' }}>
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Tujuan Kami</span>
