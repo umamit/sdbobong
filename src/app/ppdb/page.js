@@ -6,12 +6,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Dynamic server page
 
 export default async function PPDBPage() {
-  // Try to sync database records on page load
-  try {
-    await syncLocalToSupabase();
-  } catch (e) {
-    console.error("Database sync failed on load:", e);
-  }
+  // Try to sync database records in the background (non-blocking) on page load
+  syncLocalToSupabase().catch(e => console.error("Database sync failed on background load:", e));
 
   let records = [];
 

@@ -5,8 +5,8 @@ import fs from 'fs';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  // 1. Sync local status with Supabase on dashboard access
-  await syncLocalToSupabase();
+  // 1. Run local to Supabase sync in the background (non-blocking) to optimize load speed
+  syncLocalToSupabase().catch(err => console.error("Error in background database sync on dashboard access:", err));
 
   // 2. Fetch config, news, teachers, achievements, storage, messages, and graduation in parallel
   const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList] = await Promise.all([
