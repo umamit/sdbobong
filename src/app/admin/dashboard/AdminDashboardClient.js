@@ -282,8 +282,6 @@ export default function AdminDashboardClient({
   const [kurikulumPreview, setKurikulumPreview] = useState('');
   const [ekskulFiles, setEkskulFiles] = useState({});
   const [ekskulPreviews, setEkskulPreviews] = useState({});
-  const [galleryFiles, setGalleryFiles] = useState({});
-  const [galleryPreviews, setGalleryPreviews] = useState({});
   const [p5Files, setP5Files] = useState({});
   const [p5Previews, setP5Previews] = useState({});
 
@@ -404,20 +402,6 @@ export default function AdminDashboardClient({
     }));
   };
 
-  const handleAddCalendar = () => {
-    const current = pageContents.akademik?.calendar || [];
-    const updated = [...current, { id: 'cal_' + Date.now(), month: '', dates: '', desc: '' }];
-    handleFieldChange('akademik', 'calendar', updated);
-  };
-  const handleUpdateCalendar = (index, key, val) => {
-    const updated = [...(pageContents.akademik?.calendar || [])];
-    updated[index] = { ...updated[index], [key]: val };
-    handleFieldChange('akademik', 'calendar', updated);
-  };
-  const handleRemoveCalendar = (index) => {
-    const updated = (pageContents.akademik?.calendar || []).filter((_, i) => i !== index);
-    handleFieldChange('akademik', 'calendar', updated);
-  };
 
   const handleP5FileChange = (index, file) => {
     if (file) {
@@ -543,56 +527,6 @@ export default function AdminDashboardClient({
     handleFieldChange('ppdb', 'faq', updated);
   };
   
-  const handleAddGalleryItem = () => {
-    const current = pageContents.galeri?.gallery_items || [
-      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
-      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
-      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
-      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
-      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
-      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
-    ];
-    const updated = [...current, { id: 'g_' + Date.now(), src: '/images/gallery_1.svg', alt: '' }];
-    handleFieldChange('galeri', 'gallery_items', updated);
-  };
-
-  const handleUpdateGalleryItem = (index, key, val) => {
-    const current = pageContents.galeri?.gallery_items || [
-      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
-      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
-      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
-      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
-      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
-      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
-    ];
-    const updated = [...current];
-    updated[index] = { ...updated[index], [key]: val };
-    handleFieldChange('galeri', 'gallery_items', updated);
-  };
-
-  const handleRemoveGalleryItem = (index) => {
-    const current = pageContents.galeri?.gallery_items || [
-      { id: 'gallery_1', src: '/images/gallery_1.svg', alt: 'Suasana Belajar di Ruang Kelas Baru' },
-      { id: 'gallery_2', src: '/images/gallery_2.svg', alt: 'Upacara Bendera Hari Senin' },
-      { id: 'gallery_3', src: '/images/gallery_3.svg', alt: 'Latihan Tari Tradisional Maluku Utara' },
-      { id: 'gallery_4', src: '/images/gallery_4.svg', alt: 'Praktek Pembelajaran Olahraga di Lapangan' },
-      { id: 'gallery_5', src: '/images/gallery_5.svg', alt: 'Kegiatan Membaca Buku di Perpustakaan' },
-      { id: 'gallery_6', src: '/images/gallery_6.svg', alt: 'Pemberian Materi Kemah Pramuka' }
-    ];
-    const updated = current.filter((_, i) => i !== index);
-    handleFieldChange('galeri', 'gallery_items', updated);
-  };
-
-  const handleGalleryFileChange = (index, file) => {
-    if (file) {
-      setGalleryFiles(prev => ({ ...prev, [index]: file }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setGalleryPreviews(prev => ({ ...prev, [index]: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleAddPPDBJadwal = () => {
     const current = pageContents.ppdb?.jadwal || [];
@@ -668,16 +602,6 @@ export default function AdminDashboardClient({
       Object.keys(ekskulFiles).forEach(index => {
         filesToUpload[`ekskul_image_${index}`] = ekskulFiles[index];
       });
-    } else if (pageName === 'galeri') {
-      Object.keys(galleryFiles).forEach(index => {
-        const items = dataToSave.gallery_items || [];
-        const item = items[index];
-        if (item && item.id) {
-          filesToUpload[`gallery_image_id_${item.id}`] = galleryFiles[index];
-        } else {
-          filesToUpload[`gallery_image_index_${index}`] = galleryFiles[index];
-        }
-      });
     }
 
     await handlePageContentsSave(pageName, dataToSave, filesToUpload);
@@ -690,9 +614,6 @@ export default function AdminDashboardClient({
       setP5Previews({});
     } else if (pageName === 'kesiswaan') {
       setEkskulFiles({});
-    } else if (pageName === 'galeri') {
-      setGalleryFiles({});
-      setGalleryPreviews({});
     }
   };
 
@@ -5308,250 +5229,7 @@ export default function AdminDashboardClient({
                 </form>
               </div>
 
-              {/* PPDB Contacts Config */}
-              <div className="settings-card" style={{ gridColumn: 'span 2' }}>
-                <h3>Kelola Kontak Informasi & Humas PPDB</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Konfigurasikan nama, jabatan, dan nomor WhatsApp panitia PPDB yang akan ditampilkan pada portal PPDB utama publik.
-                </p>
 
-                {(!config.ppdb_contacts?.nama_humas || !config.ppdb_contacts?.wa_humas || !config.ppdb_contacts?.nama_operator || !config.ppdb_contacts?.wa_operator) && (
-                  <div style={{
-                    backgroundColor: '#FDF2F2',
-                    color: '#9B1C1C',
-                    border: '1px solid #FBD5D5',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.85rem',
-                    marginBottom: 'var(--space-md)',
-                    fontWeight: 600
-                  }}>
-                    ⚠️ Peringatan: Kontak PPDB belum lengkap! Tulisan peringatan merah akan muncul di halaman publik jika bagian ini kosong.
-                  </div>
-                )}
-
-                 <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config.ppdb_contacts) : 'empty'}>
-                  <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                    {/* Humas */}
-                    <div>
-                      <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>1. Kontak Informasi & Humas</h4>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nama_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Humas</label>
-                        <input
-                          type="text"
-                          id="nama_humas"
-                          name="nama_humas"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.nama_humas || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: Ibu Husnita Usman, M.Pd."
-                        />
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="jabatan_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Humas</label>
-                        <input
-                          type="text"
-                          id="jabatan_humas"
-                          name="jabatan_humas"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.jabatan_humas || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: Pendidik Bidang Studi / Humas"
-                        />
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Disinkronkan Otomatis)</label>
-                        <input
-                          type="text"
-                          id="nip_humas"
-                          name="nip_humas"
-                          className="form-control"
-                          value={syncNipHumas}
-                          style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
-                          placeholder="Terisi otomatis dari daftar guru"
-                          readOnly
-                        />
-                        <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
-                          ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Humas.
-                        </span>
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
-                        <input
-                          type="text"
-                          id="wa_humas"
-                          name="wa_humas"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.wa_humas || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: 6281234567890"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Operator */}
-                    <div>
-                      <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>2. Kontak Dukungan Teknis & Operator</h4>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nama_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Operator</label>
-                        <input
-                          type="text"
-                          id="nama_operator"
-                          name="nama_operator"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.nama_operator || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: Bapak Kasmudin"
-                        />
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="jabatan_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Operator</label>
-                        <input
-                          type="text"
-                          id="jabatan_operator"
-                          name="jabatan_operator"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.jabatan_operator || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: Operator Sekolah"
-                        />
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Disinkronkan Otomatis)</label>
-                        <input
-                          type="text"
-                          id="nip_operator"
-                          name="nip_operator"
-                          className="form-control"
-                          value={syncNipOperator}
-                          style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
-                          placeholder="Terisi otomatis dari daftar guru"
-                          readOnly
-                        />
-                        <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
-                          ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Operator.
-                        </span>
-                      </div>
-                      <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor="wa_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
-                        <input
-                          type="text"
-                          id="wa_operator"
-                          name="wa_operator"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.wa_operator || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: 6281234567890"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <hr style={{ border: '0', borderTop: '1px solid var(--border-color)', margin: 'var(--space-md) 0' }} />
-                  
-                   <div style={{ marginBottom: 'var(--space-md)' }}>
-                    <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang & Email Resmi</h4>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-xs)' }}>
-                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
-                    </p>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginTop: '10px' }}>
-                      <div className="form-group">
-                        <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
-                        <input
-                          type="text"
-                          id="wa_floating"
-                          name="wa_floating"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.wa_floating || ''}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: 6281234567890"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
-                        <input
-                          type="email"
-                          id="email_sekolah"
-                          name="email_sekolah"
-                          className="form-control"
-                          defaultValue={config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}
-                          style={{ width: '100%' }}
-                          placeholder="Contoh: sdn.bobong.taliabu@gmail.com"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB & Tombol Melayang</button>
-                </form>
-              </div>
-
-              {/* Welcome Background Config */}
-              <div className="settings-card" style={{ gridColumn: 'span 2' }}>
-                <h3>Ganti Background Selamat Datang (Hero Beranda)</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Unggah gambar atau video pendek latar belakang baru untuk banner ucapan selamat datang di halaman Beranda utama. Format gambar yang didukung: JPG, JPEG, PNG, SVG (Maks 2MB). Format video pendek yang didukung: MP4, WebM, OGG, MOV, M4V (Maks 10 detik & 20MB).
-                </p>
-
-                <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                  {/* Preview */}
-                  <div style={{ flex: '1', minWidth: '200px' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
-                    {config.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background) ? (
-                      <video 
-                        src={config.stats.hero_background}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        style={{ 
-                          width: '100%', 
-                          height: '150px', 
-                          borderRadius: 'var(--radius-md)', 
-                          border: '1px solid var(--border-color)', 
-                          objectFit: 'cover',
-                          backgroundColor: '#000'
-                        }}
-                      />
-                    ) : (
-                      <div style={{ 
-                        width: '100%', 
-                        height: '150px', 
-                        borderRadius: 'var(--radius-md)', 
-                        border: '1px solid var(--border-color)', 
-                        backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
-                        backgroundSize: 'cover', 
-                        backgroundPosition: 'center',
-                        backgroundColor: '#e5e7eb'
-                      }}></div>
-                    )}
-                  </div>
-
-                  {/* Form */}
-                  <form onSubmit={handleHeroBgUpdate} encType="multipart/form-data" style={{ flex: '2', minWidth: '300px' }}>
-                    <input type="hidden" name="action_type" value="hero_bg" />
-                    
-                    <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                      <label htmlFor="hero_bg_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Pilih File Gambar atau Video Pendek (Maks 10 Detik)</label>
-                      <input
-                        type="file"
-                        id="hero_bg_image"
-                        name="hero_bg_image"
-                        className="form-control"
-                        accept=".png,.jpg,.jpeg,.svg,.mp4,.webm,.ogg,.mov,.m4v"
-                        style={{ width: '100%' }}
-                        required
-                      />
-                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
-                        💡 <strong>Rekomendasi:</strong> Gunakan rasio lanskap berkualitas tinggi (minimal 1920x1080). Untuk video, pastikan berdurasi maksimal 10 detik agar tidak ditolak oleh sistem pengunggahan.
-                      </p>
-                    </div>
-
-                    <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>📤 Unggah & Terapkan Background</button>
-                  </form>
-                </div>
-              </div>
             </div>
           </section>
 
@@ -6065,6 +5743,74 @@ export default function AdminDashboardClient({
                         rows="4"
                         style={{ width: '100%', resize: 'vertical' }}
                       ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="settings-card" style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                    border: '1px solid var(--border-color)',
+                  }}>
+                    <h3>Ganti Background Selamat Datang (Hero Beranda)</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Unggah gambar atau video pendek latar belakang baru untuk banner ucapan selamat datang di halaman Beranda utama. Format gambar yang didukung: JPG, JPEG, PNG, SVG (Maks 2MB). Format video pendek yang didukung: MP4, WebM, OGG, MOV, M4V (Maks 10 detik & 20MB).
+                    </p>
+
+                    <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                      {/* Preview */}
+                      <div style={{ flex: '1', minWidth: '200px' }}>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
+                        {config.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background) ? (
+                          <video 
+                            src={config.stats.hero_background}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            style={{ 
+                              width: '100%', 
+                              height: '150px', 
+                              borderRadius: 'var(--radius-md)', 
+                              border: '1px solid var(--border-color)', 
+                              objectFit: 'cover',
+                              backgroundColor: '#000'
+                            }}
+                          />
+                        ) : (
+                          <div style={{ 
+                            width: '100%', 
+                            height: '150px', 
+                            borderRadius: 'var(--radius-md)', 
+                            border: '1px solid var(--border-color)', 
+                            backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
+                            backgroundSize: 'cover', 
+                            backgroundPosition: 'center',
+                            backgroundColor: '#e5e7eb'
+                          }}></div>
+                        )}
+                      </div>
+
+                      {/* Form */}
+                      <form onSubmit={handleHeroBgUpdate} encType="multipart/form-data" style={{ flex: '2', minWidth: '300px' }}>
+                        <input type="hidden" name="action_type" value="hero_bg" />
+                        
+                        <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                          <label htmlFor="hero_bg_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Pilih File Gambar atau Video Pendek (Maks 10 Detik)</label>
+                          <input
+                            type="file"
+                            id="hero_bg_image"
+                            name="hero_bg_image"
+                            className="form-control"
+                            accept=".png,.jpg,.jpeg,.svg,.mp4,.webm,.ogg,.mov,.m4v"
+                            style={{ width: '100%' }}
+                            required
+                          />
+                          <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
+                            💡 <strong>Rekomendasi:</strong> Gunakan rasio lanskap berkualitas tinggi (minimal 1920x1080). Untuk video, pastikan berdurasi maksimal 10 detik agar tidak ditolak oleh sistem pengunggahan.
+                          </p>
+                        </div>
+
+                        <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>📤 Unggah & Terapkan Background</button>
+                      </form>
                     </div>
                   </div>
 
@@ -6618,65 +6364,51 @@ export default function AdminDashboardClient({
                     </div>
                   </div>
 
-                  <div className="settings-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h3 style={{ margin: 0 }}>Kalender Akademik</h3>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Agenda dan rentang tanggal pelaksanaan aktivitas di SD Negeri Bobong.</p>
-                      </div>
-                      <button type="button" onClick={handleAddCalendar} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                        ➕ Tambah Baris Kalender
-                      </button>
+                  <div className="settings-card" style={{
+                    background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+                    border: '1px solid #bfdbfe',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      right: '-20px',
+                      bottom: '-20px',
+                      fontSize: '7rem',
+                      opacity: '0.08',
+                      userSelect: 'none',
+                      pointerEvents: 'none'
+                    }}>
+                      📅
                     </div>
-
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                      {(pageContents.akademik?.calendar || []).map((cal, idx) => (
-                        <div key={cal.id || idx} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1.5fr 4fr auto', gap: 'var(--space-xs)', alignItems: 'center', backgroundColor: '#f8fafc', padding: 'var(--space-sm)', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                          <div className="form-group" style={{ marginBottom: 0 }}>
-                            <input
-                              type="text"
-                              placeholder="Bulan & Tahun"
-                              className="form-control"
-                              value={cal.month || ''}
-                              onChange={(e) => handleUpdateCalendar(idx, 'month', e.target.value)}
-                              style={{ width: '100%' }}
-                            />
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 0 }}>
-                            <input
-                              type="text"
-                              placeholder="Rentang Tanggal"
-                              className="form-control"
-                              value={cal.dates || ''}
-                              onChange={(e) => handleUpdateCalendar(idx, 'dates', e.target.value)}
-                              style={{ width: '100%' }}
-                            />
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 0 }}>
-                            <input
-                              type="text"
-                              placeholder="Nama Kegiatan Akademik..."
-                              className="form-control"
-                              value={cal.desc || ''}
-                              onChange={(e) => handleUpdateCalendar(idx, 'desc', e.target.value)}
-                              style={{ width: '100%' }}
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveCalendar(idx)}
-                            className="btn-action-delete"
-                            style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
-                          >
-                            🗑️
-                          </button>
-                        </div>
-                      ))}
-                      {(pageContents.akademik?.calendar || []).length === 0 && (
-                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                          Belum ada agenda kalender akademik. Klik tombol di kanan atas untuk menambahkan baris baru.
-                        </p>
-                      )}
+                      <h3 style={{ color: 'var(--primary-dark)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        📅 Kalender Akademik Terpusat
+                      </h3>
+                      <p style={{ fontSize: '0.9rem', color: '#1e3a8a', lineHeight: '1.6', margin: 0, maxWidth: '90%' }}>
+                        Untuk menghindari duplikasi dan memudahkan pengelolaan data, pengisian Kalender Akademik kini telah <strong>disatukan secara terpusat</strong> dengan agenda kegiatan sekolah.
+                      </p>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)', marginTop: 'var(--space-xs)', alignItems: 'center' }}>
+                        <button 
+                          type="button" 
+                          onClick={() => setActiveTab('agenda')} 
+                          className="btn btn-primary" 
+                          style={{ 
+                            padding: '0.6rem 1.2rem', 
+                            fontSize: '0.85rem', 
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.2)'
+                          }}
+                        >
+                          📅 Kelola Kalender & Agenda Sekarang
+                        </button>
+                        <span style={{ fontSize: '0.8rem', color: '#475569', fontWeight: '500' }}>
+                          (Membuka tab <strong>Agenda Sekolah</strong> di sidebar kiri)
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -7426,6 +7158,188 @@ export default function AdminDashboardClient({
                         </p>
                       )}
                     </div>
+                  </div>
+
+                  {/* Relocated: Kelola Kontak Informasi & Humas PPDB */}
+                  <div className="settings-card" style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                    border: '1px solid var(--border-color)',
+                  }}>
+                    <h3>Kelola Kontak Informasi & Humas PPDB</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Konfigurasikan nama, jabatan, dan nomor WhatsApp panitia PPDB yang akan ditampilkan pada portal PPDB utama publik.
+                    </p>
+
+                    {(!config.ppdb_contacts?.nama_humas || !config.ppdb_contacts?.wa_humas || !config.ppdb_contacts?.nama_operator || !config.ppdb_contacts?.wa_operator) && (
+                      <div style={{
+                        backgroundColor: '#FDF2F2',
+                        color: '#9B1C1C',
+                        border: '1px solid #FBD5D5',
+                        padding: '0.75rem 1rem',
+                        borderRadius: 'var(--radius-sm)',
+                        fontSize: '0.85rem',
+                        marginBottom: 'var(--space-md)',
+                        fontWeight: 600
+                      }}>
+                        ⚠️ Peringatan: Kontak PPDB belum lengkap! Tulisan peringatan merah akan muncul di halaman publik jika bagian ini kosong.
+                      </div>
+                    )}
+
+                    <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config.ppdb_contacts) : 'empty'}>
+                      <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
+                        {/* Humas */}
+                        <div>
+                          <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>1. Kontak Informasi & Humas</h4>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="nama_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Humas</label>
+                            <input
+                              type="text"
+                              id="nama_humas"
+                              name="nama_humas"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.nama_humas || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: Ibu Husnita Usman, M.Pd."
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="jabatan_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Humas</label>
+                            <input
+                              type="text"
+                              id="jabatan_humas"
+                              name="jabatan_humas"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.jabatan_humas || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: Pendidik Bidang Studi / Humas"
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Disinkronkan Otomatis)</label>
+                            <input
+                              type="text"
+                              id="nip_humas"
+                              name="nip_humas"
+                              className="form-control"
+                              value={syncNipHumas}
+                              style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
+                              placeholder="Terisi otomatis dari daftar guru"
+                              readOnly
+                            />
+                            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
+                              ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Humas.
+                            </span>
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
+                            <input
+                              type="text"
+                              id="wa_humas"
+                              name="wa_humas"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.wa_humas || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: 6281234567890"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Operator */}
+                        <div>
+                          <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>2. Kontak Dukungan Teknis & Operator</h4>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="nama_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Operator</label>
+                            <input
+                              type="text"
+                              id="nama_operator"
+                              name="nama_operator"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.nama_operator || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: Bapak Kasmudin"
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="jabatan_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Operator</label>
+                            <input
+                              type="text"
+                              id="jabatan_operator"
+                              name="jabatan_operator"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.jabatan_operator || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: Operator Sekolah"
+                            />
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Disinkronkan Otomatis)</label>
+                            <input
+                              type="text"
+                              id="nip_operator"
+                              name="nip_operator"
+                              className="form-control"
+                              value={syncNipOperator}
+                              style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
+                              placeholder="Terisi otomatis dari daftar guru"
+                              readOnly
+                            />
+                            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
+                              ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Operator.
+                            </span>
+                          </div>
+                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                            <label htmlFor="wa_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
+                            <input
+                              type="text"
+                              id="wa_operator"
+                              name="wa_operator"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.wa_operator || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: 6281234567890"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr style={{ border: '0', borderTop: '1px solid var(--border-color)', margin: 'var(--space-md) 0' }} />
+                      
+                      <div style={{ marginBottom: 'var(--space-md)' }}>
+                        <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang & Email Resmi</h4>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-xs)' }}>
+                          Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
+                        </p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginTop: '10px' }}>
+                          <div className="form-group">
+                            <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
+                            <input
+                              type="text"
+                              id="wa_floating"
+                              name="wa_floating"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.wa_floating || ''}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: 6281234567890"
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
+                            <input
+                              type="email"
+                              id="email_sekolah"
+                              name="email_sekolah"
+                              className="form-control"
+                              defaultValue={config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}
+                              style={{ width: '100%' }}
+                              placeholder="Contoh: sdn.bobong.taliabu@gmail.com"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB & Tombol Melayang</button>
+                    </form>
                   </div>
                 </div>
               )}
