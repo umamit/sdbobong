@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
-import { loadWebConfig, loadTeachers, loadAchievements } from '../../../lib/database';
+import { loadWebConfig, loadTeachers, loadAchievements, supabase, isSupabaseEnabled } from '../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,7 +56,41 @@ export async function POST(req) {
       return NextResponse.json({ reply });
     }
 
-    // 3. Format Data untuk Pengetahuan AI
+    // 3. RAG (Retrieval-Augmented Generation) semantic search using pgvector
+    let ragContext = "";
+    if (apiKey && isSupabaseEnabled() && supabase) {
+      try {
+        console.log(`Generating embedding for user query: "${latestMessage}"`);
+        const aiEmbedClient = new GoogleGenAI({ apiKey });
+        const embedResponse = await aiEmbedClient.models.embedContent({
+          model: 'text-embedding-004',
+          contents: latestMessage,
+        });
+
+        const embedding = embedResponse.embedding?.values;
+        if (embedding && Array.isArray(embedding)) {
+          console.log("Embedding generated successfully. Querying match_documents RPC...");
+          const { data: matchedDocs, error: rpcError } = await supabase.rpc('match_documents', {
+            query_embedding: embedding,
+            match_threshold: 0.65, // threshold for similarity matching
+            match_count: 4         // fetch top 4 relevant chunks
+          });
+
+          if (rpcError) {
+            console.error("Supabase RPC match_documents failed:", rpcError.message);
+          } else if (matchedDocs && matchedDocs.length > 0) {
+            console.log(`Successfully retrieved ${matchedDocs.length} matching documents for context.`);
+            ragContext = matchedDocs.map((doc, i) => `[Dokumen Pendukung #${i + 1}]\n${doc.content}`).join("\n\n");
+          } else {
+            console.log("No matching documents found above similarity threshold.");
+          }
+        }
+      } catch (embedError) {
+        console.error("Error during RAG Embedding / Vector Search:", embedError.message || embedError);
+      }
+    }
+
+    // 4. Format Data untuk Pengetahuan AI
     const listGuruText = teachersList && teachersList.length > 0
       ? teachersList.map(t => `- ${t.name} (${t.role || 'Tenaga Pendidik'})`).join('\n')
       : "- Ibu Husnita Usman, M.Pd. (Humas / Guru)\n- Bapak Kasmudin (Operator Sekolah)";
@@ -73,7 +107,7 @@ export async function POST(req) {
       ? downloads.map(d => `- Berkas: ${d.title} (Kategori: ${d.category}, Link: ${d.fileUrl})`).join('\n')
       : "- Formulir PPDB Offline (Tersedia di sekolah)";
 
-    // 4. Susun System Instruction yang kaya data dan ramah
+    // 5. Susun System Instruction yang kaya data dan ramah
     const systemInstruction = `
 Kamu adalah "aim AI", asisten virtual pintar dan ramah yang mewakili SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara.
 Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan masyarakat umum) memberikan informasi yang akurat, lengkap, dan hangat mengenai sekolah kita.
@@ -127,12 +161,16 @@ ${listUnduhanText}
 8. FAQ Sekolah (Pertanyaan Sering Ditanyakan):
 ${listFaqText}
 
+9. Dokumen Khusus & Pengetahuan Tambahan (Pencarian Semantik):
+${ragContext || "(Tidak ada dokumen tambahan spesifik yang terdeteksi untuk pertanyaan ini. Jawab berdasarkan pengetahuan sekolah standar di atas.)"}
+
 === ATURAN PPDB ONLINE & OFFLINE ===
 - Pendaftaran PPDB Online dapat diakses langsung oleh wali murid melalui tombol "Pendaftaran" di menu atas, atau menuju ke link \`/ppdb-online\` di website ini.
 - Pendaftaran PPDB Offline dapat dilakukan dengan datang langsung ke sekolah menemui panitia PPDB pada jam kerja (Senin - Sabtu pukul 08:00 - 12:00 WIT). Formulir pendaftaran offline juga dapat diunduh di halaman Unduh berkas di website ini.
 - Biaya Pendaftaran: Rp 0 (Gratis! Sama sekali tidak dipungut biaya apa pun).
 
 === BATASAN AI ===
+- Jika terdapat "9. Dokumen Khusus & Pengetahuan Tambahan" di atas yang relevan dengan pertanyaan pengunjung, berikan jawaban prioritas tinggi berdasarkan isi dokumen tersebut karena itu adalah info spesifik/terbaru.
 - Fokuslah hanya pada informasi seputar SD Negeri Bobong, pendaftaran PPDB, kegiatan kesiswaan, prestasi, kurikulum, fasilitas, dan hal-hal umum terkait pendidikan dasar sekolah.
 - Jika pengguna menanyakan hal di luar topik sekolah (politik praktis, hal-hal sensitif, teknologi tingkat lanjut yang tidak ada hubungannya, pemrograman rumit, dll.), arahkan kembali ke topik sekolah dengan sopan dan humoris/ramah. Contoh: "Wah, pertanyaan yang menarik! Tapi sebagai aim AI, saya lebih jago menceritakan serunya belajar di SD Negeri Bobong atau info pendaftaran PPDB nih. Apakah Bapak/Ibu ingin tahu syarat pendaftaran PPDB kita?"
 `;
