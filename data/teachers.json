@@ -1,21 +1,12 @@
 [
     {
         "id": "teacher-1780558122",
-        "name": "Abdul Kadir",
+        "name": "Abdul Kadir, S.Pd.I.,M.Pd",
         "role": "Kepala Sekolah",
         "details": "Penata Tk. I/ IIId",
         "status": "PNS",
-        "nip": "19690512 199403 1 002",
-        "image": "/images/teacher_1.png"
-    },
-    {
-        "id": "teacher-1780564209",
-        "name": "Wa Sutini Idris",
-        "role": "Tata Usaha",
-        "details": "belum tahu",
-        "status": "PNS",
-        "nip": "19820311 200904 2 001",
-        "image": "/images/teacher_2.jpg"
+        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780724329996_657981390_959461009921879_4015034750790030114_n.jpg",
+        "nip": "198707082015031002"
     },
     {
         "id": "teacher-1780566348",
@@ -23,26 +14,17 @@
         "role": "Ketua Komite",
         "details": "Masyarakat",
         "status": "Komite Sekolah",
-        "nip": "",
-        "image": "/images/teacher_1.png"
+        "image": "/images/teacher_1.png",
+        "nip": ""
     },
     {
-        "id": "teacher-7",
-        "name": "Husnita Usman, M.Pd.",
-        "role": "Guru Bahasa Inggris",
-        "details": "Pendidik Bidang Studi",
+        "id": "teacher-1780564209",
+        "name": "Wa Sutini Idris",
+        "role": "Tata Usaha",
+        "details": "belum tahu",
         "status": "PNS",
-        "nip": "19851124 201101 2 003",
-        "image": "/images/teacher_7.jpg"
-    },
-    {
-        "id": "teacher-1780552815",
-        "name": "Ami Wambes, S.Pd",
-        "role": "Guru Kelas 4a",
-        "details": "Guru Kelas Atas",
-        "status": "Honorer Daerah",
-        "nip": "",
-        "image": "/images/teacher_2.jpg"
+        "image": "/images/teacher_2.jpg",
+        "nip": "19820311 200904 2 001"
     },
     {
         "id": "teacher-1780563447",
@@ -50,17 +32,44 @@
         "role": "Bendahara",
         "details": "belum tahu",
         "status": "PPPK",
-        "nip": "19940722 202102 2 008",
-        "image": "/images/teacher_2.jpg"
+        "image": "/images/teacher_2.jpg",
+        "nip": "19940722 202102 2 008"
     },
     {
-        "id": "teacher-1780568856",
-        "name": "Hidayat N.",
-        "role": "Guru",
-        "details": "Guru Kelas Bengkel",
+        "id": "teacher-1780735444",
+        "name": "Jumraeni La Mbone",
+        "role": "Wali Kelas 2C",
+        "details": "Guru Kelas Bawah",
         "status": "PNS",
-        "nip": "19900815 201503 1 005",
-        "image": "/images/teacher_1.png"
+        "image": "/images/teacher_2.jpg",
+        "nip": ""
+    },
+    {
+        "id": "teacher-1780716389",
+        "name": "Hermin Majapahit",
+        "role": "Operator/Guru Kelas 3C",
+        "details": "Guru Kelas Bawah",
+        "status": "PPPK PW",
+        "image": "/images/teacher_1.png",
+        "nip": ""
+    },
+    {
+        "id": "teacher-1780552815",
+        "name": "Ami Wambes, S.Pd",
+        "role": "Guru Kelas 4a",
+        "details": "Guru Kelas Atas",
+        "status": "Honorer Daerah",
+        "image": "/images/teacher_2.jpg",
+        "nip": ""
+    },
+    {
+        "id": "teacher-1780735514",
+        "name": "Hasnia La Kepe",
+        "role": "Wali Kelas 6A",
+        "details": "Guru Kelas Atas",
+        "status": "PNS",
+        "image": "/images/teacher_2.jpg",
+        "nip": ""
     },
     {
         "id": "teacher-1780593889",
@@ -68,7 +77,25 @@
         "role": "Wali Kelas",
         "details": "",
         "status": "PPPK",
-        "nip": "19951010 202203 2 012",
-        "image": "/images/teacher_2.jpg"
+        "image": "/images/teacher_2.jpg",
+        "nip": "19951010 202203 2 012"
+    },
+    {
+        "id": "teacher-1780568856",
+        "name": "Hidayat N.",
+        "role": "Guru",
+        "details": "Guru Kelas Bengkel",
+        "status": "PNS",
+        "image": "/images/teacher_1.png",
+        "nip": "19900815 201503 1 005"
+    },
+    {
+        "id": "teacher-7",
+        "name": "Husnita Usman, M.Pd.",
+        "role": "Guru Bahasa Inggris",
+        "details": "Pendidik Bidang Studi",
+        "status": "PNS",
+        "image": "/images/teacher_7.jpg",
+        "nip": "19851124 201101 2 003"
     }
 ]

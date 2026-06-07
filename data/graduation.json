@@ -1,35 +1,35 @@
 [
-  {
-    "id": "grad-1",
-    "nisn": "0123456789",
-    "no_peserta": "U-2026-001",
-    "name": "ANDI SAPUTRA",
-    "status": "LULUS",
-    "sk_number": "422.1/045/SDN-01/VI/2026",
-    "birth_place": "Bobong",
-    "birth_date": "2014-04-12",
-    "parent_name": "SULAEMAN"
-  },
-  {
-    "id": "grad-2",
-    "nisn": "0123456790",
-    "no_peserta": "U-2026-002",
-    "name": "AURA ADELIA",
-    "status": "LULUS",
-    "sk_number": "422.1/045/SDN-01/VI/2026",
-    "birth_place": "Kilo",
-    "birth_date": "2014-08-22",
-    "parent_name": "HAMZAH"
-  },
-  {
-    "id": "grad-3",
-    "nisn": "0123456791",
-    "no_peserta": "U-2026-003",
-    "name": "MUHAMMAD RIZKY",
-    "status": "LULUS",
-    "sk_number": "422.1/045/SDN-01/VI/2026",
-    "birth_place": "Wayo",
-    "birth_date": "2013-11-05",
-    "parent_name": "ISMAIL"
-  }
+    {
+        "id": "grad-1",
+        "nisn": "0123456789",
+        "no_peserta": "U-2026-001",
+        "name": "ANDI SAPUTRA",
+        "status": "LULUS",
+        "sk_number": "422.1/045/SDN-01/VI/2026",
+        "birth_place": "Bobong",
+        "birth_date": "2014-04-12",
+        "parent_name": "SULAEMAN"
+    },
+    {
+        "id": "grad-2",
+        "nisn": "0123456790",
+        "no_peserta": "U-2026-002",
+        "name": "AURA ADELIA",
+        "status": "LULUS",
+        "sk_number": "422.1/045/SDN-01/VI/2026",
+        "birth_place": "Kilo",
+        "birth_date": "2014-08-22",
+        "parent_name": "HAMZAH"
+    },
+    {
+        "id": "grad-3",
+        "nisn": "0123456791",
+        "no_peserta": "U-2026-003",
+        "name": "MUHAMMAD RIZKY",
+        "status": "LULUS",
+        "sk_number": "422.1/045/SDN-01/VI/2026",
+        "birth_place": "Wayo",
+        "birth_date": "2013-11-05",
+        "parent_name": "ISMAIL"
+    }
 ]

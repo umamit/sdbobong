@@ -1,29 +1,20 @@
 [
     {
-        "id": "msg-1",
-        "name": "Aris Setyawan",
-        "role": "Alumni",
-        "type": "guestbook",
-        "message": "Sangat bangga pernah menimba ilmu di SD Negeri Bobong. Semoga sekolah kita semakin maju, berprestasi, dan terus mencetak generasi emas Taliabu!",
-        "status": "approved",
-        "date": "2026-06-01T10:00:00Z"
-    },
-    {
-        "id": "msg-2",
-        "name": "Fatimah Hasan",
+        "id": "msg-1780839117005",
+        "name": "Husnita",
         "role": "Wali Murid",
-        "type": "feedback",
-        "message": "Mohon usul agar taman di depan kelas 1 diperbanyak bunganya supaya suasana belajar lebih asri dan nyaman.",
-        "status": "pending",
-        "date": "2026-06-02T11:30:00Z"
+        "type": "guestbook",
+        "message": "Bagus bangeeet",
+        "status": "approved",
+        "date": "2026-06-07T13:31:57.005Z"
     },
     {
-        "id": "msg-3",
-        "name": "Rian Saputra",
+        "id": "msg-1780747357224",
+        "name": "Anhar",
         "role": "Masyarakat",
         "type": "guestbook",
-        "message": "Halaman website sekolah ini sangat bagus dan modern. Informasi yang disajikan sangat lengkap untuk masyarakat luar.",
+        "message": "test",
         "status": "approved",
-        "date": "2026-06-03T14:15:00Z"
+        "date": "2026-06-06T12:02:37.224Z"
     }
 ]

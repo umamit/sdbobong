@@ -315,6 +315,53 @@ export async function loadWebConfig() {
   return localConfig;
 }
 
+export async function isTableSeeded(tableName) {
+  if (!isSupabaseEnabled()) return true;
+  try {
+    const { data, error } = await supabase
+      .from("config_sdn_bobong")
+      .select("stats")
+      .eq("id", "global_config")
+      .single();
+    if (!error && data && data.stats) {
+      return data.stats[`${tableName}_seeded`] === true;
+    }
+  } catch (e) {
+    console.error(`Error checking seeding status for ${tableName}:`, e);
+  }
+  return false;
+}
+
+export async function markTableSeeded(tableName) {
+  if (!isSupabaseEnabled()) return;
+  try {
+    const { data, error } = await supabase
+      .from("config_sdn_bobong")
+      .select("stats")
+      .eq("id", "global_config")
+      .single();
+    if (!error && data) {
+      const stats = data.stats || {};
+      stats[`${tableName}_seeded`] = true;
+      await supabase
+        .from("config_sdn_bobong")
+        .update({ stats })
+        .eq("id", "global_config");
+      
+      try {
+        if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
+          const localConfig = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
+          if (!localConfig.stats) localConfig.stats = {};
+          localConfig.stats[`${tableName}_seeded`] = true;
+          fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(localConfig, null, 4), 'utf-8');
+        }
+      } catch (fsErr) {}
+    }
+  } catch (e) {
+    console.error(`Error marking ${tableName} as seeded:`, e);
+  }
+}
+
 let cachedSupabaseColumns = null;
 
 export async function getAvailableSupabaseColumns() {
@@ -510,7 +557,8 @@ export async function loadNews() {
     if (error) throw error;
 
     // Seeding if Supabase is empty
-    if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0) {
+    const newsSeeded = await isTableSeeded("news");
+    if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0 && !newsSeeded) {
       console.log("Supabase news table is empty. Seeding from local JSON...");
       for (const article of localNews) {
         await supabase.from("news_sdn_bobong").insert({
@@ -522,7 +570,12 @@ export async function loadNews() {
           content: article.content
         });
       }
+      await markTableSeeded("news");
       return localNews;
+    }
+
+    if (supabaseNews && supabaseNews.length > 0 && !newsSeeded) {
+      await markTableSeeded("news");
     }
 
     if (supabaseNews) {
@@ -697,7 +750,8 @@ export async function loadTeachers() {
       hasNipColumn = false;
     }
 
-    if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0) {
+    const teachersSeeded = await isTableSeeded("teachers");
+    if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0 && !teachersSeeded) {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
       const sortedLocal = sortTeachersList(localTeachers);
       for (const t of sortedLocal) {
@@ -714,7 +768,12 @@ export async function loadTeachers() {
         }
         await supabase.from("teachers_sdn_bobong").insert(insertObj);
       }
+      await markTableSeeded("teachers");
       return sortedLocal;
+    }
+
+    if (supabaseTeachers && supabaseTeachers.length > 0 && !teachersSeeded) {
+      await markTableSeeded("teachers");
     }
 
     if (supabaseTeachers) {
@@ -1020,7 +1079,8 @@ export async function loadAchievements() {
     if (error) throw error;
 
     // Seeding if Supabase is empty
-    if ((!supabaseAchievements || supabaseAchievements.length === 0) && localAchievements.length > 0) {
+    const achievementsSeeded = await isTableSeeded("achievements");
+    if ((!supabaseAchievements || supabaseAchievements.length === 0) && localAchievements.length > 0 && !achievementsSeeded) {
       console.log("Supabase achievements table is empty. Seeding from local JSON...");
       for (const ach of localAchievements) {
         await supabase.from("achievements_sdn_bobong").insert({
@@ -1031,7 +1091,12 @@ export async function loadAchievements() {
           description: ach.description
         });
       }
+      await markTableSeeded("achievements");
       return localAchievements;
+    }
+
+    if (supabaseAchievements && supabaseAchievements.length > 0 && !achievementsSeeded) {
+      await markTableSeeded("achievements");
     }
 
     if (supabaseAchievements) {
@@ -1213,7 +1278,8 @@ export async function loadMessages() {
   try {
     const { data: dbMessages, error } = await supabase.from("messages_sdn_bobong").select("*");
     if (!error && dbMessages) {
-      if (dbMessages.length === 0 && localMessages.length > 0) {
+      const messagesSeeded = await isTableSeeded("messages");
+      if (dbMessages.length === 0 && localMessages.length > 0 && !messagesSeeded) {
         console.log("Supabase messages table is empty. Seeding from local JSON...");
         for (const m of localMessages) {
           await supabase.from("messages_sdn_bobong").insert({
@@ -1226,7 +1292,12 @@ export async function loadMessages() {
             date: m.date
           });
         }
+        await markTableSeeded("messages");
         return localMessages;
+      }
+
+      if (dbMessages && dbMessages.length > 0 && !messagesSeeded) {
+        await markTableSeeded("messages");
       }
 
       const messagesList = dbMessages.map(m => ({
@@ -1307,7 +1378,8 @@ export async function loadGraduation() {
   try {
     const { data: dbGraduation, error } = await supabase.from("graduation_sdn_bobong").select("*");
     if (!error && dbGraduation) {
-      if (dbGraduation.length === 0 && localGraduation.length > 0) {
+      const graduationSeeded = await isTableSeeded("graduation");
+      if (dbGraduation.length === 0 && localGraduation.length > 0 && !graduationSeeded) {
         console.log("Supabase graduation table is empty. Seeding from local JSON...");
         for (const g of localGraduation) {
           await supabase.from("graduation_sdn_bobong").insert({
@@ -1322,7 +1394,12 @@ export async function loadGraduation() {
             parent_name: g.parent_name
           });
         }
+        await markTableSeeded("graduation");
         return localGraduation;
+      }
+
+      if (dbGraduation && dbGraduation.length > 0 && !graduationSeeded) {
+        await markTableSeeded("graduation");
       }
 
       const gradList = dbGraduation.map(g => ({

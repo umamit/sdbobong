@@ -64,7 +64,12 @@
                 "fileUrl": "https://repositori.kemendikdasmen.go.id/27791/1/MODUL%20AJAR%20KLS%201%20SMS%201.pdf",
                 "category": "Kurikulum"
             }
-        ]
+        ],
+        "news_seeded": true,
+        "teachers_seeded": true,
+        "achievements_seeded": true,
+        "messages_seeded": true,
+        "graduation_seeded": true
     },
     "ppdb_contacts": {
         "wa_humas": "6281340123496",
