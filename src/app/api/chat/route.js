@@ -63,11 +63,12 @@ export async function POST(req) {
         console.log(`Generating embedding for user query: "${latestMessage}"`);
         const aiEmbedClient = new GoogleGenAI({ apiKey });
         const embedResponse = await aiEmbedClient.models.embedContent({
-          model: 'text-embedding-004',
+          model: 'gemini-embedding-2',
           contents: latestMessage,
+          config: { outputDimensionality: 1536 }
         });
 
-        const embedding = embedResponse.embedding?.values;
+        const embedding = embedResponse.embeddings?.[0]?.values;
         if (embedding && Array.isArray(embedding)) {
           console.log("Embedding generated successfully. Querying match_documents RPC...");
           const { data: matchedDocs, error: rpcError } = await supabase.rpc('match_documents', {
