@@ -180,6 +180,7 @@ export default function AdminDashboardClient({
   const fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : (input?.url || '');
     const method = (init?.method || 'GET').toUpperCase();
+    const isAuthCall = method !== 'GET' && url.includes('/api/auth');
 
     if (method !== 'GET') {
       let msg = 'Sedang memproses...';
@@ -209,11 +210,23 @@ export default function AdminDashboardClient({
       setProcessingMessage(msg);
     }
 
+    let response;
     try {
-      return await window.fetch(input, init);
-    } finally {
+      response = await window.fetch(input, init);
+      return response;
+    } catch (err) {
       if (method !== 'GET') {
         setIsProcessing(false);
+      }
+      throw err;
+    } finally {
+      if (method !== 'GET') {
+        // If it's a successful auth call, keep the loading overlay active until redirected.
+        // Otherwise (non-auth calls, or if response is not ok), turn off the loading overlay.
+        const shouldKeepLoading = isAuthCall && response && response.ok;
+        if (!shouldKeepLoading) {
+          setIsProcessing(false);
+        }
       }
     }
   };
