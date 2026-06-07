@@ -38,11 +38,10 @@ export default async function RootLayout({ children }) {
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
   const floatingPhone = (contacts.wa_floating || contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
-  const headersList = headers();
+  const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
   
-  const isDev = process.env.NODE_ENV === 'development';
-  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api') && !isDev;
+  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
   if (isMaintenanceActive) {
     return (
@@ -371,6 +370,16 @@ export default async function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: `
+          // Zero-flicker theme initialization
+          try {
+            const savedTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            const initialTheme = savedTheme || systemTheme;
+            document.documentElement.setAttribute('data-theme', initialTheme);
+          } catch (e) {
+            console.error('Failed to load theme preference', e);
+          }
+
           if (window.location.pathname.startsWith('/admin')) {
             document.documentElement.classList.add('is-admin');
           }
@@ -425,7 +434,7 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: `
-          document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true && !isDev) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
+          document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
         `}} />
         {/* Google tag (gtag.js) */}
         <Script

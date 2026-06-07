@@ -405,52 +405,63 @@ export default function ChatWidget() {
                   {renderMessageContent(msg.content)}
                 </div>
                 {msg.role === 'assistant' && (
-                  <button
-                    className={`ai-bubble-speak-btn ${activeSpeakingIndex === index ? 'speaking' : ''}`}
-                    onClick={() => {
-                      if (activeSpeakingIndex === index) {
-                        stopSpeaking();
-                      } else {
-                        speakText(msg.content, index);
-                      }
-                    }}
-                    title={activeSpeakingIndex === index ? "Hentikan Suara" : "Dengarkan Jawaban"}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: activeSpeakingIndex === index ? 'var(--primary-color)' : '#9ca3af',
-                      cursor: 'pointer',
-                      padding: '4px 0px',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      marginTop: '4px',
-                      alignSelf: 'flex-start',
-                      transition: 'color 0.2s ease',
-                      opacity: 0.8
-                    }}
-                  >
-                    {activeSpeakingIndex === index ? (
-                      <>
-                        <span className="ai-voice-equalizer">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                        </span>
-                        <span>Berhenti membaca</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '12px', height: '12px' }}>
-                          <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                        </svg>
-                        <span>Dengarkan suara</span>
-                      </>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      className={`ai-bubble-speak-btn ${activeSpeakingIndex === index ? 'speaking' : ''}`}
+                      onClick={() => {
+                        if (activeSpeakingIndex === index) {
+                          stopSpeaking();
+                        } else {
+                          speakText(msg.content, index);
+                        }
+                      }}
+                      title={activeSpeakingIndex === index ? "Hentikan Suara" : "Dengarkan Jawaban"}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: activeSpeakingIndex === index ? 'var(--primary-color)' : '#9ca3af',
+                        cursor: 'pointer',
+                        padding: '4px 0px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        marginTop: '4px',
+                        alignSelf: 'flex-start',
+                        transition: 'color 0.2s ease',
+                        opacity: 0.8
+                      }}
+                    >
+                      {activeSpeakingIndex === index ? (
+                        <>
+                          <span className="ai-voice-equalizer">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </span>
+                          <span>Berhenti membaca</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '12px', height: '12px' }}>
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                          </svg>
+                          <span>Dengarkan suara</span>
+                        </>
+                      )}
+                    </button>
+                    {activeSpeakingIndex === index && (
+                      <div className="equalizer-container">
+                        <div className="equalizer-bar"></div>
+                        <div className="equalizer-bar"></div>
+                        <div className="equalizer-bar"></div>
+                        <div className="equalizer-bar"></div>
+                        <div className="equalizer-bar"></div>
+                      </div>
                     )}
-                  </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -500,7 +511,7 @@ export default function ChatWidget() {
           {/* Microphone button for STT */}
           <button
             type="button"
-            className={`ai-mic-btn ${isRecording ? 'recording' : ''}`}
+            className={`ai-mic-btn ${isRecording ? 'recording' : ''} mic-pulse-button ${isRecording ? 'listening' : ''}`}
             onClick={toggleRecording}
             title={isRecording ? "Selesai Merekam" : "Bicara Bahasa Indonesia"}
             disabled={isTyping}

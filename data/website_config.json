@@ -35,7 +35,7 @@
         "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
         "messages_seeded": true,
         "teachers_seeded": true,
-        "maintenance_mode": true,
+        "maintenance_mode": false,
         "_gallery_fallback": [
             {
                 "id": "gal-1",

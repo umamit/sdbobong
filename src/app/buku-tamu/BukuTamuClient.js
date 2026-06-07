@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { submitMessageAction } from '../actions/messages';
 
 export default function BukuTamuClient({ initialApprovedMessages }) {
   const [activeTab, setActiveTab] = useState('buku-tamu'); // 'buku-tamu' or 'saran'
@@ -24,19 +25,14 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
     setGtStatus({ type: 'loading', text: 'Mengirim pesan Anda...' });
 
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: gtName,
-          role: gtRole,
-          type: 'guestbook',
-          message: gtMessage
-        })
+      const res = await submitMessageAction({
+        name: gtName,
+        role: gtRole,
+        type: 'guestbook',
+        message: gtMessage
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Gagal mengirim pesan.");
+      if (res.error) throw new Error(res.error);
 
       setGtStatus({
         type: 'success',
@@ -54,19 +50,14 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
     setSrStatus({ type: 'loading', text: 'Mengirim saran Anda...' });
 
     try {
-      const res = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: srName,
-          role: srRole,
-          type: 'feedback',
-          message: srMessage
-        })
+      const res = await submitMessageAction({
+        name: srName,
+        role: srRole,
+        type: 'feedback',
+        message: srMessage
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Gagal mengirim saran.");
+      if (res.error) throw new Error(res.error);
 
       setSrStatus({
         type: 'success',

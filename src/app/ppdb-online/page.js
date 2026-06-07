@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { submitPpdbAction } from '../actions/ppdb';
 
 export default function PPDBOnlineForm() {
   const router = useRouter();
@@ -98,17 +99,10 @@ export default function PPDBOnlineForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/ppdb', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      const res = await submitPpdbAction(formData);
 
-      const resData = await response.json();
-      if (!response.ok) {
-        throw new Error(resData.error || "Gagal mengirimkan formulir pendaftaran.");
+      if (res.error) {
+        throw new Error(res.error);
       }
 
       // Success redirect
