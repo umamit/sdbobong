@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadGraduation, saveGraduation } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -108,6 +109,7 @@ export async function POST(request) {
     const saved = await saveGraduation(gradList);
 
     if (saved) {
+      await createAuditLog('CREATE_GRADUATE', `Menambahkan peserta kelulusan baru: "${name}" (NISN: ${nisn})`, request);
       try {
         revalidatePath('/kelulusan');
       } catch (cacheErr) {}
@@ -166,6 +168,7 @@ export async function PUT(request) {
     const saved = await saveGraduation(gradList);
 
     if (saved) {
+      await createAuditLog('UPDATE_GRADUATE', `Memperbarui data kelulusan siswa: "${name.trim().toUpperCase()}" (NISN: ${nisn.trim()})`, request);
       try {
         revalidatePath('/kelulusan');
       } catch (cacheErr) {}
@@ -193,15 +196,21 @@ export async function DELETE(request) {
     }
 
     const gradList = await loadGraduation();
+    const studentToDelete = gradList.find(g => g.id === id);
+    const studentName = studentToDelete ? studentToDelete.name : id;
+    const studentNisn = studentToDelete ? ` (NISN: ${studentToDelete.nisn})` : '';
+
     const filteredList = gradList.filter(g => g.id !== id);
 
     if (filteredList.length === gradList.length) {
+      await createAuditLog('DELETE_GRADUATE', `Menghapus data kelulusan siswa (langsung dari DB): "${studentName}"${studentNisn}`, request);
       return NextResponse.json({ error: "Data siswa tidak ditemukan." }, { status: 404 });
     }
 
     const saved = await saveGraduation(filteredList);
 
     if (saved) {
+      await createAuditLog('DELETE_GRADUATE', `Menghapus data kelulusan siswa: "${studentName}"${studentNisn}`, request);
       try {
         revalidatePath('/kelulusan');
       } catch (cacheErr) {}

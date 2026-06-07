@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -227,6 +228,19 @@ export async function POST(request) {
       config.faqs = parsedJsonBody?.faqs || [];
     } else if (actionType === 'gallery') {
       config.gallery = parsedJsonBody?.gallery || [];
+    } else if (actionType === 'resolve_security_threat') {
+      const targetIp = parsedJsonBody?.ip;
+      if (!targetIp) {
+        return NextResponse.json({ error: 'IP target tidak ditentukan.' }, { status: 400 });
+      }
+      if (!config.suspicious_attempts) config.suspicious_attempts = [];
+      const attemptIndex = config.suspicious_attempts.findIndex(a => a.ip === targetIp);
+      if (attemptIndex !== -1) {
+        config.suspicious_attempts[attemptIndex].attempts = 0;
+        config.suspicious_attempts[attemptIndex].resolved = true;
+        config.suspicious_attempts[attemptIndex].resolvedAt = new Date().toISOString();
+        config.suspicious_attempts[attemptIndex].blockedUntil = null;
+      }
     } else if (actionType === 'restore_backup') {
       const restoredConfig = parsedJsonBody?.config || parsedJsonBody?.restored_config;
       if (!restoredConfig || typeof restoredConfig !== 'object') {
@@ -269,6 +283,29 @@ export async function POST(request) {
     if (!saved) {
       return NextResponse.json({ error: "Gagal menyimpan konfigurasi ke database." }, { status: 500 });
     }
+
+    // Create audit log based on actionType
+    try {
+      let details = `Memperbarui konfigurasi: ${actionType}`;
+      if (actionType === 'announcements') details = 'Memperbarui pengumuman berjalan (marquee) sekolah';
+      else if (actionType === 'stats') details = 'Memperbarui statistik dasar dan sarana prasarana sekolah';
+      else if (actionType === 'toggle_db') details = force_local_cache ? 'Menonaktifkan sinkronisasi Supabase (Paksa Mode Lokal)' : 'Mengaktifkan kembali sinkronisasi Supabase';
+      else if (actionType === 'toggle_maintenance') details = config.stats?.maintenance_mode ? 'Mengaktifkan Mode Pemeliharaan (mengunci akses publik)' : 'Menonaktifkan Mode Pemeliharaan (membuka akses publik)';
+      else if (actionType === 'contacts') details = 'Memperbarui detail kontak PPDB humas dan operator sekolah';
+      else if (actionType === 'hero_bg') details = 'Mengunggah dan mengubah media latar belakang (hero background)';
+      else if (actionType === 'update_page_contents') details = `Memperbarui konten halaman informasi: ${pageName}`;
+      else if (actionType === 'downloads') details = 'Memperbarui katalog berkas pusat unduhan publik';
+      else if (actionType === 'faqs') details = 'Memperbarui daftar tanya jawab (FAQ) sekolah';
+      else if (actionType === 'gallery') details = 'Memperbarui kumpulan foto galeri kegiatan siswa';
+      else if (actionType === 'resolve_security_threat') details = `Menghapus pemblokiran dan menyelesaikan ancaman untuk IP: ${parsedJsonBody?.ip}`;
+      else if (actionType === 'restore_backup') details = 'Melakukan pemulihan (restore) data website dari berkas cadangan JSON';
+
+      const actionName = actionType === 'resolve_security_threat' ? 'SECURITY_RESOLVE' : `CONFIG_${actionType.toUpperCase()}`;
+      await createAuditLog(actionName, details, request);
+    } catch (auditErr) {
+      console.error("Failed to write config audit log:", auditErr);
+    }
+
 
     try {
       revalidatePath('/', 'layout');

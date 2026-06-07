@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadAchievements, saveAchievements, supabase, isSupabaseEnabled } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -64,6 +65,7 @@ export async function POST(request) {
     const saved = await saveAchievements(achievementsList);
 
     if (saved) {
+      await createAuditLog('CREATE_ACHIEVEMENT', `Menambahkan prestasi sekolah baru: "${title}" tingkat ${level}`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -114,6 +116,7 @@ export async function PUT(request) {
     const saved = await saveAchievements(achievementsList);
 
     if (saved) {
+      await createAuditLog('UPDATE_ACHIEVEMENT', `Memperbarui prestasi sekolah: "${title}" tingkat ${level}`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -142,6 +145,10 @@ export async function DELETE(request) {
     }
 
     const achievementsList = await loadAchievements();
+    const achievementToDelete = achievementsList.find(a => a.id === id);
+    const achievementTitle = achievementToDelete ? achievementToDelete.title : id;
+    const achievementLevel = achievementToDelete ? ` (${achievementToDelete.level})` : '';
+
     const filteredList = achievementsList.filter(a => a.id !== id);
 
     if (filteredList.length === achievementsList.length) {
@@ -152,12 +159,14 @@ export async function DELETE(request) {
           console.error("Error direct delete from Supabase:", dbErr.message);
         }
       }
+      await createAuditLog('DELETE_ACHIEVEMENT', `Menghapus prestasi sekolah (langsung dari DB): "${achievementTitle}"${achievementLevel}`, request);
       return NextResponse.json({ success: true, message: "Data prestasi sudah tidak ada." });
     }
 
     const saved = await saveAchievements(filteredList);
 
     if (saved) {
+      await createAuditLog('DELETE_ACHIEVEMENT', `Menghapus prestasi sekolah: "${achievementTitle}"${achievementLevel}`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {

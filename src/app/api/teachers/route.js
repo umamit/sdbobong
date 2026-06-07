@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadTeachers, saveTeachers, handlePhotoUpload, supabase, isSupabaseEnabled } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -126,6 +127,7 @@ export async function POST(request) {
     const saved = await saveTeachers(teachersList);
 
     if (saved) {
+      await createAuditLog('CREATE_TEACHER', `Menambahkan data guru baru: "${name}" (${role})`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -235,6 +237,7 @@ export async function PUT(request) {
     const saved = await saveTeachers(teachersList);
 
     if (saved) {
+      await createAuditLog('UPDATE_TEACHER', `Memperbarui data guru: "${name}" (${role})`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -263,6 +266,10 @@ export async function DELETE(request) {
     }
 
     const teachersList = await loadTeachers();
+    const teacherToDelete = teachersList.find(t => t.id === id);
+    const teacherName = teacherToDelete ? teacherToDelete.name : id;
+    const teacherRole = teacherToDelete ? ` (${teacherToDelete.role})` : '';
+
     const filteredList = teachersList.filter(t => t.id !== id);
 
     if (filteredList.length === teachersList.length) {
@@ -273,12 +280,14 @@ export async function DELETE(request) {
           console.error("Error direct delete from Supabase:", dbErr.message);
         }
       }
+      await createAuditLog('DELETE_TEACHER', `Menghapus data guru (langsung dari DB): "${teacherName}"${teacherRole}`, request);
       return NextResponse.json({ success: true, message: "Data guru sudah tidak ada." });
     }
 
     const saved = await saveTeachers(filteredList);
 
     if (saved) {
+      await createAuditLog('DELETE_TEACHER', `Menghapus data guru: "${teacherName}"${teacherRole}`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {

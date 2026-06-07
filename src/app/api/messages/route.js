@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadMessages, saveMessages } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -121,6 +122,9 @@ export async function PUT(request) {
     const saved = await saveMessages(allMessages);
 
     if (saved) {
+      const targetMsg = allMessages[index];
+      const labelStatus = status === 'approved' ? 'menyetujui' : (status === 'rejected' ? 'menolak' : 'menangguhkan');
+      await createAuditLog('MODERATE_MESSAGE', `Mengubah status moderasi pesan (${labelStatus}) dari "${targetMsg.name}"`, request);
       try {
         revalidatePath('/buku-tamu');
       } catch (cacheErr) {
@@ -150,6 +154,10 @@ export async function DELETE(request) {
     }
 
     const allMessages = await loadMessages();
+    const msgToDelete = allMessages.find(m => m.id === id);
+    const senderName = msgToDelete ? msgToDelete.name : id;
+    const msgType = msgToDelete?.type === 'guestbook' ? 'Buku Tamu' : 'Saran';
+
     const filteredList = allMessages.filter(m => m.id !== id);
 
     if (filteredList.length === allMessages.length) {
@@ -159,6 +167,7 @@ export async function DELETE(request) {
     const saved = await saveMessages(filteredList);
 
     if (saved) {
+      await createAuditLog('DELETE_MESSAGE', `Menghapus pesan ${msgType} dari "${senderName}" (ID: ${id})`, request);
       try {
         revalidatePath('/buku-tamu');
       } catch (cacheErr) {

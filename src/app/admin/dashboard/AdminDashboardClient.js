@@ -171,6 +171,7 @@ export default function AdminDashboardClient({
   },
   initialMessages = [],
   initialGraduation = [],
+  initialAuditLogs = [],
 }) {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -354,6 +355,13 @@ export default function AdminDashboardClient({
   const [gradBirthPlace, setGradBirthPlace] = useState('');
   const [gradBirthDate, setGradBirthDate] = useState('');
   const [gradParentName, setGradParentName] = useState('');
+
+  // Security Tab States
+  const [auditLogs, setAuditLogs] = useState(initialAuditLogs);
+  const [securitySearch, setSecuritySearch] = useState('');
+  const [securityFilter, setSecurityFilter] = useState('all');
+
+  const activeThreats = (config?.suspicious_attempts || []).filter(a => a.attempts >= 3 && a.resolved !== true);
 
 
   useEffect(() => {
@@ -1377,6 +1385,51 @@ export default function AdminDashboardClient({
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
   };
+  // --- 6. Security & Audit Threat Resolution Handler ---
+  const handleResolveThreat = async (ip) => {
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'resolve_security_threat',
+          ip: ip
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', `Ancaman keamanan untuk IP ${ip} berhasil diselesaikan dan dibebaskan!`);
+        setConfig(data.config);
+        
+        // Fetch updated audit logs
+        const logRes = await fetch('/api/config/audit_logs');
+        if (logRes.ok) {
+          const logData = await logRes.json();
+          setAuditLogs(logData.auditLogs || []);
+        }
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menyelesaikan ancaman keamanan.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
+  const handleRefreshAuditLogs = async () => {
+    try {
+      const logRes = await fetch('/api/config/audit_logs');
+      if (logRes.ok) {
+        const logData = await logRes.json();
+        setAuditLogs(logData.auditLogs || []);
+        showToast('success', 'Jurnal jejak audit berhasil diperbarui!');
+      } else {
+        showToast('danger', 'Gagal memuat ulang jurnal jejak audit.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan saat memuat ulang: ' + err.message);
+    }
+  };
   // Change Password Handler
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -2318,6 +2371,57 @@ export default function AdminDashboardClient({
            (item.sk_number || '').toLowerCase().includes(q);
   });
 
+  // Computed states for Audit Logs Search & Filter
+  const filteredAuditLogs = (auditLogs || []).filter(log => {
+    const q = securitySearch.toLowerCase();
+    const action = (log.action || '').toLowerCase();
+    const details = (log.details || '').toLowerCase();
+    const username = (log.username || '').toLowerCase();
+    const ip = (log.ip || '').toLowerCase();
+    
+    const matchesSearch = !q || 
+      action.includes(q) || 
+      details.includes(q) || 
+      username.includes(q) || 
+      ip.includes(q);
+
+    if (!matchesSearch) return false;
+
+    if (securityFilter === 'all') return true;
+    if (securityFilter === 'auth') {
+      return action.includes('login') || action.includes('logout') || action.includes('block') || action.includes('threat') || action.includes('security');
+    }
+    if (securityFilter === 'config') {
+      return action.includes('config') || action.includes('maintenance') || action.includes('backup') || action.includes('restore');
+    }
+    if (securityFilter === 'ppdb') {
+      return action.includes('ppdb');
+    }
+    if (securityFilter === 'content') {
+      return action.includes('news') || action.includes('teacher') || action.includes('achievement') || action.includes('graduate') || action.includes('message');
+    }
+    return true;
+  });
+
+  const parseUserAgent = (ua) => {
+    if (!ua) return "Perangkat Tidak Dikenal";
+    let os = "Lainnya";
+    let browser = "Lainnya";
+    if (ua.includes("Windows")) os = "Windows";
+    else if (ua.includes("Macintosh") || ua.includes("Mac OS")) os = "macOS";
+    else if (ua.includes("iPhone")) os = "iPhone";
+    else if (ua.includes("iPad")) os = "iPad";
+    else if (ua.includes("Android")) os = "Android";
+    else if (ua.includes("Linux")) os = "Linux";
+
+    if (ua.includes("Chrome")) browser = "Chrome";
+    else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
+    else if (ua.includes("Firefox")) browser = "Firefox";
+    else if (ua.includes("Edge")) browser = "Edge";
+    else if (ua.includes("Opera")) browser = "Opera";
+    return `${browser} (${os})`;
+  };
+
   const getPageTitle = () => {
     const titles = {
       overview: 'Ringkasan Dashboard',
@@ -2332,7 +2436,8 @@ export default function AdminDashboardClient({
       faqs: 'Manajemen FAQ & Hubungi',
       gallery: 'Manajemen Galeri Kegiatan',
       messages: 'Moderasi Kotak Masuk & Buku Tamu',
-      graduation: 'Kelola Portal Kelulusan Siswa'
+      graduation: 'Kelola Portal Kelulusan Siswa',
+      security: 'Jejak Audit & Keamanan Sistem'
     };
     return titles[activeTab] || 'Dashboard Admin';
   };
@@ -3485,6 +3590,479 @@ export default function AdminDashboardClient({
             justify-content: space-between;
             height: 120px;
         }
+
+        /* Jejak Audit & Keamanan Styles */
+        .security-threat-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: borderPulse 3s infinite alternate, slideDown 0.4s ease-out;
+        }
+        @keyframes borderPulse {
+            0% { border-color: rgba(239, 68, 68, 0.4); box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.1); }
+            100% { border-color: rgba(239, 68, 68, 0.8); box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.25); }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-12px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .security-threat-content {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+        .security-threat-icon {
+            width: 2.75rem;
+            height: 2.75rem;
+            color: #ef4444;
+            flex-shrink: 0;
+            animation: iconShake 1.5s infinite ease-in-out;
+        }
+        @keyframes iconShake {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            15% { transform: rotate(-8deg) scale(1.05); }
+            30% { transform: rotate(8deg) scale(1.05); }
+            45% { transform: rotate(-4deg) scale(1.03); }
+            60% { transform: rotate(4deg) scale(1.03); }
+            75% { transform: rotate(0deg) scale(1); }
+        }
+        .security-threat-text h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #b91c1c;
+            margin: 0 0 0.25rem 0;
+        }
+        .security-threat-text p {
+            font-size: 0.925rem;
+            color: #7f1d1d;
+            margin: 0;
+            font-weight: 500;
+        }
+        .btn-danger-pulse {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.65rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-danger-pulse:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+        .btn-danger-pulse:active {
+            transform: translateY(0);
+        }
+
+        /* Health Cards & Security Section */
+        .security-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .security-health-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .health-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .health-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover);
+        }
+        .health-card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .health-card-icon.safe {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .health-card-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .health-card-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .health-card-icon.info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .health-card-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .health-card-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .health-card-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 0.125rem;
+        }
+        .pulsing-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .pulsing-dot.green {
+            background-color: #10b981;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: dotPulseGreen 1.8s infinite;
+        }
+        .pulsing-dot.red {
+            background-color: #ef4444;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            animation: dotPulseRed 1.8s infinite;
+        }
+        @keyframes dotPulseGreen {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        @keyframes dotPulseRed {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Threat Management panel */
+        .threat-panel {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+        }
+        .threat-panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .threat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .threat-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: var(--transition-smooth);
+        }
+        .threat-item.blocked {
+            border-left: 4px solid #ef4444;
+            background: linear-gradient(to right, rgba(239, 68, 68, 0.02), transparent);
+        }
+        .threat-item.suspicious {
+            border-left: 4px solid #f59e0b;
+            background: linear-gradient(to right, rgba(245, 158, 11, 0.02), transparent);
+        }
+        .threat-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .threat-ip {
+            font-family: monospace;
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+        .threat-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+        }
+        .threat-badge.danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .threat-badge.warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        .threat-details {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+        .threat-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.25rem;
+        }
+        .btn-resolve-threat {
+            background-color: #10b981;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .btn-resolve-threat:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+        .no-threats-state {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Filter Controls */
+        .security-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .security-search-container {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        .security-search-input {
+            width: 100%;
+            padding: 0.65rem 1rem 0.65rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+        .security-search-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .security-search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.1rem;
+            height: 1.1rem;
+            color: #94a3b8;
+        }
+        .security-filter-select {
+            padding: 0.65rem 2rem 0.65rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            background-color: #ffffff;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            min-width: 160px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+
+        /* Log Table */
+        .log-table-container {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .log-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            display: inline-block;
+            text-align: center;
+        }
+        .log-badge.login { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .log-badge.logout { background-color: rgba(100, 116, 139, 0.1); color: #64748b; }
+        .log-badge.config { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .log-badge.security { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .log-badge.ppdb { background-color: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .log-badge.news { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .log-badge.teacher { background-color: rgba(236, 72, 153, 0.1); color: #ec4899; }
+        .log-badge.other { background-color: rgba(100, 116, 139, 0.1); color: #64748b; }
+
+        .device-tooltip-trigger {
+            cursor: help;
+            border-bottom: 1px dotted #94a3b8;
+            position: relative;
+            display: inline-block;
+        }
+        .device-tooltip-content {
+            visibility: hidden;
+            background-color: #0f172a;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            width: 250px;
+            font-size: 0.775rem;
+            line-height: 1.4;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            font-weight: normal;
+        }
+        .device-tooltip-trigger:hover .device-tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Security Threat Banner */
+        .security-threat-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, rgba(254, 242, 242, 0.95) 0%, rgba(254, 226, 226, 0.95) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: pulse-border 2s infinite alternate;
+        }
+        @keyframes pulse-border {
+            0% { border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.1); }
+            100% { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 10px 30px -5px rgba(239, 68, 68, 0.3); }
+        }
+        .threat-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .threat-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: rgba(239, 68, 68, 0.15);
+            border-radius: var(--radius-md);
+            color: #ef4444;
+            flex-shrink: 0;
+            animation: warning-ping 1.5s infinite;
+        }
+        @keyframes warning-ping {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+        .threat-icon {
+            width: 24px;
+            height: 24px;
+        }
+        .threat-text {
+            color: #1e293b;
+        }
+        .threat-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: #991b1b;
+        }
+        .threat-desc {
+            font-size: 0.875rem;
+            margin: 0;
+            color: #7f1d1d;
+            font-weight: 500;
+        }
+        .btn-threat-action {
+            padding: 10px 20px;
+            background: #ef4444;
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            white-space: nowrap;
+        }
+        .btn-threat-action:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.5);
+        }
+        .btn-threat-action:active {
+            transform: translateY(0);
+        }
       `}} />
 
       {/* SIDEBAR */}
@@ -3599,6 +4177,14 @@ export default function AdminDashboardClient({
               <span>Kelulusan Kelas 6</span>
             </a>
           </li>
+          <li className="sidebar-item">
+            <a className={`sidebar-link ${activeTab === 'security' ? 'active' : ''}`} onClick={() => setActiveTab('security')}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <span>Jejak Audit & Keamanan</span>
+            </a>
+          </li>
         </ul>
         <div className="sidebar-footer">
           <form onSubmit={handleLogout}>
@@ -3629,6 +4215,22 @@ export default function AdminDashboardClient({
           {toast && (
             <div className={`alert-toast alert-toast-${toast.type}`}>
               {toast.type === 'success' ? '✅' : '⚠️'} {toast.message}
+            </div>
+          )}
+
+          {/* Suspicious login threat banner */}
+          {activeThreats.length > 0 && (
+            <div className="suspicious-threat-banner">
+              <div className="threat-banner-content">
+                <span className="threat-icon">⚠️</span>
+                <div>
+                  <h4>Peringatan Keamanan Sistem</h4>
+                  <p>Terdeteksi {activeThreats.length} alamat IP mencurigakan dengan kegagalan login beruntun yang berpotensi membahayakan sistem!</p>
+                </div>
+              </div>
+              <button className="btn-threat-resolve" onClick={() => setActiveTab('security')}>
+                Periksa & Selesaikan Ancaman
+              </button>
             </div>
           )}
 
@@ -7579,6 +8181,355 @@ export default function AdminDashboardClient({
                   </tbody>
                 </table>
               </div>
+            </div>
+          </section>
+
+          <section id="tab-security" className={`tab-pane ${activeTab === 'security' ? 'active' : ''}`}>
+            {/* Health Summary Cards */}
+            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)' }}>
+              
+              <div className="card shadow-md" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative', overflow: 'hidden' }}>
+                <div style={{
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: activeThreats.length > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+                  color: activeThreats.length > 0 ? '#ef4444' : '#22c55e'
+                }}>
+                  {activeThreats.length > 0 ? (
+                    <span style={{ fontSize: '1.5rem', animation: 'pulse 1.5s infinite' }}>⚠️</span>
+                  ) : (
+                    <span style={{ fontSize: '1.5rem' }}>🛡️</span>
+                  )}
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status Keamanan</h4>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    {activeThreats.length > 0 ? `${activeThreats.length} Ancaman Aktif` : 'Sistem Aman'}
+                  </p>
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  right: '-10px',
+                  bottom: '-10px',
+                  fontSize: '4.5rem',
+                  opacity: 0.04,
+                  pointerEvents: 'none'
+                }}>🛡️</div>
+              </div>
+
+              <div className="card shadow-md" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative', overflow: 'hidden' }}>
+                <div style={{
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'rgba(59, 130, 246, 0.15)',
+                  color: '#3b82f6'
+                }}>
+                  <span style={{ fontSize: '1.5rem' }}>📑</span>
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Jejak Audit Tercatat</h4>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    {auditLogs ? auditLogs.length : 0} Rekaman
+                  </p>
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  right: '-10px',
+                  bottom: '-10px',
+                  fontSize: '4.5rem',
+                  opacity: 0.04,
+                  pointerEvents: 'none'
+                }}>📑</div>
+              </div>
+
+              <div className="card shadow-md" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative', overflow: 'hidden' }}>
+                <div style={{
+                  width: '52px',
+                  height: '52px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: (config?.suspicious_attempts || []).filter(a => a.attempts >= 5 && a.resolved !== true).length > 0 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(148, 163, 184, 0.15)',
+                  color: (config?.suspicious_attempts || []).filter(a => a.attempts >= 5 && a.resolved !== true).length > 0 ? '#ef4444' : '#94a3b8'
+                }}>
+                  <span style={{ fontSize: '1.5rem' }}>🚫</span>
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>IP Terblokir Sementara</h4>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    {(config?.suspicious_attempts || []).filter(a => a.attempts >= 5 && a.resolved !== true).length} IP Address
+                  </p>
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  right: '-10px',
+                  bottom: '-10px',
+                  fontSize: '4.5rem',
+                  opacity: 0.04,
+                  pointerEvents: 'none'
+                }}>🚫</div>
+              </div>
+
+            </div>
+
+            {/* Threat Management Panel */}
+            {(config?.suspicious_attempts || []).filter(a => a.resolved !== true).length > 0 && (
+              <div className="card" style={{
+                background: 'rgba(30, 41, 59, 0.45)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                borderRadius: '16px',
+                padding: 'var(--space-md)',
+                marginBottom: 'var(--space-lg)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '1.25rem' }}>🛡️</span>
+                    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#f87171' }}>Daftar IP Terdeteksi Mencurigakan / Terblokir</h3>
+                  </div>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>* Reset manual akan memulihkan akses masuk IP</span>
+                </div>
+
+                <div className="table-container">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th style={{ width: '150px' }}>Alamat IP</th>
+                        <th style={{ width: '100px', textAlign: 'center' }}>Kegagalan</th>
+                        <th style={{ width: '180px' }}>Waktu Terakhir</th>
+                        <th style={{ width: '180px' }}>Batas Blokir</th>
+                        <th>Status Keamanan</th>
+                        <th style={{ width: '150px', textAlign: 'center' }}>Tindakan Pemulihan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(config?.suspicious_attempts || [])
+                        .filter(a => a.resolved !== true)
+                        .map((threat, index) => {
+                          const isBlocked = threat.attempts >= 5 && (!threat.blockedUntil || new Date(threat.blockedUntil) > new Date());
+                          return (
+                            <tr key={index}>
+                              <td style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{threat.ip}</td>
+                              <td style={{ textAlign: 'center', fontWeight: 700, color: threat.attempts >= 5 ? '#ef4444' : '#fb923c' }}>
+                                {threat.attempts} Sesi
+                              </td>
+                              <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                {threat.lastAttempt ? new Date(threat.lastAttempt).toLocaleString('id-ID') : '-'}
+                              </td>
+                              <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                {threat.blockedUntil ? new Date(threat.blockedUntil).toLocaleString('id-ID') : '-'}
+                              </td>
+                              <td>
+                                <span style={{
+                                  display: 'inline-block',
+                                  padding: '0.25rem 0.5rem',
+                                  borderRadius: '6px',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 700,
+                                  backgroundColor: isBlocked ? 'rgba(239, 68, 68, 0.15)' : 'rgba(251, 146, 60, 0.15)',
+                                  color: isBlocked ? '#ef4444' : '#fb923c',
+                                  border: isBlocked ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(251, 146, 60, 0.3)'
+                                }}>
+                                  {isBlocked ? '🚫 TERBLOKIR (5 Menit)' : '⚠️ SUSPECT (LOGIN GAGAL 3+)'}
+                                </span>
+                              </td>
+                              <td style={{ textAlign: 'center' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleResolveThreat(threat.ip)}
+                                  className="btn-action-view"
+                                  style={{
+                                    padding: '0.35rem 0.7rem',
+                                    fontSize: '0.75rem',
+                                    margin: 0,
+                                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                    color: '#22c55e',
+                                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  ✅ Bebaskan IP
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Interactive Log Table & Search */}
+            <div className="card shadow-lg" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: 'var(--space-md)' }}>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', flexWrap: 'wrap', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>Jurnal Jejak Admin (Audit Logs)</h3>
+                  <button
+                    type="button"
+                    onClick={handleRefreshAuditLogs}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '1.1rem',
+                      color: '#60a5fa',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '0.2rem',
+                      borderRadius: '50%',
+                      transition: 'background-color 0.2s'
+                    }}
+                    title="Segarkan Log"
+                  >
+                    🔄
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap', width: '100%', maxWidth: '400px' }}>
+                  <input
+                    type="text"
+                    value={securitySearch}
+                    onChange={(e) => setSecuritySearch(e.target.value)}
+                    placeholder="Cari kata kunci, IP, aksi, detail..."
+                    className="form-control"
+                    style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '100%', borderRadius: '8px' }}
+                  />
+                </div>
+              </div>
+
+              {/* Sub-Filters Tabs */}
+              <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: 'var(--space-sm)', marginBottom: 'var(--space-md)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                {[
+                  { id: 'all', label: 'Semua Aktivitas 📑' },
+                  { id: 'auth', label: 'Sesi & Login 🔐' },
+                  { id: 'config', label: 'Konfigurasi Sistem ⚙️' },
+                  { id: 'ppdb', label: 'Data PPDB 📁' },
+                  { id: 'content', label: 'Konten Website ✍️' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setSecurityFilter(tab.id)}
+                    style={{
+                      padding: '0.4rem 0.9rem',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      border: '1px solid',
+                      borderColor: securityFilter === tab.id ? 'rgba(59, 130, 246, 0.4)' : 'transparent',
+                      background: securityFilter === tab.id ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                      color: securityFilter === tab.id ? '#60a5fa' : 'var(--text-muted)',
+                      whiteSpace: 'nowrap',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Jurnal Table */}
+              <div className="table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '170px' }}>Tanggal & Waktu</th>
+                      <th style={{ width: '140px' }}>Pengguna</th>
+                      <th style={{ width: '190px' }}>Jenis Aktivitas</th>
+                      <th>Detail Jejak Log</th>
+                      <th style={{ width: '220px' }}>Asal IP & Perangkat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredAuditLogs.length > 0 ? (
+                      filteredAuditLogs.map((log) => {
+                        // Determine beautiful badge color & text
+                        let badgeStyle = { backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#94a3b8', border: '1px solid rgba(148, 163, 184, 0.25)' };
+                        let actionLabel = log.action;
+
+                        if (log.action === 'LOGIN') {
+                          badgeStyle = { backgroundColor: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)' };
+                          actionLabel = '🔓 LOGIN SUKSES';
+                        } else if (log.action === 'FAILED_LOGIN') {
+                          badgeStyle = { backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' };
+                          actionLabel = '🔒 LOGIN GAGAL';
+                        } else if (log.action === 'SUSPICIOUS_LOGIN_ATTEMPT') {
+                          badgeStyle = { backgroundColor: 'rgba(251, 146, 60, 0.15)', color: '#fb923c', border: '1px solid rgba(251, 146, 60, 0.3)' };
+                          actionLabel = '⚠️ MENCURIGAKAN';
+                        } else if (log.action === 'SECURITY_IP_BLOCKED') {
+                          badgeStyle = { backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' };
+                          actionLabel = '🚫 IP TERBLOKIR';
+                        } else if (log.action === 'SECURITY_RESOLVE') {
+                          badgeStyle = { backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#a855f7', border: '1px solid rgba(168, 85, 247, 0.3)' };
+                          actionLabel = '🛡️ ANCAMAN SELESAI';
+                        } else if (log.action === 'LOGOUT') {
+                          badgeStyle = { backgroundColor: 'rgba(100, 116, 139, 0.15)', color: '#64748b', border: '1px solid rgba(100, 116, 139, 0.3)' };
+                          actionLabel = '👋 LOGOUT ADMIN';
+                        } else if (log.action?.startsWith('CREATE_') || log.action?.includes('PUBLISH')) {
+                          badgeStyle = { backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)' };
+                        } else if (log.action?.startsWith('DELETE_')) {
+                          badgeStyle = { backgroundColor: 'rgba(239, 68, 68, 0.12)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.25)' };
+                        } else if (log.action?.startsWith('UPDATE_')) {
+                          badgeStyle = { backgroundColor: 'rgba(6, 182, 212, 0.15)', color: '#06b6d4', border: '1px solid rgba(6, 182, 212, 0.3)' };
+                        }
+
+                        return (
+                          <tr key={log.id}>
+                            <td style={{ fontSize: '0.8rem', whiteSpace: 'nowrap', color: 'var(--text-muted)', fontWeight: 500 }}>
+                              ⏱️ {log.timestamp ? new Date(log.timestamp).toLocaleString('id-ID') : '-'}
+                            </td>
+                            <td style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.85rem' }}>
+                              👤 {log.username || 'Sistem'}
+                            </td>
+                            <td>
+                              <span style={{
+                                display: 'inline-block',
+                                padding: '0.2rem 0.5rem',
+                                borderRadius: '6px',
+                                fontSize: '0.72rem',
+                                fontWeight: 700,
+                                ...badgeStyle
+                              }}>
+                                {actionLabel}
+                              </span>
+                            </td>
+                            <td style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 500, lineHeight: '1.4' }}>
+                              {log.details || '-'}
+                            </td>
+                            <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+                                <span style={{ fontWeight: 600, color: '#93c5fd' }}>📍 {log.ip || '127.0.0.1'}</span>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', cursor: 'help' }} title={log.userAgent || ''}>
+                                  🖥️ {parseUserAgent(log.userAgent)}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan="5" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          Tidak ada rekaman jejak audit yang cocok dengan penyaringan Anda.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </section>
         </main>

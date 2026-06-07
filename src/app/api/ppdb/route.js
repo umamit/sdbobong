@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 import fs from 'fs';
 import path from 'path';
 
@@ -240,6 +241,7 @@ export async function PUT(request) {
     }
 
     if (supabaseActive ? supabaseUpdated : updatedOk) {
+      await createAuditLog('UPDATE_PPDB_STATUS', `Mengubah status PPDB pendaftar NIK/ID: ${nik || id} menjadi "${newStatus}"`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -296,6 +298,7 @@ export async function DELETE(request) {
       }
 
       if (deletedOk || supabaseDeleted) {
+        await createAuditLog('CLEAR_PPDB_ALL', `Mengosongkan seluruh data pendaftar PPDB dari sistem`, request);
         try {
           revalidatePath('/', 'layout');
         } catch (cacheErr) {
@@ -418,6 +421,7 @@ export async function DELETE(request) {
     }
 
     if (deletedOk || supabaseDeleted) {
+      await createAuditLog('DELETE_PPDB_RECORD', `Menghapus pendaftar PPDB "${targetName || 'Tak Dikenal'}" (NIK/ID: ${targetNik || id})`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {

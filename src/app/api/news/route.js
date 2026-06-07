@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
 import { loadNews, saveNews, handlePhotoUpload } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
+import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -83,6 +84,7 @@ export async function POST(request) {
     const saved = await saveNews(newsList);
 
     if (saved) {
+      await createAuditLog('CREATE_NEWS', `Menerbitkan berita sekolah baru: "${title}"`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {
@@ -120,6 +122,7 @@ export async function DELETE(request) {
     const saved = await saveNews(filteredList);
 
     if (saved) {
+      await createAuditLog('DELETE_NEWS', `Menghapus artikel berita dengan ID: ${id}`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {

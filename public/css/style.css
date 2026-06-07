@@ -2658,3 +2658,144 @@ footer {
     }
 }
 
+/* ==========================================================================
+   Suspicious Login Threat Banner & Security Tab Styles
+   ========================================================================== */
+
+.suspicious-threat-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(30, 41, 59, 0.8) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 16px;
+    padding: 1.25rem 1.75rem;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.1);
+    animation: borderPulse 2s infinite alternate, slideDownIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.suspicious-threat-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #ef4444;
+    box-shadow: 0 0 15px #ef4444;
+}
+
+.threat-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 1;
+}
+
+.threat-icon {
+    font-size: 2.25rem;
+    animation: iconShake 1s infinite alternate;
+    display: inline-block;
+}
+
+.threat-banner-content h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #f87171;
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+}
+
+.threat-banner-content p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #e2e8f0;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.btn-threat-resolve {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: white !important;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.btn-threat-resolve:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+}
+
+.btn-threat-resolve:active {
+    transform: translateY(0);
+}
+
+@keyframes borderPulse {
+    0% {
+        border-color: rgba(239, 68, 68, 0.35);
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.05);
+    }
+    100% {
+        border-color: rgba(239, 68, 68, 0.75);
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+    }
+}
+
+@keyframes slideDownIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes iconShake {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1) rotate(5deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.95);
+        opacity: 0.5;
+    }
+}
+
+

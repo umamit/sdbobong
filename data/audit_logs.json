@@ -1,0 +1,11 @@
+[
+    {
+        "id": "log-seed-01",
+        "timestamp": "2026-06-07T12:00:00.000Z",
+        "username": "Admin SDN Bobong",
+        "action": "SYSTEM_INIT",
+        "details": "Sistem Jurnal Jejak Aktivitas (Audit Trail) berhasil diinisialisasi dan diaktifkan.",
+        "ip": "127.0.0.1",
+        "userAgent": "System Bootstrap"
+    }
+]
