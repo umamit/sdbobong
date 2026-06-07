@@ -184,7 +184,11 @@ export default function AdminDashboardClient({
 
     if (method !== 'GET') {
       let msg = 'Sedang memproses...';
-      if (url.includes('/api/config')) {
+      if (url.includes('/api/auth/change-password')) {
+        msg = 'Mengubah kata sandi admin...';
+      } else if (url.includes('/api/config') && init?.body && typeof init.body === 'string' && init.body.includes('restore_backup')) {
+        msg = 'Memulihkan data cadangan...';
+      } else if (url.includes('/api/config')) {
         msg = 'Menyimpan konfigurasi sekolah...';
       } else if (url.includes('/api/teachers')) {
         msg = 'Memperbarui data guru & staf...';
