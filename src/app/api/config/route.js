@@ -276,14 +276,45 @@ export async function POST(request) {
       console.error("Cache revalidation failed in config route:", cacheErr);
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       config,
       newsList: Array.isArray(parsedJsonBody?.newsList) ? parsedJsonBody.newsList : undefined,
       teachers: Array.isArray(parsedJsonBody?.teachers) ? parsedJsonBody.teachers : undefined,
       achievements: Array.isArray(parsedJsonBody?.achievements) ? parsedJsonBody.achievements : undefined
     });
+
+    response.cookies.set('maintenance_mode', (config.stats?.maintenance_mode === true) ? 'true' : 'false', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'lax'
+    });
+
+    return response;
   } catch (e) {
     return NextResponse.json({ error: 'Terjadi kesalahan server: ' + e.message }, { status: 500 });
+  }
+}
+
+export async function GET() {
+  try {
+    const config = await loadWebConfig();
+    const isMaintenance = config.stats?.maintenance_mode === true;
+    
+    const response = NextResponse.json({
+      maintenance_mode: isMaintenance,
+      ppdb_contacts: config.ppdb_contacts || {}
+    });
+
+    // Make sure public get also sets/corrects the cookie
+    response.cookies.set('maintenance_mode', isMaintenance ? 'true' : 'false', {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'lax'
+    });
+
+    return response;
+  } catch (e) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

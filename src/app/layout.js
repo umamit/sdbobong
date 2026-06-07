@@ -5,8 +5,7 @@ import LayoutControl from '../components/LayoutControl';
 import ChatWidget from '../components/ChatWidget';
 import Script from 'next/script';
 import Link from 'next/link';
-import { headers, cookies } from 'next/headers';
-import { verifyAdminToken } from '../lib/auth';
+import { headers } from 'next/headers';
 import pack from '../../package.json';
 
 export const dynamic = 'force-dynamic';
@@ -42,13 +41,7 @@ export default async function RootLayout({ children }) {
   const headersList = headers();
   const pathname = headersList.get('x-pathname') || '';
   
-  // Check if admin is logged in to bypass maintenance screen
-  const cookieStore = cookies();
-  const adminToken = cookieStore.get('admin_session_token')?.value;
-  const isAuthorizedAdmin = await verifyAdminToken(adminToken);
-  
-  const isMaintenanceModeOn = config.stats?.maintenance_mode === true;
-  const isMaintenanceActive = isMaintenanceModeOn && !pathname.startsWith('/admin') && !pathname.startsWith('/api') && !isAuthorizedAdmin;
+  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
   if (isMaintenanceActive) {
     return (
@@ -305,6 +298,9 @@ export default async function RootLayout({ children }) {
           `}} />
         </head>
         <body>
+          <script dangerouslySetInnerHTML={{ __html: `
+            document.cookie = "maintenance_mode=true; path=/; max-age=31536000; SameSite=Lax";
+          `}} />
           <div className="aurora-bg">
             <div className="glow-1"></div>
             <div className="glow-2"></div>
@@ -427,6 +423,9 @@ export default async function RootLayout({ children }) {
         `}} />
       </head>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: `
+          document.cookie = "maintenance_mode=${config.stats?.maintenance_mode === true ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
+        `}} />
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-YLP88SDQ53"
@@ -442,36 +441,6 @@ export default async function RootLayout({ children }) {
           `}
         </Script>
         <LayoutControl />
-        {isMaintenanceModeOn && isAuthorizedAdmin && (
-          <div style={{
-            background: 'linear-gradient(90deg, #d97706 0%, #b45309 100%)',
-            color: 'white',
-            textAlign: 'center',
-            padding: '8px 16px',
-            fontSize: '0.85rem',
-            fontWeight: '700',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            position: 'sticky',
-            top: 0,
-            zIndex: 99999,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            letterSpacing: '0.025em'
-          }}>
-            <span>🛠️ <strong>Mode Pemeliharaan Aktif:</strong> Anda sedang dalam mode Preview Administrator.</span>
-            <a href="/admin/dashboard" style={{
-              color: '#fef3c7',
-              textDecoration: 'underline',
-              marginLeft: '8px',
-              transition: 'color 0.2s',
-              fontWeight: '800'
-            }}>
-              Kembali ke Dashboard Admin →
-            </a>
-          </div>
-        )}
         {/* Running Announcement Banner */}
         <div className="announcement-banner no-print public-layout-announcement">
           <div className="marquee-content">
