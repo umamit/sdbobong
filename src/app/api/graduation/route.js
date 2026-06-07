@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { loadGraduation, saveGraduation } from '../../../lib/database';
+import { loadGraduation, saveGraduation, isSupabaseEnabled, supabase } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -203,8 +203,18 @@ export async function DELETE(request) {
     const filteredList = gradList.filter(g => g.id !== id);
 
     if (filteredList.length === gradList.length) {
+      if (isSupabaseEnabled() && supabase) {
+        try {
+          await supabase.from("graduation_sdn_bobong").delete().eq("id", id);
+        } catch (dbErr) {
+          console.error("Error direct delete from Supabase:", dbErr.message);
+        }
+      }
       await createAuditLog('DELETE_GRADUATE', `Menghapus data kelulusan siswa (langsung dari DB): "${studentName}"${studentNisn}`, request);
-      return NextResponse.json({ error: "Data siswa tidak ditemukan." }, { status: 404 });
+      try {
+        revalidatePath('/kelulusan');
+      } catch (cacheErr) {}
+      return NextResponse.json({ success: true, message: "Data siswa sudah tidak ada." });
     }
 
     const saved = await saveGraduation(filteredList);

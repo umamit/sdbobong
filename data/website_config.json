@@ -5,15 +5,15 @@
         "🌟 PRESTASI: SD Negeri Bobong meraih Juara Lomba Matematika Tingkat Provinsi!"
     ],
     "stats": {
-        "guru_staf": 18,
-        "akreditasi": "B",
-        "ruang_kelas": 9,
-        "siswa_aktif": 340,
-        "rombel": 6,
         "uks": 1,
         "gudang": 1,
+        "rombel": 14,
         "toilet": 2,
+        "guru_staf": 23,
+        "akreditasi": "B",
         "cuci_tangan": 4,
+        "ruang_kelas": 8,
+        "siswa_aktif": 340,
         "_faqs_fallback": [
             {
                 "id": "faq-1",
@@ -32,58 +32,48 @@
             }
         ],
         "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
+        "maintenance_mode": false,
         "_gallery_fallback": [
             {
                 "id": "gal-1",
-                "url": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
-                "date": "2026-05-24",
-                "type": "image",
-                "title": "Upacara Bendera Hari Senin"
+                "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/5RaWa3fAo1I?si=YApUPjhi_agHQNcx\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+                "date": "2026-05-05",
+                "type": "video",
+                "title": " Satu hari bersama sahabat Berbudi"
             },
             {
                 "id": "gal-2",
-                "url": "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+                "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/m2AZ7D7qLdM?si=DeZ5Pp5c-CNIjya7&amp;controls=0\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
                 "date": "2026-05-18",
-                "type": "image",
-                "title": "Kegiatan Belajar Mengajar Outdoor"
+                "type": "video",
+                "title": "Lomba Senam Anak Indonesia Hebat 2025_SD Negeri Bobong_Maluku Utara"
             },
             {
                 "id": "gal-3",
-                "url": "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800",
+                "url": "https://www.youtube.com/embed/S7WupUMBea8",
                 "date": "2026-05-10",
-                "type": "image",
-                "title": "Lomba Pramuka Tingkat Kabupaten"
+                "type": "video",
+                "title": "Apresiasi GTK Kategori Guru SD Transformatif Tahun 2025: \"Halal-Haram Detective\""
             }
         ],
         "_downloads_fallback": [
             {
-                "id": "dl-1",
-                "date": "2026-05-01",
-                "title": "Brosur Informasi PPDB 2026/2027",
-                "fileUrl": "/files/brosur-ppdb-2026.pdf",
-                "category": "PPDB"
-            },
-            {
-                "id": "dl-2",
-                "date": "2026-05-15",
-                "title": "Kalender Akademik 2026/2027",
-                "fileUrl": "/files/kalender-akademik-2026.pdf",
-                "category": "Akademik"
-            },
-            {
-                "id": "dl-3",
-                "date": "2026-05-01",
-                "title": "Formulir Pendaftaran PPDB Offline",
-                "fileUrl": "/formulir-ppdb",
-                "category": "PPDB"
+                "id": "dl-1780755902142",
+                "date": "2026-06-06",
+                "title": "test download",
+                "fileUrl": "https://repositori.kemendikdasmen.go.id/27791/1/MODUL%20AJAR%20KLS%201%20SMS%201.pdf",
+                "category": "Kurikulum"
             }
         ]
     },
     "ppdb_contacts": {
         "wa_humas": "6281340123496",
+        "nip_humas": "19900815 201503 1 005",
         "nama_humas": "Hidayat N.",
         "wa_floating": "6282292111638",
         "wa_operator": "6281356701091",
+        "nip_operator": "",
+        "email_sekolah": "humas@sdnegeribobong.sch.id",
         "jabatan_humas": "Guru",
         "nama_operator": "Hermin Majapahit",
         "jabatan_operator": "Operator/Guru Kelas 3C"
@@ -91,25 +81,11 @@
     "force_local_cache": false,
     "downloads": [
         {
-            "id": "dl-1",
-            "date": "2026-05-01",
-            "title": "Brosur Informasi PPDB 2026/2027",
-            "fileUrl": "/files/brosur-ppdb-2026.pdf",
-            "category": "PPDB"
-        },
-        {
-            "id": "dl-2",
-            "date": "2026-05-15",
-            "title": "Kalender Akademik 2026/2027",
-            "fileUrl": "/files/kalender-akademik-2026.pdf",
-            "category": "Akademik"
-        },
-        {
-            "id": "dl-3",
-            "date": "2026-05-01",
-            "title": "Formulir Pendaftaran PPDB Offline",
-            "fileUrl": "/formulir-ppdb",
-            "category": "PPDB"
+            "id": "dl-1780755902142",
+            "date": "2026-06-06",
+            "title": "test download",
+            "fileUrl": "https://repositori.kemendikdasmen.go.id/27791/1/MODUL%20AJAR%20KLS%201%20SMS%201.pdf",
+            "category": "Kurikulum"
         }
     ],
     "faqs": [
@@ -132,24 +108,24 @@
     "gallery": [
         {
             "id": "gal-1",
-            "url": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg",
-            "date": "2026-05-24",
-            "type": "image",
-            "title": "Upacara Bendera Hari Senin"
+            "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/5RaWa3fAo1I?si=YApUPjhi_agHQNcx\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+            "date": "2026-05-05",
+            "type": "video",
+            "title": " Satu hari bersama sahabat Berbudi"
         },
         {
             "id": "gal-2",
-            "url": "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800",
+            "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/m2AZ7D7qLdM?si=DeZ5Pp5c-CNIjya7&amp;controls=0\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
             "date": "2026-05-18",
-            "type": "image",
-            "title": "Kegiatan Belajar Mengajar Outdoor"
+            "type": "video",
+            "title": "Lomba Senam Anak Indonesia Hebat 2025_SD Negeri Bobong_Maluku Utara"
         },
         {
             "id": "gal-3",
-            "url": "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800",
+            "url": "https://www.youtube.com/embed/S7WupUMBea8",
             "date": "2026-05-10",
-            "type": "image",
-            "title": "Lomba Pramuka Tingkat Kabupaten"
+            "type": "video",
+            "title": "Apresiasi GTK Kategori Guru SD Transformatif Tahun 2025: \"Halal-Haram Detective\""
         }
     ]
 }

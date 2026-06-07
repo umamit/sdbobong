@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { loadNews, saveNews, handlePhotoUpload } from '../../../lib/database';
+import { loadNews, saveNews, handlePhotoUpload, isSupabaseEnabled, supabase } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -113,16 +113,32 @@ export async function DELETE(request) {
     }
 
     const newsList = await loadNews();
+    const newsToDelete = newsList.find(n => n.id === id);
+    const newsTitle = newsToDelete ? newsToDelete.title : id;
+
     const filteredList = newsList.filter(n => n.id !== id);
 
     if (filteredList.length === newsList.length) {
-      return NextResponse.json({ error: "Artikel berita tidak ditemukan." }, { status: 404 });
+      if (isSupabaseEnabled() && supabase) {
+        try {
+          await supabase.from("news_sdn_bobong").delete().eq("id", id);
+        } catch (dbErr) {
+          console.error("Error direct delete from Supabase:", dbErr.message);
+        }
+      }
+      await createAuditLog('DELETE_NEWS', `Menghapus artikel berita (langsung dari DB): "${newsTitle}"`, request);
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in news DELETE:", cacheErr);
+      }
+      return NextResponse.json({ success: true, message: "Artikel berita sudah tidak ada." });
     }
 
     const saved = await saveNews(filteredList);
 
     if (saved) {
-      await createAuditLog('DELETE_NEWS', `Menghapus artikel berita dengan ID: ${id}`, request);
+      await createAuditLog('DELETE_NEWS', `Menghapus artikel berita: "${newsTitle}"`, request);
       try {
         revalidatePath('/', 'layout');
       } catch (cacheErr) {

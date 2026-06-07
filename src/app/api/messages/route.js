@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { loadMessages, saveMessages } from '../../../lib/database';
+import { loadMessages, saveMessages, isSupabaseEnabled, supabase } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -161,7 +161,20 @@ export async function DELETE(request) {
     const filteredList = allMessages.filter(m => m.id !== id);
 
     if (filteredList.length === allMessages.length) {
-      return NextResponse.json({ error: "Pesan tidak ditemukan." }, { status: 404 });
+      if (isSupabaseEnabled() && supabase) {
+        try {
+          await supabase.from("messages_sdn_bobong").delete().eq("id", id);
+        } catch (dbErr) {
+          console.error("Error direct delete from Supabase:", dbErr.message);
+        }
+      }
+      await createAuditLog('DELETE_MESSAGE', `Menghapus pesan ${msgType} (langsung dari DB) dari "${senderName}" (ID: ${id})`, request);
+      try {
+        revalidatePath('/buku-tamu');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in messages DELETE:", cacheErr);
+      }
+      return NextResponse.json({ success: true, message: "Pesan sudah tidak ada." });
     }
 
     const saved = await saveMessages(filteredList);

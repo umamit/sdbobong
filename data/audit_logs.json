@@ -1,5 +1,77 @@
 [
     {
+        "id": "log-1780853680312-30",
+        "timestamp": "2026-06-07T17:34:40.312Z",
+        "username": "Admin SDN Bobong",
+        "action": "DELETE_NEWS",
+        "details": "Menghapus artikel berita: \"Aksi Sabtu Bersih: Menanamkan Cinta Lingkungan\"",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853677391-484",
+        "timestamp": "2026-06-07T17:34:37.391Z",
+        "username": "Admin SDN Bobong",
+        "action": "LOGIN",
+        "details": "Admin berhasil login (Metode: Lokal / Env)",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853666860-378",
+        "timestamp": "2026-06-07T17:34:26.860Z",
+        "username": "Admin SDN Bobong",
+        "action": "DELETE_NEWS",
+        "details": "Menghapus artikel berita: \"Pelaksanaan Program Imunisasi Anak Sekolah (BIAS)\"",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853664269-267",
+        "timestamp": "2026-06-07T17:34:24.269Z",
+        "username": "Admin SDN Bobong",
+        "action": "LOGIN",
+        "details": "Admin berhasil login (Metode: Lokal / Env)",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853435298-419",
+        "timestamp": "2026-06-07T17:30:35.298Z",
+        "username": "Admin SDN Bobong",
+        "action": "DELETE_NEWS",
+        "details": "Menghapus artikel berita dengan ID: news-1",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853432859-902",
+        "timestamp": "2026-06-07T17:30:32.859Z",
+        "username": "Admin SDN Bobong",
+        "action": "LOGIN",
+        "details": "Admin berhasil login (Metode: Lokal / Env)",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853378676-453",
+        "timestamp": "2026-06-07T17:29:38.676Z",
+        "username": "Admin SDN Bobong",
+        "action": "DELETE_NEWS",
+        "details": "Menghapus artikel berita dengan ID: news-4",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
+        "id": "log-1780853377286-97",
+        "timestamp": "2026-06-07T17:29:37.286Z",
+        "username": "Admin SDN Bobong",
+        "action": "LOGIN",
+        "details": "Admin berhasil login (Metode: Lokal / Env)",
+        "ip": "::ffff:127.0.0.1",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    {
         "id": "log-seed-01",
         "timestamp": "2026-06-07T12:00:00.000Z",
         "username": "Admin SDN Bobong",
