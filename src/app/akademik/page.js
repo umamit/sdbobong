@@ -60,8 +60,8 @@ export default async function Akademik() {
             <div style={{ order: 1 }}>
               <span className="welcome-badge">{akademik.kurikulum_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{akademik.kurikulum_title}</h2>
-              <p>{akademik.kurikulum_p1}</p>
-              <p>{akademik.kurikulum_p2}</p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p1}</p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p2}</p>
 
               <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-md)', flexWrap: 'wrap' }}>
                 {akademik.kurikulum_tags && akademik.kurikulum_tags.map((tag, idx) => (

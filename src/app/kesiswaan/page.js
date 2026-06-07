@@ -56,7 +56,7 @@ export default async function Kesiswaan() {
                     <span className="badge badge-accent" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block', color: 'var(--accent)', backgroundColor: 'var(--accent-bg)' }}>Pilihan</span>
                   )}
                   <h3 style={{ marginBottom: '0.5rem' }}>{ekskul.nama}</h3>
-                  <p style={{ fontSize: '0.9rem' }}>{ekskul.deskripsi}</p>
+                  <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 'var(--space-xs)' }}>{ekskul.deskripsi}</p>
                   <div className="extra-schedule">
                     <svg className="icon-svg" viewBox="0 0 24 24" width="16" height="16"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm.5-13H11v6l5.25 3.15l.75-1.23l-4.5-2.67z"/></svg>
                     {ekskul.jadwal}
@@ -98,7 +98,7 @@ export default async function Kesiswaan() {
                   </div>
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '0.35rem', color: 'var(--primary-dark)' }}>{pres.title}</h3>
                   <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>{pres.level}</p>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 0 }}>{pres.desc}</p>
+                  <p className="text-justify" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 0 }}>{pres.desc}</p>
                 </div>
               );
             })}
@@ -120,7 +120,7 @@ export default async function Kesiswaan() {
                 <div className="karya-icon">{item.icon || '🎨'}</div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
-                <p style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
+                <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
             ))}
           </div>

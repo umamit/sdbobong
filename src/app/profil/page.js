@@ -78,8 +78,8 @@ export default async function Profil() {
             <div>
               <span className="welcome-badge">{profil.sejarah_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{profil.sejarah_title}</h2>
-              <p>{profil.sejarah_p1}</p>
-              <p>{profil.sejarah_p2}</p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p1}</p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2}</p>
             </div>
             <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
               <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} decoding="async" />

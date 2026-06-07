@@ -235,11 +235,11 @@ export default async function Home() {
           <div className="welcome-info">
             <span className="welcome-badge">{beranda.welcome_badge}</span>
             <h2>{beranda.welcome_title}</h2>
-            <div className="welcome-quote">
+            <div className="welcome-quote" style={{ maxWidth: '75ch' }}>
               {beranda.welcome_quote}
             </div>
-            <p>{beranda.welcome_p1}</p>
-            <p>{beranda.welcome_p2}</p>
+            <p className="text-justify" style={{ maxWidth: '75ch' }}>{beranda.welcome_p1}</p>
+            <p className="text-justify" style={{ maxWidth: '75ch' }}>{beranda.welcome_p2}</p>
             {kepalaSekolah ? (
               <div style={{ marginTop: 'var(--space-sm)', marginBottom: 'var(--space-sm)' }}>
                 <h4 style={{ margin: 0, color: 'var(--primary-dark)', fontWeight: 700 }}>{kepalaSekolah.name}</h4>
