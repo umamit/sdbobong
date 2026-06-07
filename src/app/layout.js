@@ -5,6 +5,7 @@ import LayoutControl from '../components/LayoutControl';
 import ChatWidget from '../components/ChatWidget';
 import Script from 'next/script';
 import Link from 'next/link';
+import pack from '../../package.json';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -207,7 +208,7 @@ export default async function RootLayout({ children }) {
                 made with ❤️ Anhr
               </div>
               <p className="copyright-note">
-                &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</a>
+                &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</a> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v{pack.version}</span>
               </p>
             </div>
           </div>
