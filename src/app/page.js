@@ -11,11 +11,20 @@ export default async function Home() {
     loadTeachers()
   ]);
   const newsList = allNews.slice(0, 3);
-  const stats = config.stats || {
+  const defaultStats = {
     siswa_aktif: 205,
     guru_staf: 14,
     ruang_kelas: 9,
-    akreditasi: "B"
+    akreditasi: "B",
+    rombel: 6,
+    uks: 1,
+    gudang: 1,
+    toilet: 2,
+    cuci_tangan: 4
+  };
+  const stats = {
+    ...defaultStats,
+    ...(config.stats || {})
   };
   const contacts = config.ppdb_contacts || {};
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
@@ -260,22 +269,85 @@ export default async function Home() {
 
       {/* Stats Counter */}
       <section className="section-padding stats-section">
-        <div className="container stats-grid">
-          <div className="stat-item reveal-on-scroll reveal-delay-100">
-            <div className="stat-number">{stats.siswa_aktif}</div>
-            <div className="stat-label">Siswa Aktif</div>
+        <div className="container">
+          <div className="stats-header reveal-on-scroll" style={{ textAlign: 'center', marginBottom: 'var(--space-md)', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <h2 className="stats-main-title" style={{ color: '#ffffff', fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', fontWeight: 800, marginBottom: 'var(--space-xs)' }}>Statistik & Fasilitas Sekolah</h2>
+            <p className="stats-main-subtitle" style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.95rem', lineHeight: '1.6' }}>SD Negeri Bobong berkomitmen untuk selalu menyajikan informasi transparan serta menyediakan fasilitas sarana prasarana yang mendukung proses belajar mengajar secara optimal.</p>
           </div>
-          <div className="stat-item reveal-on-scroll reveal-delay-200">
-            <div className="stat-number">{stats.guru_staf}</div>
-            <div className="stat-label">Guru & Staf</div>
+          
+          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>📊</span> Profil Akademik & Keanggotaan
           </div>
-          <div className="stat-item reveal-on-scroll reveal-delay-300">
-            <div className="stat-number">{stats.ruang_kelas}</div>
-            <div className="stat-label">Ruang Kelas</div>
+          <div className="stats-grid akademik-grid" style={{ marginBottom: 'var(--space-md)' }}>
+            <div className="stat-item reveal-on-scroll reveal-delay-100">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              </div>
+              <div className="stat-number">{stats.siswa_aktif}</div>
+              <div className="stat-label">Siswa Aktif</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-200">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+              </div>
+              <div className="stat-number">{stats.guru_staf}</div>
+              <div className="stat-label">Guru & Staf</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-300">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+              </div>
+              <div className="stat-number">{stats.rombel}</div>
+              <div className="stat-label">Rombongan Belajar</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-400">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></svg>
+              </div>
+              <div className="stat-number">{stats.akreditasi}</div>
+              <div className="stat-label">Akreditasi Sekolah</div>
+            </div>
           </div>
-          <div className="stat-item reveal-on-scroll reveal-delay-400">
-            <div className="stat-number">{stats.akreditasi}</div>
-            <div className="stat-label">Akreditasi Sekolah</div>
+
+          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>🏫</span> Sarana, Prasarana & Sanitasi
+          </div>
+          <div className="stats-grid sarpras-grid">
+            <div className="stat-item reveal-on-scroll reveal-delay-100">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+              </div>
+              <div className="stat-number">{stats.ruang_kelas}</div>
+              <div className="stat-label">Ruang Kelas</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-200">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v8M8 12h8" /></svg>
+              </div>
+              <div className="stat-number">{stats.uks}</div>
+              <div className="stat-label">Unit Kesehatan (UKS)</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-300">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
+              </div>
+              <div className="stat-number">{stats.gudang}</div>
+              <div className="stat-label">Gudang Sekolah</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-400">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M9 22V12h6v10M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M12 10a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z" /></svg>
+              </div>
+              <div className="stat-number">{stats.toilet}</div>
+              <div className="stat-label">Kamar Mandi / WC</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-500">
+              <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" /></svg>
+              </div>
+              <div className="stat-number">{stats.cuci_tangan}</div>
+              <div className="stat-label">Area Cuci Tangan</div>
+            </div>
           </div>
         </div>
       </section>

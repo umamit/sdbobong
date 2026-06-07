@@ -34,6 +34,7 @@ export async function POST(request) {
     let actionType = '';
     let announcements = [];
     let siswa_aktif, guru_staf, ruang_kelas, akreditasi;
+    let rombel, uks, gudang, toilet, cuci_tangan;
     let force_local_cache;
     let maintenance_mode;
     let nama_humas, wa_humas, jabatan_humas, nip_humas;
@@ -51,6 +52,11 @@ export async function POST(request) {
       guru_staf = body.guru_staf;
       ruang_kelas = body.ruang_kelas;
       akreditasi = body.akreditasi;
+      rombel = body.rombel;
+      uks = body.uks;
+      gudang = body.gudang;
+      toilet = body.toilet;
+      cuci_tangan = body.cuci_tangan;
       force_local_cache = body.force_local_cache;
       maintenance_mode = body.maintenance_mode;
       
@@ -75,6 +81,11 @@ export async function POST(request) {
         guru_staf = parseInt(formData.get('guru_staf') || '0', 10);
         ruang_kelas = parseInt(formData.get('ruang_kelas') || '0', 10);
         akreditasi = formData.get('akreditasi') || 'B';
+        rombel = parseInt(formData.get('rombel') || '0', 10);
+        uks = parseInt(formData.get('uks') || '0', 10);
+        gudang = parseInt(formData.get('gudang') || '0', 10);
+        toilet = parseInt(formData.get('toilet') || '0', 10);
+        cuci_tangan = parseInt(formData.get('cuci_tangan') || '0', 10);
       } else if (actionType === 'toggle_db') {
         force_local_cache = formData.get('force_local_cache') === 'true';
       } else if (actionType === 'toggle_maintenance') {
@@ -107,7 +118,12 @@ export async function POST(request) {
         siswa_aktif: isNaN(siswa_aktif) ? 0 : siswa_aktif,
         guru_staf: isNaN(guru_staf) ? 0 : guru_staf,
         ruang_kelas: isNaN(ruang_kelas) ? 0 : ruang_kelas,
-        akreditasi: String(akreditasi).trim().toUpperCase() || 'B'
+        akreditasi: String(akreditasi).trim().toUpperCase() || 'B',
+        rombel: isNaN(rombel) ? 0 : rombel,
+        uks: isNaN(uks) ? 0 : uks,
+        gudang: isNaN(gudang) ? 0 : gudang,
+        toilet: isNaN(toilet) ? 0 : toilet,
+        cuci_tangan: isNaN(cuci_tangan) ? 0 : cuci_tangan
       };
     } else if (actionType === 'toggle_db') {
       config.force_local_cache = force_local_cache === true;

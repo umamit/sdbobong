@@ -9,6 +9,11 @@
         "akreditasi": "B",
         "ruang_kelas": 9,
         "siswa_aktif": 340,
+        "rombel": 6,
+        "uks": 1,
+        "gudang": 1,
+        "toilet": 2,
+        "cuci_tangan": 4,
         "_faqs_fallback": [
             {
                 "id": "faq-1",

@@ -1509,19 +1509,45 @@ export default function AdminDashboardClient({
     const guru_staf = parseInt(form.guru_staf.value, 10) || 0;
     const ruang_kelas = parseInt(form.ruang_kelas.value, 10) || 0;
     const akreditasi = form.akreditasi.value.trim().toUpperCase() || 'B';
+    const rombel = parseInt(form.rombel.value, 10) || 0;
+    const uks = parseInt(form.uks.value, 10) || 0;
+    const gudang = parseInt(form.gudang.value, 10) || 0;
+    const toilet = parseInt(form.toilet.value, 10) || 0;
+    const cuci_tangan = parseInt(form.cuci_tangan.value, 10) || 0;
 
     try {
       const res = await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action_type: 'stats', siswa_aktif, guru_staf, ruang_kelas, akreditasi })
+        body: JSON.stringify({ 
+          action_type: 'stats', 
+          siswa_aktif, 
+          guru_staf, 
+          ruang_kelas, 
+          akreditasi,
+          rombel,
+          uks,
+          gudang,
+          toilet,
+          cuci_tangan
+        })
       });
       const data = await res.json();
       if (res.ok) {
         showToast('success', 'Konfigurasi website berhasil disimpan.');
         setConfig(prev => ({
           ...prev,
-          stats: { siswa_aktif, guru_staf, ruang_kelas, akreditasi }
+          stats: { 
+            siswa_aktif, 
+            guru_staf, 
+            ruang_kelas, 
+            akreditasi,
+            rombel,
+            uks,
+            gudang,
+            toilet,
+            cuci_tangan
+          }
         }));
         router.refresh();
       } else {
@@ -4471,6 +4497,71 @@ export default function AdminDashboardClient({
                       className="form-control"
                       defaultValue={config.stats?.akreditasi || 'B'}
                       maxLength={2}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="rombel" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Rombongan Belajar (Rombel)</label>
+                    <input
+                      type="number"
+                      id="rombel"
+                      name="rombel"
+                      className="form-control"
+                      defaultValue={config.stats?.rombel || 6}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="uks" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Unit Kesehatan Sekolah (UKS)</label>
+                    <input
+                      type="number"
+                      id="uks"
+                      name="uks"
+                      className="form-control"
+                      defaultValue={config.stats?.uks || 1}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="gudang" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Gudang</label>
+                    <input
+                      type="number"
+                      id="gudang"
+                      name="gudang"
+                      className="form-control"
+                      defaultValue={config.stats?.gudang || 1}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="toilet" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Kamar Mandi / WC</label>
+                    <input
+                      type="number"
+                      id="toilet"
+                      name="toilet"
+                      className="form-control"
+                      defaultValue={config.stats?.toilet || 2}
+                      style={{ width: '100%' }}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
+                    <label htmlFor="cuci_tangan" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Area Cuci Tangan</label>
+                    <input
+                      type="number"
+                      id="cuci_tangan"
+                      name="cuci_tangan"
+                      className="form-control"
+                      defaultValue={config.stats?.cuci_tangan || 4}
                       style={{ width: '100%' }}
                       required
                     />
