@@ -336,6 +336,7 @@ export default function AdminDashboardClient({
   const [editingGalleryItem, setEditingGalleryItem] = useState(null);
   const [galleryTitle, setGalleryTitle] = useState('');
   const [galleryType, setGalleryType] = useState('image');
+  const [galleryCategory, setGalleryCategory] = useState('umum');
   const [galleryUrl, setGalleryUrl] = useState('');
   const [galleryDate, setGalleryDate] = useState('');
   const [gallerySearch, setGallerySearch] = useState('');
@@ -1276,14 +1277,15 @@ export default function AdminDashboardClient({
     const finalUrl = galleryType === 'video' ? getCleanVideoUrl(galleryUrl) : galleryUrl.trim();
 
     if (editingGalleryItem) {
-      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle.trim(), type: galleryType, url: finalUrl, date: galleryDate } : item);
+      updatedList = list.map(item => item.id === editingGalleryItem.id ? { ...item, title: galleryTitle.trim(), type: galleryType, url: finalUrl, date: galleryDate, category: galleryCategory } : item);
     } else {
       const newItem = {
         id: `gal-${Date.now()}`,
         title: galleryTitle.trim(),
         type: galleryType,
         url: finalUrl,
-        date: galleryDate || new Date().toISOString().split('T')[0]
+        date: galleryDate || new Date().toISOString().split('T')[0],
+        category: galleryCategory
       };
       updatedList = [...list, newItem];
     }
@@ -1303,6 +1305,7 @@ export default function AdminDashboardClient({
         setGalleryTitle('');
         setGalleryUrl('');
         setGalleryDate('');
+        setGalleryCategory('umum');
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui galeri.');
@@ -2404,7 +2407,8 @@ export default function AdminDashboardClient({
   const filteredGallery = (config.gallery || []).filter(item => {
     const q = gallerySearch.toLowerCase();
     return (item.title || '').toLowerCase().includes(q) ||
-           (item.type || '').toLowerCase().includes(q);
+           (item.type || '').toLowerCase().includes(q) ||
+           (item.category || 'umum').toLowerCase().includes(q);
   });
 
   // Computed states for Messages Tab Search
@@ -7970,6 +7974,7 @@ export default function AdminDashboardClient({
                     setEditingGalleryItem(null);
                     setGalleryTitle('');
                     setGalleryType('image');
+                    setGalleryCategory('umum');
                     setGalleryUrl('');
                     setGalleryDate(new Date().toISOString().split('T')[0]);
                     setGalleryModalOpen(true);
@@ -8002,6 +8007,7 @@ export default function AdminDashboardClient({
                       <th style={{ width: '60px', textAlign: 'center' }}>No</th>
                       <th style={{ width: '100px', textAlign: 'center' }}>Pratinjau</th>
                       <th>Judul Dokumentasi / Kegiatan</th>
+                      <th style={{ width: '130px', textAlign: 'center' }}>Kategori</th>
                       <th style={{ width: '130px', textAlign: 'center' }}>Tipe</th>
                       <th style={{ width: '220px' }}>Tautan Media</th>
                       <th style={{ width: '140px', textAlign: 'center' }}>Tanggal Kegiatan</th>
@@ -8035,6 +8041,21 @@ export default function AdminDashboardClient({
                               borderRadius: '6px',
                               fontSize: '0.75rem',
                               fontWeight: 700,
+                              textTransform: 'uppercase',
+                              backgroundColor: (gal.category || 'umum').toLowerCase() === 'akademik' ? '#eff6ff' : (gal.category || 'umum').toLowerCase() === 'pramuka' ? '#fff7ed' : (gal.category || 'umum').toLowerCase() === 'upacara' ? '#faf5ff' : (gal.category || 'umum').toLowerCase() === 'sarana' ? '#ecfdf5' : '#f8fafc',
+                              color: (gal.category || 'umum').toLowerCase() === 'akademik' ? '#1d4ed8' : (gal.category || 'umum').toLowerCase() === 'pramuka' ? '#c2410c' : (gal.category || 'umum').toLowerCase() === 'upacara' ? '#7e22ce' : (gal.category || 'umum').toLowerCase() === 'sarana' ? '#047857' : '#475569',
+                              border: (gal.category || 'umum').toLowerCase() === 'akademik' ? '1px solid #bfdbfe' : (gal.category || 'umum').toLowerCase() === 'pramuka' ? '1px solid #ffedd5' : (gal.category || 'umum').toLowerCase() === 'upacara' ? '1px solid #e9d5ff' : (gal.category || 'umum').toLowerCase() === 'sarana' ? '1px solid #a7f3d0' : '1px solid #e2e8f0'
+                            }}>
+                              📁 {gal.category || 'umum'}
+                            </span>
+                          </td>
+                          <td style={{ textAlign: 'center' }}>
+                            <span className="badge" style={{ 
+                              display: 'inline-block',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '6px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
                               backgroundColor: gal.type === 'video' ? '#fff7ed' : '#eff6ff',
                               color: gal.type === 'video' ? '#c2410c' : '#2563eb',
                               border: gal.type === 'video' ? '1px solid #ffedd5' : '1px solid #bfdbfe'
@@ -8056,6 +8077,7 @@ export default function AdminDashboardClient({
                                   setEditingGalleryItem(gal);
                                   setGalleryTitle(gal.title || '');
                                   setGalleryType(gal.type || 'image');
+                                  setGalleryCategory(gal.category || 'umum');
                                   setGalleryUrl(gal.url || '');
                                   setGalleryDate(gal.date || '');
                                   setGalleryModalOpen(true);
@@ -9790,6 +9812,24 @@ export default function AdminDashboardClient({
                   >
                     <option value="image">🖼️ FOTO (Gambar)</option>
                     <option value="video">🎥 VIDEO (Youtube Embed / MP4)</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="gal_category" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Kategori Media</label>
+                  <select
+                    id="gal_category"
+                    className="form-control"
+                    value={galleryCategory}
+                    onChange={(e) => setGalleryCategory(e.target.value)}
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    required
+                  >
+                    <option value="umum">📁 UMUM (Dokumentasi Lainnya)</option>
+                    <option value="akademik">📖 AKADEMIK (Kegiatan Belajar)</option>
+                    <option value="pramuka">⛺ PRAMUKA (Kegiatan Kepanduan)</option>
+                    <option value="upacara">🎖️ UPACARA (Upacara & Peringatan Hari Besar)</option>
+                    <option value="sarana">🏫 SARANA (Fasilitas & Infrastruktur)</option>
                   </select>
                 </div>
 

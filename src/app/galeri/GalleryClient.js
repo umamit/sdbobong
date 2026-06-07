@@ -56,13 +56,40 @@ function getYoutubeId(url) {
 export default function GalleryClient({ initialGallery }) {
   const [activeItem, setActiveImage] = useState(null);
   const [selectedType, setSelectedType] = useState('Semua');
+  const [selectedCategory, setSelectedCategory] = useState('Semua');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [displayLimit, setDisplayLimit] = useState(12);
 
   const types = ['Semua', 'image', 'video'];
+  const categories = ['Semua', 'Akademik', 'Pramuka', 'Upacara', 'Sarana', 'Umum'];
 
-  // Filter gallery items by type
-  const filteredGallery = initialGallery.filter((item) => {
-    return selectedType === 'Semua' || item.type === selectedType;
+  // Helper for Category Badges translucent styles
+  const getCategoryBadgeStyles = (category) => {
+    const cat = (category || 'umum').toLowerCase();
+    switch (cat) {
+      case 'akademik':
+        return { background: 'rgba(37, 99, 235, 0.85)', color: '#ffffff' };
+      case 'pramuka':
+        return { background: 'rgba(217, 119, 6, 0.85)', color: '#ffffff' };
+      case 'upacara':
+        return { background: 'rgba(126, 34, 206, 0.85)', color: '#ffffff' };
+      case 'sarana':
+        return { background: 'rgba(4, 120, 87, 0.85)', color: '#ffffff' };
+      default:
+        return { background: 'rgba(71, 85, 105, 0.85)', color: '#ffffff' };
+    }
+  };
+
+  // Filter gallery items by Type, Category, and Search Query
+  const filteredGallery = (initialGallery || []).filter((item) => {
+    const matchesType = selectedType === 'Semua' || item.type === selectedType;
+    const matchesCategory = selectedCategory === 'Semua' || (item.category || 'umum').toLowerCase() === selectedCategory.toLowerCase();
+    const matchesSearch = searchQuery.trim() === '' || (item.title || '').toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesType && matchesCategory && matchesSearch;
   });
+
+  // Paginated/limited gallery items
+  const displayedItems = filteredGallery.slice(0, displayLimit);
 
   // Prevent background scrolling when lightbox is open
   useEffect(() => {
@@ -122,56 +149,117 @@ export default function GalleryClient({ initialGallery }) {
 
   return (
     <div className="container" style={{ padding: 'var(--space-md) var(--space-sm) var(--space-xl)' }}>
-      {/* Type Selector Tabs */}
+      {/* Premium Glassmorphic Control Center */}
       <div 
-        className="card-custom" 
+        className="card-custom animate-fadeIn" 
         style={{ 
-          padding: '12px var(--space-md)', 
+          padding: 'var(--space-md) var(--space-lg)', 
           marginBottom: 'var(--space-lg)', 
-          display: 'flex', 
-          justifyContent: 'between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 'var(--space-sm)',
-          background: 'rgba(255, 255, 255, 0.7)',
-          backdropFilter: 'blur(10px)'
+          background: 'rgba(255, 255, 255, 0.75)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(229, 231, 235, 0.5)',
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-sm)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem'
         }}
       >
-        <span style={{ fontWeight: '600', color: 'var(--primary-color)' }}>Saring Media:</span>
-        <div style={{ display: 'flex', gap: 'var(--space-xs)' }}>
-          {types.map((type) => (
-            <button
-              key={type}
-              onClick={() => setSelectedType(type)}
-              style={{
-                padding: '6px 16px',
-                borderRadius: 'var(--radius-sm)',
-                border: 'none',
-                fontSize: '0.85rem',
-                fontWeight: '500',
-                cursor: 'pointer',
-                textTransform: 'capitalize',
-                transition: 'all 0.3s ease',
-                backgroundColor: selectedType === type ? 'var(--primary-color)' : 'rgba(0, 0, 0, 0.05)',
-                color: selectedType === type ? 'white' : 'var(--text-color)'
-              }}
-            >
-              {type === 'image' ? 'Foto' : type === 'video' ? 'Video' : 'Semua'}
-            </button>
-          ))}
+        {/* Search input bar */}
+        <div style={{ display: 'flex', position: 'relative', width: '100%' }}>
+          <input
+            type="text"
+            placeholder="🔍 Cari dokumentasi kegiatan berdasarkan judul..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setDisplayLimit(12); // Reset limit on search
+            }}
+            style={{
+              width: '100%',
+              padding: '12px 16px 12px 16px',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid rgba(203, 213, 225, 0.6)',
+              background: 'rgba(255, 255, 255, 0.9)',
+              fontSize: '0.95rem',
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'all 0.3s ease',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
+            }}
+            className="gallery-search-input"
+          />
+        </div>
+
+        {/* Filters Group */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderTop: '1px solid rgba(226, 232, 240, 0.8)', paddingTop: '1rem' }}>
+          {/* Category Filters */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontWeight: '700', color: 'var(--primary-color)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Kategori:</span>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    setDisplayLimit(12); // Reset limit on filter change
+                  }}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    fontSize: '0.78rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    backgroundColor: selectedCategory === cat ? 'var(--primary-color)' : 'rgba(15, 23, 42, 0.05)',
+                    color: selectedCategory === cat ? 'white' : 'var(--text-color)',
+                    boxShadow: selectedCategory === cat ? '0 4px 10px rgba(11, 60, 93, 0.25)' : 'none'
+                  }}
+                >
+                  {cat === 'Semua' ? '📁 Semua' : cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Type Filters */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontWeight: '700', color: 'var(--primary-color)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Format:</span>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              {types.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setSelectedType(type);
+                    setDisplayLimit(12); // Reset limit on filter change
+                  }}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 'var(--radius-full)',
+                    border: 'none',
+                    fontSize: '0.78rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    backgroundColor: selectedType === type ? 'var(--primary-color)' : 'rgba(15, 23, 42, 0.05)',
+                    color: selectedType === type ? 'white' : 'var(--text-color)',
+                    boxShadow: selectedType === type ? '0 4px 10px rgba(11, 60, 93, 0.25)' : 'none'
+                  }}
+                >
+                  {type === 'image' ? '📸 Foto' : type === 'video' ? '🎥 Video' : '🌟 Semua'}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Masonry-style Grid */}
-      {filteredGallery.length > 0 ? (
-        <div 
-          style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-            gap: 'var(--space-md)' 
-          }}
-        >
-          {filteredGallery.map((item) => {
+      {/* Masonry-style Pinterest Grid */}
+      {displayedItems.length > 0 ? (
+        <div className="gallery-masonry-grid animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+          {displayedItems.map((item) => {
             const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
             const thumbUrl = ytId 
               ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
@@ -181,73 +269,73 @@ export default function GalleryClient({ initialGallery }) {
               <div
                 key={item.id}
                 onClick={() => setActiveImage(item)}
-                style={{
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-sm)',
-                  border: '4px solid white',
-                  position: 'relative',
-                  cursor: 'pointer',
-                  aspectRatio: '4/3',
-                  background: '#000'
-                }}
-                className="gallery-grid-item"
+                className="gallery-masonry-item"
               >
+                {/* Category Badge overlay */}
+                <div 
+                  className="gallery-category-badge"
+                  style={getCategoryBadgeStyles(item.category)}
+                >
+                  📁 {item.category || 'umum'}
+                </div>
+
                 {/* Media Thumbnail */}
                 {item.type === 'video' ? (
-                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                  <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#000' }}>
                     <img
                       src={thumbUrl}
                       alt={item.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '0.8' }}
+                      style={{ width: '100%', height: 'auto', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
                       loading="lazy"
+                      className="gallery-thumbnail-img"
                     />
-                    {/* Play Overlay */}
+                    {/* Play Overlay Button */}
                     <div style={{
                       position: 'absolute',
                       top: '0', left: '0', right: '0', bottom: '0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: 'rgba(0, 0, 0, 0.3)'
+                      background: 'rgba(0, 0, 0, 0.25)'
                     }}>
                       <div style={{
-                        width: '50px', height: '50px', borderRadius: '50%',
-                        background: 'rgba(255,255,255,0.9)', display: 'flex',
+                        width: '46px', height: '40px', borderRadius: '12px',
+                        background: 'rgba(239, 68, 68, 0.9)', display: 'flex', // Premium YouTube brand red
                         alignItems: 'center', justifyContent: 'center',
-                        boxShadow: 'var(--shadow-md)',
-                        transition: 'transform 0.2s ease'
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                        transition: 'all 0.2s ease'
                       }}
                       className="play-btn-circle"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--primary-color)" stroke="var(--primary-color)" strokeWidth="2">
-                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1">
+                          <polygon points="6 3 20 12 6 21 6 3"></polygon>
                         </svg>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <img
-                    src={item.url}
-                    alt={item.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                    loading="lazy"
-                    className="gallery-thumbnail-img"
-                  />
+                  <div style={{ overflow: 'hidden', position: 'relative' }}>
+                    <img
+                      src={item.url}
+                      alt={item.title}
+                      loading="lazy"
+                      className="gallery-thumbnail-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800";
+                      }}
+                    />
+                  </div>
                 )}
 
-                {/* Title Slide up Overlay */}
+                {/* Title Overlay Info card */}
                 <div 
                   style={{
-                    position: 'absolute',
-                    bottom: '0', left: '0', right: '0',
-                    padding: '12px var(--space-md)',
-                    background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                    color: 'white',
-                    transition: 'opacity 0.3s ease'
+                    padding: '12px 14px',
+                    background: '#ffffff',
+                    borderTop: '1px solid rgba(226, 232, 240, 0.6)'
                   }}
-                  className="gallery-title-overlay"
                 >
-                  <p style={{ margin: '0', fontWeight: '600', fontSize: '0.9rem', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{item.title}</p>
-                  <p style={{ margin: '0', fontSize: '0.75rem', color: '#ddd' }}>
+                  <p style={{ margin: '0', fontWeight: '700', fontSize: '0.85rem', color: 'var(--primary-color)', lineHeight: '1.4' }}>{item.title}</p>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.72rem', color: '#64748b', fontWeight: '500' }}>
                     {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
                   </p>
                 </div>
@@ -256,9 +344,35 @@ export default function GalleryClient({ initialGallery }) {
           })}
         </div>
       ) : (
-        <div className="card-custom" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#666' }}>
-          <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>Galeri media masih kosong</p>
-          <p style={{ fontSize: '0.9rem' }}>Media kegiatan sekolah akan segera ditambahkan oleh admin.</p>
+        <div className="card-custom animate-fadeIn" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
+          <p style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>Tidak ada media ditemukan 🔍</p>
+          <p style={{ fontSize: '0.9rem', marginTop: '4px' }}>Coba ubah filter kategori, tipe format, atau kata kunci pencarian Anda.</p>
+        </div>
+      )}
+
+      {/* Muat Lebih Banyak / Load More Button */}
+      {filteredGallery.length > displayLimit && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-xl)' }} className="animate-fadeIn">
+          <button
+            onClick={() => setDisplayLimit(prev => prev + 12)}
+            style={{
+              padding: '12px 36px',
+              borderRadius: 'var(--radius-full)',
+              border: 'none',
+              background: 'linear-gradient(135deg, var(--primary-color), #092842)',
+              color: 'white',
+              fontWeight: '700',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              boxShadow: '0 10px 20px rgba(11, 60, 93, 0.25)',
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              letterSpacing: '0.02em'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+          >
+            Muat Lebih Banyak ✨
+          </button>
         </div>
       )}
 
@@ -349,8 +463,23 @@ export default function GalleryClient({ initialGallery }) {
             )}
           </div>
 
-          {/* Caption */}
+          {/* Caption Card */}
           <div className="lightbox-caption-card" style={{ color: 'white', textAlign: 'center' }}>
+            <span style={{
+              display: 'inline-block',
+              padding: '3px 12px',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              marginBottom: '10px',
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              letterSpacing: '0.04em'
+            }}>
+              📁 {activeItem.category || 'umum'}
+            </span>
             <h3 style={{ margin: '0', fontSize: '1.1rem', fontWeight: 700 }}>{activeItem.title}</h3>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)' }}>
               {activeItem.date ? new Date(activeItem.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
