@@ -295,13 +295,6 @@ export default async function Home() {
             </div>
             <div className="stat-item reveal-on-scroll reveal-delay-300">
               <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
-              </div>
-              <div className="stat-number">{stats.rombel}</div>
-              <div className="stat-label">Rombongan Belajar</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-400">
-              <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></svg>
               </div>
               <div className="stat-number">{stats.akreditasi}</div>
@@ -315,33 +308,40 @@ export default async function Home() {
           <div className="stats-grid sarpras-grid">
             <div className="stat-item reveal-on-scroll reveal-delay-100">
               <div className="stat-icon-wrapper">
+                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+              </div>
+              <div className="stat-number">{stats.rombel}</div>
+              <div className="stat-label">Rombongan Belajar</div>
+            </div>
+            <div className="stat-item reveal-on-scroll reveal-delay-200">
+              <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               </div>
               <div className="stat-number">{stats.ruang_kelas}</div>
               <div className="stat-label">Ruang Kelas</div>
             </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-200">
+            <div className="stat-item reveal-on-scroll reveal-delay-300">
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v8M8 12h8" /></svg>
               </div>
               <div className="stat-number">{stats.uks}</div>
               <div className="stat-label">Unit Kesehatan (UKS)</div>
             </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-300">
+            <div className="stat-item reveal-on-scroll reveal-delay-400">
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
               </div>
               <div className="stat-number">{stats.gudang}</div>
               <div className="stat-label">Gudang Sekolah</div>
             </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-400">
+            <div className="stat-item reveal-on-scroll reveal-delay-500">
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M9 22V12h6v10M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M12 10a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z" /></svg>
               </div>
               <div className="stat-number">{stats.toilet}</div>
               <div className="stat-label">Kamar Mandi / WC</div>
             </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-500">
+            <div className="stat-item reveal-on-scroll reveal-delay-600">
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" /></svg>
               </div>
