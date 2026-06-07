@@ -104,7 +104,7 @@ async function seed() {
 
   console.log("==================================================================");
   console.log("🎉 SEEDING MASAL SELESAI!");
-  console.log("aim AI kini siap menjawab pertanyaan dengan akurat berdasarkan dokumen baru!");
+  console.log("Aim AI kini siap menjawab pertanyaan dengan akurat berdasarkan dokumen baru!");
   console.log("==================================================================\n");
 }
 

@@ -110,7 +110,7 @@ export async function POST(req) {
 
     // 5. Susun System Instruction yang kaya data dan ramah
     const systemInstruction = `
-Kamu adalah "aim AI", asisten virtual pintar dan ramah yang mewakili SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara.
+Kamu adalah "Aim AI", asisten virtual pintar dan ramah yang mewakili SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara.
 Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan masyarakat umum) memberikan informasi yang akurat, lengkap, dan hangat mengenai sekolah kita.
 
 === GAYA KOMUNIKASI ===
@@ -173,7 +173,7 @@ ${ragContext || "(Tidak ada dokumen tambahan spesifik yang terdeteksi untuk pert
 === BATASAN AI ===
 - Jika terdapat "9. Dokumen Khusus & Pengetahuan Tambahan" di atas yang relevan dengan pertanyaan pengunjung, berikan jawaban prioritas tinggi berdasarkan isi dokumen tersebut karena itu adalah info spesifik/terbaru.
 - Fokuslah hanya pada informasi seputar SD Negeri Bobong, pendaftaran PPDB, kegiatan kesiswaan, prestasi, kurikulum, fasilitas, dan hal-hal umum terkait pendidikan dasar sekolah.
-- Jika pengguna menanyakan hal di luar topik sekolah (politik praktis, hal-hal sensitif, teknologi tingkat lanjut yang tidak ada hubungannya, pemrograman rumit, dll.), arahkan kembali ke topik sekolah dengan sopan dan humoris/ramah. Contoh: "Wah, pertanyaan yang menarik! Tapi sebagai aim AI, saya lebih jago menceritakan serunya belajar di SD Negeri Bobong atau info pendaftaran PPDB nih. Apakah Bapak/Ibu ingin tahu syarat pendaftaran PPDB kita?"
+- Jika pengguna menanyakan hal di luar topik sekolah (politik praktis, hal-hal sensitif, teknologi tingkat lanjut yang tidak ada hubungannya, pemrograman rumit, dll.), arahkan kembali ke topik sekolah dengan sopan dan humoris/ramah. Contoh: "Wah, pertanyaan yang menarik! Tapi sebagai Aim AI, saya lebih jago menceritakan serunya belajar di SD Negeri Bobong atau info pendaftaran PPDB nih. Apakah Bapak/Ibu ingin tahu syarat pendaftaran PPDB kita?"
 `;
 
     // 5. Inisialisasi GoogleGenAI SDK v2 & Generate Content
@@ -199,7 +199,7 @@ ${ragContext || "(Tidak ada dokumen tambahan spesifik yang terdeteksi untuk pert
     return NextResponse.json({ reply });
 
   } catch (error) {
-    console.error("Error in aim AI Chat Route:", error);
+    console.error("Error in Aim AI Chat Route:", error);
     return NextResponse.json({ 
       error: "Terjadi kesalahan internal pada server asisten.",
       details: error.message 
@@ -214,7 +214,7 @@ ${ragContext || "(Tidak ada dokumen tambahan spesifik yang terdeteksi untuk pert
 function generateFallbackResponse(query, schoolData) {
   const q = query.toLowerCase();
 
-  const welcomeMessage = `✨ Halo! Saya **aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫
+  const welcomeMessage = `✨ Halo! Saya **Aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫
 
 Saat ini saya sedang berjalan dalam **Mode Demo / Pemeliharaan Sistem** oleh Administrator sekolah. Meskipun fitur kecerdasan penuh saya sedang dipersiapkan, saya tetap dapat membantu Anda menjawab beberapa informasi dasar mengenai sekolah secara otomatis! 👇`;
 

@@ -8,7 +8,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: '✨ Halo! Saya **aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami? 😊'
+      content: '✨ Halo! Saya **Aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami? 😊'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -307,7 +307,7 @@ export default function ChatWidget() {
       <button 
         className={`aim-ai-trigger ${isOpen ? 'active' : ''}`}
         onClick={toggleChat}
-        aria-label="Tanya Asisten aim AI"
+        aria-label="Tanya Asisten Aim AI"
       >
         {isOpen ? (
           // Icon Silang (Tutup)
@@ -338,11 +338,11 @@ export default function ChatWidget() {
         <div className="ai-header">
           <div className="ai-header-profile">
             <div className="ai-avatar-container">
-              <img src="/images/logo_sekolah.png" alt="Logo aim AI" className="ai-avatar" />
+              <img src="/images/logo_sekolah.png" alt="Logo Aim AI" className="ai-avatar" />
               <span className="ai-online-indicator"></span>
             </div>
             <div className="ai-title-details">
-              <h4>aim AI</h4>
+              <h4>Aim AI</h4>
               <span className="ai-subtitle">Asisten Virtual Sekolah</span>
             </div>
           </div>

@@ -96,7 +96,7 @@ async function run() {
     console.log(`📍 Kategori   : ${categoryArg}`);
     console.log(`📍 Konten     : "${contentArg}"`);
     console.log("=========================================================\n");
-    console.log("💡 Asisten virtual 'aim AI' sekarang otomatis mengenali informasi ini saat dicari secara semantis!");
+    console.log("💡 Asisten virtual 'Aim AI' sekarang otomatis mengenali informasi ini saat dicari secara semantis!");
 
   } catch (err) {
     console.error("\n❌ TERJADI KESALAHAN:", err.message || err);

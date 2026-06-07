@@ -547,7 +547,7 @@ export default async function RootLayout({ children }) {
           </div>
         </footer>
 
-        {/* aim AI Virtual Assistant Widget */}
+        {/* Aim AI Virtual Assistant Widget */}
         <ChatWidget />
 
         {/* Floating WhatsApp Button (Disembunyikan sesuai permintaan pengguna)
