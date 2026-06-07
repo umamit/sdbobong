@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -355,6 +356,7 @@ export default function AdminLogin() {
           ← Kembali ke Website Utama
         </a>
       </div>
+      <PremiumLoadingOverlay active={isSubmitting} message="Memproses keamanan sesi..." />
     </div>
   );
 }
