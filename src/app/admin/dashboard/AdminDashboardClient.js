@@ -2626,6 +2626,9 @@ export default function AdminDashboardClient({
         .overview-card.cyan::after {
             background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
         }
+        .overview-card.rose::after {
+            background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
+        }
         .overview-card-title {
             font-size: 0.75rem;
             font-weight: 700;
@@ -3629,6 +3632,21 @@ export default function AdminDashboardClient({
                   <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-.75a1.125 1.125 0 0 1-1.125-1.125V11.25M9 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.75A1.125 1.125 0 0 1 12 13.125V11.25m-1.5-6h3a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-3a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3Z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="overview-card rose">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span className="overview-card-title">Jalur Perpindahan</span>
+                    <span className="overview-card-value">
+                      {records.filter(r => r.jalur_ppdb === 'Perpindahan Tugas Orang Tua' || r.jalur_ppdb === 'Perpindahan' || r.jalur_ppdb?.toLowerCase().includes('pindah')).length}
+                    </span>
+                  </div>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(244, 63, 94, 0.1)', color: '#f43f5e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 .414-.336.75-.75.75H4.5a.75.75 0 0 1-.75-.75v-4.25m16.5 0a2.25 2.25 0 0 0-2.25-2.25H18.75m-.001-3.75a2.25 2.25 0 0 0-2.25-2.25h-3a2.25 2.25 0 0 0-2.25 2.25m6.75 2.25v-3.75a.75.75 0 0 0-.75-.75h-9a.75.75 0 0 0-.75.75v3.75m0 0h10.5" />
                     </svg>
                   </div>
                 </div>
