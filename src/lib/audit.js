@@ -98,24 +98,74 @@ export async function saveAuditLogs(logsList) {
 }
 
 /**
+ * Extracts and cleans the client's IP address from a request object.
+ * Resolves NextRequest.ip, standard headers, and raw sockets.
+ */
+export function getClientIp(request) {
+  if (!request) return '127.0.0.1';
+  
+  let ip = '';
+  
+  // 1. Try standard NextRequest.ip (supplied by NextJS / Vercel router)
+  if (request.ip) {
+    ip = request.ip;
+  }
+  
+  // 2. Try headers (if request has standard Header Map or plain object)
+  if (!ip) {
+    if (typeof request.headers?.get === 'function') {
+      ip = request.headers.get('x-forwarded-for') || 
+           request.headers.get('x-real-ip') || 
+           request.headers.get('x-client-ip');
+    } else if (request.headers) {
+      ip = request.headers['x-forwarded-for'] || 
+           request.headers['x-real-ip'] || 
+           request.headers['x-client-ip'];
+    }
+  }
+  
+  // 3. Fallback to raw socket / connection properties if available (Node.js dev environment)
+  if (!ip) {
+    ip = request.socket?.remoteAddress || 
+         request.connection?.remoteAddress || 
+         request.req?.socket?.remoteAddress || 
+         '127.0.0.1';
+  }
+  
+  // 4. Clean up the IP address
+  // If x-forwarded-for contains multiple proxy IPs (comma-separated), take the first one
+  if (ip && ip.includes(',')) {
+    ip = ip.split(',')[0].trim();
+  }
+  
+  // Clean IPv6-mapped IPv4 addresses like ::ffff:192.168.1.5 -> 192.168.1.5
+  if (ip && ip.startsWith('::ffff:')) {
+    ip = ip.substring(7);
+  }
+  
+  // Standardize IPv6 loopback to IPv4 loopback for cleaner view if appropriate
+  if (ip === '::1') {
+    ip = '127.0.0.1';
+  }
+  
+  return ip || '127.0.0.1';
+}
+
+/**
  * Creates and writes a new audit log record.
  * Compatible with standard NextJS request objects.
  */
 export async function createAuditLog(action, details, request) {
   try {
-    let ip = "127.0.0.1";
+    const ip = getClientIp(request);
     let userAgent = "Unknown Device";
     
     if (request) {
       if (typeof request.headers?.get === 'function') {
-        ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '127.0.0.1';
         userAgent = request.headers.get('user-agent') || 'Unknown Device';
       } else if (request.headers) {
-        ip = request.headers['x-forwarded-for'] || request.headers['x-real-ip'] || '127.0.0.1';
         userAgent = request.headers['user-agent'] || 'Unknown Device';
       }
-      
-      if (ip.includes(',')) ip = ip.split(',')[0].trim();
     }
 
     const username = "Admin SDN Bobong";

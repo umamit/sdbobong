@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '../../../lib/supabase/server';
 import { createAdminToken } from '../../../lib/auth';
 import { loadWebConfig, saveWebConfig } from '../../../lib/database';
-import { createAuditLog } from '../../../lib/audit';
+import { createAuditLog, getClientIp } from '../../../lib/audit';
 
 export async function POST(request) {
   try {
@@ -12,8 +12,7 @@ export async function POST(request) {
     const serviceRoleKey = process.env.SUPABASE_KEY || '';
 
     // Track login IP
-    let ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '127.0.0.1';
-    if (ip.includes(',')) ip = ip.split(',')[0].trim();
+    const ip = getClientIp(request);
 
     // Load web configuration
     const config = await loadWebConfig();
