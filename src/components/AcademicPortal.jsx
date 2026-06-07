@@ -47,7 +47,7 @@ const P5_PROJECTS = [
   }
 ];
 
-export default function AcademicPortal({ initialCalendar = [] }) {
+export default function AcademicPortal({ initialCalendar = [], initialP5Projects = [] }) {
   const [activeTab, setActiveTab] = useState('calendar');
   const [selectedEvent, setSelectedRoom] = useState(null);
   const [countdowns, setCountdowns] = useState({});
@@ -292,80 +292,89 @@ export default function AcademicPortal({ initialCalendar = [] }) {
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-            {P5_PROJECTS.map((proj) => (
-              <div 
-                key={proj.id}
-                style={{
-                  backgroundColor: 'white',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-lg)',
-                  overflow: 'hidden',
-                  boxShadow: 'var(--shadow-md)',
-                  display: 'grid',
-                  gridTemplateColumns: 'minmax(200px, 1fr) 2fr',
-                }}
-              >
-                {/* Image panel */}
-                <div style={{ position: 'relative', minHeight: '180px' }}>
-                  <img 
-                    src={proj.image} 
-                    alt={proj.title} 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                  />
-                  <span style={{
-                    position: 'absolute',
-                    top: '12px',
-                    left: '12px',
-                    backgroundColor: proj.color,
-                    color: 'white',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    padding: '4px 10px',
-                    borderRadius: 'var(--radius-full)'
-                  }}>
-                    {proj.badge}
-                  </span>
-                </div>
+            {(initialP5Projects && initialP5Projects.length > 0 ? initialP5Projects : P5_PROJECTS).map((proj) => {
+              const skillsArray = Array.isArray(proj.skills) 
+                ? proj.skills 
+                : (typeof proj.skills === 'string' ? proj.skills.split(',').map(s => s.trim()) : []);
+              const parentGuideArray = Array.isArray(proj.parentGuide) 
+                ? proj.parentGuide 
+                : (typeof proj.parentGuide === 'string' ? proj.parentGuide.split('\n').map(p => p.trim()) : []);
 
-                {/* Content Panel */}
-                <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <h3 style={{ color: 'var(--primary-dark)', fontSize: '1.25rem', margin: 0 }}>
-                    {proj.title}
-                  </h3>
-                  
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6, textAlign: 'justify' }}>
-                    {proj.desc}
-                  </p>
-
-                  {/* Skills tags */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '2px 0' }}>
-                    {proj.skills.map((skill, idx) => (
-                      <span key={idx} style={{ fontSize: '0.75rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', backgroundColor: '#F3F4F6', color: '#4b5563' }}>
-                        {skill}
-                      </span>
-                    ))}
+              return (
+                <div 
+                  key={proj.id}
+                  style={{
+                    backgroundColor: 'white',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-lg)',
+                    overflow: 'hidden',
+                    boxShadow: 'var(--shadow-md)',
+                    display: 'grid',
+                    gridTemplateColumns: 'minmax(200px, 1fr) 2fr',
+                  }}
+                >
+                  {/* Image panel */}
+                  <div style={{ position: 'relative', minHeight: '180px' }}>
+                    <img 
+                      src={proj.image} 
+                      alt={proj.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
+                    <span style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: proj.color || '#1e40af',
+                      color: 'white',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      padding: '4px 10px',
+                      borderRadius: 'var(--radius-full)'
+                    }}>
+                      {proj.badge}
+                    </span>
                   </div>
 
-                  {/* Parent Guide Accordion/Box */}
-                  <div style={{ 
-                    backgroundColor: 'var(--accent-bg)', 
-                    borderLeft: `4px solid ${proj.color}`, 
-                    padding: '12px var(--space-md)', 
-                    borderRadius: '0 var(--radius-md) var(--radius-md) 0',
-                    marginTop: '4px'
-                  }}>
-                    <h4 style={{ color: proj.color, fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      👪 Tips Dukungan Orang Tua di Rumah:
-                    </h4>
-                    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--text-main)', lineHeight: 1.5 }}>
-                      {proj.parentGuide.map((tip, idx) => (
-                        <li key={idx} style={{ marginBottom: '4px' }}>{tip}</li>
+                  {/* Content Panel */}
+                  <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <h3 style={{ color: 'var(--primary-dark)', fontSize: '1.25rem', margin: 0 }}>
+                      {proj.title}
+                    </h3>
+                    
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6, textAlign: 'justify' }}>
+                      {proj.desc}
+                    </p>
+
+                    {/* Skills tags */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '2px 0' }}>
+                      {skillsArray.filter(s => s && s.trim()).map((skill, idx) => (
+                        <span key={idx} style={{ fontSize: '0.75rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', backgroundColor: '#F3F4F6', color: '#4b5563' }}>
+                          {skill}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
+
+                    {/* Parent Guide Accordion/Box */}
+                    <div style={{ 
+                      backgroundColor: 'var(--accent-bg)', 
+                      borderLeft: `4px solid ${proj.color || '#1e40af'}`, 
+                      padding: '12px var(--space-md)', 
+                      borderRadius: '0 var(--radius-md) var(--radius-md) 0',
+                      marginTop: '4px'
+                    }}>
+                      <h4 style={{ color: proj.color || '#1e40af', fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        👪 Tips Dukungan Orang Tua di Rumah:
+                      </h4>
+                      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--text-main)', lineHeight: 1.5 }}>
+                        {parentGuideArray.filter(t => t && t.trim()).map((tip, idx) => (
+                          <li key={idx} style={{ marginBottom: '4px' }}>{tip}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

@@ -201,6 +201,11 @@ export async function POST(request) {
                 if (pageData.ekstrakurikuler && pageData.ekstrakurikuler[index]) {
                   pageData.ekstrakurikuler[index].image = uploadedUrl;
                 }
+              } else if (key.startsWith('p5_image_')) {
+                const index = parseInt(key.split('_')[2], 10);
+                if (pageData.p5_projects && pageData.p5_projects[index]) {
+                  pageData.p5_projects[index].image = uploadedUrl;
+                }
               } else if (key.startsWith('gallery_image_')) {
                 const parts = key.split('_');
                 if (parts[2] === 'index') {

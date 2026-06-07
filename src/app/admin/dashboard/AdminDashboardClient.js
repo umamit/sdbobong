@@ -284,6 +284,8 @@ export default function AdminDashboardClient({
   const [ekskulPreviews, setEkskulPreviews] = useState({});
   const [galleryFiles, setGalleryFiles] = useState({});
   const [galleryPreviews, setGalleryPreviews] = useState({});
+  const [p5Files, setP5Files] = useState({});
+  const [p5Previews, setP5Previews] = useState({});
 
   // ================= NEW STATES FOR PREMIUM DASHBOARD UPGRADES =================
   // PPDB Filter & Pagination
@@ -414,6 +416,55 @@ export default function AdminDashboardClient({
   const handleRemoveCalendar = (index) => {
     const updated = (pageContents.akademik?.calendar || []).filter((_, i) => i !== index);
     handleFieldChange('akademik', 'calendar', updated);
+  };
+
+  const handleP5FileChange = (index, file) => {
+    if (file) {
+      setP5Files(prev => ({ ...prev, [index]: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setP5Previews(prev => ({ ...prev, [index]: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddP5Project = () => {
+    const current = pageContents.akademik?.p5_projects || [];
+    const updated = [
+      ...current,
+      {
+        id: 'p5_' + Date.now(),
+        title: '',
+        badge: '',
+        desc: '',
+        parentGuide: [],
+        skills: [],
+        color: '#1E40AF',
+        image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop'
+      }
+    ];
+    handleFieldChange('akademik', 'p5_projects', updated);
+  };
+
+  const handleUpdateP5Project = (index, key, val) => {
+    const updated = [...(pageContents.akademik?.p5_projects || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('akademik', 'p5_projects', updated);
+  };
+
+  const handleRemoveP5Project = (index) => {
+    const updated = (pageContents.akademik?.p5_projects || []).filter((_, i) => i !== index);
+    handleFieldChange('akademik', 'p5_projects', updated);
+    
+    // Clean up file/preview attachments
+    const updatedP5Files = { ...p5Files };
+    delete updatedP5Files[index];
+    setP5Files(updatedP5Files);
+
+    const updatedP5Previews = { ...p5Previews };
+    delete updatedP5Previews[index];
+    setP5Previews(updatedP5Previews);
   };
 
   const handleAddSeragam = () => {
@@ -609,6 +660,9 @@ export default function AdminDashboardClient({
       if (kurikulumFile) {
         filesToUpload['kurikulum_image_file'] = kurikulumFile;
       }
+      Object.keys(p5Files).forEach(index => {
+        filesToUpload[`p5_image_${index}`] = p5Files[index];
+      });
     } else if (pageName === 'kesiswaan') {
       Object.keys(ekskulFiles).forEach(index => {
         filesToUpload[`ekskul_image_${index}`] = ekskulFiles[index];
@@ -631,6 +685,8 @@ export default function AdminDashboardClient({
       setSejarahFile(null);
     } else if (pageName === 'akademik') {
       setKurikulumFile(null);
+      setP5Files({});
+      setP5Previews({});
     } else if (pageName === 'kesiswaan') {
       setEkskulFiles({});
     } else if (pageName === 'galeri') {
@@ -6616,6 +6672,157 @@ export default function AdminDashboardClient({
                       {(pageContents.akademik?.calendar || []).length === 0 && (
                         <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                           Belum ada agenda kalender akademik. Klik tombol di kanan atas untuk menambahkan baris baru.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Projek Penguatan Profil Pelajar Pancasila (P5)</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Kelola projek P5 yang dipublikasikan pada portal akademik.</p>
+                      </div>
+                      <button type="button" onClick={handleAddP5Project} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Projek P5
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                      {(pageContents.akademik?.p5_projects || []).map((proj, idx) => (
+                        <div key={proj.id || idx} style={{ backgroundColor: '#f8fafc', padding: 'var(--space-md)', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '0.95rem' }}>🎯 Projek #{idx + 1}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveP5Project(idx)}
+                              className="btn-action-delete"
+                              style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
+                            >
+                              ✕ Hapus Projek
+                            </button>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 'var(--space-sm)' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Judul Projek</label>
+                              <input
+                                type="text"
+                                placeholder='Contoh: Gaya Hidup Berkelanjutan: "Bahari Lestari"'
+                                className="form-control"
+                                value={proj.title || ''}
+                                onChange={(e) => handleUpdateP5Project(idx, 'title', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Tema / Badge</label>
+                              <input
+                                type="text"
+                                placeholder="Contoh: Gaya Hidup Berkelanjutan"
+                                className="form-control"
+                                value={proj.badge || ''}
+                                onChange={(e) => handleUpdateP5Project(idx, 'badge', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Warna Tema (HEX / Picker)</label>
+                              <div style={{ display: 'flex', gap: '4px' }}>
+                                <input
+                                  type="color"
+                                  className="form-control"
+                                  value={proj.color || '#1e40af'}
+                                  onChange={(e) => handleUpdateP5Project(idx, 'color', e.target.value)}
+                                  style={{ width: '38px', padding: '2px', height: '38px', cursor: 'pointer' }}
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="#1e40af"
+                                  className="form-control"
+                                  value={proj.color || ''}
+                                  onChange={(e) => handleUpdateP5Project(idx, 'color', e.target.value)}
+                                  style={{ flex: 1 }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Deskripsi Projek</label>
+                            <textarea
+                              placeholder="Deskripsi lengkap mengenai fokus projek, tujuan, dan kearifan lokal yang diangkat..."
+                              className="form-control"
+                              value={proj.desc || ''}
+                              onChange={(e) => handleUpdateP5Project(idx, 'desc', e.target.value)}
+                              rows="3"
+                              style={{ width: '100%', resize: 'vertical' }}
+                            ></textarea>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Nilai Karakter / Skills (Satu baris per Skill)</label>
+                              <textarea
+                                placeholder="💡 Kepedulian&#10;🛠️ Gotong Royong"
+                                className="form-control"
+                                value={Array.isArray(proj.skills) ? proj.skills.join('\n') : (proj.skills || '')}
+                                onChange={(e) => handleUpdateP5Project(idx, 'skills', e.target.value.split('\n'))}
+                                rows="3"
+                                style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.8rem' }}
+                              ></textarea>
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Panduan/Tips Orang Tua di Rumah (Satu baris per Tips)</label>
+                              <textarea
+                                placeholder="Ajak anak memilah sampah...&#10;Dukung anak tampil..."
+                                className="form-control"
+                                value={Array.isArray(proj.parentGuide) ? proj.parentGuide.join('\n') : (proj.parentGuide || '')}
+                                onChange={(e) => handleUpdateP5Project(idx, 'parentGuide', e.target.value.split('\n'))}
+                                rows="3"
+                                style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.8rem' }}
+                              ></textarea>
+                            </div>
+                          </div>
+
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.8rem' }}>Unggah Gambar Projek</label>
+                            <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center' }}>
+                              <div style={{ 
+                                width: '120px', 
+                                height: '70px', 
+                                borderRadius: '6px', 
+                                border: '2px dashed var(--primary)', 
+                                overflow: 'hidden', 
+                                backgroundColor: '#f8fafc', 
+                                display: 'flex', 
+                                justifyContent: 'center', 
+                                alignItems: 'center',
+                                flexShrink: 0
+                              }}>
+                                <img 
+                                  src={p5Previews[idx] || proj.image || 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop'} 
+                                  alt={`Projek ${idx + 1} Preview`} 
+                                  style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} 
+                                />
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  accept="image/*"
+                                  onChange={(e) => handleP5FileChange(idx, e.target.files[0])}
+                                  style={{ width: '100%' }}
+                                />
+                                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Mendukung format gambar JPEG, PNG, GIF, SVG.</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {(pageContents.akademik?.p5_projects || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px dashed #e2e8f0' }}>
+                          Belum ada projek P5 kustom yang dibuat. Sistem akan otomatis menampilkan 3 projek P5 bawaan berkualitas tinggi di halaman publik akademik.
                         </p>
                       )}
                     </div>

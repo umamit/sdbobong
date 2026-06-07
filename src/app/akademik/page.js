@@ -80,7 +80,7 @@ export default async function Akademik() {
           </div>
 
           <div className="reveal-on-scroll">
-            <AcademicPortal initialCalendar={akademik.calendar} />
+            <AcademicPortal initialCalendar={akademik.calendar} initialP5Projects={akademik.p5_projects || []} />
           </div>
         </div>
       </section>
