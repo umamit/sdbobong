@@ -521,7 +521,7 @@ export default async function RootLayout({ children }) {
           <div className="footer-bottom">
             <div className="container footer-bottom-flex">
               <div className="developer-note">
-                made with ❤️ Anhr
+                Lead Developer
               </div>
               <p className="copyright-note">
                 &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</a> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v{pack.version}</span>
