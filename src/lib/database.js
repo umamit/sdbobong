@@ -542,6 +542,34 @@ function getNewsSortKey(item) {
   return 0;
 }
 
+export function packImagesIntoContent(content, images) {
+  if (!images || !Array.isArray(images) || images.length === 0) {
+    return content;
+  }
+  const cleanContent = (content || "").replace(/\n*<!--IMAGES_METADATA:[\s\S]*?-->$/, "");
+  const serialized = JSON.stringify(images);
+  return `${cleanContent}\n<!--IMAGES_METADATA:${serialized}-->`;
+}
+
+export function unpackImagesFromContent(content, fallbackImages) {
+  if (typeof content !== 'string') {
+    return { cleanContent: content, images: fallbackImages || [] };
+  }
+  const match = content.match(/<!--IMAGES_METADATA:([\s\S]*?)-->$/);
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[1]);
+      if (Array.isArray(parsed)) {
+        const cleanContent = content.replace(/\n*<!--IMAGES_METADATA:[\s\S]*?-->$/, "");
+        return { cleanContent, images: parsed };
+      }
+    } catch (e) {
+      console.error("Error parsing images metadata from content:", e);
+    }
+  }
+  return { cleanContent: content, images: fallbackImages || [] };
+}
+
 let cachedNewsColumns = null;
 
 export async function getAvailableNewsColumns() {
@@ -591,13 +619,14 @@ export async function loadNews() {
       const hasImagesCol = availableCols.includes('images');
 
       for (const article of localNews) {
+        const packedContent = packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : []));
         const insertObj = {
           id: article.id,
           title: article.title,
           date: article.date,
           category: article.category,
           image: article.image,
-          content: article.content
+          content: packedContent
         };
         if (hasImagesCol) {
           insertObj.images = article.images || (article.image ? [article.image] : []);
@@ -617,16 +646,20 @@ export async function loadNews() {
         const localArticle = localNews.find(ln => ln.id === n.id);
         const localImages = localArticle ? localArticle.images : null;
 
+        const fallbackImages = n.images 
+          ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) 
+          : (localImages && localImages.length > 0 ? localImages : (n.image ? [n.image] : []));
+
+        const unpacked = unpackImagesFromContent(n.content, fallbackImages);
+
         return {
           id: n.id,
           title: n.title,
           date: n.date,
           category: n.category,
           image: n.image,
-          content: n.content,
-          images: n.images 
-            ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) 
-            : (localImages && localImages.length > 0 ? localImages : (n.image ? [n.image] : []))
+          content: unpacked.cleanContent,
+          images: unpacked.images
         };
       });
 
@@ -662,13 +695,14 @@ export async function saveNews(newsList) {
       const hasImagesCol = availableCols.includes('images');
 
       for (const article of newsList) {
+        const packedContent = packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : []));
         const payload = {
           id: article.id,
           title: article.title,
           date: article.date,
           category: article.category,
           image: article.image,
-          content: article.content
+          content: packedContent
         };
         if (hasImagesCol) {
           payload.images = article.images || (article.image ? [article.image] : []);

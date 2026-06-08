@@ -2219,6 +2219,10 @@ export default function AdminDashboardClient({
       }
     }
 
+    console.log("=== formData.getAll('photos') di frontend (POST) ===");
+    console.log(formData.getAll('photos'));
+    console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
+
     try {
       showToast('info', 'Sedang mempublikasikan berita...');
       const res = await fetch('/api/news', {
@@ -2299,6 +2303,10 @@ export default function AdminDashboardClient({
         }
       }
     }
+
+    console.log("=== formData.getAll('photos') di frontend (PUT) ===");
+    console.log(formData.getAll('photos'));
+    console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
 
     try {
       showToast('info', 'Sedang menyimpan perubahan berita...');
@@ -2684,6 +2692,10 @@ export default function AdminDashboardClient({
 
 
   const handleNewsPhotosChange = (e) => {
+    console.log("=== e.target.files di frontend (Pilih Berkas) ===");
+    console.log(e.target.files);
+    console.log("Jumlah file terpilih di input HTML:", e.target.files ? e.target.files.length : 0);
+
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
