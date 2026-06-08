@@ -2889,7 +2889,6 @@ export function AdminDashboardProvider({
 
 
   const value = {
-    AdminDashboardClient,
     achDescription,
     achLevel,
     achTitle,
