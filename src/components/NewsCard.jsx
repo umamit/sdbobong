@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function NewsCard({ news }) {
+export default function NewsCard({ news, className = '' }) {
   const images = news.images && news.images.length > 0 ? news.images : [news.image || '/images/news_hari_guru.svg'];
   const [activeIndex, setActiveIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -123,7 +123,7 @@ export default function NewsCard({ news }) {
   const isLong = plainText.length > 300;
 
   return (
-    <article className="news-card card" style={{ display: 'flex', flexDirection: 'column' }}>
+    <article className={`news-card card ${className}`} style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Slider Visual Container */}
       <div 
         className="card-img-container"

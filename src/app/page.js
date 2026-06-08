@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
+import NewsCard from '../components/NewsCard';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
@@ -363,43 +364,11 @@ export default async function Home() {
           <div className="grid-3">
             {newsList.length > 0 ? (
               newsList.map((news, index) => (
-                <article key={news.id} className={`card reveal-on-scroll reveal-delay-${(index + 1) * 100}`}>
-                  <div style={{ position: 'relative', overflow: 'hidden' }}>
-                    <img src={news.image} alt={news.title} className="card-img" loading="lazy" decoding="async" />
-                    {news.images && news.images.length > 1 && (
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '12px',
-                        right: '12px',
-                        background: 'rgba(15, 23, 42, 0.75)',
-                        backdropFilter: 'blur(8px)',
-                        color: '#fff',
-                        padding: '4px 10px',
-                        borderRadius: '20px',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        zIndex: 2,
-                        pointerEvents: 'none'
-                      }}>
-                        📸 +{news.images.length - 1} Foto
-                      </div>
-                    )}
-                  </div>
-                  <div className="card-body">
-                    <div className="card-meta">
-                      <span>📅 {news.date}</span>
-                      <span>•</span>
-                      <span>🏷️ {news.category}</span>
-                    </div>
-                    <h3 className="card-title"><Link href="/berita">{news.title}</Link></h3>
-                    <p className="card-text">{stripHtml(news.content).substring(0, 100)}...</p>
-                  </div>
-                </article>
+                <NewsCard 
+                  key={news.id} 
+                  news={news} 
+                  className={`reveal-on-scroll reveal-delay-${(index + 1) * 100}`}
+                />
               ))
             ) : (
               <p style={{ gridColumn: 'span 3', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic' }}>Belum ada berita kegiatan terbaru.</p>
