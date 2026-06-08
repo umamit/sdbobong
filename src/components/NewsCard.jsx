@@ -7,15 +7,21 @@ export default function NewsCard({ news }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Drag and touch swipe state
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const minSwipeDistance = 50;
+
   const handlePrev = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const handleNext = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
     setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
@@ -25,6 +31,71 @@ export default function NewsCard({ news }) {
     setActiveIndex(idx);
   };
 
+  // Touch Swipe Handlers
+  const handleTouchStart = (e) => {
+    if (images.length <= 1) return;
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    if (images.length <= 1) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (images.length <= 1 || !touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  // Mouse Drag Handlers for Desktop
+  const handleMouseDown = (e) => {
+    if (images.length <= 1) return;
+    setTouchStart(e.clientX);
+    setTouchEnd(null);
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    setTouchEnd(e.clientX);
+  };
+
+  const handleMouseUp = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    if (touchStart !== null && touchEnd !== null) {
+      const distance = touchStart - touchEnd;
+      const isLeftSwipe = distance > minSwipeDistance;
+      const isRightSwipe = distance < -minSwipeDistance;
+
+      if (isLeftSwipe) {
+        handleNext(e);
+      } else if (isRightSwipe) {
+        handlePrev(e);
+      }
+    }
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+    }
+  };
+
   // Safe heuristic for content length check
   const plainText = news.content ? news.content.replace(/<[^>]*>/g, '') : '';
   const isLong = plainText.length > 300;
@@ -32,7 +103,21 @@ export default function NewsCard({ news }) {
   return (
     <article className="news-card card" style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Slider Visual Container */}
-      <div className="card-img-container">
+      <div 
+        className="card-img-container"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        style={{ 
+          position: 'relative', 
+          cursor: images.length > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+          userSelect: 'none'
+        }}
+      >
         <div style={{ width: '100%', height: '100%', position: 'relative' }}>
           {images.map((imgUrl, index) => (
             <div
@@ -53,7 +138,7 @@ export default function NewsCard({ news }) {
                 src={imgUrl}
                 alt={`${news.title} - ${index + 1}`}
                 className="card-img-slider"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', userSelect: 'none' }}
                 loading="lazy"
                 decoding="async"
               />
@@ -69,6 +154,7 @@ export default function NewsCard({ news }) {
               className="slider-arrow prev"
               aria-label="Previous image"
               type="button"
+              style={{ zIndex: 12 }}
             >
               ‹
             </button>
@@ -77,12 +163,13 @@ export default function NewsCard({ news }) {
               className="slider-arrow next"
               aria-label="Next image"
               type="button"
+              style={{ zIndex: 12 }}
             >
               ›
             </button>
 
             {/* Premium Dots Indicators */}
-            <div className="slider-dots">
+            <div className="slider-dots" style={{ zIndex: 12 }}>
               {images.map((_, idx) => (
                 <button
                   key={idx}
@@ -90,12 +177,13 @@ export default function NewsCard({ news }) {
                   className={`slider-dot ${idx === activeIndex ? 'active' : ''}`}
                   aria-label={`Go to slide ${idx + 1}`}
                   type="button"
+                  style={{ zIndex: 12 }}
                 />
               ))}
             </div>
 
             {/* Glassmorphic Photo Counter Badge */}
-            <div className="slider-counter">
+            <div className="slider-counter" style={{ zIndex: 12 }}>
               📸 {activeIndex + 1} / {images.length}
             </div>
           </>
