@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
+import RichTextEditor from '../../../components/RichTextEditor';
 
 export default function NewsTab() {
   const {
