@@ -11,6 +11,7 @@ export default function NewsCard({ news }) {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [lastWheelTime, setLastWheelTime] = useState(0);
   const minSwipeDistance = 50;
 
   const handlePrev = (e) => {
@@ -96,6 +97,27 @@ export default function NewsCard({ news }) {
     }
   };
 
+  // Trackpad horizontal swipe detection for MacBook
+  const handleWheel = (e) => {
+    if (images.length <= 1) return;
+    
+    // Check if the scroll is primarily horizontal
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      const now = Date.now();
+      // 800ms cooldown to make horizontal trackpad navigation extremely comfortable
+      if (now - lastWheelTime > 800) {
+        if (Math.abs(e.deltaX) > 15) {
+          setLastWheelTime(now);
+          if (e.deltaX > 0) {
+            handleNext();
+          } else {
+            handlePrev();
+          }
+        }
+      }
+    }
+  };
+
   // Safe heuristic for content length check
   const plainText = news.content ? news.content.replace(/<[^>]*>/g, '') : '';
   const isLong = plainText.length > 300;
@@ -112,6 +134,8 @@ export default function NewsCard({ news }) {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
+        onWheel={handleWheel}
+        onDragStart={(e) => e.preventDefault()}
         style={{ 
           position: 'relative', 
           cursor: images.length > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
