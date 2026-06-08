@@ -47,16 +47,41 @@ export async function POST(request) {
     let image = formData.get('image')?.toString().trim();
     const content = formData.get('content')?.toString().trim();
 
-    // Process photo upload
-    const photoFile = formData.get('photo');
-    const uploadedUrl = await handlePhotoUpload(photoFile, 'news', ['png', 'jpg', 'jpeg']);
+    // Process multiple photo uploads
+    const photoFiles = formData.getAll('photos');
+    let images = [];
 
-    if (uploadedUrl === 'INVALID_TYPE') {
-      return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
-    } else if (uploadedUrl === 'ERROR') {
-      return NextResponse.json({ error: "Gagal mengunggah foto." }, { status: 500 });
-    } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
-      image = uploadedUrl;
+    if (photoFiles && photoFiles.length > 0) {
+      for (const file of photoFiles) {
+        if (file && file instanceof File && file.size > 0) {
+          const uploadedUrl = await handlePhotoUpload(file, 'news', ['png', 'jpg', 'jpeg']);
+          if (uploadedUrl === 'INVALID_TYPE') {
+            return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
+          } else if (uploadedUrl === 'ERROR') {
+            return NextResponse.json({ error: "Gagal mengunggah salah satu foto." }, { status: 500 });
+          } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
+            images.push(uploadedUrl);
+          }
+        }
+      }
+    }
+
+    // Process fallback single photo upload (for backward compatibility)
+    const singlePhoto = formData.get('photo');
+    if (singlePhoto && singlePhoto instanceof File && singlePhoto.size > 0) {
+      const uploadedUrl = await handlePhotoUpload(singlePhoto, 'news', ['png', 'jpg', 'jpeg']);
+      if (uploadedUrl === 'INVALID_TYPE') {
+        return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
+      } else if (uploadedUrl === 'ERROR') {
+        return NextResponse.json({ error: "Gagal mengunggah foto." }, { status: 500 });
+      } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
+        images.unshift(uploadedUrl); // Put single photo at the front as primary cover
+      }
+    }
+
+    // Set the cover image to the first uploaded photo if we have any
+    if (images.length > 0) {
+      image = images[0];
     }
 
     if (!title || !date || !category || !image || !content) {
@@ -77,6 +102,7 @@ export async function POST(request) {
       date,
       category,
       image,
+      images: images.length > 0 ? images : [image],
       content
     };
 

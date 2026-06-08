@@ -1,5 +1,6 @@
 import { loadNews, loadWebConfig } from '../../lib/database';
 import Link from 'next/link';
+import NewsCard from '../../components/NewsCard';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -28,29 +29,7 @@ export default async function Berita() {
           <div className="grid-2" style={{ marginBottom: 'var(--space-lg)' }}>
             {newsList.length > 0 ? (
               newsList.map((news) => (
-                <article key={news.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <img src={news.image} alt={news.title} className="card-img" style={{ height: '240px' }} loading="lazy" decoding="async" />
-                  <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <div>
-                      <div className="card-meta">
-                        <span>📅 {news.date}</span>
-                        <span>•</span>
-                        <span>🏷️ {news.category}</span>
-                      </div>
-                      <h3 className="card-title" style={{ fontSize: '1.3rem' }}>{news.title}</h3>
-                      <div 
-                        className="card-text rich-text-content" 
-                        dangerouslySetInnerHTML={{ __html: news.content }} 
-                        style={{
-                          fontSize: '0.95rem',
-                          lineHeight: '1.65',
-                          color: 'var(--text-muted)',
-                          marginTop: 'var(--space-xs)'
-                        }}
-                      />
-                    </div>
-                  </div>
-                </article>
+                <NewsCard key={news.id} news={news} />
               ))
             ) : (
               <p style={{ gridColumn: 'span 2', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic', padding: 'var(--space-md)' }}>
@@ -100,6 +79,106 @@ export default async function Berita() {
         }
         .rich-text-content a:hover {
           color: var(--primary-dark, #0b3c5d);
+        }
+
+        /* Multi-Image Slider Premium Styles */
+        .card-img-container {
+          position: relative;
+          background-color: #1e1e24;
+          height: 240px;
+          overflow: hidden;
+          border-top-left-radius: var(--radius-md);
+          border-top-right-radius: var(--radius-md);
+        }
+        .slider-arrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: rgba(15, 23, 42, 0.45);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: white;
+          font-size: 22px;
+          font-weight: 300;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          user-select: none;
+          padding: 0;
+          padding-bottom: 4px;
+        }
+        .slider-arrow:hover {
+          background: rgba(15, 23, 42, 0.75);
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateY(-50%) scale(1.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .slider-arrow.prev {
+          left: 12px;
+        }
+        .slider-arrow.next {
+          right: 12px;
+        }
+        .slider-dots {
+          position: absolute;
+          bottom: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 6px;
+          z-index: 10;
+          padding: 5px 10px;
+          background: rgba(15, 23, 42, 0.4);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .slider-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.45);
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slider-dot.active {
+          width: 16px;
+          border-radius: 3px;
+          background: #3b82f6;
+          box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        }
+        .slider-counter {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: white;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          z-index: 10;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card-img-slider {
+          transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .news-card:hover .card-img-slider {
+          transform: scale(1.04);
         }
       `}} />
 

@@ -542,11 +542,36 @@ function getNewsSortKey(item) {
   return 0;
 }
 
+let cachedNewsColumns = null;
+
+export async function getAvailableNewsColumns() {
+  if (cachedNewsColumns) return cachedNewsColumns;
+  const defaultColumns = ['id', 'title', 'date', 'category', 'image', 'content'];
+  if (!supabase || !isSupabaseEnabled()) {
+    cachedNewsColumns = defaultColumns;
+    return defaultColumns;
+  }
+  try {
+    const { error } = await supabase.from("news_sdn_bobong").select("images").limit(0);
+    if (!error) {
+      cachedNewsColumns = [...defaultColumns, 'images'];
+    } else {
+      cachedNewsColumns = defaultColumns;
+    }
+  } catch (e) {
+    cachedNewsColumns = defaultColumns;
+  }
+  return cachedNewsColumns;
+}
+
 export async function loadNews() {
   let localNews = [];
   if (fs.existsSync(NEWS_JSON)) {
     try {
-      localNews = JSON.parse(fs.readFileSync(NEWS_JSON, 'utf-8'));
+      localNews = JSON.parse(fs.readFileSync(NEWS_JSON, 'utf-8')).map(n => ({
+        ...n,
+        images: n.images || (n.image ? [n.image] : [])
+      }));
     } catch (e) {
       console.error("Error loading local news:", e);
     }
@@ -562,15 +587,22 @@ export async function loadNews() {
     const newsSeeded = await isTableSeeded("news");
     if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0 && !newsSeeded) {
       console.log("Supabase news table is empty. Seeding from local JSON...");
+      const availableCols = await getAvailableNewsColumns();
+      const hasImagesCol = availableCols.includes('images');
+
       for (const article of localNews) {
-        await supabase.from("news_sdn_bobong").insert({
+        const insertObj = {
           id: article.id,
           title: article.title,
           date: article.date,
           category: article.category,
           image: article.image,
           content: article.content
-        });
+        };
+        if (hasImagesCol) {
+          insertObj.images = article.images || (article.image ? [article.image] : []);
+        }
+        await supabase.from("news_sdn_bobong").insert(insertObj);
       }
       await markTableSeeded("news");
       return localNews;
@@ -587,7 +619,8 @@ export async function loadNews() {
         date: n.date,
         category: n.category,
         image: n.image,
-        content: n.content
+        content: n.content,
+        images: n.images ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) : (n.image ? [n.image] : [])
       }));
 
       newsList.sort((a, b) => getNewsSortKey(b) - getNewsSortKey(a));
@@ -618,15 +651,22 @@ export async function saveNews(newsList) {
 
   if (isSupabaseEnabled()) {
     try {
+      const availableCols = await getAvailableNewsColumns();
+      const hasImagesCol = availableCols.includes('images');
+
       for (const article of newsList) {
-        const { error } = await supabase.from("news_sdn_bobong").upsert({
+        const payload = {
           id: article.id,
           title: article.title,
           date: article.date,
           category: article.category,
           image: article.image,
           content: article.content
-        });
+        };
+        if (hasImagesCol) {
+          payload.images = article.images || (article.image ? [article.image] : []);
+        }
+        const { error } = await supabase.from("news_sdn_bobong").upsert(payload);
         if (error) throw error;
       }
 

@@ -261,6 +261,8 @@ export default function AdminDashboardClient({
   const [config, setConfig] = useState(initialConfig);
   const [newsList, setNewsList] = useState(initialNewsList);
   const [newsEditorKey, setNewsEditorKey] = useState(0);
+  const [newsPhotos, setNewsPhotos] = useState([]);
+  const [newsPhotoPreviews, setNewsPhotoPreviews] = useState([]);
   const [teachers, setTeachers] = useState(initialTeachers);
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [messages, setMessages] = useState(initialMessages);
@@ -2198,11 +2200,21 @@ export default function AdminDashboardClient({
     const form = e.target;
     const formData = new FormData(form);
 
-    const photoFile = formData.get('photo');
-    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
-      showToast('info', 'Sedang mengompresi ilustrasi berita...');
-      const compressed = await compressImage(photoFile);
-      formData.set('photo', compressed);
+    // Remove singular photo field
+    formData.delete('photo');
+
+    // Compress and append each multi-photo file
+    if (newsPhotos.length > 0) {
+      showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
+      for (let i = 0; i < newsPhotos.length; i++) {
+        try {
+          const compressed = await compressImage(newsPhotos[i]);
+          formData.append('photos', compressed, newsPhotos[i].name);
+        } catch (compressErr) {
+          console.error("Compression error:", compressErr);
+          formData.append('photos', newsPhotos[i]);
+        }
+      }
     }
 
     try {
@@ -2216,6 +2228,12 @@ export default function AdminDashboardClient({
         showToast('success', 'Berita baru berhasil diterbitkan!');
         setNewsList(prev => [data.article, ...prev]);
         form.reset();
+
+        // Reset news photos state and previews
+        setNewsPhotos([]);
+        newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
+        setNewsPhotoPreviews([]);
+
         setNewsEditorKey(prev => prev + 1);
         router.refresh();
       } else {
@@ -2581,22 +2599,43 @@ export default function AdminDashboardClient({
   };
 
 
-  const handleNewsPhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 1024 * 1024) {
-        alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
-        e.target.value = '';
-        return;
+  const handleNewsPhotosChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    const validFiles = [];
+    const validPreviews = [];
+    const allowed = ['png', 'jpg', 'jpeg'];
+
+    for (const file of files) {
+      if (file.size > 1.5 * 1024 * 1024) {
+        alert(`Berkas "${file.name}" terlalu besar! Maksimal ukuran berkas adalah 1.5MB.`);
+        continue;
       }
       const extension = file.name.split('.').pop().toLowerCase();
-      const allowed = ['png', 'jpg', 'jpeg'];
       if (!allowed.includes(extension)) {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
-        e.target.value = '';
-        return;
+        alert(`Jenis file untuk "${file.name}" tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.`);
+        continue;
       }
+      validFiles.push(file);
+      validPreviews.push(URL.createObjectURL(file));
     }
+
+    if (validFiles.length > 0) {
+      setNewsPhotos(prev => [...prev, ...validFiles]);
+      setNewsPhotoPreviews(prev => [...prev, ...validPreviews]);
+    }
+
+    // Reset input so user can re-upload if deleted
+    e.target.value = '';
+  };
+
+  const handleRemoveNewsPhoto = (index) => {
+    if (newsPhotoPreviews[index]) {
+      URL.revokeObjectURL(newsPhotoPreviews[index]);
+    }
+    setNewsPhotos(prev => prev.filter((_, i) => i !== index));
+    setNewsPhotoPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   // Computed states for PPDB Search, Filter, and Pagination
@@ -5663,19 +5702,93 @@ export default function AdminDashboardClient({
                       <option value="/images/news_rapat_komite.svg">Musyawarah / Komite (Biru/Orange)</option>
                     </select>
                     <div style={{ marginTop: '10px' }}>
-                      <label htmlFor="news_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1MB):</label>
+                      <label htmlFor="news_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1.5MB per berkas):</label>
                       <input
                         type="file"
                         id="news_photo"
-                        name="photo"
+                        name="photos"
+                        multiple
                         className="form-control"
                         accept="image/png, image/jpeg, image/jpg"
-                        onChange={handleNewsPhotoChange}
+                        onChange={handleNewsPhotosChange}
                         style={{ width: '100%' }}
                       />
-                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
-                        💡 <strong>Rekomendasi:</strong> Gunakan rasio landscape horizontal (16:9) agar tampilan spanduk dan galeri berita terlihat seimbang.
+                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px' }}>
+                        💡 <strong>Multi-Upload:</strong> Anda dapat memilih beberapa foto sekaligus untuk membuat galeri dokumentasi dalam satu postingan berita!
                       </p>
+
+                      {/* Glassmorphic Multi Photo Preview Area */}
+                      {newsPhotoPreviews.length > 0 && (
+                        <div style={{ 
+                          marginTop: '12px', 
+                          padding: '12px', 
+                          borderRadius: '8px', 
+                          background: 'rgba(255, 255, 255, 0.05)', 
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          backdropFilter: 'blur(10px)',
+                          WebkitBackdropFilter: 'blur(10px)',
+                          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+                        }}>
+                          <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            📸 Foto terpilih ({newsPhotoPreviews.length}):
+                          </p>
+                          <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))', 
+                            gap: '8px' 
+                          }}>
+                            {newsPhotoPreviews.map((previewUrl, index) => (
+                              <div key={index} style={{ 
+                                position: 'relative', 
+                                aspectRatio: '1/1', 
+                                borderRadius: '6px', 
+                                overflow: 'hidden',
+                                border: '1px solid rgba(255, 255, 255, 0.15)',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                              }}>
+                                <img 
+                                  src={previewUrl} 
+                                  alt={`Preview ${index}`} 
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveNewsPhoto(index)}
+                                  style={{
+                                    position: 'absolute',
+                                    top: '4px',
+                                    right: '4px',
+                                    width: '18px',
+                                    height: '18px',
+                                    borderRadius: '50%',
+                                    background: 'rgba(239, 68, 68, 0.9)',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    fontSize: '10px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                                    transition: 'background 0.2s, transform 0.2s',
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.target.style.background = '#ef4444';
+                                    e.target.style.transform = 'scale(1.1)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.target.style.background = 'rgba(239, 68, 68, 0.9)';
+                                    e.target.style.transform = 'none';
+                                  }}
+                                  title="Hapus foto ini"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -5703,7 +5816,23 @@ export default function AdminDashboardClient({
                           <img src={n.image} alt="" style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border-color)' }} />
                           <div style={{ minWidth: 0 }}>
                             <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--primary-dark)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{n.title}</h4>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.date} • {n.category}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.date} • {n.category}</span>
+                              {n.images && n.images.length > 1 && (
+                                <span style={{
+                                  fontSize: '0.65rem',
+                                  fontWeight: 600,
+                                  color: '#0284c7',
+                                  background: 'rgba(14, 165, 233, 0.1)',
+                                  border: '1px solid rgba(14, 165, 233, 0.2)',
+                                  padding: '1px 6px',
+                                  borderRadius: '4px',
+                                  lineHeight: '1.2'
+                                }}>
+                                  📸 {n.images.length} Foto
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                         <button onClick={() => handleNewsDelete(n.id)} type="button" className="btn-action-delete">Hapus</button>

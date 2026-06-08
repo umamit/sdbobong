@@ -364,7 +364,32 @@ export default async function Home() {
             {newsList.length > 0 ? (
               newsList.map((news, index) => (
                 <article key={news.id} className={`card reveal-on-scroll reveal-delay-${(index + 1) * 100}`}>
-                  <img src={news.image} alt={news.title} className="card-img" loading="lazy" decoding="async" />
+                  <div style={{ position: 'relative', overflow: 'hidden' }}>
+                    <img src={news.image} alt={news.title} className="card-img" loading="lazy" decoding="async" />
+                    {news.images && news.images.length > 1 && (
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '12px',
+                        right: '12px',
+                        background: 'rgba(15, 23, 42, 0.75)',
+                        backdropFilter: 'blur(8px)',
+                        color: '#fff',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        zIndex: 2,
+                        pointerEvents: 'none'
+                      }}>
+                        📸 +{news.images.length - 1} Foto
+                      </div>
+                    )}
+                  </div>
                   <div className="card-body">
                     <div className="card-meta">
                       <span>📅 {news.date}</span>
