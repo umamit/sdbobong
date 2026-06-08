@@ -38,6 +38,7 @@ export async function POST(request) {
     let rombel, uks, gudang, toilet, cuci_tangan;
     let force_local_cache;
     let maintenance_mode;
+    let allow_copy;
     let nama_humas, wa_humas, jabatan_humas, nip_humas;
     let nama_operator, wa_operator, jabatan_operator, nip_operator;
     let wa_floating, email_sekolah;
@@ -60,6 +61,7 @@ export async function POST(request) {
       cuci_tangan = body.cuci_tangan;
       force_local_cache = body.force_local_cache;
       maintenance_mode = body.maintenance_mode;
+      allow_copy = body.allow_copy;
       
       nama_humas = body.nama_humas;
       wa_humas = body.wa_humas;
@@ -91,6 +93,8 @@ export async function POST(request) {
         force_local_cache = formData.get('force_local_cache') === 'true';
       } else if (actionType === 'toggle_maintenance') {
         maintenance_mode = formData.get('maintenance_mode') === 'true';
+      } else if (actionType === 'toggle_allow_copy') {
+        allow_copy = formData.get('allow_copy') === 'true';
       } else if (actionType === 'contacts') {
         nama_humas = formData.get('nama_humas')?.toString().trim();
         wa_humas = formData.get('wa_humas')?.toString().trim();
@@ -131,6 +135,9 @@ export async function POST(request) {
     } else if (actionType === 'toggle_maintenance') {
       if (!config.stats) config.stats = {};
       config.stats.maintenance_mode = maintenance_mode === true;
+    } else if (actionType === 'toggle_allow_copy') {
+      if (!config.stats) config.stats = {};
+      config.stats.allow_copy = allow_copy === true;
     } else if (actionType === 'contacts') {
       config.ppdb_contacts = {
         nama_humas: nama_humas || '',
@@ -410,6 +417,7 @@ export async function POST(request) {
       else if (actionType === 'stats') details = 'Memperbarui statistik dasar dan sarana prasarana sekolah';
       else if (actionType === 'toggle_db') details = force_local_cache ? 'Menonaktifkan sinkronisasi Supabase (Paksa Mode Lokal)' : 'Mengaktifkan kembali sinkronisasi Supabase';
       else if (actionType === 'toggle_maintenance') details = config.stats?.maintenance_mode ? 'Mengaktifkan Mode Pemeliharaan (mengunci akses publik)' : 'Menonaktifkan Mode Pemeliharaan (membuka akses publik)';
+      else if (actionType === 'toggle_allow_copy') details = config.stats?.allow_copy ? 'Mengizinkan pengunjung menyalin teks di halaman publik' : 'Melarang pengunjung menyalin teks di halaman publik';
       else if (actionType === 'contacts') details = 'Memperbarui detail kontak PPDB humas dan operator sekolah';
       else if (actionType === 'hero_bg') details = 'Mengunggah dan mengubah media latar belakang (hero background)';
       else if (actionType === 'update_page_contents') details = `Memperbarui konten halaman informasi: ${pageName}`;

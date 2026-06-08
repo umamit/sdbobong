@@ -385,7 +385,7 @@ export default async function RootLayout({ children }) {
           }
 
           // Anti-cloning protection script for public pages
-          if (!window.location.pathname.startsWith('/admin')) {
+          if (${config.stats?.allow_copy === true ? 'false' : 'true'} && !window.location.pathname.startsWith('/admin')) {
             // 1. Prevent Right-Click
             document.addEventListener('contextmenu', function(e) {
               e.preventDefault();
@@ -431,6 +431,16 @@ export default async function RootLayout({ children }) {
             });
           }
         `}} />
+        {config.stats?.allow_copy === true && (
+          <style dangerouslySetInnerHTML={{ __html: `
+            html:not(.is-admin) {
+              -webkit-user-select: text !important;
+              -moz-user-select: text !important;
+              -ms-user-select: text !important;
+              user-select: text !important;
+            }
+          `}} />
+        )}
       </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: `
