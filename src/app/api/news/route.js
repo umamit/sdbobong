@@ -125,6 +125,88 @@ export async function POST(request) {
   }
 }
 
+export async function PUT(request) {
+  if (!(await checkAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const formData = await request.formData();
+    const id = formData.get('id')?.toString().trim();
+    const title = formData.get('title')?.toString().trim();
+    const date = formData.get('date')?.toString().trim();
+    const category = formData.get('category')?.toString().trim();
+    let image = formData.get('image')?.toString().trim();
+    const content = formData.get('content')?.toString().trim();
+
+    if (!id) {
+      return NextResponse.json({ error: "ID berita tidak ditentukan." }, { status: 400 });
+    }
+
+    if (!title || !date || !category || !content) {
+      return NextResponse.json({ error: "Semua kolom berita wajib diisi!" }, { status: 400 });
+    }
+
+    const newsList = await loadNews();
+    const newsIndex = newsList.findIndex(n => n.id === id);
+
+    if (newsIndex === -1) {
+      return NextResponse.json({ error: "Berita tidak ditemukan." }, { status: 404 });
+    }
+
+    // Process multiple photo uploads
+    const photoFiles = formData.getAll('photos');
+    let images = [];
+
+    if (photoFiles && photoFiles.length > 0) {
+      for (const file of photoFiles) {
+        if (file && file instanceof File && file.size > 0) {
+          const uploadedUrl = await handlePhotoUpload(file, 'news', ['png', 'jpg', 'jpeg']);
+          if (uploadedUrl === 'INVALID_TYPE') {
+            return NextResponse.json({ error: "Jenis file tidak valid! Hanya file PNG, JPG, dan JPEG yang diperbolehkan." }, { status: 400 });
+          } else if (uploadedUrl === 'ERROR') {
+            return NextResponse.json({ error: "Gagal mengunggah salah satu foto." }, { status: 500 });
+          } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
+            images.push(uploadedUrl);
+          }
+        }
+      }
+    }
+
+    // Set the cover image to the first uploaded photo if we have any new ones
+    if (images.length > 0) {
+      image = images[0];
+    } else {
+      // If no new images uploaded, keep current ones
+      image = image || newsList[newsIndex].image;
+      images = newsList[newsIndex].images || [image];
+    }
+
+    newsList[newsIndex].title = title;
+    newsList[newsIndex].date = date;
+    newsList[newsIndex].category = category;
+    newsList[newsIndex].image = image;
+    newsList[newsIndex].images = images;
+    newsList[newsIndex].content = content;
+
+    const saved = await saveNews(newsList);
+
+    if (saved) {
+      await createAuditLog('UPDATE_NEWS', `Memperbarui artikel berita sekolah: "${title}"`, request);
+      try {
+        revalidatePath('/', 'layout');
+      } catch (cacheErr) {
+        console.error("Cache revalidation failed in news PUT:", cacheErr);
+      }
+      return NextResponse.json({ success: true, article: newsList[newsIndex] });
+    } else {
+      return NextResponse.json({ error: "Gagal menyimpan perubahan berita." }, { status: 500 });
+    }
+  } catch (e) {
+    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+  }
+}
+
 export async function DELETE(request) {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

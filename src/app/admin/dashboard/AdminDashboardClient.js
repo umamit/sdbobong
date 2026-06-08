@@ -260,6 +260,7 @@ export default function AdminDashboardClient({
   const [records, setRecords] = useState(initialRecords);
   const [config, setConfig] = useState(initialConfig);
   const [newsList, setNewsList] = useState(initialNewsList);
+  const [editingNews, setEditingNews] = useState(null);
   const [newsEditorKey, setNewsEditorKey] = useState(0);
   const [newsPhotos, setNewsPhotos] = useState([]);
   const [newsPhotoPreviews, setNewsPhotoPreviews] = useState([]);
@@ -2244,6 +2245,88 @@ export default function AdminDashboardClient({
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
   };
+  
+  const handleNewsEditClick = (article) => {
+    setEditingNews(article);
+    setNewsEditorKey(prev => prev + 1);
+    // Reset any selected files/previews
+    setNewsPhotos([]);
+    newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
+    setNewsPhotoPreviews([]);
+
+    // Smooth scroll to news form
+    setTimeout(() => {
+      const formElement = document.getElementById('news_form_section');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
+  const handleNewsCancelEdit = () => {
+    setEditingNews(null);
+    setNewsEditorKey(prev => prev + 1);
+    // Reset any selected files/previews
+    setNewsPhotos([]);
+    newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
+    setNewsPhotoPreviews([]);
+  };
+
+  const handleNewsUpdate = async (e) => {
+    e.preventDefault();
+    if (!editingNews) return;
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // Append editingNews id
+    formData.append('id', editingNews.id);
+
+    // Remove singular photo field and default uncompressed photos field
+    formData.delete('photo');
+    formData.delete('photos');
+
+    // Compress and append each multi-photo file
+    if (newsPhotos.length > 0) {
+      showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
+      for (let i = 0; i < newsPhotos.length; i++) {
+        try {
+          const compressed = await compressImage(newsPhotos[i]);
+          formData.append('photos', compressed, newsPhotos[i].name);
+        } catch (compressErr) {
+          console.error("Compression error:", compressErr);
+          formData.append('photos', newsPhotos[i]);
+        }
+      }
+    }
+
+    try {
+      showToast('info', 'Sedang menyimpan perubahan berita...');
+      const res = await fetch('/api/news', {
+        method: 'PUT',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Perubahan berita berhasil disimpan!');
+        setNewsList(prev => prev.map(n => n.id === editingNews.id ? data.article : n));
+        setEditingNews(null);
+        form.reset();
+
+        // Reset news photos state and previews
+        setNewsPhotos([]);
+        newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
+        setNewsPhotoPreviews([]);
+
+        setNewsEditorKey(prev => prev + 1);
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan perubahan berita.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
 
   const handleNewsDelete = async (newsId) => {
     if (!confirm('Apakah Anda yakin ingin menghapus artikel berita ini?')) return;
@@ -3445,6 +3528,23 @@ export default function AdminDashboardClient({
             background-color: #ef4444;
             color: white;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+            transform: translateY(-1px);
+        }
+        .btn-action-edit {
+            background-color: #e0f2fe;
+            color: #0284c7;
+            border: 1px solid #bae6fd;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .btn-action-edit:hover {
+            background-color: #0284c7;
+            color: white;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
             transform: translateY(-1px);
         }
         .form-control {
@@ -5647,13 +5747,13 @@ export default function AdminDashboardClient({
           <section id="tab-news" className={`tab-pane ${activeTab === 'news' ? 'active' : ''}`}>
             <div className="news-cms-grid">
               {/* Form News */}
-              <div className="settings-card">
-                <h3>Tambah Berita / Kegiatan Baru</h3>
+              <div id="news_form_section" className="settings-card">
+                <h3>{editingNews ? 'Edit Berita / Kegiatan Sekolah' : 'Tambah Berita / Kegiatan Baru'}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-sm)' }}>
-                  Isi formulir untuk menerbitkan artikel berita terbaru mengenai aktivitas sekolah di halaman utama.
+                  Isi formulir untuk {editingNews ? 'memperbarui' : 'menerbitkan'} artikel berita terbaru mengenai aktivitas sekolah di halaman utama.
                 </p>
 
-                <form onSubmit={handleNewsAdd} encType="multipart/form-data">
+                <form onSubmit={editingNews ? handleNewsUpdate : handleNewsAdd} key={editingNews ? `edit-${editingNews.id}-${newsEditorKey}` : 'new'} encType="multipart/form-data">
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                     <label htmlFor="news_title" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Judul Berita *</label>
                     <input
@@ -5662,6 +5762,7 @@ export default function AdminDashboardClient({
                       name="title"
                       className="form-control"
                       placeholder="Contoh: Pembagian Rapor Semester Genap"
+                      defaultValue={editingNews ? editingNews.title : ''}
                       style={{ width: '100%' }}
                       required
                     />
@@ -5676,6 +5777,7 @@ export default function AdminDashboardClient({
                         name="date"
                         className="form-control"
                         placeholder="Contoh: 20 Jun 2026"
+                        defaultValue={editingNews ? editingNews.date : ''}
                         style={{ width: '100%' }}
                         required
                       />
@@ -5688,6 +5790,7 @@ export default function AdminDashboardClient({
                         name="category"
                         className="form-control"
                         placeholder="Contoh: Kegiatan, Prestasi"
+                        defaultValue={editingNews ? editingNews.category : ''}
                         style={{ width: '100%' }}
                         required
                       />
@@ -5696,7 +5799,7 @@ export default function AdminDashboardClient({
 
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                     <label htmlFor="news_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Pilih Ilustrasi Bawaan *</label>
-                    <select id="news_image" name="image" className="form-control" style={{ width: '100%' }} required>
+                    <select id="news_image" name="image" className="form-control" defaultValue={editingNews ? editingNews.image : '/images/news_hari_guru.svg'} style={{ width: '100%' }} required>
                       <option value="/images/news_hari_guru.svg">Hari Guru Nasional (Merah/Gold)</option>
                       <option value="/images/news_imunisasi.svg">Program Imunisasi / BIAS (Biru Medis)</option>
                       <option value="/images/news_kerja_bakti.svg">Sabtu Bersih / Lingkungan (Hijau Alam)</option>
@@ -5714,9 +5817,15 @@ export default function AdminDashboardClient({
                         onChange={handleNewsPhotosChange}
                         style={{ width: '100%' }}
                       />
-                      <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px' }}>
-                        💡 <strong>Multi-Upload:</strong> Anda dapat memilih beberapa foto sekaligus untuk membuat galeri dokumentasi dalam satu postingan berita!
-                      </p>
+                      {editingNews ? (
+                        <p style={{ fontSize: '0.75rem', color: '#0284c7', marginTop: '6px', marginBottom: '10px', fontWeight: 500 }}>
+                          ℹ️ <strong>Foto Saat Ini:</strong> Berita ini sudah memiliki {editingNews.images ? editingNews.images.length : 1} foto. Mengunggah foto baru di atas akan menggantikan galeri foto saat ini. Kosongkan jika ingin mempertahankan foto saat ini.
+                        </p>
+                      ) : (
+                        <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px' }}>
+                          💡 <strong>Multi-Upload:</strong> Anda dapat memilih beberapa foto sekaligus untuk membuat galeri dokumentasi dalam satu postingan berita!
+                        </p>
+                      )}
 
                       {/* Glassmorphic Multi Photo Preview Area */}
                       {newsPhotoPreviews.length > 0 && (
@@ -5795,10 +5904,17 @@ export default function AdminDashboardClient({
 
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                     <label htmlFor="news_content" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Isi Lengkap Artikel Berita *</label>
-                    <RichTextEditor key={newsEditorKey} placeholder="Tuliskan isi berita lengkap di sini... Anda bisa menebalkan teks, membuat daftar list, meratakan teks, serta menyisipkan tautan web." />
+                    <RichTextEditor key={newsEditorKey} defaultValue={editingNews ? editingNews.content : ''} placeholder="Tuliskan isi berita lengkap di sini... Anda bisa menebalkan teks, membuat daftar list, meratakan teks, serta menyisipkan tautan web." />
                   </div>
 
-                  <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', width: '100%', padding: '0.65rem' }}>📢 Terbitkan Berita</button>
+                  <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-xs)' }}>
+                    {editingNews && (
+                      <button type="button" onClick={handleNewsCancelEdit} className="btn" style={{ flex: 1, padding: '0.65rem', backgroundColor: '#64748b', color: '#ffffff', fontWeight: 600, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}>✕ Batal Edit</button>
+                    )}
+                    <button type="submit" className="btn btn-primary" style={{ flex: editingNews ? 2 : 1, padding: '0.65rem' }}>
+                      {editingNews ? '💾 Simpan Perubahan' : '📢 Terbitkan Berita'}
+                    </button>
+                  </div>
                 </form>
               </div>
 
@@ -5836,7 +5952,10 @@ export default function AdminDashboardClient({
                             </div>
                           </div>
                         </div>
-                        <button onClick={() => handleNewsDelete(n.id)} type="button" className="btn-action-delete">Hapus</button>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button onClick={() => handleNewsEditClick(n)} type="button" className="btn-action-edit">Edit</button>
+                          <button onClick={() => handleNewsDelete(n.id)} type="button" className="btn-action-delete">Hapus</button>
+                        </div>
                       </div>
                     ))
                   ) : (
