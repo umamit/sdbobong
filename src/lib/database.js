@@ -613,15 +613,22 @@ export async function loadNews() {
     }
 
     if (supabaseNews) {
-      const newsList = supabaseNews.map(n => ({
-        id: n.id,
-        title: n.title,
-        date: n.date,
-        category: n.category,
-        image: n.image,
-        content: n.content,
-        images: n.images ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) : (n.image ? [n.image] : [])
-      }));
+      const newsList = supabaseNews.map(n => {
+        const localArticle = localNews.find(ln => ln.id === n.id);
+        const localImages = localArticle ? localArticle.images : null;
+
+        return {
+          id: n.id,
+          title: n.title,
+          date: n.date,
+          category: n.category,
+          image: n.image,
+          content: n.content,
+          images: n.images 
+            ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) 
+            : (localImages && localImages.length > 0 ? localImages : (n.image ? [n.image] : []))
+        };
+      });
 
       newsList.sort((a, b) => getNewsSortKey(b) - getNewsSortKey(a));
 

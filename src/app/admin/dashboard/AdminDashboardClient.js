@@ -2200,8 +2200,9 @@ export default function AdminDashboardClient({
     const form = e.target;
     const formData = new FormData(form);
 
-    // Remove singular photo field
+    // Remove singular photo field and default uncompressed photos field
     formData.delete('photo');
+    formData.delete('photos');
 
     // Compress and append each multi-photo file
     if (newsPhotos.length > 0) {
