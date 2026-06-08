@@ -38,7 +38,16 @@ export default async function Berita() {
                         <span>🏷️ {news.category}</span>
                       </div>
                       <h3 className="card-title" style={{ fontSize: '1.3rem' }}>{news.title}</h3>
-                      <p className="card-text">{news.content}</p>
+                      <div 
+                        className="card-text rich-text-content" 
+                        dangerouslySetInnerHTML={{ __html: news.content }} 
+                        style={{
+                          fontSize: '0.95rem',
+                          lineHeight: '1.65',
+                          color: 'var(--text-muted)',
+                          marginTop: 'var(--space-xs)'
+                        }}
+                      />
                     </div>
                   </div>
                 </article>
@@ -51,6 +60,48 @@ export default async function Berita() {
           </div>
         </div>
       </section>
+
+      {/* Scoped CSS styling for rich text rendering */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .rich-text-content p {
+          margin-bottom: 0.85rem;
+          line-height: 1.65;
+        }
+        .rich-text-content p:last-child {
+          margin-bottom: 0;
+        }
+        .rich-text-content ul, .rich-text-content ol {
+          padding-left: 20px;
+          margin-bottom: 0.85rem;
+        }
+        .rich-text-content ul {
+          list-style-type: disc;
+        }
+        .rich-text-content ol {
+          list-style-type: decimal;
+        }
+        .rich-text-content h3 {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: var(--primary-dark, #0b3c5d);
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        .rich-text-content h4 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--primary-dark, #0b3c5d);
+          margin-top: 0.85rem;
+          margin-bottom: 0.4rem;
+        }
+        .rich-text-content a {
+          color: var(--primary, #3b82f6);
+          text-decoration: underline;
+        }
+        .rich-text-content a:hover {
+          color: var(--primary-dark, #0b3c5d);
+        }
+      `}} />
 
       {/* CTA ke Galeri */}
       <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)', borderTop: '1px solid var(--border-color)' }}>

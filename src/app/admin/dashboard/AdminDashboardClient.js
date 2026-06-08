@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
+import RichTextEditor from '../../../components/RichTextEditor';
 
 // Client-side image compression using HTML5 Canvas (Zero-dependency, lightweight)
 const compressImage = (file, maxW = 1920, maxH = 1080, quality = 0.8) => {
@@ -259,6 +260,7 @@ export default function AdminDashboardClient({
   const [records, setRecords] = useState(initialRecords);
   const [config, setConfig] = useState(initialConfig);
   const [newsList, setNewsList] = useState(initialNewsList);
+  const [newsEditorKey, setNewsEditorKey] = useState(0);
   const [teachers, setTeachers] = useState(initialTeachers);
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [messages, setMessages] = useState(initialMessages);
@@ -2186,6 +2188,7 @@ export default function AdminDashboardClient({
         showToast('success', 'Berita baru berhasil diterbitkan!');
         setNewsList(prev => [data.article, ...prev]);
         form.reset();
+        setNewsEditorKey(prev => prev + 1);
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan berita baru.');
@@ -5608,15 +5611,7 @@ export default function AdminDashboardClient({
 
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                     <label htmlFor="news_content" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Isi Lengkap Artikel Berita *</label>
-                    <textarea
-                      id="news_content"
-                      name="content"
-                      rows={6}
-                      className="form-control"
-                      placeholder="Tuliskan berita lengkap di sini..."
-                      style={{ width: '100%', resize: 'vertical' }}
-                      required
-                    ></textarea>
+                    <RichTextEditor key={newsEditorKey} placeholder="Tuliskan isi berita lengkap di sini... Anda bisa menebalkan teks, membuat daftar list, meratakan teks, serta menyisipkan tautan web." />
                   </div>
 
                   <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', width: '100%', padding: '0.65rem' }}>📢 Terbitkan Berita</button>

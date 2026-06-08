@@ -372,7 +372,7 @@ export default async function Home() {
                       <span>🏷️ {news.category}</span>
                     </div>
                     <h3 className="card-title"><Link href="/berita">{news.title}</Link></h3>
-                    <p className="card-text">{news.content.substring(0, 100)}...</p>
+                    <p className="card-text">{stripHtml(news.content).substring(0, 100)}...</p>
                   </div>
                 </article>
               ))
@@ -388,4 +388,10 @@ export default async function Home() {
       </section>
     </>
   );
+}
+
+// Utility function to strip HTML tags for a clean text preview
+function stripHtml(html) {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ');
 }
