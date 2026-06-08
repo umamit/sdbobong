@@ -124,7 +124,7 @@ export default function RichTextEditor({ defaultValue = '', placeholder = 'Tulis
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      minHeight: '340px',
+      minHeight: '500px',
       position: 'relative',
       boxShadow: 'var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05))',
       transition: 'border-color var(--transition-normal), box-shadow var(--transition-normal)'
@@ -309,7 +309,7 @@ export default function RichTextEditor({ defaultValue = '', placeholder = 'Tulis
           color: 'var(--text-main, #1e293b)',
           fontSize: '0.95rem',
           lineHeight: '1.6',
-          minHeight: '260px',
+          minHeight: '420px',
           overflowY: 'auto'
         }}
         data-placeholder={placeholder}

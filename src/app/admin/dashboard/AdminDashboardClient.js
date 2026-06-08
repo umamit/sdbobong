@@ -3465,6 +3465,9 @@ export default function AdminDashboardClient({
             .news-cms-grid {
                 grid-template-columns: 1.1fr 0.9fr;
             }
+            .news-cms-grid.news-stacked-layout {
+                grid-template-columns: 1fr;
+            }
         }
         .btn {
             border-radius: var(--radius-md);
@@ -5745,7 +5748,7 @@ export default function AdminDashboardClient({
 
           {/* ================= TAB: NEWS MANAGEMENT ================= */}
           <section id="tab-news" className={`tab-pane ${activeTab === 'news' ? 'active' : ''}`}>
-            <div className="news-cms-grid">
+            <div className="news-cms-grid news-stacked-layout">
               {/* Form News */}
               <div id="news_form_section" className="settings-card">
                 <h3>{editingNews ? 'Edit Berita / Kegiatan Sekolah' : 'Tambah Berita / Kegiatan Baru'}</h3>
