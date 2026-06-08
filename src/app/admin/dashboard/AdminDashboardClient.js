@@ -6,6 +6,7 @@ import { AdminDashboardProvider, useAdminDashboard } from './AdminDashboardConte
 import Sidebar from '../../../components/admin/shared/Sidebar';
 import Header from '../../../components/admin/shared/Header';
 import Modals from '../../../components/admin/shared/Modals';
+import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
 
 // Loading Spinner for lazy-loaded tabs
 function TabLoadingSpinner() {
@@ -95,7 +96,7 @@ const SecurityTab = dynamic(() => import('../../../components/admin/tabs/Securit
 });
 
 function AdminDashboardShell() {
-  const { activeTab, isDetailModalOpen } = useAdminDashboard();
+  const { activeTab, isDetailModalOpen, isProcessing, processingMessage } = useAdminDashboard();
 
   return (
     <div className={`admin-dashboard-layout ${isDetailModalOpen ? 'print-detail-open' : ''}`}>
@@ -1765,6 +1766,7 @@ function AdminDashboardShell() {
       </div>
       
       <Modals />
+      <PremiumLoadingOverlay active={isProcessing} message={processingMessage} />
     </div>
   );
 }
