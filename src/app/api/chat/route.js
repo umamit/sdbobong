@@ -5,6 +5,25 @@ import { loadWebConfig, loadTeachers, loadAchievements, supabase, isSupabaseEnab
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
+  let latestMessage = "";
+  let config = {};
+  let stats = {};
+  let profil = {};
+  let faqs = [];
+  let downloads = [];
+  let npsn = "60200589";
+  let statusSekolah = "Negeri";
+  let akreditasi = "B (Baik)";
+  let kurikulum = "Kurikulum Merdeka";
+  let alamat = "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
+  let skPendirian = "04 Oktober 1971 (SK: 420/04/10/1971)";
+  let kepemilikanLahan = "Pemerintah Daerah Kabupaten Pulau Taliabu";
+  let namaHumas = "Ibu Husnita Usman, M.Pd.";
+  let waHumas = "6281234567890";
+  let namaOperator = "Bapak Kasmudin";
+  let waOperator = "6281234567890";
+  let emailSekolah = "sdn.bobong.taliabu@gmail.com";
+
   try {
     const body = await req.json();
     const { messages } = body;
@@ -14,34 +33,35 @@ export async function POST(req) {
     }
 
     // Ambil pesan terbaru dari pengguna
-    const latestMessage = messages[messages.length - 1]?.content || "";
+    latestMessage = messages[messages.length - 1]?.content || "";
 
     // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel
-    const [config, teachersList, achievementsList] = await Promise.all([
+    const [dbConfig, teachersList, achievementsList] = await Promise.all([
       loadWebConfig(),
       loadTeachers(),
       loadAchievements()
     ]);
 
+    config = dbConfig || {};
     const contacts = config.ppdb_contacts || {};
-    const stats = config.stats || {};
-    const profil = stats.page_contents?.profil || {};
-    const faqs = config.faqs || [];
-    const downloads = config.downloads || [];
+    stats = config.stats || {};
+    profil = stats.page_contents?.profil || {};
+    faqs = config.faqs || [];
+    downloads = config.downloads || [];
 
     // Data default fallback jika data dinamis kosong
-    const npsn = profil.npsn || "60200589";
-    const statusSekolah = profil.status_sekolah || "Negeri";
-    const akreditasi = profil.akreditasi || "B (Baik)";
-    const kurikulum = profil.kurikulum_operasional || "Kurikulum Merdeka";
-    const alamat = profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
-    const skPendirian = profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)";
-    const kepemilikanLahan = profil.kepemilikan_lahan || "Pemerintah Daerah Kabupaten Pulau Taliabu";
-    const namaHumas = contacts.nama_humas || "Ibu Husnita Usman, M.Pd.";
-    const waHumas = contacts.wa_humas || "6281234567890";
-    const namaOperator = contacts.nama_operator || "Bapak Kasmudin";
-    const waOperator = contacts.wa_operator || "6281234567890";
-    const emailSekolah = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
+    if (profil.npsn) npsn = profil.npsn;
+    if (profil.status_sekolah) statusSekolah = profil.status_sekolah;
+    if (profil.akreditasi) akreditasi = profil.akreditasi;
+    if (profil.kurikulum_operasional) kurikulum = profil.kurikulum_operasional;
+    if (profil.alamat_lengkap) alamat = profil.alamat_lengkap;
+    if (profil.sk_pendirian) skPendirian = profil.sk_pendirian;
+    if (profil.kepemilikan_lahan) kepemilikanLahan = profil.kepemilikan_lahan;
+    if (contacts.nama_humas) namaHumas = contacts.nama_humas;
+    if (contacts.wa_humas) waHumas = contacts.wa_humas;
+    if (contacts.nama_operator) namaOperator = contacts.nama_operator;
+    if (contacts.wa_operator) waOperator = contacts.wa_operator;
+    if (contacts.email_sekolah) emailSekolah = contacts.email_sekolah;
 
     // 2. Cek apakah GEMINI_API_KEY tersedia di environment
     const apiKey = process.env.GEMINI_API_KEY;
@@ -185,25 +205,55 @@ ${ragContext || "(Tidak ada dokumen tambahan spesifik yang terdeteksi untuk pert
       parts: [{ text: m.content }]
     }));
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: contents,
-      config: {
-        systemInstruction: systemInstruction,
-        temperature: 0.7,
-        maxOutputTokens: 800,
+    // Mencoba model-model berbeda secara estafet jika terjadi kendala high demand / quota limit
+    let response;
+    let success = false;
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+    let lastError = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`Attempting to generate content using model: ${modelName}`);
+        response = await ai.models.generateContent({
+          model: modelName,
+          contents: contents,
+          config: {
+            systemInstruction: systemInstruction,
+            temperature: 0.7,
+            maxOutputTokens: 800,
+          }
+        });
+        success = true;
+        break;
+      } catch (err) {
+        console.warn(`⚠️ Model ${modelName} failed:`, err.message || err);
+        lastError = err;
       }
-    });
+    }
+
+    if (!success) {
+      throw lastError || new Error("Semua model Gemini gagal merespons.");
+    }
 
     const reply = response.text || "Maaf, saya tidak dapat merumuskan jawaban saat ini. Silakan coba lagi.";
     return NextResponse.json({ reply });
 
   } catch (error) {
-    console.error("Error in Aim AI Chat Route:", error);
-    return NextResponse.json({ 
-      error: "Terjadi kesalahan internal pada server asisten.",
-      details: error.message 
-    }, { status: 500 });
+    console.error("⚠️ Error calling Gemini API in chat route. Falling back to local responder:", error.message || error);
+    try {
+      const reply = generateFallbackResponse(latestMessage, {
+        npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian,
+        namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
+        stats, faqs, downloads
+      });
+      return NextResponse.json({ reply });
+    } catch (fallbackError) {
+      console.error("❌ Fatal fallback error:", fallbackError);
+      return NextResponse.json({ 
+        error: "Terjadi kesalahan internal pada server asisten.",
+        details: error.message 
+      }, { status: 500 });
+    }
   }
 }
 
