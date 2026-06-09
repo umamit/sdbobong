@@ -3324,9 +3324,10 @@ footer {
 }
 
 .login-logo {
+    display: block;
+    margin: 0 auto var(--space-xs) auto;
     width: 76px;
     height: 76px;
-    margin-bottom: var(--space-xs);
     filter: drop-shadow(0 0 16px rgba(11, 91, 139, 0.45));
     transition: transform var(--transition-normal);
 }
