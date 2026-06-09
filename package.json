@@ -8,7 +8,6 @@
     "start": "next start -p 5001"
   },
   "dependencies": {
-    "@google/genai": "^2.8.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
     "@vercel/speed-insights": "^2.0.0",
