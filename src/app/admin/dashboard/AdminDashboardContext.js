@@ -602,6 +602,8 @@ export function AdminDashboardProvider({
   };
 
   const handlePageContentsSave = async (pageName, updatedData, fileFields = {}) => {
+    setIsProcessing(true);
+    setProcessingMessage(`Menyimpan konten halaman ${pageName.toUpperCase()}...`);
     try {
       const formData = new FormData();
       formData.append('action_type', 'update_page_contents');
@@ -638,6 +640,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -1990,57 +1994,60 @@ export function AdminDashboardProvider({
       return;
     }
 
-    // Client-side validation for video duration
-    if (file.type.startsWith('video/')) {
-      const checkVideoDuration = () => {
-        return new Promise((resolve) => {
-          const video = document.createElement('video');
-          video.preload = 'metadata';
-          video.onloadedmetadata = () => {
-            window.URL.revokeObjectURL(video.src);
-            resolve(video.duration);
-          };
-          video.onerror = () => {
-            resolve(-1);
-          };
-          video.src = window.URL.createObjectURL(file);
-        });
-      };
-
-      const duration = await checkVideoDuration();
-      if (duration === -1) {
-        showToast('danger', 'Format video tidak terbaca atau rusak.');
-        return;
-      }
-      if (duration > 10.5) { // 10.5 second buffer
-        showToast('danger', `Durasi video adalah ${duration.toFixed(1)} detik. Maksimal durasi video yang diperbolehkan adalah 10 detik!`);
-        return;
-      }
-
-      // Friendly educational warning for large videos > 3MB
-      if (file.size > 3 * 1024 * 1024) {
-        showToast('warning', 'Pemberitahuan: Ukuran berkas video cukup besar (>3MB). Sangat disarankan untuk mengompresi video terlebih dahulu sebelum mengunggah agar halaman beranda tetap ringan dimuat oleh pengunjung.');
-      }
-    }
-
-    let uploadFile = file;
-    if (file.type.startsWith('image/')) {
-      showToast('info', 'Sedang mengompresi gambar latar belakang...');
-      uploadFile = await compressImage(file);
-    }
-
-    // Limit maximum file size (20MB for video, 2MB for image after compression)
-    const maxSize = uploadFile.type.startsWith('video/') ? 20 * 1024 * 1024 : 2 * 1024 * 1024;
-    if (uploadFile.size > maxSize) {
-      const sizeLabel = uploadFile.type.startsWith('video/') ? '20MB' : '2MB';
-      showToast('danger', `Ukuran berkas melebihi batas maksimal (${sizeLabel}). Silakan kompresi berkas terlebih dahulu.`);
-      return;
-    }
-
-    const formData = new FormData(form);
-    formData.set('hero_bg_image', uploadFile);
+    setIsProcessing(true);
+    setProcessingMessage('Memproses berkas latar belakang...');
 
     try {
+      // Client-side validation for video duration
+      if (file.type.startsWith('video/')) {
+        const checkVideoDuration = () => {
+          return new Promise((resolve) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+              window.URL.revokeObjectURL(video.src);
+              resolve(video.duration);
+            };
+            video.onerror = () => {
+              resolve(-1);
+            };
+            video.src = window.URL.createObjectURL(file);
+          });
+        };
+
+        const duration = await checkVideoDuration();
+        if (duration === -1) {
+          showToast('danger', 'Format video tidak terbaca atau rusak.');
+          return;
+        }
+        if (duration > 10.5) { // 10.5 second buffer
+          showToast('danger', `Durasi video adalah ${duration.toFixed(1)} detik. Maksimal durasi video yang diperbolehkan adalah 10 detik!`);
+          return;
+        }
+
+        // Friendly educational warning for large videos > 3MB
+        if (file.size > 3 * 1024 * 1024) {
+          showToast('warning', 'Pemberitahuan: Ukuran berkas video cukup besar (>3MB). Sangat disarankan untuk mengompresi video terlebih dahulu sebelum mengunggah agar halaman beranda tetap ringan dimuat oleh pengunjung.');
+        }
+      }
+
+      let uploadFile = file;
+      if (file.type.startsWith('image/')) {
+        showToast('info', 'Sedang mengompresi gambar latar belakang...');
+        uploadFile = await compressImage(file);
+      }
+
+      // Limit maximum file size (20MB for video, 2MB for image after compression)
+      const maxSize = uploadFile.type.startsWith('video/') ? 20 * 1024 * 1024 : 2 * 1024 * 1024;
+      if (uploadFile.size > maxSize) {
+        const sizeLabel = uploadFile.type.startsWith('video/') ? '20MB' : '2MB';
+        showToast('danger', `Ukuran berkas melebihi batas maksimal (${sizeLabel}). Silakan kompresi berkas terlebih dahulu.`);
+        return;
+      }
+
+      const formData = new FormData(form);
+      formData.set('hero_bg_image', uploadFile);
+
       showToast('info', 'Sedang mengunggah berkas...');
       const res = await fetch('/api/config', {
         method: 'POST',
@@ -2057,6 +2064,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -2207,6 +2216,9 @@ export function AdminDashboardProvider({
 
   const handleNewsAdd = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
+    setProcessingMessage('Mempublikasikan berita baru...');
+    
     const form = e.target;
     const formData = new FormData(form);
 
@@ -2214,25 +2226,25 @@ export function AdminDashboardProvider({
     formData.delete('photo');
     formData.delete('photos');
 
-    // Compress and append each multi-photo file
-    if (newsPhotos.length > 0) {
-      showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
-      for (let i = 0; i < newsPhotos.length; i++) {
-        try {
-          const compressed = await compressImage(newsPhotos[i]);
-          formData.append('photos', compressed, newsPhotos[i].name);
-        } catch (compressErr) {
-          console.error("Compression error:", compressErr);
-          formData.append('photos', newsPhotos[i]);
+    try {
+      // Compress and append each multi-photo file
+      if (newsPhotos.length > 0) {
+        showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
+        for (let i = 0; i < newsPhotos.length; i++) {
+          try {
+            const compressed = await compressImage(newsPhotos[i]);
+            formData.append('photos', compressed, newsPhotos[i].name);
+          } catch (compressErr) {
+            console.error("Compression error:", compressErr);
+            formData.append('photos', newsPhotos[i]);
+          }
         }
       }
-    }
 
-    console.log("=== formData.getAll('photos') di frontend (POST) ===");
-    console.log(formData.getAll('photos'));
-    console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
+      console.log("=== formData.getAll('photos') di frontend (POST) ===");
+      console.log(formData.getAll('photos'));
+      console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
 
-    try {
       showToast('info', 'Sedang mempublikasikan berita...');
       const res = await fetch('/api/news', {
         method: 'POST',
@@ -2256,6 +2268,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
   
@@ -2289,6 +2303,9 @@ export function AdminDashboardProvider({
     e.preventDefault();
     if (!editingNews) return;
 
+    setIsProcessing(true);
+    setProcessingMessage('Menyimpan perubahan berita...');
+
     const form = e.target;
     const formData = new FormData(form);
 
@@ -2299,25 +2316,25 @@ export function AdminDashboardProvider({
     formData.delete('photo');
     formData.delete('photos');
 
-    // Compress and append each multi-photo file
-    if (newsPhotos.length > 0) {
-      showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
-      for (let i = 0; i < newsPhotos.length; i++) {
-        try {
-          const compressed = await compressImage(newsPhotos[i]);
-          formData.append('photos', compressed, newsPhotos[i].name);
-        } catch (compressErr) {
-          console.error("Compression error:", compressErr);
-          formData.append('photos', newsPhotos[i]);
+    try {
+      // Compress and append each multi-photo file
+      if (newsPhotos.length > 0) {
+        showToast('info', `Sedang mengompresi ${newsPhotos.length} foto berita...`);
+        for (let i = 0; i < newsPhotos.length; i++) {
+          try {
+            const compressed = await compressImage(newsPhotos[i]);
+            formData.append('photos', compressed, newsPhotos[i].name);
+          } catch (compressErr) {
+            console.error("Compression error:", compressErr);
+            formData.append('photos', newsPhotos[i]);
+          }
         }
       }
-    }
 
-    console.log("=== formData.getAll('photos') di frontend (PUT) ===");
-    console.log(formData.getAll('photos'));
-    console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
+      console.log("=== formData.getAll('photos') di frontend (PUT) ===");
+      console.log(formData.getAll('photos'));
+      console.log("Jumlah file yang akan dikirim (photos):", formData.getAll('photos').length);
 
-    try {
       showToast('info', 'Sedang menyimpan perubahan berita...');
       const res = await fetch('/api/news', {
         method: 'PUT',
@@ -2342,6 +2359,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -2366,6 +2385,9 @@ export function AdminDashboardProvider({
 
   const handleTeacherAdd = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
+    setProcessingMessage('Menambahkan data guru & staf...');
+
     const form = e.target;
     const formData = new FormData(form);
 
@@ -2375,14 +2397,14 @@ export function AdminDashboardProvider({
       formData.set('image', teacherImageUrl);
     }
 
-    const photoFile = formData.get('photo');
-    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
-      showToast('info', 'Sedang mengompresi foto guru...');
-      const compressed = await compressImage(photoFile);
-      formData.set('photo', compressed);
-    }
-
     try {
+      const photoFile = formData.get('photo');
+      if (photoFile && photoFile instanceof File && photoFile.size > 0) {
+        showToast('info', 'Sedang mengompresi foto guru...');
+        const compressed = await compressImage(photoFile);
+        formData.set('photo', compressed);
+      }
+
       showToast('info', 'Sedang menyimpan data guru...');
       const res = await fetch('/api/teachers', {
         method: 'POST',
@@ -2403,6 +2425,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -2662,6 +2686,9 @@ export function AdminDashboardProvider({
 
   const handleTeacherUpdateSubmit = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
+    setProcessingMessage('Memperbarui data guru & staf...');
+
     const form = e.target;
     const formData = new FormData(form);
     formData.set('id', editTeacherId);
@@ -2672,14 +2699,14 @@ export function AdminDashboardProvider({
       formData.set('image', editTeacherImageUrl);
     }
 
-    const photoFile = formData.get('photo');
-    if (photoFile && photoFile instanceof File && photoFile.size > 0) {
-      showToast('info', 'Sedang mengompresi foto guru...');
-      const compressed = await compressImage(photoFile);
-      formData.set('photo', compressed);
-    }
-
     try {
+      const photoFile = formData.get('photo');
+      if (photoFile && photoFile instanceof File && photoFile.size > 0) {
+        showToast('info', 'Sedang mengompresi foto guru...');
+        const compressed = await compressImage(photoFile);
+        formData.set('photo', compressed);
+      }
+
       showToast('info', 'Sedang memperbarui data guru...');
       const res = await fetch('/api/teachers', {
         method: 'PUT',
@@ -2696,6 +2723,8 @@ export function AdminDashboardProvider({
       }
     } catch (err) {
       showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
