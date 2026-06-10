@@ -53,18 +53,19 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   const syarat_usia = ppdbConfig.syarat_usia || "Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli 2026. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.";
   
   const syarat_berkas = ppdbConfig.syarat_berkas || [
-    "Scan/Fotokopi Akta Kelahiran calon siswa.",
-    "Scan/Fotokopi Kartu Keluarga (KK) terbaru.",
-    "Scan/Fotokopi KTP Orang Tua (Ayah dan Ibu / Wali).",
-    "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar (jika tatap muka).",
-    "Mengisi formulir pendaftaran resmi."
+    "Scan Akta Kelahiran asli (Format PDF, maks. 500KB) *",
+    "Scan Kartu Keluarga (KK) terbaru asli (Format PDF, maks. 500KB) *",
+    "Scan KTP Orang Tua (Ayah & Ibu dijadikan 1 file PDF, maks. 500KB) *",
+    "Scan SPTJM (Surat Pertanggungjawaban Mutlak) asli (Format PDF, maks. 500KB) *",
+    "Scan KIP / PKH asli (Format PDF, maks. 500KB) (Opsional jika memiliki)",
+    "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar (untuk keperluan fisik/tatap muka)."
   ];
 
   const alur_steps = ppdbConfig.alur_steps || [
-    { num: "1", title: "Persiapan Dokumen", desc: "Orang tua menyiapkan scan/fotokopi berkas persyaratan (Akta Lahir, KK, KTP)." },
-    { num: "2", title: "Pengisian Formulir", desc: "Klik tombol Daftar Daring di bawah, atau datang langsung ke sekolah untuk dibantu operator." },
-    { num: "3", title: "Verifikasi Berkas", desc: "Panitia PPDB SD Negeri Bobong memeriksa berkas fisik atau unggahan berkas digital." },
-    { num: "4", title: "Pengumuman Kelulusan", desc: "Pengumuman siswa yang lolos seleksi dapat diakses di papan sekolah atau via grup WhatsApp." }
+    { num: "1", title: "Persiapan Dokumen", desc: "Orang tua menyiapkan scan berkas persyaratan asli dalam format PDF (masing-masing maks. 500KB)." },
+    { num: "2", title: "Pengisian Formulir", desc: "Klik tombol Daftar Daring di bawah untuk mengisi form dan langsung mengunggah file PDF berkas." },
+    { num: "3", title: "Verifikasi Berkas", desc: "Panitia PPDB memeriksa kelengkapan isian formulir serta keabsahan berkas PDF yang diunggah." },
+    { num: "4", title: "Pengumuman Kelulusan", desc: "Pengumuman siswa lolos seleksi dapat diakses di gerbang sekolah, website, atau via koordinasi WhatsApp." }
   ];
 
   const faqData = ppdbConfig.faq || [
