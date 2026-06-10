@@ -156,9 +156,9 @@ export default function PagesTab() {
                       {/* Preview */}
                       <div style={{ flex: '1', minWidth: '200px' }}>
                         <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
-                        {config.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background) ? (
+                        {config?.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config?.stats?.hero_background) ? (
                           <video 
-                            src={config.stats.hero_background}
+                            src={config?.stats?.hero_background}
                             autoPlay
                             loop
                             muted
@@ -178,7 +178,7 @@ export default function PagesTab() {
                             height: '150px', 
                             borderRadius: 'var(--radius-md)', 
                             border: '1px solid var(--border-color)', 
-                            backgroundImage: `url('${config.stats?.hero_background || "/images/hero_school.svg"}')`, 
+                            backgroundImage: `url('${config?.stats?.hero_background || "/images/hero_school.svg"}')`, 
                             backgroundSize: 'cover', 
                             backgroundPosition: 'center',
                             backgroundColor: '#e5e7eb'
@@ -1567,7 +1567,7 @@ export default function PagesTab() {
                       Konfigurasikan nama, jabatan, dan nomor WhatsApp panitia PPDB yang akan ditampilkan pada portal PPDB utama publik.
                     </p>
 
-                    {(!config.ppdb_contacts?.nama_humas || !config.ppdb_contacts?.wa_humas || !config.ppdb_contacts?.nama_operator || !config.ppdb_contacts?.wa_operator) && (
+                    {(!config?.ppdb_contacts?.nama_humas || !config?.ppdb_contacts?.wa_humas || !config?.ppdb_contacts?.nama_operator || !config?.ppdb_contacts?.wa_operator) && (
                       <div style={{
                         backgroundColor: '#FDF2F2',
                         color: '#9B1C1C',
@@ -1582,7 +1582,7 @@ export default function PagesTab() {
                       </div>
                     )}
 
-                    <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config.ppdb_contacts) : 'empty'}>
+                    <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config?.ppdb_contacts) : 'empty'}>
                       <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
                         {/* Humas */}
                         <div>
@@ -1594,7 +1594,7 @@ export default function PagesTab() {
                               id="nama_humas"
                               name="nama_humas"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.nama_humas || ''}
+                              defaultValue={config?.ppdb_contacts?.nama_humas || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Ibu Husnita Usman, M.Pd."
                             />
@@ -1606,7 +1606,7 @@ export default function PagesTab() {
                               id="jabatan_humas"
                               name="jabatan_humas"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.jabatan_humas || ''}
+                              defaultValue={config?.ppdb_contacts?.jabatan_humas || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Pendidik Bidang Studi / Humas"
                             />
@@ -1634,7 +1634,7 @@ export default function PagesTab() {
                               id="wa_humas"
                               name="wa_humas"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.wa_humas || ''}
+                              defaultValue={config?.ppdb_contacts?.wa_humas || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: 6281234567890"
                             />
@@ -1651,7 +1651,7 @@ export default function PagesTab() {
                               id="nama_operator"
                               name="nama_operator"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.nama_operator || ''}
+                              defaultValue={config?.ppdb_contacts?.nama_operator || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Bapak Kasmudin"
                             />
@@ -1663,7 +1663,7 @@ export default function PagesTab() {
                               id="jabatan_operator"
                               name="jabatan_operator"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.jabatan_operator || ''}
+                              defaultValue={config?.ppdb_contacts?.jabatan_operator || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Operator Sekolah"
                             />
@@ -1691,7 +1691,7 @@ export default function PagesTab() {
                               id="wa_operator"
                               name="wa_operator"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.wa_operator || ''}
+                              defaultValue={config?.ppdb_contacts?.wa_operator || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: 6281234567890"
                             />
@@ -1714,7 +1714,7 @@ export default function PagesTab() {
                               id="wa_floating"
                               name="wa_floating"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.wa_floating || ''}
+                              defaultValue={config?.ppdb_contacts?.wa_floating || ''}
                               style={{ width: '100%' }}
                               placeholder="Contoh: 6281234567890"
                             />
@@ -1726,7 +1726,7 @@ export default function PagesTab() {
                               id="email_sekolah"
                               name="email_sekolah"
                               className="form-control"
-                              defaultValue={config.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}
+                              defaultValue={config?.ppdb_contacts?.email_sekolah || 'sdn.bobong.taliabu@gmail.com'}
                               style={{ width: '100%' }}
                               placeholder="Contoh: sdn.bobong.taliabu@gmail.com"
                               required

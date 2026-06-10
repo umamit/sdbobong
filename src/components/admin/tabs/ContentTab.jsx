@@ -18,10 +18,10 @@ export default function ContentTab() {
     <section id="tab-content" className={`tab-pane ${activeTab === 'content' ? 'active' : ''}`}>
             <div className="settings-grid">
               {/* Mode Pemeliharaan (Maintenance Mode) */}
-              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config.stats?.maintenance_mode ? '#f59e0b' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
+              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config?.stats?.maintenance_mode ? '#f59e0b' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
                   <div style={{ flex: '1', minWidth: '280px' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config.stats?.maintenance_mode ? '#f59e0b' : 'var(--text-color)', transition: 'color 0.3s' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config?.stats?.maintenance_mode ? '#f59e0b' : 'var(--text-color)', transition: 'color 0.3s' }}>
                       🛠️ Mode Pemeliharaan (Maintenance Mode)
                     </h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
@@ -32,22 +32,22 @@ export default function ContentTab() {
                     <label style={{ display: 'inline-block', position: 'relative', width: '50px', height: '28px', cursor: 'pointer' }}>
                       <input
                         type="checkbox"
-                        checked={!!config.stats?.maintenance_mode}
+                        checked={!!config?.stats?.maintenance_mode}
                         onChange={handleMaintenanceModeToggle}
                         style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
                       />
                       <span style={{
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundColor: config.stats?.maintenance_mode ? '#f59e0b' : '#ccc',
+                        backgroundColor: config?.stats?.maintenance_mode ? '#f59e0b' : '#ccc',
                         transition: '0.4s',
                         borderRadius: '34px',
-                        boxShadow: config.stats?.maintenance_mode ? '0 0 10px rgba(245, 158, 11, 0.4)' : 'none'
+                        boxShadow: config?.stats?.maintenance_mode ? '0 0 10px rgba(245, 158, 11, 0.4)' : 'none'
                       }}>
                         <span style={{
                           position: 'absolute',
                           height: '20px', width: '20px',
-                          left: config.stats?.maintenance_mode ? '26px' : '4px',
+                          left: config?.stats?.maintenance_mode ? '26px' : '4px',
                           bottom: '4px',
                           backgroundColor: 'white',
                           transition: '0.4s',
@@ -60,10 +60,10 @@ export default function ContentTab() {
               </div>
 
               {/* Salin Teks Halaman Publik (Public Copy Permission) */}
-              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config.stats?.allow_copy ? '#10b981' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
+              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config?.stats?.allow_copy ? '#10b981' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
                   <div style={{ flex: '1', minWidth: '280px' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config.stats?.allow_copy ? '#10b981' : 'var(--text-color)', transition: 'color 0.3s' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config?.stats?.allow_copy ? '#10b981' : 'var(--text-color)', transition: 'color 0.3s' }}>
                       📋 Salin Teks & Klik Kanan (Public Copy Permission)
                     </h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
@@ -74,22 +74,22 @@ export default function ContentTab() {
                     <label style={{ display: 'inline-block', position: 'relative', width: '50px', height: '28px', cursor: 'pointer' }}>
                       <input
                         type="checkbox"
-                        checked={!!config.stats?.allow_copy}
+                        checked={!!config?.stats?.allow_copy}
                         onChange={handleAllowCopyToggle}
                         style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
                       />
                       <span style={{
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundColor: config.stats?.allow_copy ? '#10b981' : '#ccc',
+                        backgroundColor: config?.stats?.allow_copy ? '#10b981' : '#ccc',
                         transition: '0.4s',
                         borderRadius: '34px',
-                        boxShadow: config.stats?.allow_copy ? '0 0 10px rgba(16, 185, 129, 0.4)' : 'none'
+                        boxShadow: config?.stats?.allow_copy ? '0 0 10px rgba(16, 185, 129, 0.4)' : 'none'
                       }}>
                         <span style={{
                           position: 'absolute',
                           height: '20px', width: '20px',
-                          left: config.stats?.allow_copy ? '26px' : '4px',
+                          left: config?.stats?.allow_copy ? '26px' : '4px',
                           bottom: '4px',
                           backgroundColor: 'white',
                           transition: '0.4s',
@@ -110,7 +110,7 @@ export default function ContentTab() {
 
                 <form onSubmit={handleAnnouncementsUpdate}>
                   <input type="hidden" name="action_type" value="announcements" />
-                  {config.marquee_announcements && config.marquee_announcements.map((ann, idx) => (
+                  {config?.marquee_announcements && config?.marquee_announcements.map((ann, idx) => (
                     <div key={idx} className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                       <label htmlFor={`announcement_${idx}`}>Pengumuman #{idx + 1}</label>
                       <input
@@ -124,7 +124,7 @@ export default function ContentTab() {
                       />
                     </div>
                   ))}
-                  {(!config.marquee_announcements || config.marquee_announcements.length === 0) && (
+                  {(!config?.marquee_announcements || config?.marquee_announcements.length === 0) && (
                     [0, 1, 2].map((idx) => (
                       <div key={idx} className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                         <label htmlFor={`announcement_${idx}`}>Pengumuman #{idx + 1}</label>
@@ -161,7 +161,7 @@ export default function ContentTab() {
                       id="siswa_aktif"
                       name="siswa_aktif"
                       className="form-control"
-                      defaultValue={config.stats?.siswa_aktif || 0}
+                      defaultValue={config?.stats?.siswa_aktif || 0}
                       style={{ width: '100%' }}
                       required
                     />
@@ -174,7 +174,7 @@ export default function ContentTab() {
                       id="guru_staf"
                       name="guru_staf"
                       className="form-control"
-                      defaultValue={config.stats?.guru_staf || 0}
+                      defaultValue={config?.stats?.guru_staf || 0}
                       style={{ width: '100%' }}
                       required
                     />
@@ -187,7 +187,7 @@ export default function ContentTab() {
                       id="ruang_kelas"
                       name="ruang_kelas"
                       className="form-control"
-                      defaultValue={config.stats?.ruang_kelas || 0}
+                      defaultValue={config?.stats?.ruang_kelas || 0}
                       style={{ width: '100%' }}
                       required
                     />
@@ -200,7 +200,7 @@ export default function ContentTab() {
                       id="akreditasi"
                       name="akreditasi"
                       className="form-control"
-                      defaultValue={config.stats?.akreditasi || 'B'}
+                      defaultValue={config?.stats?.akreditasi || 'B'}
                       maxLength={2}
                       style={{ width: '100%' }}
                       required
@@ -214,7 +214,7 @@ export default function ContentTab() {
                       id="rombel"
                       name="rombel"
                       className="form-control"
-                      defaultValue={config.stats?.rombel || 6}
+                      defaultValue={config?.stats?.rombel || 6}
                       style={{ width: '100%' }}
                       required
                     />
@@ -227,7 +227,7 @@ export default function ContentTab() {
                       id="uks"
                       name="uks"
                       className="form-control"
-                      defaultValue={config.stats?.uks || 1}
+                      defaultValue={config?.stats?.uks || 1}
                       style={{ width: '100%' }}
                       required
                     />
@@ -240,7 +240,7 @@ export default function ContentTab() {
                       id="gudang"
                       name="gudang"
                       className="form-control"
-                      defaultValue={config.stats?.gudang || 1}
+                      defaultValue={config?.stats?.gudang || 1}
                       style={{ width: '100%' }}
                       required
                     />
@@ -253,7 +253,7 @@ export default function ContentTab() {
                       id="toilet"
                       name="toilet"
                       className="form-control"
-                      defaultValue={config.stats?.toilet || 2}
+                      defaultValue={config?.stats?.toilet || 2}
                       style={{ width: '100%' }}
                       required
                     />
@@ -266,7 +266,7 @@ export default function ContentTab() {
                       id="cuci_tangan"
                       name="cuci_tangan"
                       className="form-control"
-                      defaultValue={config.stats?.cuci_tangan || 4}
+                      defaultValue={config?.stats?.cuci_tangan || 4}
                       style={{ width: '100%' }}
                       required
                     />

@@ -277,9 +277,9 @@ export default function SecurityTab() {
 
                 {/* Blacklisted IPs List */}
                 <div style={{ flex: 1, overflowY: 'auto', maxHeight: '180px', border: '1px solid rgba(255, 255, 255, 0.05)', borderRadius: '8px', background: 'rgba(15, 23, 42, 0.3)', padding: '0.5rem' }}>
-                  {config?.manual_blacklist && config.manual_blacklist.length > 0 ? (
+                  {config?.manual_blacklist && config?.manual_blacklist?.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {config.manual_blacklist.map((item, index) => (
+                      {config?.manual_blacklist?.map((item, index) => (
                         <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255, 255, 255, 0.02)', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
                             <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f87171' }}>{item.ip}</span>

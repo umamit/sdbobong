@@ -439,15 +439,15 @@ export function AdminDashboardProvider({
   };
 
   const syncNipHumas = (() => {
-    const name = config.ppdb_contacts?.nama_humas || "";
-    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
-    return matched ? matched.nip : (config.ppdb_contacts?.nip_humas || "");
+    const name = config?.ppdb_contacts?.nama_humas || "";
+    const matched = (teachers || []).find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
+    return matched ? matched.nip : (config?.ppdb_contacts?.nip_humas || "");
   })();
 
   const syncNipOperator = (() => {
-    const name = config.ppdb_contacts?.nama_operator || "";
-    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
-    return matched ? matched.nip : (config.ppdb_contacts?.nip_operator || "");
+    const name = config?.ppdb_contacts?.nama_operator || "";
+    const matched = (teachers || []).find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
+    return matched ? matched.nip : (config?.ppdb_contacts?.nip_operator || "");
   })();
 
   const handleFieldChange = (page, key, value) => {
