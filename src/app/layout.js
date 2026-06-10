@@ -466,7 +466,7 @@ export default async function RootLayout({ children }) {
         {/* Running Announcement Banner */}
         {!isPrintableForm && (
           <div className="announcement-banner no-print public-layout-announcement">
-            <div className="marquee-content" style={{ animationDuration: `${marqueeSpeed}s` }}>
+            <div className="marquee-content" style={{ '--marquee-duration': `${marqueeSpeed}s` }}>
               {announcements.map((ann, idx) => (
                 <span key={idx}>{ann}</span>
               ))}
