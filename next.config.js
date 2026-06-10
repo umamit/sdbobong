@@ -27,6 +27,15 @@ const nextConfig = {
       },
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/beranda',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
