@@ -164,8 +164,8 @@ export default function FormulirPPDBPrint() {
       </div>
 
       <style jsx global>{`
-        body {
-          background-color: #f3f4f6;
+        html, body {
+          background-color: #f3f4f6 !important;
           padding: var(--space-md);
         }
         .form-section-title {
