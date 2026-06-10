@@ -31,3 +31,4 @@ node_modules/
 
 # Local portable Node runtime
 node-local/
+.vercel

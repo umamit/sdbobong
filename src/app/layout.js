@@ -41,6 +41,7 @@ export default async function RootLayout({ children }) {
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
   
+  const isPrintableForm = pathname === '/formulir-ppdb';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
   if (isMaintenanceActive) {
@@ -462,100 +463,106 @@ export default async function RootLayout({ children }) {
         </Script>
         <LayoutControl />
         {/* Running Announcement Banner */}
-        <div className="announcement-banner no-print public-layout-announcement">
-          <div className="marquee-content">
-            {announcements.map((ann, idx) => (
-              <span key={idx}>{ann}</span>
-            ))}
+        {!isPrintableForm && (
+          <div className="announcement-banner no-print public-layout-announcement">
+            <div className="marquee-content">
+              {announcements.map((ann, idx) => (
+                <span key={idx}>{ann}</span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Header & Navigation */}
-        <div className="no-print public-layout-header">
-          <Header />
-        </div>
+        {!isPrintableForm && (
+          <div className="no-print public-layout-header">
+            <Header />
+          </div>
+        )}
 
         {/* Main Content Area */}
         <main>{children}</main>
 
         {/* Footer */}
-        <footer className="no-print public-layout-footer">
-          <div className="container footer-grid">
-            <div className="footer-widget">
-              <a href="/" className="logo-container" style={{ marginBottom: 'var(--space-xs)', textDecoration: 'none' }}>
-                <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" loading="lazy" decoding="async" />
-                <span className="logo-title" style={{ color: 'white' }}>SD NEGERI BOBONG</span>
-              </a>
-              <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
-                {schoolDesc}
-              </p>
-            </div>
-            <div className="footer-widget">
-              <h3>Navigasi Cepat</h3>
-              <ul className="footer-links">
-                <li><Link href="/">Beranda</Link></li>
-                <li><Link href="/profil">Profil Sekolah</Link></li>
-                <li><Link href="/akademik">Informasi Akademik</Link></li>
-                <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
-                <li><Link href="/ppdb">Portal Info PPDB</Link></li>
-                <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>
-                <li><Link href="/formulir-ppdb">Formulir PPDB Offline</Link></li>
-                <li><Link href="/berita">Berita Sekolah</Link></li>
-              </ul>
-            </div>
-            <div className="footer-widget">
-              <h3>Kontak Sekolah</h3>
-              <div className="footer-contact-info">
-                <a href="https://maps.google.com/?q=SD+Negeri+Bobong+Pulau+Taliabu" target="_blank" rel="noreferrer" className="footer-contact-item">
-                  <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                  <span>{schoolAddress}</span>
+        {!isPrintableForm && (
+          <footer className="no-print public-layout-footer">
+            <div className="container footer-grid">
+              <div className="footer-widget">
+                <a href="/" className="logo-container" style={{ marginBottom: 'var(--space-xs)', textDecoration: 'none' }}>
+                  <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" loading="lazy" decoding="async" />
+                  <span className="logo-title" style={{ color: 'white' }}>SD NEGERI BOBONG</span>
                 </a>
-                <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/20537440-2AF5-E011-B59C-D593D31F215F" target="_blank" rel="noreferrer" className="footer-contact-item">
-                  <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                  <span>NPSN: {schoolNpsn} (Sekolah Kita)</span>
-                </a>
-                <a href={`mailto:${schoolEmail}`} className="footer-contact-item">
-                  <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                  <span>{schoolEmail}</span>
-                </a>
-
+                <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
+                  {schoolDesc}
+                </p>
               </div>
-            </div>
-          </div>
-          
-          {/* Institutional Affiliations */}
-          <div className="container footer-affiliations">
-            <div className="affiliations-divider"></div>
-            <div className="affiliations-content">
-              <span className="affiliations-label">Afiliasi Resmi:</span>
-              <div className="affiliations-logos">
-                <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className="affiliation-item" title="Pemerintah Kabupaten Pulau Taliabu" style={{ textDecoration: 'none' }}>
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" loading="lazy" decoding="async" />
-                  <span className="affiliation-text">Pemerintah Kabupaten Pulau Taliabu</span>
-                </a>
-                <div className="affiliation-item" title="Dinas Pendidikan Kabupaten Pulau Taliabu">
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" loading="lazy" decoding="async" />
-                  <span className="affiliation-text">Dinas Pendidikan Pulau Taliabu</span>
-                </div>
-                <div className="affiliation-item" title="Kurikulum Merdeka - Merdeka Belajar">
-                  <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className="affiliation-logo" loading="lazy" decoding="async" />
-                  <span className="affiliation-text">Kurikulum Merdeka</span>
+              <div className="footer-widget">
+                <h3>Navigasi Cepat</h3>
+                <ul className="footer-links">
+                  <li><Link href="/">Beranda</Link></li>
+                  <li><Link href="/profil">Profil Sekolah</Link></li>
+                  <li><Link href="/akademik">Informasi Akademik</Link></li>
+                  <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
+                  <li><Link href="/ppdb">Portal Info PPDB</Link></li>
+                  <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>
+                  <li><Link href="/formulir-ppdb">Formulir PPDB Offline</Link></li>
+                  <li><Link href="/berita">Berita Sekolah</Link></li>
+                </ul>
+              </div>
+              <div className="footer-widget">
+                <h3>Kontak Sekolah</h3>
+                <div className="footer-contact-info">
+                  <a href="https://maps.google.com/?q=SD+Negeri+Bobong+Pulau+Taliabu" target="_blank" rel="noreferrer" className="footer-contact-item">
+                    <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>{schoolAddress}</span>
+                  </a>
+                  <a href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/20537440-2AF5-E011-B59C-D593D31F215F" target="_blank" rel="noreferrer" className="footer-contact-item">
+                    <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span>NPSN: {schoolNpsn} (Sekolah Kita)</span>
+                  </a>
+                  <a href={`mailto:${schoolEmail}`} className="footer-contact-item">
+                    <svg className="icon-svg" viewBox="0 0 24 24" style={{ color: 'var(--secondary)', flexShrink: 0 }}><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span>{schoolEmail}</span>
+                  </a>
+
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="footer-bottom">
-            <div className="container footer-bottom-flex">
-              <div className="developer-note">
-                Lead Developer
+            
+            {/* Institutional Affiliations */}
+            <div className="container footer-affiliations">
+              <div className="affiliations-divider"></div>
+              <div className="affiliations-content">
+                <span className="affiliations-label">Afiliasi Resmi:</span>
+                <div className="affiliations-logos">
+                  <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className="affiliation-item" title="Pemerintah Kabupaten Pulau Taliabu" style={{ textDecoration: 'none' }}>
+                    <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Pulau Taliabu" className="affiliation-logo" loading="lazy" decoding="async" />
+                    <span className="affiliation-text">Pemerintah Kabupaten Pulau Taliabu</span>
+                  </a>
+                  <div className="affiliation-item" title="Dinas Pendidikan Kabupaten Pulau Taliabu">
+                    <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className="affiliation-logo" loading="lazy" decoding="async" />
+                    <span className="affiliation-text">Dinas Pendidikan Pulau Taliabu</span>
+                  </div>
+                  <div className="affiliation-item" title="Kurikulum Merdeka - Merdeka Belajar">
+                    <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className="affiliation-logo" loading="lazy" decoding="async" />
+                    <span className="affiliation-text">Kurikulum Merdeka</span>
+                  </div>
+                </div>
               </div>
-              <p className="copyright-note">
-                &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</a> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v{pack.version}</span>
-              </p>
             </div>
-          </div>
-        </footer>
+
+            <div className="footer-bottom">
+              <div className="container footer-bottom-flex">
+                <div className="developer-note">
+                  Lead Developer
+                </div>
+                <p className="copyright-note">
+                  &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <a href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</a> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v{pack.version}</span>
+                </p>
+              </div>
+            </div>
+          </footer>
+        )}
 
 
 

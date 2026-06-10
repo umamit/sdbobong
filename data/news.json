@@ -1,10 +1,34 @@
 [
     {
-        "id": "news-1780855430",
-        "title": "[contoh] Kegiatan Pramuka",
-        "date": "08 juni 2026",
-        "category": "kegiatan/prestasi/dll",
-        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780855428856_474728603_637710992046567_9005488019586038632_n.jpg",
-        "content": "lead developer"
+        "id": "news-1780979068",
+        "title": "Sesi Foto Bersama Pemateri Pak Buksy Lumbesy",
+        "date": "08 Juni 2026",
+        "category": "Kegiatan",
+        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780979063658_6cfec5b9-6eb4-47d8-a930-d515c7aef8ff_Large.jpeg",
+        "content": "<h4 style=\"text-align: justify; margin-top: 0px; margin-bottom: 0px; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\">Pendampingan Pemanfaatan Papan Interaktif Digital</h4>",
+        "images": [
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780979063658_6cfec5b9-6eb4-47d8-a930-d515c7aef8ff_Large.jpeg",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780979064719_7840b770-ac0d-4aeb-af5b-7b6edb45e24e_Large.jpeg",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780979065981_16130c01-a054-4438-bb8c-e527bf16a404_Large.jpeg",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780979066923_c101646f-54cf-4093-87fb-ca7193488c9c_Large.jpeg"
+        ]
+    },
+    {
+        "id": "news-1780938220",
+        "title": "Pendampingan Pemanfaatan Papan Interaktif Digital",
+        "date": "08 Juni 2026",
+        "category": "Kegiatan",
+        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938211898_2cd92588-108e-4aae-bd8e-125917aacd07.JPG",
+        "content": "<p style=\"margin-bottom: 0px; font-style: normal; font-variant-caps: normal; font-width: normal; font-size: 13px; line-height: normal; font-family: &quot;Helvetica Neue&quot;; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal;\"><b>Transformasi Digital Kelas: Guru-guru SD Negeri Bobong antusias mengikuti kegiatan Pendampingan Pemanfaatan Papan Interaktif Digital bersama Buksy Lumbessy dari BPMP, siap membawa pembelajaran di kelas ke level berikutnya yang lebih interaktif dan menyenangkan! </b><span style=\"font-style: normal; font-variant-caps: normal; font-width: normal; line-height: normal; font-family: &quot;.Apple Color Emoji UI&quot;; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal;\">🚀✨</span></p>",
+        "images": [
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938211898_2cd92588-108e-4aae-bd8e-125917aacd07.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938212968_dc24f79b-1d14-43ac-91b7-78c6ede6945d.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938214292_39798504-7b07-445a-86a0-c1debf177381.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938215639_d6d0db60-487a-4b0d-96c0-29889bbb9f70.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938216538_35c70138-98ee-4f2d-b69c-927a34712e3f.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938217817_819e1162-ac74-4b26-b30f-1990419702e7.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938218544_9585460f-3392-4356-8b78-feaec3d96d06.JPG",
+            "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/1780938219134_d0539a4d-bd67-4dfe-b939-9dd4bbd3321d.JPG"
+        ]
     }
 ]
