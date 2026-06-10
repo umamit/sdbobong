@@ -99,6 +99,14 @@ export default function FormulirPPDBPrint() {
           
           <div className="form-label">8. Alamat Tempat Tinggal</div>
           <div className="form-value-line"></div>
+
+          <div className="form-label">9. Jalur Pendaftaran</div>
+          <div className="checkbox-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px', marginTop: '0.25rem' }}>
+            <div className="checkbox-item"><span className="checkbox-box"></span> Zonasi (Domisili Terdekat)</div>
+            <div className="checkbox-item"><span className="checkbox-box"></span> Afirmasi (Keluarga Ekonomi Kurang Mampu)</div>
+            <div className="checkbox-item"><span className="checkbox-box"></span> Perpindahan Tugas Orang Tua / Wali</div>
+            <div className="checkbox-item"><span className="checkbox-box"></span> Prestasi (Akademik / Non-Akademik)</div>
+          </div>
         </div>
 
         {/* Section 2: Data Orang Tua / Wali */}
@@ -135,6 +143,8 @@ export default function FormulirPPDBPrint() {
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Akta Kelahiran Calon Siswa (2 Lembar)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu Keluarga / KK (2 Lembar)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi KTP Orang Tua / Wali (Ayah & Ibu)</div>
+          <div className="checkbox-item"><span className="checkbox-box"></span> Surat Pertanggungjawaban Mutlak (SPTJM) bermeterai asli</div>
+          <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu KIP / PKH (Bagi penerima bantuan / jalur Afirmasi)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Pas Foto Calon Siswa Ukuran 3x4 Latar Belakang Merah (2 Lembar)</div>
         </div>
 
