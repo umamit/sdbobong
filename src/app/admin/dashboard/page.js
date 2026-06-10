@@ -1,5 +1,5 @@
 import AdminDashboardClient from './AdminDashboardClient';
-import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation, loadStudents } from '../../../lib/database';
+import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation, loadStudents, unpackBerkasFromAlamat } from '../../../lib/database';
 import { loadAuditLogs } from '../../../lib/audit';
 import fs from 'fs';
 
@@ -36,7 +36,18 @@ export default async function AdminDashboardPage() {
         .order("waktu_daftar", { ascending: false });
       
       if (!error && data) {
-        records = data;
+        records = data.map(r => {
+          const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
+          return {
+            ...r,
+            alamat_domisili: unpacked.cleanAlamat,
+            berkas_kk: r.berkas_kk || unpacked.berkas.berkas_kk || "",
+            berkas_akta: r.berkas_akta || unpacked.berkas.berkas_akta || "",
+            berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
+            berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
+            berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || ""
+          };
+        });
         dbStatus = 'active';
       }
     } catch (e) {
@@ -56,6 +67,7 @@ export default async function AdminDashboardPage() {
       try {
         const localData = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
         records = localData.map((r, idx) => ({
+          ...r,
           id: r.id || r.nik || r.nik_siswa || String(idx + 1),
           nama_lengkap: r.nama_lengkap || "",
           nik_siswa: r.nik || r.nik_siswa || "",
@@ -67,7 +79,12 @@ export default async function AdminDashboardPage() {
           alamat_domisili: r.alamat || r.alamat_domisili || "",
           jalur_ppdb: r.jalur_ppdb || "",
           waktu_daftar: r.waktu_daftar || "",
-          status: r.status || "Diterima Sistem"
+          status: r.status || "Diterima Sistem",
+          berkas_kk: r.berkas_kk || "",
+          berkas_akta: r.berkas_akta || "",
+          berkas_ktp: r.berkas_ktp || "",
+          berkas_sptjm: r.berkas_sptjm || "",
+          berkas_kip: r.berkas_kip || ""
         }));
         records.sort((a, b) => (b.waktu_daftar || "").localeCompare(a.waktu_daftar || ""));
       } catch (e) {

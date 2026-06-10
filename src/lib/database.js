@@ -385,10 +385,11 @@ export async function getAvailableSupabaseColumns() {
       'nama_panggilan', 'agama', 'anak_ke', 'dari_bersaudara', 
       'nama_ayah', 'pekerjaan_ayah', 'no_hp_ayah', 
       'pekerjaan_ibu', 'no_hp_ibu', 
-      'nama_wali', 'pekerjaan_wali', 'tahun_ajaran'
+      'nama_wali', 'pekerjaan_wali', 'tahun_ajaran',
+      'berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip'
     ];
     
-    // Test all 12 new columns at once to minimize queries
+    // Test all new columns at once to minimize queries
     const colsToProbe = newColumns.join(', ');
     const { error: probeError } = await supabase.from("ppdb_sdn_bobong")
       .select(`id, ${colsToProbe}`)
@@ -568,6 +569,34 @@ export function unpackImagesFromContent(content, fallbackImages) {
     }
   }
   return { cleanContent: content, images: fallbackImages || [] };
+}
+
+export function packBerkasIntoAlamat(alamat, berkas) {
+  if (!berkas || typeof berkas !== 'object' || Object.keys(berkas).length === 0) {
+    return alamat;
+  }
+  const cleanAlamat = (alamat || "").replace(/\n*<!--PPDB_FILES:[\s\S]*?-->$/, "");
+  const serialized = JSON.stringify(berkas);
+  return `${cleanAlamat}\n<!--PPDB_FILES:${serialized}-->`;
+}
+
+export function unpackBerkasFromAlamat(alamat) {
+  if (typeof alamat !== 'string') {
+    return { cleanAlamat: alamat || "", berkas: {} };
+  }
+  const match = alamat.match(/<!--PPDB_FILES:([\s\S]*?)-->$/);
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[1]);
+      if (parsed && typeof parsed === 'object') {
+        const cleanAlamat = alamat.replace(/\n*<!--PPDB_FILES:[\s\S]*?-->$/, "");
+        return { cleanAlamat, berkas: parsed };
+      }
+    } catch (e) {
+      console.error("Error parsing berkas metadata from alamat:", e);
+    }
+  }
+  return { cleanAlamat: alamat, berkas: {} };
 }
 
 let cachedNewsColumns = null;
@@ -1037,7 +1066,13 @@ export async function syncLocalToSupabase() {
           pekerjaan_ibu: localR.pekerjaan_ibu || "",
           no_hp_ibu: localR.no_hp_ibu || "",
           nama_wali: localR.nama_wali || "",
-          pekerjaan_wali: localR.pekerjaan_wali || ""
+          pekerjaan_wali: localR.pekerjaan_wali || "",
+          
+          berkas_kk: localR.berkas_kk || "",
+          berkas_akta: localR.berkas_akta || "",
+          berkas_ktp: localR.berkas_ktp || "",
+          berkas_sptjm: localR.berkas_sptjm || "",
+          berkas_kip: localR.berkas_kip || ""
         };
 
         // Filter based on columns actually present in the table
@@ -1046,6 +1081,20 @@ export async function syncLocalToSupabase() {
           if (availableCols.includes(col)) {
             supabaseData[col] = val;
           }
+        }
+
+        // Check if we need to pack berkas into alamat_domisili (fallback for zero-migration)
+        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip'].some(c => !availableCols.includes(c));
+        if (missingBerkasCols) {
+          const berkasData = {
+            berkas_kk: localR.berkas_kk || "",
+            berkas_akta: localR.berkas_akta || "",
+            berkas_ktp: localR.berkas_ktp || "",
+            berkas_sptjm: localR.berkas_sptjm || "",
+            berkas_kip: localR.berkas_kip || ""
+          };
+          const alamatBase = localR.alamat || localR.alamat_domisili || "";
+          supabaseData.alamat_domisili = packBerkasIntoAlamat(alamatBase, berkasData);
         }
 
         try {
@@ -1079,6 +1128,7 @@ export async function syncLocalToSupabase() {
     }
 
     for (const [nik, supabaseR] of Object.entries(supabaseByNik)) {
+      const unpackedAlamat = unpackBerkasFromAlamat(supabaseR.alamat_domisili || "");
       const localFormat = {
         id: String(supabaseR.id),
         nama_lengkap: supabaseR.nama_lengkap || "",
@@ -1090,7 +1140,7 @@ export async function syncLocalToSupabase() {
         agama: supabaseR.agama || "",
         anak_ke: supabaseR.anak_ke !== undefined && supabaseR.anak_ke !== null ? String(supabaseR.anak_ke) : "",
         dari_bersaudara: supabaseR.dari_bersaudara !== undefined && supabaseR.dari_bersaudara !== null ? String(supabaseR.dari_bersaudara) : "",
-        alamat: supabaseR.alamat_domisili || "",
+        alamat: unpackedAlamat.cleanAlamat || "",
         jalur_ppdb: supabaseR.jalur_ppdb || "Zonasi",
         nama_ayah: supabaseR.nama_ayah || "",
         pekerjaan_ayah: supabaseR.pekerjaan_ayah || "",
@@ -1103,7 +1153,12 @@ export async function syncLocalToSupabase() {
         pekerjaan_wali: supabaseR.pekerjaan_wali || "",
         waktu_daftar: supabaseR.waktu_daftar || "",
         status: supabaseR.status || "Diterima Sistem",
-        tahun_ajaran: supabaseR.tahun_ajaran || ""
+        tahun_ajaran: supabaseR.tahun_ajaran || "",
+        berkas_kk: supabaseR.berkas_kk || unpackedAlamat.berkas.berkas_kk || "",
+        berkas_akta: supabaseR.berkas_akta || unpackedAlamat.berkas.berkas_akta || "",
+        berkas_ktp: supabaseR.berkas_ktp || unpackedAlamat.berkas.berkas_ktp || "",
+        berkas_sptjm: supabaseR.berkas_sptjm || unpackedAlamat.berkas.berkas_sptjm || "",
+        berkas_kip: supabaseR.berkas_kip || unpackedAlamat.berkas.berkas_kip || ""
       };
 
       if (localFormat.waktu_daftar && localFormat.waktu_daftar.includes('T')) {

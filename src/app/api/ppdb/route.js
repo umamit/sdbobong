@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '../../../lib/supabase/server';
-import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns } from '../../../lib/database';
+import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns, unpackBerkasFromAlamat } from '../../../lib/database';
 import { verifyAdminToken } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import fs from 'fs';
@@ -61,7 +61,20 @@ export async function GET(request) {
       try {
         const { data, error } = await supabase.from("ppdb_sdn_bobong").select("*").order("waktu_daftar", { ascending: false });
         if (error) throw error;
-        if (data) records = data;
+        if (data) {
+          records = data.map(r => {
+            const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
+            return {
+              ...r,
+              alamat_domisili: unpacked.cleanAlamat,
+              berkas_kk: r.berkas_kk || unpacked.berkas.berkas_kk || "",
+              berkas_akta: r.berkas_akta || unpacked.berkas.berkas_akta || "",
+              berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
+              berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
+              berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || ""
+            };
+          });
+        }
       } catch (e) {
         console.error("Error querying Supabase for API GET:", e);
       }
@@ -72,6 +85,7 @@ export async function GET(request) {
         try {
           const localData = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
           records = localData.map((r, idx) => ({
+            ...r,
             id: r.id || r.nik || r.nik_siswa || String(idx + 1),
             nama_lengkap: r.nama_lengkap || "",
             nama_panggilan: r.nama_panggilan || "",
@@ -94,7 +108,12 @@ export async function GET(request) {
             pekerjaan_wali: r.pekerjaan_wali || "",
             jalur_ppdb: r.jalur_ppdb || "",
             waktu_daftar: r.waktu_daftar || "",
-            status: r.status || "Diterima Sistem"
+            status: r.status || "Diterima Sistem",
+            berkas_kk: r.berkas_kk || "",
+            berkas_akta: r.berkas_akta || "",
+            berkas_ktp: r.berkas_ktp || "",
+            berkas_sptjm: r.berkas_sptjm || "",
+            berkas_kip: r.berkas_kip || ""
           }));
           records.sort((a, b) => (b.waktu_daftar || "").localeCompare(a.waktu_daftar || ""));
         } catch (e) {

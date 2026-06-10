@@ -879,12 +879,104 @@ export default function Modals() {
                   </div>
                 </div>
 
+                {/* Subtitle Section 3 (No Print) */}
+                <div className="no-print" style={{ borderLeft: '4px solid #16a34a', paddingLeft: '8px', marginBottom: '1.25rem', marginTop: '2.5rem', textAlign: 'left' }}>
+                  <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 800, color: '#0f172a', textTransform: 'uppercase' }}>C. DOKUMEN PENDUKUNG (UNGGAHAN ONLINE)</h5>
+                </div>
+
+                {/* Grid Dokumen (No Print) */}
+                <div className="no-print" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+                  {[
+                    { label: "Kartu Keluarga", field: "berkas_kk", icon: "📋" },
+                    { label: "Akta Kelahiran", field: "berkas_akta", icon: "👶" },
+                    { label: "KTP Orang Tua", field: "berkas_ktp", icon: "🪪" },
+                    { label: "SPTJM", field: "berkas_sptjm", icon: "✍️" },
+                    { label: "KIP / PKH (Opsional)", field: "berkas_kip", icon: "💳" }
+                  ].map((doc, idx) => {
+                    const url = selectedRecord[doc.field];
+                    return (
+                      <div key={idx} style={{ 
+                        background: '#ffffff', 
+                        border: '1px solid #e2e8f0', 
+                        borderRadius: '10px', 
+                        padding: '1rem', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        justifyContent: 'space-between',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+                        transition: 'all 0.2s ease'
+                      }}>
+                        <div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px', marginBottom: '0.5rem' }}>
+                            {doc.label}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>
+                            <span>{doc.icon}</span>
+                            <span style={{ fontSize: '0.8rem', color: url ? '#1e293b' : '#94a3b8', fontStyle: url ? 'normal' : 'italic' }}>
+                              {url ? 'PDF Terunggah' : 'Belum diunggah'}
+                            </span>
+                          </div>
+                        </div>
+                        {url ? (
+                          <a 
+                            href={url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="btn"
+                            style={{ 
+                              marginTop: '1rem',
+                              padding: '0.5rem 1rem', 
+                              fontSize: '0.8rem', 
+                              fontWeight: 700, 
+                              textAlign: 'center', 
+                              color: '#0b3c5d', 
+                              backgroundColor: '#f0f9ff', 
+                              border: '1px solid #bae6fd', 
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              textDecoration: 'none',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s'
+                            }}
+                            onMouseOver={(e) => {
+                              e.currentTarget.style.backgroundColor = '#e0f2fe';
+                              e.currentTarget.style.borderColor = '#7dd3fc';
+                            }}
+                            onMouseOut={(e) => {
+                              e.currentTarget.style.backgroundColor = '#f0f9ff';
+                              e.currentTarget.style.borderColor = '#bae6fd';
+                            }}
+                          >
+                            👁️ Buka Dokumen
+                          </a>
+                        ) : (
+                          <div style={{ 
+                            marginTop: '1rem',
+                            padding: '0.5rem', 
+                            fontSize: '0.8rem', 
+                            textAlign: 'center', 
+                            color: '#94a3b8', 
+                            backgroundColor: '#f8fafc', 
+                            border: '1px dashed #cbd5e1', 
+                            borderRadius: '6px'
+                          }}>
+                            Tidak Tersedia
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
                 {/* Catatan / Keterangan tambahan di slip */}
                 <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '2rem' }}>
                   <h5 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>⚠️ INSTRUKSI DAFTAR ULANG:</h5>
                   <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.75rem', color: '#475569', lineHeight: '1.6' }}>
                     <li>Simpan atau cetak bukti pendaftaran elektronik ini secara fisik.</li>
-                    <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC KTP Orang Tua) ke SDN Bobong.</li>
+                    <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC KTP Orang Tua, SPTJM) ke SDN Bobong.</li>
                     <li>Serahkan seluruh berkas ke Panitia PPDB di ruang sekretariat pada jam kerja (08:00 - 12:00 WITA) untuk validasi berkas fisik.</li>
                   </ol>
                 </div>
