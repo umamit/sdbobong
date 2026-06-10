@@ -7,7 +7,7 @@ import { verifyAdminToken } from '../../../../lib/auth';
 
 export async function POST(request) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('admin_session_token')?.value;
     const isLocalAdminSession = await verifyAdminToken(token);
 

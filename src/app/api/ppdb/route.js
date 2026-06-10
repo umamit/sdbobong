@@ -13,7 +13,7 @@ export const revalidate = 0;
 
 async function checkAuth() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('admin_session_token')?.value;
     if (await verifyAdminToken(token)) {
       return true;
