@@ -34,6 +34,7 @@ export async function POST(request) {
     const contentType = request.headers.get('content-type') || '';
     let actionType = '';
     let announcements = [];
+    let marquee_speed;
     let siswa_aktif, guru_staf, ruang_kelas, akreditasi;
     let rombel, uks, gudang, toilet, cuci_tangan;
     let force_local_cache;
@@ -50,6 +51,7 @@ export async function POST(request) {
       const body = parsedJsonBody;
       actionType = body.action_type;
       announcements = body.announcements;
+      marquee_speed = body.marquee_speed;
       siswa_aktif = body.siswa_aktif;
       guru_staf = body.guru_staf;
       ruang_kelas = body.ruang_kelas;
@@ -79,6 +81,7 @@ export async function POST(request) {
       actionType = formData.get('action_type');
       if (actionType === 'announcements') {
         announcements = formData.getAll('announcements[]');
+        marquee_speed = parseInt(formData.get('marquee_speed') || '40', 10);
       } else if (actionType === 'stats') {
         siswa_aktif = parseInt(formData.get('siswa_aktif') || '0', 10);
         guru_staf = parseInt(formData.get('guru_staf') || '0', 10);
@@ -117,6 +120,13 @@ export async function POST(request) {
       }
       const cleanedAnn = announcements.map(a => String(a).trim()).filter(a => a);
       config.marquee_announcements = cleanedAnn;
+      
+      const speed = parseInt(marquee_speed, 10);
+      if (!isNaN(speed) && speed >= 5 && speed <= 200) {
+        config.marquee_speed = speed;
+      } else {
+        config.marquee_speed = 40;
+      }
     } else if (actionType === 'stats') {
       config.stats = {
         ...(config.stats || {}),
@@ -374,6 +384,7 @@ export async function POST(request) {
       }
       // Overwrite config values
       if (restoredConfig.marquee_announcements) config.marquee_announcements = restoredConfig.marquee_announcements;
+      if (restoredConfig.marquee_speed) config.marquee_speed = restoredConfig.marquee_speed;
       if (restoredConfig.stats) config.stats = restoredConfig.stats;
       if (restoredConfig.ppdb_contacts) config.ppdb_contacts = restoredConfig.ppdb_contacts;
       if (typeof restoredConfig.force_local_cache !== 'undefined') config.force_local_cache = restoredConfig.force_local_cache;

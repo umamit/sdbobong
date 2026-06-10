@@ -1030,17 +1030,22 @@ export function AdminDashboardProvider({
     const form = e.target;
     const annInputs = Array.from(form.elements).filter(el => el.name === 'announcements[]');
     const announcements = annInputs.map(el => el.value.trim()).filter(val => val);
+    const marqueeSpeed = parseInt(form.elements['marquee_speed']?.value || '40', 10);
 
     try {
       const res = await fetch('/api/config', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action_type: 'announcements', announcements })
+        body: JSON.stringify({ action_type: 'announcements', announcements, marquee_speed: marqueeSpeed })
       });
       const data = await res.json();
       if (res.ok) {
         showToast('success', 'Konfigurasi website berhasil disimpan.');
-        setConfig(prev => ({ ...prev, marquee_announcements: announcements }));
+        setConfig(prev => ({ 
+          ...prev, 
+          marquee_announcements: announcements,
+          marquee_speed: marqueeSpeed
+        }));
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan konfigurasi.');

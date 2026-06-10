@@ -274,6 +274,7 @@ export async function loadWebConfig() {
       if (!error && data) {
         const dbConfig = {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
+          marquee_speed: data.stats?.marquee_speed || data.marquee_speed || localConfig.marquee_speed || 40,
           stats: data.stats || localConfig.stats,
           ppdb_contacts: data.ppdb_contacts || localConfig.ppdb_contacts,
           force_local_cache: data.force_local_cache === true,
@@ -441,6 +442,9 @@ export async function saveWebConfig(config) {
   // Ensure stats object is initialized
   if (!config.stats) config.stats = {};
   
+  // Save marquee_speed to stats JSONB column for seamless database fallback
+  config.stats.marquee_speed = config.marquee_speed || 40;
+  
   // Defensively secure downloads, faqs, and gallery data inside stats fallbacks
   if (config.downloads !== undefined) {
     config.stats._downloads_fallback = config.downloads;
@@ -473,6 +477,7 @@ export async function saveWebConfig(config) {
       const fullPayload = {
         id: "global_config",
         marquee_announcements: config.marquee_announcements,
+        marquee_speed: config.marquee_speed,
         stats: config.stats,
         ppdb_contacts: config.ppdb_contacts,
         force_local_cache: config.force_local_cache === true,
@@ -487,6 +492,7 @@ export async function saveWebConfig(config) {
         const { error: retryError } = await supabase.from("config_sdn_bobong").upsert({
           id: "global_config",
           marquee_announcements: config.marquee_announcements,
+          marquee_speed: config.marquee_speed,
           stats: config.stats,
           ppdb_contacts: config.ppdb_contacts,
           force_local_cache: config.force_local_cache === true

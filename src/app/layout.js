@@ -27,6 +27,7 @@ export default async function RootLayout({ children }) {
   // Load global configurations dynamically at render time (Server component)
   const config = await loadWebConfig();
   const announcements = config.marquee_announcements || [];
+  const marqueeSpeed = config.marquee_speed || 40;
   const contacts = config.ppdb_contacts || {};
   const schoolEmail = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
 
@@ -465,7 +466,7 @@ export default async function RootLayout({ children }) {
         {/* Running Announcement Banner */}
         {!isPrintableForm && (
           <div className="announcement-banner no-print public-layout-announcement">
-            <div className="marquee-content">
+            <div className="marquee-content" style={{ animationDuration: `${marqueeSpeed}s` }}>
               {announcements.map((ann, idx) => (
                 <span key={idx}>{ann}</span>
               ))}
