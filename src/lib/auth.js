@@ -73,13 +73,16 @@ async function signHmacSha256(message, secret) {
   return arrayBufferToHex(signature);
 }
 
+// Stable private session key to ensure parity between Node.js and Edge/Middleware runtimes on Vercel
+const SESSION_SECRET_KEY = 'sdn-bobong-session-secret-key-2026-secure-hmac';
+
 /**
  * Creates a cryptographically signed token for the admin session.
  * The payload contains the user's role and an expiration timestamp (2 hours).
  * Signed using standard Web Cryptography APIs.
  */
 export async function createAdminToken() {
-  const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+  const secret = SESSION_SECRET_KEY;
   const expiry = Date.now() + 1 * 60 * 60 * 1000; // 1 hour expiration
   const payload = JSON.stringify({ role: 'admin', expiry });
   
@@ -97,7 +100,7 @@ export async function verifyAdminToken(token) {
   if (!token) return false;
   
   try {
-    const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+    const secret = SESSION_SECRET_KEY;
     const raw = safeAtob(token);
     const parts = raw.split('.');
     
@@ -134,7 +137,7 @@ export async function verifyAdminToken(token) {
  * The payload contains the teacher's id, name, NIP, and expiration (4 hours).
  */
 export async function createTeacherToken(teacher) {
-  const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+  const secret = SESSION_SECRET_KEY;
   const expiry = Date.now() + 4 * 60 * 60 * 1000; // 4 hours expiration
   const payload = JSON.stringify({
     role: 'teacher',
@@ -157,7 +160,7 @@ export async function verifyTeacherToken(token) {
   if (!token) return null;
   
   try {
-    const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+    const secret = SESSION_SECRET_KEY;
     const raw = safeAtob(token);
     const parts = raw.split('.');
     
