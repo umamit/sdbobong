@@ -421,7 +421,7 @@ export default function InteractiveFacilityMap() {
             </g>
 
             {/* DEKORASI: AREA PARKIR UTAMA (Paving Stone Yard) */}
-            <g transform="translate(280, 20)" filter="url(#shadow-premium)">
+            <g transform="translate(280, 45)" filter="url(#shadow-premium)">
               {/* Ground base of parking area */}
               <rect x="0" y="0" width="120" height="55" rx="6" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1.5" />
               {/* Parking slot white divider lines */}
