@@ -714,6 +714,8 @@ export function AdminDashboardProvider({
   const [editEducation, setEditEducation] = useState('');
   const [editMotto, setEditMotto] = useState('');
   const [editBio, setEditBio] = useState('');
+  const [editPassword, setEditPassword] = useState('');
+  const [addPassword, setAddPassword] = useState('');
   const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
   const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
   const [editAvatarPreview, setEditAvatarPreview] = useState('');
@@ -2450,6 +2452,7 @@ export function AdminDashboardProvider({
         showToast('success', 'Data guru berhasil ditambahkan!');
         setTeachers(prev => sortTeachersListClient([...prev, data.teacher]));
         form.reset();
+        setAddPassword('');
         setTeacherImageSelect('/images/teacher_1.png');
         setTeacherImageUrl('/images/teacher_1.png');
         setAvatarPreview('/images/teacher_1.png');
@@ -2681,6 +2684,7 @@ export function AdminDashboardProvider({
     setEditEducation(t.education || '');
     setEditMotto(t.motto || '');
     setEditBio(t.bio || '');
+    setEditPassword('');
     
     const defaultAvatars = [
       '/images/teacher_1.png',
@@ -2782,6 +2786,7 @@ export function AdminDashboardProvider({
         showToast('success', 'Data guru berhasil diperbarui!');
         setTeachers(prev => sortTeachersListClient(prev.map(t => t.id === editTeacherId ? data.teacher : t)));
         setEditTeacherModalOpen(false);
+        setEditPassword('');
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal memperbarui data guru.');
@@ -3024,6 +3029,10 @@ export function AdminDashboardProvider({
     editEducation,
     editMotto,
     editName,
+    editPassword,
+    addPassword,
+    setEditPassword,
+    setAddPassword,
     editNip,
     editRole,
     editStatus,

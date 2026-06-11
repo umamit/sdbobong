@@ -51,6 +51,7 @@ export async function POST(request) {
     const education = formData.get('education')?.toString().trim() || "";
     const motto = formData.get('motto')?.toString().trim() || "";
     const bio = formData.get('bio')?.toString().trim() || "";
+    const password = formData.get('password')?.toString().trim() || "";
 
     // Process photo upload
     const photoFile = formData.get('photo');
@@ -123,7 +124,8 @@ export async function POST(request) {
       subject,
       education,
       motto,
-      bio
+      bio,
+      password
     };
 
     if (role.toLowerCase().includes('kepala sekolah')) {
@@ -168,6 +170,7 @@ export async function PUT(request) {
     const education = formData.get('education')?.toString().trim() || "";
     const motto = formData.get('motto')?.toString().trim() || "";
     const bio = formData.get('bio')?.toString().trim() || "";
+    const password = formData.get('password')?.toString().trim();
 
     if (!id) {
       return NextResponse.json({ error: "ID guru tidak ditentukan." }, { status: 400 });
@@ -249,6 +252,10 @@ export async function PUT(request) {
     teachersList[teacherIndex].education = education;
     teachersList[teacherIndex].motto = motto;
     teachersList[teacherIndex].bio = bio;
+
+    if (password !== undefined && password !== '') {
+      teachersList[teacherIndex].password = password;
+    }
 
     const saved = await saveTeachers(teachersList);
 

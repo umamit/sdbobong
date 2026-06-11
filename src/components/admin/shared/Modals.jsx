@@ -27,6 +27,8 @@ export default function Modals() {
     editEducation,
     editMotto,
     editName,
+    editPassword,
+    addPassword,
     editNip,
     editRole,
     editStatus,
@@ -97,6 +99,8 @@ export default function Modals() {
     setDownloadTitle,
     setEditDetails,
     setEditName,
+    setEditPassword,
+    setAddPassword,
     setEditNip,
     setEditRole,
     setEditStatus,
@@ -425,6 +429,20 @@ export default function Modals() {
                 />
               </div>
 
+              <div className="form-group">
+                <label htmlFor="teacher_password" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Password Login Guru (Opsional)</label>
+                <input
+                  type="password"
+                  id="teacher_password"
+                  name="password"
+                  className="form-control"
+                  placeholder="Kosongkan untuk menyetel default sama dengan NIP"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={addPassword}
+                  onChange={(e) => setAddPassword(e.target.value)}
+                />
+              </div>
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
                   <label htmlFor="teacher_education" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Riwayat Pendidikan</label>
@@ -681,6 +699,20 @@ export default function Modals() {
                   style={{ width: '100%', boxSizing: 'border-box' }}
                   value={editNip}
                   onChange={(e) => setEditNip(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_teacher_password" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Reset / Ubah Password Guru (Opsional)</label>
+                <input
+                  type="password"
+                  id="edit_teacher_password"
+                  name="password"
+                  className="form-control"
+                  placeholder="Biarkan kosong untuk mempertahankan password lama"
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={editPassword}
+                  onChange={(e) => setEditPassword(e.target.value)}
                 />
               </div>
 
