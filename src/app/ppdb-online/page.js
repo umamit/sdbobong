@@ -65,8 +65,8 @@ export default function PPDBOnlineForm() {
       setter(null);
       return;
     }
-    if (file.size > 500 * 1024) {
-      setErrorMsg(`Ukuran berkas ${label} melebihi batas maksimal 500KB!`);
+    if (file.size > 350 * 1024) {
+      setErrorMsg(`Ukuran berkas ${label} melebihi batas maksimal 350KB!`);
       e.target.value = ''; // Reset input
       setter(null);
       return;
@@ -657,10 +657,10 @@ export default function PPDBOnlineForm() {
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
               <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', fontWeight: 700, borderBottom: '2px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                📁 D. UPLOAD BERKAS PENDUKUNG (FORMAT PDF, MAKS 500KB)
+                📁 D. UPLOAD BERKAS PENDUKUNG (FORMAT PDF, 150KB - 350KB)
               </h3>
               <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.25rem', lineHeight: '1.4' }}>
-                Silakan unggah dokumen hasil scan dalam format <strong>PDF</strong> dengan ukuran file <strong>maksimal 500KB</strong> untuk masing-masing berkas.
+                Silakan unggah dokumen hasil scan dalam format <strong>PDF</strong> dengan ukuran file <strong>disarankan 150KB - 350KB</strong> (maksimal 350KB) untuk masing-masing berkas.
               </p>
 
               <div className="form-row">
@@ -687,7 +687,7 @@ export default function PPDBOnlineForm() {
                     }}
                     required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
                 <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                   <label htmlFor="berkas_akta" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
@@ -712,7 +712,7 @@ export default function PPDBOnlineForm() {
                     }}
                     required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
               </div>
 
@@ -740,7 +740,7 @@ export default function PPDBOnlineForm() {
                     }}
                     required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
                 <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                   <label htmlFor="berkas_sptjm" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
@@ -765,7 +765,7 @@ export default function PPDBOnlineForm() {
                     }}
                     required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
               </div>
 
@@ -792,7 +792,7 @@ export default function PPDBOnlineForm() {
                       cursor: 'pointer'
                     }}
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label htmlFor="berkas_ijazah" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
@@ -816,7 +816,7 @@ export default function PPDBOnlineForm() {
                       cursor: 'pointer'
                     }}
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF maks. 500KB</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
               </div>
             </div>

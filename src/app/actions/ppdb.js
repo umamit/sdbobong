@@ -81,8 +81,8 @@ export async function submitPpdbAction(formData) {
         return "";
       }
 
-      if (fileObj.size > 500 * 1024) {
-        throw new Error(`Ukuran berkas ${label} melebihi batas 500KB!`);
+      if (fileObj.size > 350 * 1024) {
+        throw new Error(`Ukuran berkas ${label} melebihi batas maksimal 350KB!`);
       }
 
       const ext = fileObj.name.split('.').pop().toLowerCase();
