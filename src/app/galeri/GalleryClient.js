@@ -59,6 +59,30 @@ function isFacebookUrl(url) {
   return cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch') || cleanUrl.includes('fb.com');
 }
 
+function isGoogleDriveUrl(url) {
+  if (!url) return false;
+  const cleanUrl = url.trim().toLowerCase();
+  return cleanUrl.includes('drive.google.com') || cleanUrl.includes('docs.google.com');
+}
+
+function getGoogleDriveFileId(url) {
+  if (!url) return null;
+  const fileDMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (fileDMatch) return fileDMatch[1];
+  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (idMatch) return idMatch[1];
+  return null;
+}
+
+function getCleanGoogleDriveUrl(url, type) {
+  const fileId = getGoogleDriveFileId(url);
+  if (!fileId) return url;
+  if (type === 'video') {
+    return `https://drive.google.com/file/d/${fileId}/preview`;
+  }
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+}
+
 export default function GalleryClient({ initialGallery }) {
   const [activeItem, setActiveImage] = useState(null);
   const [selectedType, setSelectedType] = useState('Semua');
@@ -268,9 +292,12 @@ export default function GalleryClient({ initialGallery }) {
           {displayedItems.map((item) => {
             const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
             const isFb = isFacebookUrl(item.url);
+            const isDrive = isGoogleDriveUrl(item.url);
             const thumbUrl = ytId 
               ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
-              : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
+              : isDrive && item.type === 'image'
+                ? getCleanGoogleDriveUrl(item.url, 'image')
+                : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
 
             return (
               <div
@@ -318,6 +345,37 @@ export default function GalleryClient({ initialGallery }) {
                         f
                       </div>
                       <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🎥 LIHAT VIDEO FACEBOOK</span>
+                    </div>
+                  ) : isDrive ? (
+                    <div style={{
+                      width: '100%',
+                      height: '180px',
+                      background: 'linear-gradient(135deg, #0F9D58 0%, #0B6623 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      padding: '20px',
+                      boxSizing: 'border-box',
+                      textAlign: 'center',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.2rem',
+                        fontWeight: 'bold',
+                        marginBottom: '8px'
+                      }}>
+                        ▲
+                      </div>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🎥 VIDEO GOOGLE DRIVE</span>
                     </div>
                   ) : (
                     <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#000' }}>
@@ -385,7 +443,7 @@ export default function GalleryClient({ initialGallery }) {
                 ) : (
                   <div style={{ overflow: 'hidden', position: 'relative' }}>
                     <img
-                      src={item.url}
+                      src={isDrive ? getCleanGoogleDriveUrl(item.url, 'image') : item.url}
                       alt={item.title}
                       loading="lazy"
                       className="gallery-thumbnail-img"
@@ -522,6 +580,16 @@ export default function GalleryClient({ initialGallery }) {
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '80vh', backgroundColor: 'white', aspectRatio: '500/400' }}
                 ></iframe>
+              ) : isGoogleDriveUrl(activeItem.url) ? (
+                <iframe
+                  src={getCleanGoogleDriveUrl(activeItem.url, 'video')}
+                  width="720"
+                  height="405"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', aspectRatio: '16/9' }}
+                ></iframe>
               ) : (
                 <video
                   src={activeItem.url}
@@ -543,7 +611,7 @@ export default function GalleryClient({ initialGallery }) {
               ></iframe>
             ) : (
               <img
-                src={activeItem.url}
+                src={isGoogleDriveUrl(activeItem.url) ? getCleanGoogleDriveUrl(activeItem.url, 'image') : activeItem.url}
                 alt={activeItem.title}
                 style={{
                   maxHeight: '75vh',

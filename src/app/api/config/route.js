@@ -319,6 +319,18 @@ export async function POST(request) {
           }
         }
 
+        // Resolve Google Drive URL if needed
+        if (url && (url.toLowerCase().includes('drive.google.com') || url.toLowerCase().includes('docs.google.com'))) {
+          const fileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1] || url.match(/[?&]id=([a-zA-Z0-9_-]+)/)?.[1];
+          if (fileId) {
+            if (type === 'video') {
+              url = `https://drive.google.com/file/d/${fileId}/preview`;
+            } else {
+              url = `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+          }
+        }
+
         const file = parsedFormData.get('gallery_file');
         if (file && typeof file === 'object' && file.size > 0) {
           const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg', 'gif', 'mp4', 'webm', 'ogg', 'mov', 'm4v']);
