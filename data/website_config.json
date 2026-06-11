@@ -1,10 +1,10 @@
 {
-    "id": "global_config",
     "marquee_announcements": [
         "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 22 Juni, jangan lupa persiapkan berkasmu😘",
         "📅 INFO: Ujian Akhir Semester Genap Sedang Berlangsung Minggu Ini",
         "💡Bapak/Ibu Guru tolong cek fitur upload berkas PPDB nya berfungsi atau tidak! agar diperbaiki segera"
     ],
+    "marquee_speed": 40,
     "stats": {
         "uks": 1,
         "gudang": 1,
@@ -155,11 +155,11 @@
                 "category": "umum"
             },
             {
-                "id": "gal-1781162604034",
-                "url": "https://www.facebook.com/tini.668145/posts/pfbid02QrGmZspU9RvGbVvyqsCLNjwa2oAph96Uw2D8f51ZZsYCwoCLUkqyh5vZEK8H7APPl",
+                "id": "gal-1781163589402",
+                "url": "https://drive.google.com/uc?export=view&id=1oMK_PjT__GzTOHCNumTRDHaPyBsJtOXb",
                 "date": "2026-06-11",
                 "type": "image",
-                "title": "Moment pengumuman kelulusan siswa  pada SD Negeri Bobong",
+                "title": "Kelulusan",
                 "category": "umum"
             }
         ],
@@ -180,5 +180,93 @@
         "jabatan_operator": "Operator/Guru Kelas 3C"
     },
     "force_local_cache": false,
-    "created_at": "2026-06-04T12:48:33.413044+00:00"
+    "downloads": [],
+    "faqs": [
+        {
+            "id": "faq-1",
+            "answer": "Pendaftaran PPDB online SDN Bobong dibuka mulai tanggal 1 Mei hingga 30 Juni 2026 untuk Tahun Ajaran 2026/2027.",
+            "question": "Kapan pendaftaran PPDB online SDN Bobong dibuka?"
+        },
+        {
+            "id": "faq-2",
+            "answer": "Sama sekali tidak. Seluruh proses pendaftaran dan seleksi PPDB di SDN Bobong gratis tanpa biaya apa pun (Rp 0).",
+            "question": "Apakah pendaftaran di SDN Bobong dipungut biaya?"
+        },
+        {
+            "id": "faq-3",
+            "answer": "Anda dapat mengunjungi halaman 'Kelulusan' di website ini dan memasukkan nomor NISN atau nomor ujian peserta untuk melihat status kelulusan secara mandiri.",
+            "question": "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?"
+        }
+    ],
+    "gallery": [
+        {
+            "id": "gal-1",
+            "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/5RaWa3fAo1I?si=YApUPjhi_agHQNcx\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+            "date": "2026-05-05",
+            "type": "video",
+            "title": " Satu hari bersama sahabat Berbudi"
+        },
+        {
+            "id": "gal-2",
+            "url": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/m2AZ7D7qLdM?si=DeZ5Pp5c-CNIjya7&amp;controls=0\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+            "date": "2026-05-18",
+            "type": "video",
+            "title": "Lomba Senam Anak Indonesia Hebat 2025_SD Negeri Bobong_Maluku Utara"
+        },
+        {
+            "id": "gal-3",
+            "url": "https://www.youtube.com/embed/S7WupUMBea8",
+            "date": "2026-05-10",
+            "type": "video",
+            "title": "Apresiasi GTK Kategori Guru SD Transformatif Tahun 2025: \"Halal-Haram Detective\""
+        },
+        {
+            "id": "gal-1780935617410",
+            "url": "https://www.youtube.com/embed/bLIKndMFzHc",
+            "date": "2026-06-08",
+            "type": "video",
+            "title": "Senam Ayo Bersatu",
+            "category": "umum"
+        },
+        {
+            "id": "gal-1780935964309",
+            "url": "https://www.youtube.com/embed/W4by9VDd1f0",
+            "date": "2026-06-08",
+            "type": "video",
+            "title": "Jingle Matematika GEMBIRA",
+            "category": "umum"
+        },
+        {
+            "id": "gal-1781161900470",
+            "url": "https://www.youtube.com/embed/gsGBME4o3Qw",
+            "date": "2026-06-11",
+            "type": "video",
+            "title": "Belajar Seru, Asesmen Menyenangkan: Penerapan Wordwall dan Quizizz dalam pembelajaran",
+            "category": "akademik"
+        },
+        {
+            "id": "gal-1781162045738",
+            "url": "https://www.youtube.com/embed/qk5ZD_yeYIM",
+            "date": "2026-06-11",
+            "type": "video",
+            "title": "Hari Kedua MPLS Ramah SD Negeri Bobong Tahun 2025",
+            "category": "umum"
+        },
+        {
+            "id": "gal-1781162165927",
+            "url": "https://www.youtube.com/embed/5d6xPvDgykg",
+            "date": "2026-06-11",
+            "type": "video",
+            "title": "Hari pertama ke sekolah SD Negeri Bobong tahun 2025",
+            "category": "umum"
+        },
+        {
+            "id": "gal-1781163589402",
+            "url": "https://drive.google.com/uc?export=view&id=1oMK_PjT__GzTOHCNumTRDHaPyBsJtOXb",
+            "date": "2026-06-11",
+            "type": "image",
+            "title": "Kelulusan",
+            "category": "umum"
+        }
+    ]
 }
