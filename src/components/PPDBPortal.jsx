@@ -17,12 +17,20 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
     nip_operator: ""
   };
 
-  // Helper function to normalize teacher names for matching
   const normalizeName = (name) => {
     if (!name) return "";
-    return name
-      .toLowerCase()
-      .replace(/\b(s\.?pd\.?|m\.?pd\.?|s\.?kom\.?|gr\.?|h\.)\b/gi, "")
+    let normalized = name.toLowerCase();
+    
+    // Remove common academic titles/suffixes
+    normalized = normalized.replace(/\b(s\.?pd\.?i?\.?|m\.?pd\.?i?\.?|s\.?kom\.?|m\.?kom\.?|s\.?ag\.?|m\.?ag\.?|s\.?e\.?|m\.?e\.?|s\.?h\.?|m\.?h\.?|s\.?t\.?|m\.?t\.?|s\.?si\.?|m\.?si\.?|drs\.?|dra\.?|gr\.?)\b/gi, "");
+    
+    // Remove honorific prefixes (can be multiple, e.g., "Ibu Hj.")
+    const prefixRegex = /^(ibu|bapak|pak|bu|sdri|sdr|haji|hajah|hj\.?|h\.?|ustad|ustadz|ustadzah)\s+/i;
+    while (prefixRegex.test(normalized)) {
+      normalized = normalized.replace(prefixRegex, "");
+    }
+    
+    return normalized
       .replace(/[^a-z0-9]/gi, "")
       .trim();
   };
