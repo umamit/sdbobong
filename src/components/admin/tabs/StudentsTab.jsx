@@ -67,10 +67,10 @@ export default function StudentsTab() {
                   <div style={{ backgroundColor: '#f1f5f9', color: '#475569', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>🏫</div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Sebaran Kelas</h4>
-                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
+                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px', fontSize: '0.7rem', fontWeight: 700 }}>
                       {[1, 2, 3, 4, 5, 6].map(cls => (
-                        <span key={cls} title={`Kelas ${cls}`} style={{ display: 'inline-block', padding: '2px 6px', borderRadius: '4px', backgroundColor: '#f1f5f9', color: '#334155' }}>
-                          K{cls}: {students.filter(s => s.class === String(cls) && s.status === 'Aktif').length}
+                        <span key={cls} title={`Kelas ${cls}`} style={{ display: 'inline-block', padding: '2px 4px', borderRadius: '4px', backgroundColor: '#f1f5f9', color: '#334155' }}>
+                          K{cls}:{students.filter(s => s.class?.startsWith(String(cls)) && s.status === 'Aktif').length}
                         </span>
                       ))}
                     </div>
