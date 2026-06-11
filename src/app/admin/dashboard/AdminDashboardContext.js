@@ -460,14 +460,16 @@ export function AdminDashboardProvider({
 
   const syncNipHumas = (() => {
     const name = config?.ppdb_contacts?.nama_humas || "";
+    if (!name) return "";
     const matched = (teachers || []).find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
-    return matched ? matched.nip : (config?.ppdb_contacts?.nip_humas || "");
+    return matched ? matched.nip : "";
   })();
 
   const syncNipOperator = (() => {
     const name = config?.ppdb_contacts?.nama_operator || "";
+    if (!name) return "";
     const matched = (teachers || []).find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(name));
-    return matched ? matched.nip : (config?.ppdb_contacts?.nip_operator || "");
+    return matched ? matched.nip : "";
   })();
 
   const handleFieldChange = (page, key, value) => {
@@ -2480,6 +2482,7 @@ export function AdminDashboardProvider({
   const handleTeacherDelete = async (teacherId) => {
     if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) return;
     try {
+      const targetTeacher = teachers.find(t => t.id === teacherId);
       const res = await fetch(`/api/teachers?id=${teacherId}`, {
         method: 'DELETE'
       });
@@ -2487,6 +2490,47 @@ export function AdminDashboardProvider({
       if (res.ok) {
         showToast('success', 'Data guru berhasil dihapus.');
         setTeachers(prev => prev.filter(t => t.id !== teacherId));
+        
+        // Auto-cleanup PPDB contacts if this teacher was assigned
+        if (targetTeacher && config?.ppdb_contacts) {
+          const nameNormalized = normalizeTeacherName(targetTeacher.name);
+          const humasNameNormalized = normalizeTeacherName(config.ppdb_contacts.nama_humas);
+          const operatorNameNormalized = normalizeTeacherName(config.ppdb_contacts.nama_operator);
+          
+          let needsConfigUpdate = false;
+          let updatedContacts = { ...config.ppdb_contacts };
+          
+          if (nameNormalized && nameNormalized === humasNameNormalized) {
+            updatedContacts.nama_humas = "";
+            updatedContacts.nip_humas = "";
+            updatedContacts.wa_humas = "";
+            updatedContacts.jabatan_humas = "";
+            needsConfigUpdate = true;
+          }
+          if (nameNormalized && nameNormalized === operatorNameNormalized) {
+            updatedContacts.nama_operator = "";
+            updatedContacts.nip_operator = "";
+            updatedContacts.wa_operator = "";
+            updatedContacts.jabatan_operator = "";
+            needsConfigUpdate = true;
+          }
+          
+          if (needsConfigUpdate) {
+            await fetch('/api/config', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action_type: 'contacts',
+                ...updatedContacts
+              })
+            });
+            setConfig(prev => ({
+              ...prev,
+              ppdb_contacts: updatedContacts
+            }));
+          }
+        }
+        
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menghapus data guru.');

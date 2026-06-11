@@ -46,7 +46,9 @@ export default function PagesTab() {
     setActiveTab,
     submitPageContents,
     syncNipHumas,
-    syncNipOperator
+    syncNipOperator,
+    teachers = [],
+    normalizeTeacherName
   } = useAdminDashboard();
 
   return (
@@ -1598,6 +1600,11 @@ export default function PagesTab() {
                               style={{ width: '100%' }}
                               placeholder="Contoh: Ibu Husnita Usman, M.Pd."
                             />
+                            {config?.ppdb_contacts?.nama_humas && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(config.ppdb_contacts.nama_humas)) && (
+                              <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
+                                ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
+                              </span>
+                            )}
                           </div>
                           <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                             <label htmlFor="jabatan_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Humas</label>
@@ -1655,6 +1662,11 @@ export default function PagesTab() {
                               style={{ width: '100%' }}
                               placeholder="Contoh: Bapak Kasmudin"
                             />
+                            {config?.ppdb_contacts?.nama_operator && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(config.ppdb_contacts.nama_operator)) && (
+                              <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
+                                ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
+                              </span>
+                            )}
                           </div>
                           <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                             <label htmlFor="jabatan_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Operator</label>

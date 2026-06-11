@@ -39,12 +39,12 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   const matchedHumas = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_humas));
   const matchedOperator = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_operator));
 
-  // Prioritize live database NIP, fallback to contacts' saved NIP if no match
-  const nip_humas = matchedHumas ? matchedHumas.nip : contacts.nip_humas;
-  const nip_operator = matchedOperator ? matchedOperator.nip : contacts.nip_operator;
+  // Prioritize live database NIP, set to empty if no matching teacher is found
+  const nip_humas = matchedHumas ? matchedHumas.nip : "";
+  const nip_operator = matchedOperator ? matchedOperator.nip : "";
 
-  const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim());
-  const hasOperator = !!(contacts.nama_operator?.trim() && contacts.wa_operator?.trim());
+  const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim() && matchedHumas);
+  const hasOperator = !!(contacts.nama_operator?.trim() && contacts.wa_operator?.trim() && matchedOperator);
 
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
@@ -355,13 +355,11 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
               </div>
             ) : (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '2px dashed #EF4444', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '180px' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#EF4444', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
-                <p style={{ fontWeight: 700, color: '#B91C1C', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-                  ⚠️ Kontak Humas Belum Dikonfigurasi
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Informasi & Humas PPDB</h3>
+                <p style={{ fontWeight: 700, color: '#EF4444', fontSize: '1.2rem', marginBottom: 'var(--space-md)' }}>
+                  Tidak Ada
                 </p>
-                <p style={{ fontSize: '0.8rem', color: '#EF4444', margin: 0 }}>
-                  Silakan hubungi pihak sekolah secara langsung atau tunggu admin memperbarui kontak.
-                </p>
+                <button className="btn btn-secondary" style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#94a3b8', border: '1px solid #e2e8f0', cursor: 'not-allowed' }} disabled>Tanya Humas (WA)</button>
               </div>
             )}
 
@@ -376,13 +374,11 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
               </div>
             ) : (
               <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '2px dashed #EF4444', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '180px' }}>
-                <h3 style={{ fontSize: '1.15rem', color: '#EF4444', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
-                <p style={{ fontWeight: 700, color: '#B91C1C', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-                  ⚠️ Kontak Operator Belum Dikonfigurasi
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--primary)', marginBottom: 'var(--space-xs)' }}>Dukungan Teknis & Dapodik</h3>
+                <p style={{ fontWeight: 700, color: '#EF4444', fontSize: '1.2rem', marginBottom: 'var(--space-md)' }}>
+                  Tidak Ada
                 </p>
-                <p style={{ fontSize: '0.8rem', color: '#EF4444', margin: 0 }}>
-                  Silakan hubungi pihak sekolah secara langsung atau tunggu admin memperbarui kontak.
-                </p>
+                <button className="btn btn-primary" style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#94a3b8', border: '1px solid #e2e8f0', cursor: 'not-allowed' }} disabled>Tanya Operator (WA)</button>
               </div>
             )}
           </div>
