@@ -2133,8 +2133,16 @@ export function AdminDashboardProvider({
     const matchedHumas = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_humas));
     const matchedOperator = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_operator));
 
-    const nip_humas = matchedHumas ? matchedHumas.nip : "";
-    const nip_operator = matchedOperator ? matchedOperator.nip : "";
+    // If name matches, use the teacher's NIP.
+    // If the name is unchanged but teacher is not found (e.g. deleted), preserve the old saved NIP so it is not lost.
+    // Otherwise, set to empty.
+    const nip_humas = matchedHumas 
+      ? matchedHumas.nip 
+      : (nama_humas === config?.ppdb_contacts?.nama_humas ? (config?.ppdb_contacts?.nip_humas || "") : "");
+      
+    const nip_operator = matchedOperator 
+      ? matchedOperator.nip 
+      : (nama_operator === config?.ppdb_contacts?.nama_operator ? (config?.ppdb_contacts?.nip_operator || "") : "");
 
     const clean_wa_humas = wa_humas.replace(/[^0-9]/g, '');
     const clean_wa_operator = wa_operator.replace(/[^0-9]/g, '');

@@ -51,6 +51,32 @@ export default function PagesTab() {
     normalizeTeacherName
   } = useAdminDashboard();
 
+  const [inputNamaHumas, setInputNamaHumas] = React.useState('');
+  const [inputNamaOperator, setInputNamaOperator] = React.useState('');
+
+  React.useEffect(() => {
+    if (config?.ppdb_contacts) {
+      setInputNamaHumas(config.ppdb_contacts.nama_humas || '');
+      setInputNamaOperator(config.ppdb_contacts.nama_operator || '');
+    }
+  }, [config]);
+
+  const currentNipHumas = React.useMemo(() => {
+    if (!inputNamaHumas) return "";
+    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaHumas));
+    return matched 
+      ? matched.nip 
+      : (inputNamaHumas === config?.ppdb_contacts?.nama_humas ? (config?.ppdb_contacts?.nip_humas || "") : "");
+  }, [inputNamaHumas, teachers, normalizeTeacherName, config]);
+
+  const currentNipOperator = React.useMemo(() => {
+    if (!inputNamaOperator) return "";
+    const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaOperator));
+    return matched 
+      ? matched.nip 
+      : (inputNamaOperator === config?.ppdb_contacts?.nama_operator ? (config?.ppdb_contacts?.nip_operator || "") : "");
+  }, [inputNamaOperator, teachers, normalizeTeacherName, config]);
+
   return (
     <section id="tab-pages" className={`tab-pane ${activeTab === 'pages' ? 'active' : ''}`}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
@@ -1596,11 +1622,12 @@ export default function PagesTab() {
                               id="nama_humas"
                               name="nama_humas"
                               className="form-control"
-                              defaultValue={config?.ppdb_contacts?.nama_humas || ''}
+                              value={inputNamaHumas}
+                              onChange={(e) => setInputNamaHumas(e.target.value)}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Ibu Husnita Usman, M.Pd."
                             />
-                            {config?.ppdb_contacts?.nama_humas && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(config.ppdb_contacts.nama_humas)) && (
+                            {inputNamaHumas && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaHumas)) && (
                               <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
                                 ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
                               </span>
@@ -1625,7 +1652,7 @@ export default function PagesTab() {
                               id="nip_humas"
                               name="nip_humas"
                               className="form-control"
-                              value={syncNipHumas}
+                              value={currentNipHumas}
                               style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
                               placeholder="Terisi otomatis dari daftar guru"
                               readOnly
@@ -1658,11 +1685,12 @@ export default function PagesTab() {
                               id="nama_operator"
                               name="nama_operator"
                               className="form-control"
-                              defaultValue={config?.ppdb_contacts?.nama_operator || ''}
+                              value={inputNamaOperator}
+                              onChange={(e) => setInputNamaOperator(e.target.value)}
                               style={{ width: '100%' }}
                               placeholder="Contoh: Bapak Kasmudin"
                             />
-                            {config?.ppdb_contacts?.nama_operator && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(config.ppdb_contacts.nama_operator)) && (
+                            {inputNamaOperator && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaOperator)) && (
                               <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
                                 ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
                               </span>
@@ -1687,7 +1715,7 @@ export default function PagesTab() {
                               id="nip_operator"
                               name="nip_operator"
                               className="form-control"
-                              value={syncNipOperator}
+                              value={currentNipOperator}
                               style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
                               placeholder="Terisi otomatis dari daftar guru"
                               readOnly
