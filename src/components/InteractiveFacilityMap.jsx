@@ -948,7 +948,7 @@ export default function InteractiveFacilityMap() {
             ) : (
               <div style={{ textAlign: 'center', color: 'var(--text-light)', padding: 'var(--space-sm) 0' }}>
                 <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🗺️</div>
-                <h4 style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '1rem', marginBottom: '6px' }}>Sentuh Peta Kampus</h4>
+                <h4 style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '1rem', marginBottom: '6px' }}>Sentuh Denah Sekolah</h4>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-light)', margin: 0, lineHeight: '1.4' }}>
                   Arahkan tetikus atau ketuk bangunan pada denah interaktif di sebelah kiri untuk meninjau fasilitas SD Negeri Bobong secara langsung.
                 </p>
@@ -959,7 +959,7 @@ export default function InteractiveFacilityMap() {
           {/* Real-world School Map Stats */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <div style={{ background: 'white', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Layout Kampus</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Layout Sekolah</span>
               <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-heading)', marginTop: '2px', textAlign: 'center' }}>U-Shape (Campuran)</span>
             </div>
             <div style={{ background: 'white', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
