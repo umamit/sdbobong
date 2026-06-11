@@ -891,7 +891,8 @@ export default function Modals() {
                     { label: "Akta Kelahiran", field: "berkas_akta", icon: "👶" },
                     { label: "KTP Orang Tua", field: "berkas_ktp", icon: "🪪" },
                     { label: "SPTJM", field: "berkas_sptjm", icon: "✍️" },
-                    { label: "KIP / PKH (Opsional)", field: "berkas_kip", icon: "💳" }
+                    { label: "KIP / PKH (Opsional)", field: "berkas_kip", icon: "💳" },
+                    { label: "Ijazah TK / PAUD (Opsional)", field: "berkas_ijazah", icon: "🎓" }
                   ].map((doc, idx) => {
                     const url = selectedRecord[doc.field];
                     return (

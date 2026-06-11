@@ -387,7 +387,7 @@ export async function getAvailableSupabaseColumns() {
       'nama_ayah', 'pekerjaan_ayah', 'no_hp_ayah', 
       'pekerjaan_ibu', 'no_hp_ibu', 
       'nama_wali', 'pekerjaan_wali', 'tahun_ajaran',
-      'berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip'
+      'berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip', 'berkas_ijazah'
     ];
     
     // Test all new columns at once to minimize queries
@@ -1078,7 +1078,8 @@ export async function syncLocalToSupabase() {
           berkas_akta: localR.berkas_akta || "",
           berkas_ktp: localR.berkas_ktp || "",
           berkas_sptjm: localR.berkas_sptjm || "",
-          berkas_kip: localR.berkas_kip || ""
+          berkas_kip: localR.berkas_kip || "",
+          berkas_ijazah: localR.berkas_ijazah || ""
         };
 
         // Filter based on columns actually present in the table
@@ -1090,14 +1091,15 @@ export async function syncLocalToSupabase() {
         }
 
         // Check if we need to pack berkas into alamat_domisili (fallback for zero-migration)
-        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip'].some(c => !availableCols.includes(c));
+        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip', 'berkas_ijazah'].some(c => !availableCols.includes(c));
         if (missingBerkasCols) {
           const berkasData = {
             berkas_kk: localR.berkas_kk || "",
             berkas_akta: localR.berkas_akta || "",
             berkas_ktp: localR.berkas_ktp || "",
             berkas_sptjm: localR.berkas_sptjm || "",
-            berkas_kip: localR.berkas_kip || ""
+            berkas_kip: localR.berkas_kip || "",
+            berkas_ijazah: localR.berkas_ijazah || ""
           };
           const alamatBase = localR.alamat || localR.alamat_domisili || "";
           supabaseData.alamat_domisili = packBerkasIntoAlamat(alamatBase, berkasData);
@@ -1164,7 +1166,8 @@ export async function syncLocalToSupabase() {
         berkas_akta: supabaseR.berkas_akta || unpackedAlamat.berkas.berkas_akta || "",
         berkas_ktp: supabaseR.berkas_ktp || unpackedAlamat.berkas.berkas_ktp || "",
         berkas_sptjm: supabaseR.berkas_sptjm || unpackedAlamat.berkas.berkas_sptjm || "",
-        berkas_kip: supabaseR.berkas_kip || unpackedAlamat.berkas.berkas_kip || ""
+        berkas_kip: supabaseR.berkas_kip || unpackedAlamat.berkas.berkas_kip || "",
+        berkas_ijazah: supabaseR.berkas_ijazah || unpackedAlamat.berkas.berkas_ijazah || ""
       };
 
       if (localFormat.waktu_daftar && localFormat.waktu_daftar.includes('T')) {

@@ -40,6 +40,7 @@ export default function PPDBOnlineForm() {
   const [fileKtp, setFileKtp] = useState(null);
   const [fileSptjm, setFileSptjm] = useState(null);
   const [fileKip, setFileKip] = useState(null);
+  const [fileIjazah, setFileIjazah] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -157,6 +158,9 @@ export default function PPDBOnlineForm() {
       submissionData.append('berkas_sptjm', fileSptjm);
       if (fileKip) {
         submissionData.append('berkas_kip', fileKip);
+      }
+      if (fileIjazah) {
+        submissionData.append('berkas_ijazah', fileIjazah);
       }
 
       const res = await submitPpdbAction(submissionData);
@@ -790,8 +794,29 @@ export default function PPDBOnlineForm() {
                   />
                   <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF maks. 500KB</small>
                 </div>
-                <div className="form-group" style={{ marginBottom: 0, display: 'none' }}>
-                  {/* Empty cell */}
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label htmlFor="berkas_ijazah" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
+                    Scan Ijazah TK / PAUD (Opsional)
+                  </label>
+                  <input
+                    type="file"
+                    id="berkas_ijazah"
+                    name="berkas_ijazah"
+                    accept=".pdf"
+                    onChange={(e) => handleFileChange(e, setFileIjazah, "Ijazah TK/PAUD")}
+                    style={{ 
+                      padding: '0.5rem',
+                      display: 'block',
+                      width: '100%',
+                      fontSize: '0.85rem',
+                      color: '#475569',
+                      backgroundColor: '#f8fafc',
+                      border: '1px solid #cbd5e1',
+                      borderRadius: '8px',
+                      cursor: 'pointer'
+                    }}
+                  />
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF maks. 500KB</small>
                 </div>
               </div>
             </div>

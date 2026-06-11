@@ -71,7 +71,8 @@ export async function GET(request) {
               berkas_akta: r.berkas_akta || unpacked.berkas.berkas_akta || "",
               berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
               berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
-              berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || ""
+              berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || "",
+              berkas_ijazah: r.berkas_ijazah || unpacked.berkas.berkas_ijazah || ""
             };
           });
         }
@@ -113,7 +114,8 @@ export async function GET(request) {
             berkas_akta: r.berkas_akta || "",
             berkas_ktp: r.berkas_ktp || "",
             berkas_sptjm: r.berkas_sptjm || "",
-            berkas_kip: r.berkas_kip || ""
+            berkas_kip: r.berkas_kip || "",
+            berkas_ijazah: r.berkas_ijazah || ""
           }));
           records.sort((a, b) => (b.waktu_daftar || "").localeCompare(a.waktu_daftar || ""));
         } catch (e) {
