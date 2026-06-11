@@ -1780,7 +1780,7 @@ export default function Modals() {
                   setStudNisn('');
                   setStudNis('');
                   setStudName('');
-                  setStudClass('1');
+                  setStudClass('1A');
                   setStudGender('Laki-laki');
                   setStudBirthPlace('');
                   setStudBirthDate('');
@@ -1862,12 +1862,9 @@ export default function Modals() {
                     style={{ width: '100%', boxSizing: 'border-box' }}
                     required
                   >
-                    <option value="1">Kelas 1</option>
-                    <option value="2">Kelas 2</option>
-                    <option value="3">Kelas 3</option>
-                    <option value="4">Kelas 4</option>
-                    <option value="5">Kelas 5</option>
-                    <option value="6">Kelas 6</option>
+                    {['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D', '6A', '6B', '6C', '6D'].map(cls => (
+                      <option key={cls} value={cls}>Kelas {cls}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -2022,7 +2019,7 @@ export default function Modals() {
                     setStudNisn('');
                     setStudNis('');
                     setStudName('');
-                    setStudClass('1');
+                    setStudClass('1A');
                     setStudGender('Laki-laki');
                     setStudBirthPlace('');
                     setStudBirthDate('');

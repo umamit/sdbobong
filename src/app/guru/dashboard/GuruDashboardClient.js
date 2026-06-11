@@ -263,19 +263,18 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
           </div>
 
           <div className="filter-group">
-            <div>
-              <label>Filter Kelas</label>
-              <div className="class-filter-buttons">
-                {['All', '1', '2', '3', '4', '5', '6'].map(cls => (
-                  <button
-                    key={cls}
-                    className={`btn-filter ${classFilter === cls ? 'active' : ''}`}
-                    onClick={() => setClassFilter(cls)}
-                  >
-                    {cls === 'All' ? 'Semua' : `Kls ${cls}`}
-                  </button>
+            <div className="status-filter-select-group">
+              <label htmlFor="class-select">Filter Kelas</label>
+              <select
+                id="class-select"
+                value={classFilter}
+                onChange={(e) => setClassFilter(e.target.value)}
+              >
+                <option value="All">Semua Kelas</option>
+                {['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D', '6A', '6B', '6C', '6D'].map(cls => (
+                  <option key={cls} value={cls}>Kelas {cls}</option>
                 ))}
-              </div>
+              </select>
             </div>
 
             <div className="status-filter-select-group">

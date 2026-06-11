@@ -291,7 +291,7 @@ export function AdminDashboardProvider({
   const [studNisn, setStudNisn] = useState('');
   const [studNis, setStudNis] = useState('');
   const [studName, setStudName] = useState('');
-  const [studClass, setStudClass] = useState('1');
+  const [studClass, setStudClass] = useState('1A');
   const [studGender, setStudGender] = useState('Laki-laki');
   const [studBirthPlace, setStudBirthPlace] = useState('');
   const [studBirthDate, setStudBirthDate] = useState('');
@@ -1532,7 +1532,7 @@ export function AdminDashboardProvider({
         setStudNisn('');
         setStudNis('');
         setStudName('');
-        setStudClass('1');
+        setStudClass('1A');
         setStudGender('Laki-laki');
         setStudBirthPlace('');
         setStudBirthDate('');
