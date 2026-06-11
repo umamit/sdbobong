@@ -85,17 +85,30 @@ const FACILITIES_DATA = {
 
   // GEDUNG SELATAN (UTAMA / BAWAH - ATAP MERAH - 2 LANTAI)
   l1_kantor: {
-    title: "Kantor Guru & Kepala Sekolah",
-    desc: "Pusat administrasi sekolah, tempat pelayanan dewan guru, dan ruang Kepala Sekolah yang terletak di Gedung Selatan Utama (Lantai 1). Berfungsi melayani koordinasi pembelajaran serta menyambut wali murid dan tamu dinas secara prima.",
+    title: "Kantor Guru",
+    desc: "Ruang kerja dewan guru SDN Bobong yang terletak di Gedung Selatan Utama (Lantai 1 - Sisi Kiri). Berfungsi sebagai tempat bimbingan akademik, koordinasi harian guru, dan persiapan mengajar.",
     stats: {
-      kapasitas: "14 Guru & Staf Kependidikan",
+      kapasitas: "12 Guru & Staff",
       lokasi: "Gedung Selatan Utama, Lantai 1 (Sayap Kiri)",
       kondisi: "Sangat Layak & Ber-AC",
-      fasilitas: ["Meja Kerja Guru & Kursi Putar", "Ruang Tamu Kepala Sekolah", "Komputer Administrasi Utama (Dapodik)", "Printer & Scanner Multi-Fungsi", "Sistem Arsip Inventarisasi BOS", "Air Conditioner (AC) & Wifi Mandiri"]
+      fasilitas: ["Meja Kerja Guru & Kursi Kerja", "Printer & Scanner Bersama", "Air Conditioner (AC)", "Papan Pengumuman Kurikulum", "Wifi Sekolah"]
     },
     icon: "💻",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
+  },
+  l1_kepsek: {
+    title: "Ruang Kepala Sekolah",
+    desc: "Ruang Kepala Sekolah yang terletak di Gedung Selatan Utama (Lantai 1 - Sisi Tengah). Berfungsi sebagai ruang kerja dinas kepala sekolah, koordinasi manajerial, pelayanan administrasi sekolah, serta ruang pertemuan tamu dinas.",
+    stats: {
+      kapasitas: "1 Kepala Sekolah & Staf Khusus",
+      lokasi: "Gedung Selatan Utama, Lantai 1 (Bagian Tengah)",
+      kondisi: "Sangat Baik & Ber-AC",
+      fasilitas: ["Meja Kerja & Kursi Pimpinan", "Satu Set Sofa Tamu VIP", "Lemari Arsip Sertifikasi & Prestasi", "Komputer Kerja Kepala Sekolah", "Pendingin Ruangan (AC)"]
+    },
+    icon: "👑",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=800&auto=format&fit=crop"
   },
   l1_perpus: {
     title: "Perpustakaan & Pojok Literasi",
@@ -110,14 +123,40 @@ const FACILITIES_DATA = {
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
-  l2_lab_uks: {
-    title: "Laboratorium Komputer & Klinik UKS",
-    desc: "Ruang terpadu di Lantai 2 Gedung Selatan Utama yang difungsikan sebagai lab komputer mini dengan perangkat Chromebook edukatif, sekaligus sebagai area Unit Kesehatan Sekolah (UKS) bersih yang tenang untuk penanganan medis awal siswa sakit.",
+  l2_aula: {
+    title: "Aula Sekolah / Ruang Serbaguna",
+    desc: "Ruang pertemuan besar yang terletak di Gedung Selatan Utama (Lantai 2 - Sisi Kiri). Digunakan sebagai pusat kegiatan rapat pleno guru, pementasan seni kreatif siswa, lokakarya, dan berbagai pertemuan akbar sekolah.",
     stats: {
-      kapasitas: "20 Chromebook & 2 Ranjang UKS",
-      lokasi: "Gedung Selatan Utama, Lantai 2 (Sisi Kanan)",
-      kondisi: "Steril, Bersih, Dingin (Ber-AC)",
-      fasilitas: ["Laptop Chromebook Sekolah", "Akses Wifi Berkecepatan Tinggi", "Kotak Obat P3K Lengkap", "Timbangan Badan & Pengukur Tinggi", "Ranjang Pasien Kasur Empuk & Bantal", "Termometer & Pengukur Tekanan Darah"]
+      kapasitas: "100 Orang",
+      lokasi: "Gedung Selatan Utama, Lantai 2 (Sayap Kiri)",
+      kondisi: "Sangat Luas & Representatif",
+      fasilitas: ["Podium Sambutan Kayu Jati", "Sound System & Microphone Wireless", "Kursi Lipat Tamu (100 Unit)", "Panggung Pementasan Kreatif", "Kipas Angin Dinding Besar"]
+    },
+    icon: "🏛️",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop"
+  },
+  l2_lab: {
+    title: "Laboratorium Komputer",
+    desc: "Ruang praktek teknologi dan asesmen yang terletak di Gedung Selatan Utama (Lantai 2 - Sisi Tengah). Dilengkapi dengan perangkat komputer Chromebook modern yang terhubung internet nirkabel berkecepatan tinggi guna melatih keterampilan literasi digital siswa.",
+    stats: {
+      kapasitas: "25 Chromebook",
+      lokasi: "Gedung Selatan Utama, Lantai 2 (Bagian Tengah)",
+      kondisi: "Modern, Sejuk & Terawat",
+      fasilitas: ["Meja Komputer Bersekat", "Akses Internet Wifi Berkecepatan Tinggi", "Proyektor LCD Presentasi", "Papan Tulis Instruksi Guru", "Kipas Angin Dinding (2 Unit)"]
+    },
+    icon: "💻",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=800&auto=format&fit=crop"
+  },
+  l2_uks: {
+    title: "Klinik UKS (Unit Kesehatan Sekolah)",
+    desc: "Ruang pelayanan kesehatan awal bagi siswa yang sakit di sekolah, terletak di Gedung Selatan Utama (Lantai 2 - Sisi Kanan). Menyediakan ranjang istirahat yang bersih, obat-obatan P3K lengkap, dan peralatan medis dasar di bawah pengawasan guru pembina.",
+    stats: {
+      kapasitas: "2 Ranjang Istirahat UKS",
+      lokasi: "Gedung Selatan Utama, Lantai 2 (Sayap Kanan)",
+      kondisi: "Steril, Bersih, dan Tenang",
+      fasilitas: ["Ranjang Pasien (2 Set)", "Timbangan & Pengukur Tinggi Badan", "Kotak Obat P3K & Obat Esensial", "Termometer & Tensi Digital", "Wastafel Cuci Tangan"]
     },
     icon: "🩹",
     color: "#C53030",
@@ -235,7 +274,7 @@ export default function InteractiveFacilityMap() {
                 boxShadow: southFloor === 1 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
               }}
             >
-              Lantai 1 (Kantor & Perpustakaan)
+              Lantai 1 (Kantor, Kepsek, & Perpus)
             </button>
             <button
               onClick={() => setSouthFloor(2)}
@@ -252,7 +291,7 @@ export default function InteractiveFacilityMap() {
                 boxShadow: southFloor === 2 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
               }}
             >
-              Lantai 2 (Lab Komputer & UKS)
+              Lantai 2 (Aula, Lab, & UKS)
             </button>
           </div>
         </div>
@@ -556,24 +595,50 @@ export default function InteractiveFacilityMap() {
                   >
                     {/* Roof Top Slope */}
                     <polygon 
-                      points="180,395 395,395 395,435 180,435" 
+                      points="180,395 340,395 340,435 180,435" 
                       fill={hoveredRoom === 'l1_kantor' ? '#EF4444' : '#C53030'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Roof Bottom Slope */}
                     <polygon 
-                      points="180,435 395,435 395,475 180,475" 
+                      points="180,435 340,435 340,475 180,475" 
                       fill={hoveredRoom === 'l1_kantor' ? '#C53030' : '#9B2C2C'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Interior wall line */}
-                    <line x1="395" y1="395" x2="395" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+                    <line x1="340" y1="395" x2="340" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="287" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">💻 KANTOR GURU (L1)</text>
-                    {hoveredRoom === 'l1_kantor' && <rect x="182" y="397" width="211" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">💻 GURU (L1)</text>
+                    {hoveredRoom === 'l1_kantor' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
-                  {/* 8. Perpustakaan (l1_perpus) - Lantai 1 Kanan */}
+                  {/* 8. Ruang Kepala Sekolah (l1_kepsek) - Lantai 1 Tengah */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l1_kepsek')}
+                    onMouseEnter={() => setHoveredRoom('l1_kepsek')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="340,395 470,395 470,435 340,435" 
+                      fill={hoveredRoom === 'l1_kepsek' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="340,435 470,435 470,475 340,475" 
+                      fill={hoveredRoom === 'l1_kepsek' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Interior wall line */}
+                    <line x1="470" y1="395" x2="470" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+                    
+                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">👑 KEPSEK (L1)</text>
+                    {hoveredRoom === 'l1_kepsek' && <rect x="342" y="397" width="126" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+
+                  {/* 9. Perpustakaan (l1_perpus) - Lantai 1 Kanan */}
                   <g 
                     style={{ cursor: 'pointer' }}
                     onClick={() => handleRoomClick('l1_perpus')}
@@ -582,19 +647,19 @@ export default function InteractiveFacilityMap() {
                   >
                     {/* Roof Top Slope */}
                     <polygon 
-                      points="395,395 670,395 670,435 395,435" 
+                      points="470,395 670,395 670,435 470,435" 
                       fill={hoveredRoom === 'l1_perpus' ? '#EF4444' : '#C53030'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Roof Bottom Slope */}
                     <polygon 
-                      points="395,435 670,435 670,475 395,475" 
+                      points="470,435 670,435 670,475 470,475" 
                       fill={hoveredRoom === 'l1_perpus' ? '#C53030' : '#9B2C2C'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     
-                    <text x="532" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📚 PERPUSTAKAAN (L1)</text>
-                    {hoveredRoom === 'l1_perpus' && <rect x="397" y="397" width="271" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">📚 PERPUS (L1)</text>
+                    {hoveredRoom === 'l1_perpus' && <rect x="472" y="397" width="196" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
                 </g>
               )}
@@ -602,38 +667,80 @@ export default function InteractiveFacilityMap() {
               {/* --- VIEW GEDUNG SELATAN: LANTAI 2 --- */}
               {southFloor === 2 && (
                 <g>
-                  {/* Aula / R. Pertemuan Serbaguna (Dekorasi / Non-interactive L2 Kiri) */}
-                  <g style={{ opacity: 0.8 }}>
-                    {/* Roof Top Slope */}
-                    <polygon points="180,395 395,395 395,435 180,435" fill="#64748B" />
-                    {/* Roof Bottom Slope */}
-                    <polygon points="180,435 395,435 395,475 180,475" fill="#475569" />
-                    <line x1="395" y1="395" x2="395" y2="475" stroke="#334155" strokeWidth="1.5" opacity="0.4" />
-                    <text x="287" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle" opacity="0.85">🏛️ AULA / R. SERBAGUNA (L2)</text>
-                  </g>
-
-                  {/* 9. Lab Komputer & UKS (l2_lab_uks) - Lantai 2 Kanan */}
+                  {/* 10. Aula Sekolah (l2_aula) - Lantai 2 Kiri */}
                   <g 
                     style={{ cursor: 'pointer' }}
-                    onClick={() => handleRoomClick('l2_lab_uks')}
-                    onMouseEnter={() => setHoveredRoom('l2_lab_uks')}
+                    onClick={() => handleRoomClick('l2_aula')}
+                    onMouseEnter={() => setHoveredRoom('l2_aula')}
                     onMouseLeave={() => setHoveredRoom(null)}
                   >
                     {/* Roof Top Slope */}
                     <polygon 
-                      points="395,395 670,395 670,435 395,435" 
-                      fill={hoveredRoom === 'l2_lab_uks' ? '#EF4444' : '#C53030'} 
+                      points="180,395 340,395 340,435 180,435" 
+                      fill={hoveredRoom === 'l2_aula' ? '#EF4444' : '#C53030'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Roof Bottom Slope */}
                     <polygon 
-                      points="395,435 670,435 670,475 395,475" 
-                      fill={hoveredRoom === 'l2_lab_uks' ? '#C53030' : '#9B2C2C'} 
+                      points="180,435 340,435 340,475 180,475" 
+                      fill={hoveredRoom === 'l2_aula' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Interior wall line */}
+                    <line x1="340" y1="395" x2="340" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+                    
+                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🏛️ AULA (L2)</text>
+                    {hoveredRoom === 'l2_aula' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+
+                  {/* 11. Laboratorium Komputer (l2_lab) - Lantai 2 Tengah */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l2_lab')}
+                    onMouseEnter={() => setHoveredRoom('l2_lab')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="340,395 470,395 470,435 340,435" 
+                      fill={hoveredRoom === 'l2_lab' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="340,435 470,435 470,475 340,475" 
+                      fill={hoveredRoom === 'l2_lab' ? '#C53030' : '#9B2C2C'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Interior wall line */}
+                    <line x1="470" y1="395" x2="470" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+                    
+                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">💻 LAB (L2)</text>
+                    {hoveredRoom === 'l2_lab' && <rect x="342" y="397" width="126" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                  </g>
+
+                  {/* 12. Ruang UKS (l2_uks) - Lantai 2 Kanan */}
+                  <g 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleRoomClick('l2_uks')}
+                    onMouseEnter={() => setHoveredRoom('l2_uks')}
+                    onMouseLeave={() => setHoveredRoom(null)}
+                  >
+                    {/* Roof Top Slope */}
+                    <polygon 
+                      points="470,395 670,395 670,435 470,435" 
+                      fill={hoveredRoom === 'l2_uks' ? '#EF4444' : '#C53030'} 
+                      style={{ transition: 'all 0.2s' }}
+                    />
+                    {/* Roof Bottom Slope */}
+                    <polygon 
+                      points="470,435 670,435 670,475 470,475" 
+                      fill={hoveredRoom === 'l2_uks' ? '#C53030' : '#9B2C2C'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     
-                    <text x="532" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🩹 LAB & RUANG UKS (L2)</text>
-                    {hoveredRoom === 'l2_lab_uks' && <rect x="397" y="397" width="271" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🩹 UKS (L2)</text>
+                    {hoveredRoom === 'l2_uks' && <rect x="472" y="397" width="196" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
                 </g>
               )}
