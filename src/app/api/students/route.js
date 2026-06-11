@@ -54,16 +54,16 @@ export async function POST(request) {
     const status = body.status?.toString().trim() || "Aktif";
     const grades = body.grades || null;
 
-    if (!nisn || !nis || !name || !studentClass || !gender) {
-      return NextResponse.json({ error: "Kolom NISN, NIS, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
+    if (!nisn || !name || !studentClass || !gender) {
+      return NextResponse.json({ error: "Kolom NISN, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
     }
 
     if (!/^\d{10}$/.test(nisn)) {
       return NextResponse.json({ error: "NISN harus berupa 10 digit angka saja!" }, { status: 400 });
     }
 
-    if (!/^[1-6]$/.test(studentClass)) {
-      return NextResponse.json({ error: "Kelas harus bernilai antara 1 sampai 6!" }, { status: 400 });
+    if (!/^[1-6][A-D]$/.test(studentClass)) {
+      return NextResponse.json({ error: "Kelas harus bernilai dari 1A sampai 6D!" }, { status: 400 });
     }
 
     if (gender !== "Laki-laki" && gender !== "Perempuan") {
@@ -79,9 +79,11 @@ export async function POST(request) {
     }
 
     // Check duplicate NIS
-    const duplicateNis = studentsList.find(s => s.nis === nis);
-    if (duplicateNis) {
-      return NextResponse.json({ error: `Siswa dengan NIS ${nis} sudah terdaftar atas nama ${duplicateNis.name}!` }, { status: 400 });
+    if (nis) {
+      const duplicateNis = studentsList.find(s => s.nis === nis);
+      if (duplicateNis) {
+        return NextResponse.json({ error: `Siswa dengan NIS ${nis} sudah terdaftar atas nama ${duplicateNis.name}!` }, { status: 400 });
+      }
     }
 
     const newStudent = {
@@ -144,16 +146,16 @@ export async function PUT(request) {
       return NextResponse.json({ error: "ID siswa tidak ditentukan." }, { status: 400 });
     }
 
-    if (!nisn || !nis || !name || !studentClass || !gender) {
-      return NextResponse.json({ error: "Kolom NISN, NIS, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
+    if (!nisn || !name || !studentClass || !gender) {
+      return NextResponse.json({ error: "Kolom NISN, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
     }
 
     if (!/^\d{10}$/.test(nisn)) {
       return NextResponse.json({ error: "NISN harus berupa 10 digit angka saja!" }, { status: 400 });
     }
 
-    if (!/^[1-6]$/.test(studentClass)) {
-      return NextResponse.json({ error: "Kelas harus bernilai antara 1 sampai 6!" }, { status: 400 });
+    if (!/^[1-6][A-D]$/.test(studentClass)) {
+      return NextResponse.json({ error: "Kelas harus bernilai dari 1A sampai 6D!" }, { status: 400 });
     }
 
     if (gender !== "Laki-laki" && gender !== "Perempuan") {
@@ -174,9 +176,11 @@ export async function PUT(request) {
     }
 
     // Check duplicate NIS (with other students)
-    const duplicateNis = studentsList.find(s => s.nis === nis && s.id !== id);
-    if (duplicateNis) {
-      return NextResponse.json({ error: `Siswa dengan NIS ${nis} sudah terdaftar atas nama ${duplicateNis.name}!` }, { status: 400 });
+    if (nis) {
+      const duplicateNis = studentsList.find(s => s.nis === nis && s.id !== id);
+      if (duplicateNis) {
+        return NextResponse.json({ error: `Siswa dengan NIS ${nis} sudah terdaftar atas nama ${duplicateNis.name}!` }, { status: 400 });
+      }
     }
 
     // Update fields

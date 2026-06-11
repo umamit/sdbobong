@@ -1488,8 +1488,8 @@ export function AdminDashboardProvider({
 
   const handleSaveStudent = async (e) => {
     e.preventDefault();
-    if (!studNisn || !studNis || !studName || !studClass || !studGender) {
-      showToast('danger', 'Kolom NISN, NIS, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!');
+    if (!studNisn || !studName || !studClass || !studGender) {
+      showToast('danger', 'Kolom NISN, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!');
       return;
     }
     if (!/^\d{10}$/.test(studNisn)) {

@@ -1825,7 +1825,7 @@ export default function Modals() {
                 </div>
 
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label htmlFor="stud_nis" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NIS Lokal</label>
+                  <label htmlFor="stud_nis" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>NIS Lokal (Opsional)</label>
                   <input
                     type="text"
                     id="stud_nis"
@@ -1834,7 +1834,6 @@ export default function Modals() {
                     value={studNis}
                     onChange={(e) => setStudNis(e.target.value)}
                     style={{ width: '100%', boxSizing: 'border-box' }}
-                    required
                   />
                 </div>
 
