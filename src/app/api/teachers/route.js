@@ -47,6 +47,10 @@ export async function POST(request) {
     const status = formData.get('status')?.toString().trim();
     const nip = formData.get('nip')?.toString().trim() || "";
     let image = formData.get('image')?.toString().trim();
+    const subject = formData.get('subject')?.toString().trim() || "";
+    const education = formData.get('education')?.toString().trim() || "";
+    const motto = formData.get('motto')?.toString().trim() || "";
+    const bio = formData.get('bio')?.toString().trim() || "";
 
     // Process photo upload
     const photoFile = formData.get('photo');
@@ -115,7 +119,11 @@ export async function POST(request) {
       details,
       status,
       image,
-      nip
+      nip,
+      subject,
+      education,
+      motto,
+      bio
     };
 
     if (role.toLowerCase().includes('kepala sekolah')) {
@@ -156,6 +164,10 @@ export async function PUT(request) {
     const status = formData.get('status')?.toString().trim();
     const nip = formData.get('nip')?.toString().trim() || "";
     let image = formData.get('image')?.toString().trim();
+    const subject = formData.get('subject')?.toString().trim() || "";
+    const education = formData.get('education')?.toString().trim() || "";
+    const motto = formData.get('motto')?.toString().trim() || "";
+    const bio = formData.get('bio')?.toString().trim() || "";
 
     if (!id) {
       return NextResponse.json({ error: "ID guru tidak ditentukan." }, { status: 400 });
@@ -233,6 +245,10 @@ export async function PUT(request) {
     teachersList[teacherIndex].status = status;
     teachersList[teacherIndex].image = image;
     teachersList[teacherIndex].nip = nip;
+    teachersList[teacherIndex].subject = subject;
+    teachersList[teacherIndex].education = education;
+    teachersList[teacherIndex].motto = motto;
+    teachersList[teacherIndex].bio = bio;
 
     const saved = await saveTeachers(teachersList);
 

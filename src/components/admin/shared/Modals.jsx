@@ -22,11 +22,15 @@ export default function Modals() {
     downloadModalOpen,
     downloadTitle,
     editAvatarPreview,
+    editBio,
     editDetails,
+    editEducation,
+    editMotto,
     editName,
     editNip,
     editRole,
     editStatus,
+    editSubject,
     editTeacherImageSelect,
     editTeacherImageUrl,
     editTeacherModalOpen,
@@ -96,6 +100,10 @@ export default function Modals() {
     setEditNip,
     setEditRole,
     setEditStatus,
+    setEditBio,
+    setEditEducation,
+    setEditMotto,
+    setEditSubject,
     setEditTeacherModalOpen,
     setEditingDownload,
     setEditingEvent,
@@ -143,11 +151,13 @@ export default function Modals() {
     setStudParentPhone,
     setStudStatus,
     setStudentModalOpen,
+    setStudGrades,
     studAddress,
     studBirthDate,
     studBirthPlace,
     studClass,
     studGender,
+    studGrades,
     studName,
     studNis,
     studNisn,
@@ -415,6 +425,55 @@ export default function Modals() {
                 />
               </div>
 
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label htmlFor="teacher_education" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Riwayat Pendidikan</label>
+                  <input
+                    type="text"
+                    id="teacher_education"
+                    name="education"
+                    className="form-control"
+                    placeholder="Contoh: S1 Pendidikan Guru SD, Universitas Khairun"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="teacher_subject" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Mata Pelajaran yang Diajar</label>
+                  <input
+                    type="text"
+                    id="teacher_subject"
+                    name="subject"
+                    className="form-control"
+                    placeholder="Contoh: Tematik, Matematika Kelas Tinggi"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="teacher_motto" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Pesan Motivasi / Motto Hidup</label>
+                <input
+                  type="text"
+                  id="teacher_motto"
+                  name="motto"
+                  className="form-control"
+                  placeholder="Contoh: Belajar sepanjang hayat untuk mencerdaskan generasi bangsa."
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="teacher_bio" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Biografi Singkat</label>
+                <textarea
+                  id="teacher_bio"
+                  name="bio"
+                  className="form-control"
+                  placeholder="Tulis biografi singkat guru di sini..."
+                  rows="3"
+                  style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                ></textarea>
+              </div>
+
               <div className="form-group">
                 <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Foto / Avatar (Pilih Stok / Unggah)</label>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -623,6 +682,63 @@ export default function Modals() {
                   value={editNip}
                   onChange={(e) => setEditNip(e.target.value)}
                 />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label htmlFor="edit_teacher_education" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Riwayat Pendidikan</label>
+                  <input
+                    type="text"
+                    id="edit_teacher_education"
+                    name="education"
+                    className="form-control"
+                    placeholder="Contoh: S1 Pendidikan Guru SD"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    value={editEducation}
+                    onChange={(e) => setEditEducation(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_teacher_subject" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Mata Pelajaran yang Diajar</label>
+                  <input
+                    type="text"
+                    id="edit_teacher_subject"
+                    name="subject"
+                    className="form-control"
+                    placeholder="Contoh: Tematik"
+                    style={{ width: '100%', boxSizing: 'border-box' }}
+                    value={editSubject}
+                    onChange={(e) => setEditSubject(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_teacher_motto" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Pesan Motivasi / Motto Hidup</label>
+                <input
+                  type="text"
+                  id="edit_teacher_motto"
+                  name="motto"
+                  className="form-control"
+                  placeholder="Contoh: Belajar sepanjang hayat."
+                  style={{ width: '100%', boxSizing: 'border-box' }}
+                  value={editMotto}
+                  onChange={(e) => setEditMotto(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_teacher_bio" style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem', color: '#334155' }}>Biografi Singkat</label>
+                <textarea
+                  id="edit_teacher_bio"
+                  name="bio"
+                  className="form-control"
+                  placeholder="Tulis biografi singkat guru..."
+                  rows="3"
+                  style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical' }}
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                ></textarea>
               </div>
 
               <div className="form-group">
@@ -1640,6 +1756,17 @@ export default function Modals() {
                   setStudParentName('');
                   setStudParentPhone('');
                   setStudStatus('Aktif');
+                  setStudGrades({
+                    ppkn: '',
+                    indonesia: '',
+                    matematika: '',
+                    ipas: '',
+                    seni: '',
+                    pjok: '',
+                    inggris: '',
+                    agama: '',
+                    mulok: ''
+                  });
                 }} 
                 style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
               >
@@ -1809,6 +1936,47 @@ export default function Modals() {
                   </select>
                 </div>
 
+                <div style={{ gridColumn: 'span 2', marginTop: '1.25rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+                  <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', fontWeight: 700, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    📊 Nilai Hasil Belajar Siswa (Kurikulum Merdeka)
+                  </h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                    {[
+                      { key: 'ppkn', label: 'PPKn' },
+                      { key: 'indonesia', label: 'B. Indonesia' },
+                      { key: 'matematika', label: 'Matematika' },
+                      { key: 'ipas', label: 'IPAS' },
+                      { key: 'seni', label: 'Seni Budaya' },
+                      { key: 'pjok', label: 'PJOK' },
+                      { key: 'inggris', label: 'B. Inggris' },
+                      { key: 'agama', label: 'Pendidikan Agama' },
+                      { key: 'mulok', label: 'Muatan Lokal' }
+                    ].map((sub) => (
+                      <div key={sub.key} className="form-group" style={{ marginBottom: 0 }}>
+                        <label htmlFor={`grade_${sub.key}`} style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.8rem', color: '#475569' }}>
+                          {sub.label}
+                        </label>
+                        <input
+                          type="number"
+                          id={`grade_${sub.key}`}
+                          className="form-control"
+                          placeholder="0-100"
+                          min="0"
+                          max="100"
+                          value={studGrades[sub.key] || ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === '' || (/^\d+$/.test(val) && parseInt(val) <= 100)) {
+                              setStudGrades(prev => ({ ...prev, [sub.key]: val }));
+                            }
+                          }}
+                          style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.6rem', fontSize: '0.85rem' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
 
               <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
@@ -1830,6 +1998,17 @@ export default function Modals() {
                     setStudParentName('');
                     setStudParentPhone('');
                     setStudStatus('Aktif');
+                    setStudGrades({
+                      ppkn: '',
+                      indonesia: '',
+                      matematika: '',
+                      ipas: '',
+                      seni: '',
+                      pjok: '',
+                      inggris: '',
+                      agama: '',
+                      mulok: ''
+                    });
                   }}
                 >
                   Batalkan

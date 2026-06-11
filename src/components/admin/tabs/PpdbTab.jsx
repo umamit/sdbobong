@@ -28,8 +28,39 @@ export default function PpdbTab() {
     setPpdbPerPage,
     setPpdbSearch,
     setSelectedRecord,
-    totalPPDBPages
+    totalPPDBPages,
+    handleSaveWaGateway
   } = useAdminDashboard();
+
+  const gateway = config?.stats?.wa_gateway || {};
+  const [waEnabled, setWaEnabled] = React.useState(gateway.enabled || false);
+  const [waProvider, setWaProvider] = React.useState(gateway.provider || 'fonnte');
+  const [waToken, setWaToken] = React.useState(gateway.token || '');
+  const [waUrl, setWaUrl] = React.useState(gateway.url || '');
+  const [waVerifiedTemplate, setWaVerifiedTemplate] = React.useState(gateway.message_template_verified || '');
+  const [waRejectedTemplate, setWaRejectedTemplate] = React.useState(gateway.message_template_rejected || '');
+
+  React.useEffect(() => {
+    const gw = config?.stats?.wa_gateway || {};
+    setWaEnabled(gw.enabled || false);
+    setWaProvider(gw.provider || 'fonnte');
+    setWaToken(gw.token || '');
+    setWaUrl(gw.url || '');
+    setWaVerifiedTemplate(gw.message_template_verified || '');
+    setWaRejectedTemplate(gw.message_template_rejected || '');
+  }, [config]);
+
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    await handleSaveWaGateway({
+      enabled: waEnabled,
+      provider: waProvider,
+      token: waToken,
+      url: waUrl,
+      message_template_verified: waVerifiedTemplate,
+      message_template_rejected: waRejectedTemplate
+    });
+  };
 
   return (
     <section id="tab-ppdb" className={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
@@ -317,6 +348,140 @@ export default function PpdbTab() {
                   </div>
                 </div>
               )}
+
+              {/* ================= SETTINGS PANEL: WHATSAPP GATEWAY ================= */}
+              <div className="no-print" style={{ marginTop: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
+                <div style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '1.25rem 1.75rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    ⚙️ Setelan WhatsApp Gateway (Notifikasi Otomatis PPDB)
+                  </h3>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+                    Mengirim pesan WhatsApp secara otomatis ke nomor HP orang tua ketika status pendaftaran calon siswa diubah.
+                  </p>
+                </div>
+
+                <form onSubmit={handleSaveSettings} style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                    
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label htmlFor="wa_enabled" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.85rem', color: '#334155' }}>Status Integrasi</label>
+                      <select
+                        id="wa_enabled"
+                        value={waEnabled ? 'true' : 'false'}
+                        onChange={(e) => setWaEnabled(e.target.value === 'true')}
+                        className="form-control"
+                        style={{ width: '100%', boxSizing: 'border-box' }}
+                      >
+                        <option value="false">🔴 Nonaktif (Pesan Tidak Terkirim)</option>
+                        <option value="true">🟢 Aktif (Kirim Otomatis)</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label htmlFor="wa_provider" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.85rem', color: '#334155' }}>Penyedia Layanan (Provider)</label>
+                      <select
+                        id="wa_provider"
+                        value={waProvider}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setWaProvider(val);
+                          if (val === 'fonnte') setWaUrl('https://api.fonnte.com/send');
+                          else if (val === 'wablas') setWaUrl('https://api.wablas.com/api/send-message');
+                        }}
+                        className="form-control"
+                        style={{ width: '100%', boxSizing: 'border-box' }}
+                      >
+                        <option value="fonnte">Fonnte (Rekomendasi)</option>
+                        <option value="wablas">Wablas</option>
+                        <option value="custom">Generic Webhook / Lainnya</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label htmlFor="wa_url" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.85rem', color: '#334155' }}>Gateway API Endpoint URL</label>
+                      <input
+                        id="wa_url"
+                        type="text"
+                        value={waUrl}
+                        onChange={(e) => setWaUrl(e.target.value)}
+                        placeholder="Contoh: https://api.fonnte.com/send"
+                        className="form-control"
+                        style={{ width: '100%', boxSizing: 'border-box' }}
+                        required={waEnabled}
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label htmlFor="wa_token" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.85rem', color: '#334155' }}>API Token / Authorization Key</label>
+                      <input
+                        id="wa_token"
+                        type="text"
+                        value={waToken}
+                        onChange={(e) => setWaToken(e.target.value)}
+                        placeholder="Masukkan token otentikasi API gateway..."
+                        className="form-control"
+                        style={{ width: '100%', boxSizing: 'border-box' }}
+                        required={waEnabled}
+                      />
+                    </div>
+
+                  </div>
+
+                  <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '1.25rem' }}>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, color: '#334155' }}>💬 Draf Template Pesan Notifikasi</h4>
+                    <p style={{ margin: '0 0 1rem 0', fontSize: '0.75rem', color: '#64748b', backgroundColor: '#f8fafc', padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                      💡 <strong>Petunjuk Tag Dinamis:</strong> Gunakan tag berikut di dalam draf pesan agar diganti otomatis oleh sistem saat dikirim: <br />
+                      <code>[NAMA_SISWA]</code> : Nama lengkap calon siswa, &nbsp;
+                      <code>[NAMA_ORANGTUA]</code> : Nama ibu/ayah orang tua, &nbsp;
+                      <code>[JALUR]</code> : Jalur PPDB terpilih (misal: Zonasi)
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label htmlFor="wa_verified_template" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.8rem', color: '#475569' }}>
+                          Pesan Saat Pendaftaran Diterima (Terverifikasi)
+                        </label>
+                        <textarea
+                          id="wa_verified_template"
+                          rows="4"
+                          value={waVerifiedTemplate}
+                          onChange={(e) => setWaVerifiedTemplate(e.target.value)}
+                          placeholder="Tulis pesan keberhasilan pendaftaran..."
+                          className="form-control"
+                          style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical', fontSize: '0.85rem', lineHeight: '1.5' }}
+                        />
+                      </div>
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <label htmlFor="wa_rejected_template" style={{ display: 'block', marginBottom: '6px', fontWeight: 700, fontSize: '0.8rem', color: '#475569' }}>
+                          Pesan Saat Pendaftaran Ditolak
+                        </label>
+                        <textarea
+                          id="wa_rejected_template"
+                          rows="4"
+                          value={waRejectedTemplate}
+                          onChange={(e) => setWaRejectedTemplate(e.target.value)}
+                          placeholder="Tulis pesan penolakan pendaftaran..."
+                          className="form-control"
+                          style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical', fontSize: '0.85rem', lineHeight: '1.5' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{ padding: '0.65rem 2rem', fontWeight: 700, borderRadius: '8px' }}
+                    >
+                      💾 Simpan Setelan WhatsApp Gateway
+                    </button>
+                  </div>
+
+                </form>
+              </div>
+
             </div>
           </section>
   );

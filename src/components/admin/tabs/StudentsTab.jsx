@@ -14,6 +14,7 @@ export default function StudentsTab() {
     setStudBirthPlace,
     setStudClass,
     setStudGender,
+    setStudGrades,
     setStudName,
     setStudNis,
     setStudNisn,
@@ -268,6 +269,18 @@ export default function StudentsTab() {
                                   setStudParentName(stud.parent_name || '');
                                   setStudParentPhone(stud.parent_phone || '');
                                   setStudStatus(stud.status || 'Aktif');
+                                  const g = stud.grades || {};
+                                  setStudGrades({
+                                    ppkn: g.ppkn || '',
+                                    indonesia: g.indonesia || '',
+                                    matematika: g.matematika || '',
+                                    ipas: g.ipas || '',
+                                    seni: g.seni || '',
+                                    pjok: g.pjok || '',
+                                    inggris: g.inggris || '',
+                                    agama: g.agama || '',
+                                    mulok: g.mulok || ''
+                                  });
                                   setStudentModalOpen(true);
                                 }}
                                 className="btn btn-secondary"

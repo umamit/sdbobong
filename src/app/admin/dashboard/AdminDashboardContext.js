@@ -299,6 +299,17 @@ export function AdminDashboardProvider({
   const [studParentName, setStudParentName] = useState('');
   const [studParentPhone, setStudParentPhone] = useState('');
   const [studStatus, setStudStatus] = useState('Aktif');
+  const [studGrades, setStudGrades] = useState({
+    ppkn: '',
+    indonesia: '',
+    matematika: '',
+    ipas: '',
+    seni: '',
+    pjok: '',
+    inggris: '',
+    agama: '',
+    mulok: ''
+  });
 
   const [toast, setToast] = useState(null);
   const [storageInfo, setStorageInfo] = useState(initialStorageInfo);
@@ -699,6 +710,10 @@ export function AdminDashboardProvider({
   const [editStatus, setEditStatus] = useState('PNS');
   const [editDetails, setEditDetails] = useState('');
   const [editNip, setEditNip] = useState('');
+  const [editSubject, setEditSubject] = useState('');
+  const [editEducation, setEditEducation] = useState('');
+  const [editMotto, setEditMotto] = useState('');
+  const [editBio, setEditBio] = useState('');
   const [editTeacherImageSelect, setEditTeacherImageSelect] = useState('');
   const [editTeacherImageUrl, setEditTeacherImageUrl] = useState('');
   const [editAvatarPreview, setEditAvatarPreview] = useState('');
@@ -1492,7 +1507,8 @@ export function AdminDashboardProvider({
       address: studAddress,
       parent_name: studParentName,
       parent_phone: studParentPhone,
-      status: studStatus
+      status: studStatus,
+      grades: studGrades
     };
 
     try {
@@ -1519,6 +1535,20 @@ export function AdminDashboardProvider({
         setStudBirthPlace('');
         setStudBirthDate('');
         setStudAddress('');
+        setStudParentName('');
+        setStudParentPhone('');
+        setStudStatus('Aktif');
+        setStudGrades({
+          ppkn: '',
+          indonesia: '',
+          matematika: '',
+          ipas: '',
+          seni: '',
+          pjok: '',
+          inggris: '',
+          agama: '',
+          mulok: ''
+        });
         setStudParentName('');
         setStudParentPhone('');
         setStudStatus('Aktif');
@@ -2567,6 +2597,32 @@ export function AdminDashboardProvider({
     }
   };
 
+  const handleSaveWaGateway = async (gatewayData) => {
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action_type: 'wa_gateway',
+          ...gatewayData
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        showToast('success', 'Setelan WhatsApp Gateway berhasil diperbarui!');
+        setConfig(data.config);
+        router.refresh();
+        return true;
+      } else {
+        showToast('danger', data.error || 'Gagal memperbarui setelan WhatsApp Gateway.');
+        return false;
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+      return false;
+    }
+  };
+
   // Avatar selection helpers
   const handleTeacherImageSelectChange = (e) => {
     const val = e.target.value;
@@ -2621,6 +2677,10 @@ export function AdminDashboardProvider({
     setEditStatus(t.status || 'PNS');
     setEditDetails(t.details || '');
     setEditNip(t.nip || '');
+    setEditSubject(t.subject || '');
+    setEditEducation(t.education || '');
+    setEditMotto(t.motto || '');
+    setEditBio(t.bio || '');
     
     const defaultAvatars = [
       '/images/teacher_1.png',
@@ -2959,11 +3019,15 @@ export function AdminDashboardProvider({
     downloadSearch,
     downloadTitle,
     editAvatarPreview,
+    editBio,
     editDetails,
+    editEducation,
+    editMotto,
     editName,
     editNip,
     editRole,
     editStatus,
+    editSubject,
     editTeacherId,
     editTeacherImageSelect,
     editTeacherImageUrl,
@@ -3039,6 +3103,7 @@ export function AdminDashboardProvider({
     handleChangePassword,
     handleContactsUpdate,
     handleDbToggle,
+    handleSaveWaGateway,
     handleDeleteAgendaEvent,
     handleDeleteAllPPDB,
     handleDeleteDownload,
@@ -3176,11 +3241,15 @@ export function AdminDashboardProvider({
     setDownloadSearch,
     setDownloadTitle,
     setEditAvatarPreview,
+    setEditBio,
     setEditDetails,
+    setEditEducation,
+    setEditMotto,
     setEditName,
     setEditNip,
     setEditRole,
     setEditStatus,
+    setEditSubject,
     setEditTeacherId,
     setEditTeacherImageSelect,
     setEditTeacherImageUrl,
@@ -3265,6 +3334,7 @@ export function AdminDashboardProvider({
     setStudBirthPlace,
     setStudClass,
     setStudGender,
+    setStudGrades,
     setStudName,
     setStudNis,
     setStudNisn,
@@ -3290,6 +3360,7 @@ export function AdminDashboardProvider({
     studBirthPlace,
     studClass,
     studGender,
+    studGrades,
     studName,
     studNis,
     studNisn,

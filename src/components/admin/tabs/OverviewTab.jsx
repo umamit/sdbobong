@@ -27,6 +27,84 @@ export default function OverviewTab() {
     storageInfo
   } = useAdminDashboard();
 
+  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+
+  const getTrendData = () => {
+    if (!records || records.length === 0) {
+      // Return last 7 days with 0 counts
+      const data = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        data.push({ date: dateStr, count: 0 });
+      }
+      return data;
+    }
+
+    // Count by date
+    const counts = {};
+    records.forEach(r => {
+      if (r.waktu_daftar) {
+        const date = r.waktu_daftar.substring(0, 10);
+        if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+          counts[date] = (counts[date] || 0) + 1;
+        }
+      }
+    });
+
+    const dates = Object.keys(counts).sort();
+    if (dates.length === 0) {
+      // Fallback if no valid dates
+      const data = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        data.push({ date: dateStr, count: 0 });
+      }
+      return data;
+    }
+
+    // To make a continuous trend, let's find the min and max date
+    const minDate = new Date(dates[0]);
+    const maxDate = new Date(dates[dates.length - 1]);
+    
+    // If min and max date are the same, let's pad 3 days before and after
+    if (minDate.getTime() === maxDate.getTime()) {
+      minDate.setDate(minDate.getDate() - 3);
+      maxDate.setDate(maxDate.getDate() + 3);
+    }
+
+    // Fill in all dates between minDate and maxDate
+    const trend = [];
+    let current = new Date(minDate);
+    while (current <= maxDate) {
+      const dateStr = current.toISOString().split('T')[0];
+      trend.push({
+        date: dateStr,
+        count: counts[dateStr] || 0
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    if (trend.length > 30) {
+      return trend.slice(trend.length - 30);
+    }
+
+    while (trend.length < 7) {
+      const firstDate = new Date(trend[0].date);
+      firstDate.setDate(firstDate.getDate() - 1);
+      const dateStr = firstDate.toISOString().split('T')[0];
+      trend.unshift({
+        date: dateStr,
+        count: counts[dateStr] || 0
+      });
+    }
+
+    return trend;
+  };
+
   return (
     <section id="tab-overview" className={`tab-pane ${activeTab === 'overview' ? 'active' : ''}`}>
             <div className="stats-overview-grid">
@@ -362,6 +440,230 @@ export default function OverviewTab() {
                       <div>{chartTooltip.value}</div>
                     </div>
                   )}
+                </div>
+              );
+            })()}
+
+            {(() => {
+              const trendData = getTrendData();
+              
+              // SVG dimensions
+              const svgWidth = 600;
+              const svgHeight = 220;
+              const paddingLeft = 45;
+              const paddingRight = 25;
+              const paddingTop = 25;
+              const paddingBottom = 35;
+              
+              const chartWidth = svgWidth - paddingLeft - paddingRight;
+              const chartHeight = svgHeight - paddingTop - paddingBottom;
+              
+              const maxCount = Math.max(...trendData.map(d => d.count), 1);
+              const yMax = Math.max(5, Math.ceil(maxCount * 1.25));
+              
+              // Coordinates calculation helper
+              const points = trendData.map((d, i) => {
+                const x = paddingLeft + (i / (trendData.length - 1)) * chartWidth;
+                const y = paddingTop + chartHeight - (d.count / yMax) * chartHeight;
+                return { x, y, date: d.date, count: d.count };
+              });
+              
+              // Create SVG path for the line
+              let linePath = '';
+              let areaPath = '';
+              
+              if (points.length > 0) {
+                linePath = `M ${points[0].x} ${points[0].y} ` + points.slice(1).map(p => `L ${p.x} ${p.y}`).join(' ');
+                areaPath = `${linePath} L ${points[points.length - 1].x} ${paddingTop + chartHeight} L ${points[0].x} ${paddingTop + chartHeight} Z`;
+              }
+
+              // Format Indonesian Date Label helper
+              const formatDateLabel = (dateStr) => {
+                if (!dateStr) return '';
+                const parts = dateStr.split('-');
+                if (parts.length < 3) return dateStr;
+                const [y, m, d] = parts;
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+                return `${parseInt(d, 10)} ${months[parseInt(m, 10) - 1]}`;
+              };
+
+              // Generate Y-axis gridline values (5 horizontal lines)
+              const yTicks = [];
+              for (let i = 0; i <= 4; i++) {
+                yTicks.push(Math.round((yMax / 4) * i));
+              }
+              
+              return (
+                <div className="analytics-card" style={{ marginTop: '1.5rem', position: 'relative' }}>
+                  <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem', marginBottom: '1.25rem' }}>
+                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>📈 Tren Harian Pendaftaran PPDB</h3>
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                      Grafik garis yang menunjukkan total pendaftaran siswa baru per hari.
+                    </p>
+                  </div>
+
+                  <div style={{ height: '230px', width: '100%', position: 'relative' }}>
+                    <svg width="100%" height="100%" viewBox={`0 0 ${svgWidth} ${svgHeight}`} preserveAspectRatio="xMidYMid meet" style={{ overflow: 'visible' }}>
+                      <defs>
+                        <linearGradient id="trendAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#6366f1" stopOpacity="0.00" />
+                        </linearGradient>
+                        <linearGradient id="trendLineGrad" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#6366f1" />
+                          <stop offset="100%" stopColor="#4f46e5" />
+                        </linearGradient>
+                      </defs>
+                      
+                      {/* Horizontal Gridlines & Y-axis labels */}
+                      {yTicks.map((tick, i) => {
+                        const y = paddingTop + chartHeight - (tick / yMax) * chartHeight;
+                        return (
+                          <g key={i}>
+                            <line 
+                              x1={paddingLeft} 
+                              y1={y} 
+                              x2={paddingLeft + chartWidth} 
+                              y2={y} 
+                              stroke="#e2e8f0" 
+                              strokeWidth="1" 
+                              strokeDasharray={tick === 0 ? '0' : '4,4'} 
+                            />
+                            <text 
+                              x={paddingLeft - 10} 
+                              y={y + 4} 
+                              fill="#94a3b8" 
+                              fontSize="9" 
+                              fontWeight="600"
+                              textAnchor="end"
+                            >
+                              {tick}
+                            </text>
+                          </g>
+                        );
+                      })}
+                      
+                      {/* X-axis labels */}
+                      {points.map((p, i) => {
+                        const step = Math.ceil(points.length / 8);
+                        const shouldShowLabel = i % step === 0 || i === points.length - 1;
+                        
+                        if (!shouldShowLabel) return null;
+                        
+                        return (
+                          <text 
+                            key={i}
+                            x={p.x} 
+                            y={paddingTop + chartHeight + 18} 
+                            fill="#94a3b8" 
+                            fontSize="9" 
+                            fontWeight="600"
+                            textAnchor="middle"
+                          >
+                            {formatDateLabel(p.date)}
+                          </text>
+                        );
+                      })}
+                      
+                      {/* Vertical line indicator on hover */}
+                      {hoveredIndex !== null && points[hoveredIndex] && (
+                        <line 
+                          x1={points[hoveredIndex].x} 
+                          y1={paddingTop} 
+                          x2={points[hoveredIndex].x} 
+                          y2={paddingTop + chartHeight} 
+                          stroke="#818cf8" 
+                          strokeWidth="1.5" 
+                          strokeDasharray="3,3" 
+                        />
+                      )}
+
+                      {/* Gradient Area under the line */}
+                      {areaPath && (
+                        <path d={areaPath} fill="url(#trendAreaGrad)" />
+                      )}
+                      
+                      {/* The Trend Line */}
+                      {linePath && (
+                        <path 
+                          d={linePath} 
+                          fill="none" 
+                          stroke="url(#trendLineGrad)" 
+                          strokeWidth="3.5" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                        />
+                      )}
+                      
+                      {/* Interactive dots and hover hitboxes */}
+                      {points.map((p, i) => {
+                        const isHovered = hoveredIndex === i;
+                        return (
+                          <g key={i}>
+                            {/* Highlighted dot on hover */}
+                            {isHovered ? (
+                              <>
+                                <circle cx={p.x} cy={p.y} r="8" fill="#6366f1" fillOpacity="0.2" />
+                                <circle cx={p.x} cy={p.y} r="5" fill="#6366f1" stroke="#ffffff" strokeWidth="2.5" />
+                              </>
+                            ) : (
+                              <circle cx={p.x} cy={p.y} r="3.5" fill="#ffffff" stroke="#6366f1" strokeWidth="2" />
+                            )}
+                            
+                            {/* Transparent larger hit area for hover */}
+                            <circle 
+                              cx={p.x} 
+                              cy={p.y} 
+                              r="15" 
+                              fill="transparent" 
+                              style={{ cursor: 'pointer' }}
+                              onMouseEnter={() => setHoveredIndex(i)}
+                              onMouseMove={(e) => {
+                                setHoveredIndex(i);
+                                handleMouseMove(
+                                  e, 
+                                  `📅 ${formatDateLabel(p.date)}`, 
+                                  `📝 ${p.count} Pendaftar Baru`
+                                );
+                              }}
+                              onMouseLeave={() => {
+                                setHoveredIndex(null);
+                                handleMouseLeave();
+                              }}
+                            />
+                          </g>
+                        );
+                      })}
+                    </svg>
+
+                    {/* Fallback Empty State centered overlay */}
+                    {records.length === 0 && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        textAlign: 'center',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(4px)',
+                        padding: '1.25rem 2rem',
+                        borderRadius: '16px',
+                        border: '1px dashed #cbd5e1',
+                        pointerEvents: 'none',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
+                        <span style={{ fontSize: '2rem' }}>📊</span>
+                        <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#1e293b' }}>Belum Ada Pendaftaran PPDB</div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', maxWidth: '250px' }}>
+                          Grafik tren harian pendaftaran akan terisi otomatis setelah berkas pendaftaran pertama masuk ke sistem.
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })()}

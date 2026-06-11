@@ -148,6 +148,33 @@ export async function POST(request) {
     } else if (actionType === 'toggle_allow_copy') {
       if (!config.stats) config.stats = {};
       config.stats.allow_copy = allow_copy === true;
+    } else if (actionType === 'wa_gateway') {
+      let enabled, provider, token, url, message_template_verified, message_template_rejected;
+      if (contentType.includes('application/json')) {
+        enabled = parsedJsonBody?.enabled;
+        provider = parsedJsonBody?.provider;
+        token = parsedJsonBody?.token;
+        url = parsedJsonBody?.url;
+        message_template_verified = parsedJsonBody?.message_template_verified;
+        message_template_rejected = parsedJsonBody?.message_template_rejected;
+      } else {
+        enabled = parsedFormData?.get('enabled') === 'true';
+        provider = parsedFormData?.get('provider')?.toString().trim();
+        token = parsedFormData?.get('token')?.toString().trim();
+        url = parsedFormData?.get('url')?.toString().trim();
+        message_template_verified = parsedFormData?.get('message_template_verified')?.toString().trim();
+        message_template_rejected = parsedFormData?.get('message_template_rejected')?.toString().trim();
+      }
+
+      if (!config.stats) config.stats = {};
+      config.stats.wa_gateway = {
+        enabled: enabled === true || String(enabled) === 'true',
+        provider: provider || 'fonnte',
+        token: token || '',
+        url: url || '',
+        message_template_verified: message_template_verified || '',
+        message_template_rejected: message_template_rejected || ''
+      };
     } else if (actionType === 'contacts') {
       config.ppdb_contacts = {
         nama_humas: nama_humas || '',
@@ -429,6 +456,7 @@ export async function POST(request) {
       else if (actionType === 'toggle_db') details = force_local_cache ? 'Menonaktifkan sinkronisasi Supabase (Paksa Mode Lokal)' : 'Mengaktifkan kembali sinkronisasi Supabase';
       else if (actionType === 'toggle_maintenance') details = config.stats?.maintenance_mode ? 'Mengaktifkan Mode Pemeliharaan (mengunci akses publik)' : 'Menonaktifkan Mode Pemeliharaan (membuka akses publik)';
       else if (actionType === 'toggle_allow_copy') details = config.stats?.allow_copy ? 'Mengizinkan pengunjung menyalin teks di halaman publik' : 'Melarang pengunjung menyalin teks di halaman publik';
+      else if (actionType === 'wa_gateway') details = 'Memperbarui konfigurasi notifikasi otomatis WhatsApp Gateway';
       else if (actionType === 'contacts') details = 'Memperbarui detail kontak PPDB humas dan operator sekolah';
       else if (actionType === 'hero_bg') details = 'Mengunggah dan mengubah media latar belakang (hero background)';
       else if (actionType === 'update_page_contents') details = `Memperbarui konten halaman informasi: ${pageName}`;

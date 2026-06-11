@@ -372,6 +372,16 @@ export default async function RootLayout({ children }) {
         <meta name="googlebot" content="index, follow" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#4f46e5" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="SD Negeri Bobong - Cerdas, Berkarakter, Mulia" />
+        <meta property="og:description" content="Website Resmi SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara. Media informasi PPDB online, pengumuman, berita kegiatan, dan portal akademik." />
+        <meta property="og:image" content="https://www.sdnegeribobong.sch.id/images/logo_sekolah.png" />
+        <meta property="og:url" content="https://www.sdnegeribobong.sch.id" />
+        <meta property="og:site_name" content="SD Negeri Bobong" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="SD Negeri Bobong - Cerdas, Berkarakter, Mulia" />
+        <meta name="twitter:description" content="Website Resmi SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara." />
+        <meta name="twitter:image" content="https://www.sdnegeribobong.sch.id/images/logo_sekolah.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: `

@@ -858,11 +858,15 @@ export async function loadTeachers() {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
       const sortedLocal = sortTeachersList(localTeachers);
       for (const t of sortedLocal) {
+        const packedDetails = (t.subject || t.education || t.motto || t.bio)
+          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject || '', education: t.education || '', motto: t.motto || '', bio: t.bio || '' })}-->`
+          : t.details;
+        
         const insertObj = {
           id: t.id,
           name: t.name,
           role: t.role,
-          details: t.details,
+          details: packedDetails,
           status: t.status,
           image: t.image
         };
@@ -881,13 +885,31 @@ export async function loadTeachers() {
 
     if (supabaseTeachers) {
       const teachersList = supabaseTeachers.map(t => {
+        let details = t.details || "";
+        let extra = {};
+        if (details.includes('<!--TEACHER_DETAILS:')) {
+          try {
+            const match = details.match(/<!--TEACHER_DETAILS:([\s\S]*?)-->/);
+            if (match && match[1]) {
+              extra = JSON.parse(match[1]);
+              details = details.replace(/<!--TEACHER_DETAILS:[\s\S]*?-->/, '').trim();
+            }
+          } catch (err) {
+            console.error("Failed to parse teacher details for:", t.id, err);
+          }
+        }
+
         const obj = {
           id: t.id,
           name: t.name,
           role: t.role,
-          details: t.details,
+          details: details,
           status: t.status,
-          image: t.image
+          image: t.image,
+          subject: extra.subject || "",
+          education: extra.education || "",
+          motto: extra.motto || "",
+          bio: extra.bio || ""
         };
         if (hasNipColumn) {
           obj.nip = t.nip || "";
@@ -944,11 +966,15 @@ export async function saveTeachers(teachersList) {
       }
 
       for (const t of sortedList) {
+        const packedDetails = (t.subject || t.education || t.motto || t.bio)
+          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject || '', education: t.education || '', motto: t.motto || '', bio: t.bio || '' })}-->`
+          : t.details;
+
         const upsertObj = {
           id: t.id,
           name: t.name,
           role: t.role,
-          details: t.details,
+          details: packedDetails,
           status: t.status,
           image: t.image
         };
@@ -1620,6 +1646,9 @@ export async function loadStudents() {
       if (dbStudents.length === 0 && localStudents.length > 0 && !studentsSeeded) {
         console.log("Supabase students table is empty. Seeding from local JSON...");
         for (const s of localStudents) {
+          const packedAddress = (s.grades)
+            ? `${s.address || ""}<!--GRADES:${JSON.stringify(s.grades)}-->`
+            : s.address;
           await supabase.from("students_sdn_bobong").insert({
             id: s.id,
             nisn: s.nisn,
@@ -1629,7 +1658,7 @@ export async function loadStudents() {
             gender: s.gender,
             birth_place: s.birth_place,
             birth_date: s.birth_date,
-            address: s.address,
+            address: packedAddress,
             parent_name: s.parent_name,
             parent_phone: s.parent_phone,
             status: s.status
@@ -1643,20 +1672,36 @@ export async function loadStudents() {
         await markTableSeeded("students");
       }
 
-      const studList = dbStudents.map(s => ({
-        id: s.id,
-        nisn: s.nisn,
-        nis: s.nis,
-        name: s.name,
-        class: s.class,
-        gender: s.gender,
-        birth_place: s.birth_place,
-        birth_date: s.birth_date,
-        address: s.address,
-        parent_name: s.parent_name,
-        parent_phone: s.parent_phone,
-        status: s.status
-      }));
+      const studList = dbStudents.map(s => {
+        let address = s.address || "";
+        let grades = null;
+        if (address.includes('<!--GRADES:')) {
+          try {
+            const match = address.match(/<!--GRADES:([\s\S]*?)-->/);
+            if (match && match[1]) {
+              grades = JSON.parse(match[1]);
+              address = address.replace(/<!--GRADES:[\s\S]*?-->/, '').trim();
+            }
+          } catch (err) {
+            console.error("Failed to parse student grades for:", s.id, err);
+          }
+        }
+        return {
+          id: s.id,
+          nisn: s.nisn,
+          nis: s.nis,
+          name: s.name,
+          class: s.class,
+          gender: s.gender,
+          birth_place: s.birth_place,
+          birth_date: s.birth_date,
+          address: address,
+          parent_name: s.parent_name,
+          parent_phone: s.parent_phone,
+          status: s.status,
+          grades: grades
+        };
+      });
       try {
         fs.writeFileSync(STUDENTS_JSON, JSON.stringify(studList, null, 4), 'utf-8');
       } catch (fsErr) {}
@@ -1681,6 +1726,9 @@ export async function saveStudents(studentsList) {
   if (isSupabaseEnabled()) {
     try {
       for (const s of studentsList) {
+        const packedAddress = (s.grades)
+          ? `${s.address || ""}<!--GRADES:${JSON.stringify(s.grades)}-->`
+          : s.address;
         const { error } = await supabase.from("students_sdn_bobong").upsert({
           id: s.id,
           nisn: s.nisn,
@@ -1690,7 +1738,7 @@ export async function saveStudents(studentsList) {
           gender: s.gender,
           birth_place: s.birth_place,
           birth_date: s.birth_date,
-          address: s.address,
+          address: packedAddress,
           parent_name: s.parent_name,
           parent_phone: s.parent_phone,
           status: s.status

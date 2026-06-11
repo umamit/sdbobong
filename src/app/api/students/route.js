@@ -52,6 +52,7 @@ export async function POST(request) {
     const parent_name = body.parent_name?.toString().trim() || "";
     const parent_phone = body.parent_phone?.toString().trim() || "";
     const status = body.status?.toString().trim() || "Aktif";
+    const grades = body.grades || null;
 
     if (!nisn || !nis || !name || !studentClass || !gender) {
       return NextResponse.json({ error: "Kolom NISN, NIS, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
@@ -95,7 +96,8 @@ export async function POST(request) {
       address,
       parent_name,
       parent_phone,
-      status
+      status,
+      grades
     };
 
     studentsList.push(newStudent);
@@ -136,6 +138,7 @@ export async function PUT(request) {
     const parent_name = body.parent_name?.toString().trim() || "";
     const parent_phone = body.parent_phone?.toString().trim() || "";
     const status = body.status?.toString().trim() || "Aktif";
+    const grades = body.grades || null;
 
     if (!id) {
       return NextResponse.json({ error: "ID siswa tidak ditentukan." }, { status: 400 });
@@ -188,6 +191,7 @@ export async function PUT(request) {
     studentsList[studentIndex].parent_name = parent_name;
     studentsList[studentIndex].parent_phone = parent_phone;
     studentsList[studentIndex].status = status;
+    studentsList[studentIndex].grades = grades;
 
     const saved = await saveStudents(studentsList);
 
