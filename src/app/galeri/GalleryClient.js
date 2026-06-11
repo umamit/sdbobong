@@ -53,6 +53,12 @@ function getYoutubeId(url) {
   return videoId;
 }
 
+function isFacebookUrl(url) {
+  if (!url) return false;
+  const cleanUrl = url.trim().toLowerCase();
+  return cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch') || cleanUrl.includes('fb.com');
+}
+
 export default function GalleryClient({ initialGallery }) {
   const [activeItem, setActiveImage] = useState(null);
   const [selectedType, setSelectedType] = useState('Semua');
@@ -261,6 +267,7 @@ export default function GalleryClient({ initialGallery }) {
         <div className="gallery-masonry-grid animate-fadeIn" style={{ animationDelay: '0.1s' }}>
           {displayedItems.map((item) => {
             const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
+            const isFb = isFacebookUrl(item.url);
             const thumbUrl = ytId 
               ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
               : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
@@ -281,35 +288,99 @@ export default function GalleryClient({ initialGallery }) {
 
                 {/* Media Thumbnail */}
                 {item.type === 'video' ? (
-                  <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#000' }}>
-                    <img
-                      src={thumbUrl}
-                      alt={item.title}
-                      style={{ width: '100%', height: 'auto', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
-                      loading="lazy"
-                      className="gallery-thumbnail-img"
-                    />
-                    {/* Play Overlay Button */}
+                  isFb ? (
                     <div style={{
-                      position: 'absolute',
-                      top: '0', left: '0', right: '0', bottom: '0',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: 'rgba(0, 0, 0, 0.25)'
+                      width: '100%',
+                      height: '180px',
+                      background: 'linear-gradient(135deg, #1877F2 0%, #0d52b9 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      padding: '20px',
+                      boxSizing: 'border-box',
+                      textAlign: 'center',
+                      position: 'relative'
                     }}>
                       <div style={{
-                        width: '46px', height: '40px', borderRadius: '12px',
-                        background: 'rgba(239, 68, 68, 0.9)', display: 'flex', // Premium YouTube brand red
-                        alignItems: 'center', justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                        transition: 'all 0.2s ease'
-                      }}
-                      className="play-btn-circle"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1">
-                          <polygon points="6 3 20 12 6 21 6 3"></polygon>
-                        </svg>
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.4rem',
+                        fontWeight: 'bold',
+                        marginBottom: '8px'
+                      }}>
+                        f
+                      </div>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🎥 LIHAT VIDEO FACEBOOK</span>
+                    </div>
+                  ) : (
+                    <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#000' }}>
+                      <img
+                        src={thumbUrl}
+                        alt={item.title}
+                        style={{ width: '100%', height: 'auto', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
+                        loading="lazy"
+                        className="gallery-thumbnail-img"
+                      />
+                      {/* Play Overlay Button */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '0', left: '0', right: '0', bottom: '0',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: 'rgba(0, 0, 0, 0.25)'
+                      }}>
+                        <div style={{
+                          width: '46px', height: '40px', borderRadius: '12px',
+                          background: 'rgba(239, 68, 68, 0.9)', display: 'flex', // Premium YouTube brand red
+                          alignItems: 'center', justifyContent: 'center',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        className="play-btn-circle"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="1">
+                            <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                          </svg>
+                        </div>
                       </div>
                     </div>
+                  )
+                ) : isFb ? (
+                  <div style={{
+                    width: '100%',
+                    height: '180px',
+                    background: 'linear-gradient(135deg, #1877F2 0%, #0d52b9 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    padding: '20px',
+                    boxSizing: 'border-box',
+                    textAlign: 'center',
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      width: '42px',
+                      height: '42px',
+                      borderRadius: '50%',
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.4rem',
+                      fontWeight: 'bold',
+                      marginBottom: '8px'
+                    }}>
+                      f
+                    </div>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🖼️ POSTINGAN FACEBOOK</span>
                   </div>
                 ) : (
                   <div style={{ overflow: 'hidden', position: 'relative' }}>
@@ -440,6 +511,17 @@ export default function GalleryClient({ initialGallery }) {
                   allowFullScreen
                   style={{ borderRadius: 'var(--radius-md)', border: '1px solid #333', maxWidth: '100%', aspectRatio: '16/9' }}
                 ></iframe>
+              ) : isFacebookUrl(activeItem.url) ? (
+                <iframe
+                  src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(activeItem.url)}&show_text=true&width=500`}
+                  width="500"
+                  height="400"
+                  scrolling="no"
+                  frameBorder="0"
+                  allowFullScreen={true}
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '80vh', backgroundColor: 'white', aspectRatio: '500/400' }}
+                ></iframe>
               ) : (
                 <video
                   src={activeItem.url}
@@ -448,6 +530,17 @@ export default function GalleryClient({ initialGallery }) {
                   style={{ borderRadius: 'var(--radius-md)', maxWidth: '100%', maxHeight: '80vh', border: '1px solid #333' }}
                 />
               )
+            ) : isFacebookUrl(activeItem.url) ? (
+              <iframe
+                src={`https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(activeItem.url)}&show_text=true&width=500`}
+                width="500"
+                height="500"
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen={true}
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '80vh', backgroundColor: 'white', aspectRatio: '500/500' }}
+              ></iframe>
             ) : (
               <img
                 src={activeItem.url}

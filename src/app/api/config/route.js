@@ -286,6 +286,39 @@ export async function POST(request) {
         const category = parsedFormData.get('category')?.toString().trim() || 'umum';
         let url = parsedFormData.get('url')?.toString().trim() || '';
 
+        // Resolve Facebook URL redirect if needed (e.g. share links)
+        if (url && (url.toLowerCase().includes('facebook.com/share/') || url.toLowerCase().includes('fb.watch/'))) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+            const res = await fetch(url, {
+              method: 'GET',
+              redirect: 'manual',
+              headers: {
+                'User-Agent': 'Mozilla/5.0'
+              },
+              signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            if (res.status >= 300 && res.status < 400) {
+              const location = res.headers.get('location');
+              if (location) {
+                try {
+                  const parsed = new URL(location);
+                  parsed.searchParams.delete('rdid');
+                  parsed.searchParams.delete('share_url');
+                  parsed.searchParams.delete('ref');
+                  url = parsed.toString();
+                } catch (e) {
+                  url = location;
+                }
+              }
+            }
+          } catch (err) {
+            console.error("Failed to resolve Facebook URL in config API:", err.message);
+          }
+        }
+
         const file = parsedFormData.get('gallery_file');
         if (file && typeof file === 'object' && file.size > 0) {
           const uploadedUrl = await handlePhotoUpload(file, 'teachers', ['png', 'jpg', 'jpeg', 'svg', 'gif', 'mp4', 'webm', 'ogg', 'mov', 'm4v']);
