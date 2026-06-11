@@ -123,18 +123,18 @@ const FACILITIES_DATA = {
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
-  l2_aula: {
-    title: "Aula Sekolah / Ruang Serbaguna",
-    desc: "Ruang pertemuan besar yang terletak di Gedung Selatan Utama (Lantai 2 - Sisi Kiri). Digunakan sebagai pusat kegiatan rapat pleno guru, pementasan seni kreatif siswa, lokakarya, dan berbagai pertemuan akbar sekolah.",
+  l2_toilet: {
+    title: "Toilet Sekolah (Lantai 2)",
+    desc: "Fasilitas toilet bersih untuk siswa dan guru yang terletak di Lantai 2 Gedung Selatan (Sayap Kiri). Dilengkapi dengan sanitasi modern, air bersih mengalir dari sumur bor jetpump, dan dirawat secara higienis setiap hari demi kenyamanan bersama.",
     stats: {
-      kapasitas: "100 Orang",
+      sumber_air: "Sumur Bor Bersih Jetpump",
       lokasi: "Gedung Selatan Utama, Lantai 2 (Sayap Kiri)",
-      kondisi: "Sangat Luas & Representatif",
-      fasilitas: ["Podium Sambutan Kayu Jati", "Sound System & Microphone Wireless", "Kursi Lipat Tamu (100 Unit)", "Panggung Pementasan Kreatif", "Kipas Angin Dinding Besar"]
+      kondisi: "Sangat Bersih & Higienis",
+      fasilitas: ["Wastafel Keramik", "Cermin Dinding", "Sabun Cuci Tangan", "Ventilasi Udara Baik", "Penerangan Terang"]
     },
-    icon: "🏛️",
+    icon: "🚻",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
   },
   l2_lab: {
     title: "Laboratorium Komputer",
@@ -163,19 +163,32 @@ const FACILITIES_DATA = {
     image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
   },
 
-  // GEDUNG TIMUR (PAVILIUN KANAN - ATAP BIRU KECIL)
-  l1_toilet: {
-    title: "Toilet & Sanitasi Bersih",
-    desc: "Kompleks sanitasi air bersih terpisah di Gedung Timur (sisi kanan halaman). Dirawat dan dibersihkan secara terjadwal setiap hari demi menjamin kebersihan, kehigienisan, serta kenyamanan seluruh warga sekolah.",
+  // GEDUNG TIMUR (PAVILIUN KANAN - GAZEBO OUTDOOR)
+  gazebo_utara: {
+    title: "Gazebo Belajar Utara",
+    desc: "Gazebo/saung terbuka ramah anak di sisi timur halaman bagian utara. Berfungsi sebagai area literasi luar ruangan, tempat berdiskusi santai bagi siswa, atau sekadar berteduh menikmati suasana sejuk sekolah.",
     stats: {
-      sumber_air: "Sumur Bor Bersih Jetpump",
-      lokasi: "Gedung Timur, Paviliun Sanitasi",
-      kondisi: "Sangat Higienis",
-      fasilitas: ["Wastafel Keramik Putih", "Cermin Dinding", "Sabun Cuci Tangan Cair", "Ember & Gayung Higienis", "Sirkulasi Udara & Pengharum Otomatis"]
+      kapasitas: "8-10 Murid",
+      lokasi: "Halaman Timur (Sisi Utara)",
+      kondisi: "Nyaman, Rindang & Teduh",
+      fasilitas: ["Meja Kayu Bundar", "Tempat Duduk Melingkar", "Atap Rumbia Estetis", "Pojok Tempat Sampah Pilah"]
     },
-    icon: "🧼",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
+    icon: "🏡",
+    color: "#10B981",
+    image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+  },
+  gazebo_selatan: {
+    title: "Gazebo Belajar Selatan",
+    desc: "Gazebo/saung kayu estetis di sisi timur halaman bagian selatan, dekat dengan area perpustakaan. Menyediakan lingkungan belajar outdoor yang damai, sangat ideal untuk membaca buku atau kegiatan kelompok kreatif.",
+    stats: {
+      kapasitas: "8-10 Murid",
+      lokasi: "Halaman Timur (Sisi Selatan)",
+      kondisi: "Sangat Asri & Nyaman",
+      fasilitas: ["Meja Belajar Kayu", "Bangku Sandar Panjang", "Atap Teduh Anti-Panas", "Dekat Taman Hijau"]
+    },
+    icon: "🏡",
+    color: "#10B981",
+    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
 
   // OUTDOOR / LAPANGAN UTAMA
@@ -667,30 +680,30 @@ export default function InteractiveFacilityMap() {
               {/* --- VIEW GEDUNG SELATAN: LANTAI 2 --- */}
               {southFloor === 2 && (
                 <g>
-                  {/* 10. Aula Sekolah (l2_aula) - Lantai 2 Kiri */}
+                  {/* 10. Toilet Sekolah (l2_toilet) - Lantai 2 Kiri */}
                   <g 
                     style={{ cursor: 'pointer' }}
-                    onClick={() => handleRoomClick('l2_aula')}
-                    onMouseEnter={() => setHoveredRoom('l2_aula')}
+                    onClick={() => handleRoomClick('l2_toilet')}
+                    onMouseEnter={() => setHoveredRoom('l2_toilet')}
                     onMouseLeave={() => setHoveredRoom(null)}
                   >
                     {/* Roof Top Slope */}
                     <polygon 
                       points="180,395 340,395 340,435 180,435" 
-                      fill={hoveredRoom === 'l2_aula' ? '#EF4444' : '#C53030'} 
+                      fill={hoveredRoom === 'l2_toilet' ? '#EF4444' : '#C53030'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Roof Bottom Slope */}
                     <polygon 
                       points="180,435 340,435 340,475 180,475" 
-                      fill={hoveredRoom === 'l2_aula' ? '#C53030' : '#9B2C2C'} 
+                      fill={hoveredRoom === 'l2_toilet' ? '#C53030' : '#9B2C2C'} 
                       style={{ transition: 'all 0.2s' }}
                     />
                     {/* Interior wall line */}
                     <line x1="340" y1="395" x2="340" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🏛️ AULA (L2)</text>
-                    {hoveredRoom === 'l2_aula' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🚻 TOILET (L2)</text>
+                    {hoveredRoom === 'l2_toilet' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
                   {/* 11. Laboratorium Komputer (l2_lab) - Lantai 2 Tengah */}
@@ -762,30 +775,77 @@ export default function InteractiveFacilityMap() {
             </g>
 
             {/* ======================================================== */}
-            {/* AREA GEDUNG TIMUR (KANAN): TOILET ATAP BIRU KECIL         */}
+            {/* AREA GEDUNG TIMUR (KANAN): 2 GAZEBO OUTDOOR               */}
             {/* ======================================================== */}
             <g filter="url(#shadow-premium)">
-              {/* 10. Toilet & Sanitasi (l1_toilet) */}
+              {/* Gazebo Utara (gazebo_utara) */}
               <g 
                 style={{ cursor: 'pointer' }}
-                onClick={() => handleRoomClick('l1_toilet')}
-                onMouseEnter={() => setHoveredRoom('l1_toilet')}
+                onClick={() => handleRoomClick('gazebo_utara')}
+                onMouseEnter={() => setHoveredRoom('gazebo_utara')}
                 onMouseLeave={() => setHoveredRoom(null)}
               >
+                {/* Roof Top Slope */}
                 <polygon 
-                  points="725,235 765,235 765,315 725,315" 
-                  fill={hoveredRoom === 'l1_toilet' ? '#60A5FA' : '#3B82F6'} 
+                  points="730,225 765,200 800,225" 
+                  fill={hoveredRoom === 'gazebo_utara' ? '#34D399' : '#059669'} 
                   style={{ transition: 'all 0.2s' }}
                 />
+                {/* Roof Bottom Trim */}
                 <polygon 
-                  points="765,235 805,235 805,315 765,315" 
-                  fill={hoveredRoom === 'l1_toilet' ? '#3B82F6' : '#1D4ED8'} 
+                  points="725,225 805,225 795,235 735,235" 
+                  fill={hoveredRoom === 'gazebo_utara' ? '#059669' : '#047857'} 
                   style={{ transition: 'all 0.2s' }}
                 />
-                <line x1="765" y1="235" x2="765" y2="315" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                {/* Pillars */}
+                <line x1="742" y1="235" x2="742" y2="255" stroke="#78350F" strokeWidth="2.5" />
+                <line x1="788" y1="235" x2="788" y2="255" stroke="#78350F" strokeWidth="2.5" />
+                <line x1="765" y1="235" x2="765" y2="255" stroke="#9A3412" strokeWidth="1.5" opacity="0.7" />
                 
-                <text x="765" y="280" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🧼 TOILET</text>
-                {hoveredRoom === 'l1_toilet' && <rect x="727" y="237" width="76" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+                {/* Platform / Floor */}
+                <polygon 
+                  points="735,255 795,255 785,265 745,265" 
+                  fill={hoveredRoom === 'gazebo_utara' ? '#F59E0B' : '#D97706'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                
+                <text x="765" y="247" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">🏡 GAZEBO U</text>
+                {hoveredRoom === 'gazebo_utara' && <rect x="722" y="197" width="86" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+              </g>
+
+              {/* Gazebo Selatan (gazebo_selatan) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('gazebo_selatan')}
+                onMouseEnter={() => setHoveredRoom('gazebo_selatan')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                {/* Roof Top Slope */}
+                <polygon 
+                  points="730,315 765,290 800,315" 
+                  fill={hoveredRoom === 'gazebo_selatan' ? '#34D399' : '#059669'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                {/* Roof Bottom Trim */}
+                <polygon 
+                  points="725,315 805,315 795,325 735,325" 
+                  fill={hoveredRoom === 'gazebo_selatan' ? '#059669' : '#047857'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                {/* Pillars */}
+                <line x1="742" y1="325" x2="742" y2="345" stroke="#78350F" strokeWidth="2.5" />
+                <line x1="788" y1="325" x2="788" y2="345" stroke="#78350F" strokeWidth="2.5" />
+                <line x1="765" y1="325" x2="765" y2="345" stroke="#9A3412" strokeWidth="1.5" opacity="0.7" />
+                
+                {/* Platform / Floor */}
+                <polygon 
+                  points="735,345 795,345 785,355 745,355" 
+                  fill={hoveredRoom === 'gazebo_selatan' ? '#F59E0B' : '#D97706'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                
+                <text x="765" y="337" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">🏡 GAZEBO S</text>
+                {hoveredRoom === 'gazebo_selatan' && <rect x="722" y="287" width="86" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
               </g>
             </g>
 
