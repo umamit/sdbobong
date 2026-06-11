@@ -488,7 +488,9 @@ export async function GET() {
     
     const response = NextResponse.json({
       maintenance_mode: isMaintenance,
-      ppdb_contacts: config.ppdb_contacts || {}
+      ppdb_contacts: config.ppdb_contacts || {},
+      marquee_announcements: config.marquee_announcements || [],
+      marquee_speed: config.marquee_speed || 40
     });
 
     // Make sure public get also sets/corrects the cookie

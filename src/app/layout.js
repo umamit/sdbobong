@@ -2,6 +2,7 @@ import '../../public/css/style.css';
 import Header from '../components/Header';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
+import AnnouncementBanner from '../components/AnnouncementBanner';
 
 import Script from 'next/script';
 import Link from 'next/link';
@@ -465,13 +466,7 @@ export default async function RootLayout({ children }) {
         <LayoutControl />
         {/* Running Announcement Banner */}
         {!isPrintableForm && (
-          <div className="announcement-banner no-print public-layout-announcement">
-            <div className="marquee-content" style={{ '--marquee-duration': `${marqueeSpeed}s` }}>
-              {announcements.map((ann, idx) => (
-                <span key={idx}>{ann}</span>
-              ))}
-            </div>
-          </div>
+          <AnnouncementBanner initialAnnouncements={announcements} initialSpeed={marqueeSpeed} />
         )}
 
         {/* Header & Navigation */}
