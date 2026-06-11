@@ -474,31 +474,16 @@ export async function saveWebConfig(config) {
 
   if (isSupabaseEnabled()) {
     try {
-      const fullPayload = {
+      const payload = {
         id: "global_config",
         marquee_announcements: config.marquee_announcements,
-        marquee_speed: config.marquee_speed,
         stats: config.stats,
         ppdb_contacts: config.ppdb_contacts,
-        force_local_cache: config.force_local_cache === true,
-        downloads: config.downloads || [],
-        faqs: config.faqs || [],
-        gallery: config.gallery || []
+        force_local_cache: config.force_local_cache === true
       };
       
-      const { error } = await supabase.from("config_sdn_bobong").upsert(fullPayload);
-      if (error) {
-        console.warn("Full config upsert failed, retrying with basic columns:", error.message || error);
-        const { error: retryError } = await supabase.from("config_sdn_bobong").upsert({
-          id: "global_config",
-          marquee_announcements: config.marquee_announcements,
-          marquee_speed: config.marquee_speed,
-          stats: config.stats,
-          ppdb_contacts: config.ppdb_contacts,
-          force_local_cache: config.force_local_cache === true
-        });
-        if (retryError) throw retryError;
-      }
+      const { error } = await supabase.from("config_sdn_bobong").upsert(payload);
+      if (error) throw error;
       return true;
     } catch (e) {
       console.error("Error saving config to Supabase:", e.message || e);

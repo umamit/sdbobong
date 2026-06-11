@@ -2,7 +2,7 @@
     "marquee_announcements": [
         "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 22 Juni, jangan lupa persiapkan berkasmu😘",
         "📅 INFO: Ujian Akhir Semester Genap Sedang Berlangsung Minggu Ini",
-        "🌟 PRESTASI: Maaf Layanan AIM-AI Chat Bot di Shut Down!🙏😁"
+        "⚠️Bapak/Ibu Guru tolong cek fitur upload berkas PPDB nya berfungsi atau tidak!"
     ],
     "marquee_speed": 40,
     "stats": {
@@ -17,6 +17,7 @@
         "news_seeded": true,
         "ruang_kelas": 8,
         "siswa_aktif": 340,
+        "marquee_speed": 40,
         "page_contents": {
             "galeri": {
                 "gallery_items": [
