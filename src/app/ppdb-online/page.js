@@ -169,6 +169,11 @@ export default function PPDBOnlineForm() {
         throw new Error(res.error);
       }
 
+      // Store successful record in sessionStorage for receipt printout
+      if (res.record) {
+        sessionStorage.setItem('ppdb_receipt', JSON.stringify(res.record));
+      }
+      
       // Success redirect
       router.push('/ppdb-online/sukses');
     } catch (err) {

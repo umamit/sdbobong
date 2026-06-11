@@ -248,7 +248,7 @@ export async function submitPpdbAction(formData) {
       } catch (cacheErr) {
         console.error("Cache revalidation failed in ppdb server action:", cacheErr);
       }
-      return { success: true };
+      return { success: true, record: newRecord };
     } else {
       return { error: "Gagal menyimpan data pendaftaran ke database." };
     }
