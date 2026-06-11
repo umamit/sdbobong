@@ -35,9 +35,8 @@ export default function GuruLogin() {
       localStorage.setItem('teacher_session_expiry', String(sessionExpiryTime));
       localStorage.setItem('teacher_info', JSON.stringify(resData.teacher));
 
-      // Refresh and redirect to teacher dashboard
-      router.push('/guru/dashboard');
-      router.refresh();
+      // Redirect to teacher dashboard
+      window.location.href = '/guru/dashboard';
     } catch (err) {
       setErrorMsg(err.message);
       setIsSubmitting(false);

@@ -34,9 +34,8 @@ export default function AdminLogin() {
       const sessionExpiryTime = Date.now() + 60 * 60 * 1000;
       localStorage.setItem('admin_session_expiry', String(sessionExpiryTime));
 
-      // Refresh and redirect to dashboard
-      router.push('/admin/dashboard');
-      router.refresh();
+      // Redirect to dashboard
+      window.location.href = '/admin/dashboard';
     } catch (err) {
       setErrorMsg(err.message);
       setIsSubmitting(false);
