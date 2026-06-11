@@ -75,19 +75,20 @@ export async function saveAuditLogs(logsList) {
 
   if (isSupabaseEnabled()) {
     try {
-      // Upsert latest 50 logs for fast sync
+      // Upsert latest 50 logs for fast sync in a single batch query
       const latestLogs = logsList.slice(0, 50);
-      for (const l of latestLogs) {
-        await supabase.from("audit_logs_sdn_bobong").upsert({
-          id: l.id,
-          timestamp: l.timestamp,
-          username: l.username,
-          action: l.action,
-          details: l.details,
-          ip: l.ip,
-          user_agent: l.userAgent
-        });
-      }
+      const batchData = latestLogs.map(l => ({
+        id: l.id,
+        timestamp: l.timestamp,
+        username: l.username,
+        action: l.action,
+        details: l.details,
+        ip: l.ip,
+        user_agent: l.userAgent
+      }));
+      
+      const { error } = await supabase.from("audit_logs_sdn_bobong").upsert(batchData);
+      if (error) throw error;
       return true;
     } catch (e) {
       console.error("Supabase saveAuditLogs failed:", e.message || e);

@@ -1,4 +1,42 @@
 /**
+ * Helper to get the active Web Cryptography API instance.
+ * Supports standard browser/Edge environment and Node.js fallbacks.
+ */
+const getCrypto = () => {
+  if (typeof crypto !== 'undefined' && crypto.subtle) {
+    return crypto;
+  }
+  try {
+    // Fallback for Node.js environments
+    return require('crypto').webcrypto;
+  } catch (e) {
+    return null;
+  }
+};
+
+/**
+ * Safe Base64 encoding supporting Unicode characters.
+ */
+function safeBtoa(str) {
+  try {
+    return btoa(unescape(encodeURIComponent(str)));
+  } catch (e) {
+    return btoa(str);
+  }
+}
+
+/**
+ * Safe Base64 decoding supporting Unicode characters.
+ */
+function safeAtob(str) {
+  try {
+    return decodeURIComponent(escape(atob(str)));
+  } catch (e) {
+    return atob(str);
+  }
+}
+
+/**
  * Helper to convert an ArrayBuffer to a Hexadecimal string.
  */
 function arrayBufferToHex(buffer) {
@@ -13,7 +51,12 @@ async function signHmacSha256(message, secret) {
   const keyData = encoder.encode(secret);
   const messageData = encoder.encode(message);
   
-  const key = await crypto.subtle.importKey(
+  const activeCrypto = getCrypto();
+  if (!activeCrypto || !activeCrypto.subtle) {
+    throw new Error("Web Cryptography API is not supported in this environment.");
+  }
+  
+  const key = await activeCrypto.subtle.importKey(
     'raw',
     keyData,
     { name: 'HMAC', hash: 'SHA-256' },
@@ -21,7 +64,7 @@ async function signHmacSha256(message, secret) {
     ['sign']
   );
   
-  const signature = await crypto.subtle.sign(
+  const signature = await activeCrypto.subtle.sign(
     'HMAC',
     key,
     messageData
@@ -41,7 +84,7 @@ export async function createAdminToken() {
   const payload = JSON.stringify({ role: 'admin', expiry });
   
   const signature = await signHmacSha256(payload, secret);
-  return btoa(`${payload}.${signature}`);
+  return safeBtoa(`${payload}.${signature}`);
 }
 
 /**
@@ -55,7 +98,7 @@ export async function verifyAdminToken(token) {
   
   try {
     const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
-    const raw = atob(token);
+    const raw = safeAtob(token);
     const parts = raw.split('.');
     
     if (parts.length !== 2) return false;
@@ -102,7 +145,7 @@ export async function createTeacherToken(teacher) {
   });
   
   const signature = await signHmacSha256(payload, secret);
-  return btoa(`${payload}.${signature}`);
+  return safeBtoa(`${payload}.${signature}`);
 }
 
 /**
@@ -115,7 +158,7 @@ export async function verifyTeacherToken(token) {
   
   try {
     const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
-    const raw = atob(token);
+    const raw = safeAtob(token);
     const parts = raw.split('.');
     
     if (parts.length !== 2) return null;
@@ -142,4 +185,3 @@ export async function verifyTeacherToken(token) {
     return null;
   }
 }
-
