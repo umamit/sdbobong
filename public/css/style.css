@@ -3552,3 +3552,27 @@ footer {
 
 
 
+/* Switch portal link styles */
+.login-links-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.75rem;
+    gap: 1rem;
+    width: 100%;
+}
+
+.login-switch-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.login-switch-link:hover {
+    color: #ffffff;
+    transform: translateX(4px);
+    text-shadow: 0 0 8px rgba(86, 194, 193, 0.6);
+}

@@ -141,9 +141,14 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        <a href="/" className="login-back-link">
-          ← Kembali ke Website Utama
-        </a>
+        <div className="login-links-container">
+          <a href="/" className="login-back-link" style={{ marginTop: 0 }}>
+            ← Ke Website Utama
+          </a>
+          <a href="/guru/login" className="login-switch-link">
+            Masuk sebagai Guru →
+          </a>
+        </div>
       </div>
     </div>
   );
