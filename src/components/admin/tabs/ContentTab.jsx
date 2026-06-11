@@ -14,13 +14,7 @@ export default function ContentTab() {
     handleStatsUpdate
   } = useAdminDashboard();
 
-  const [localSpeed, setLocalSpeed] = useState(40);
 
-  useEffect(() => {
-    if (config?.marquee_speed) {
-      setLocalSpeed(config.marquee_speed);
-    }
-  }, [config?.marquee_speed]);
 
   return (
     <section id="tab-content" className={`tab-pane ${activeTab === 'content' ? 'active' : ''}`}>
@@ -148,37 +142,7 @@ export default function ContentTab() {
                     ))
                   )}
 
-                  {/* Slider Kecepatan Marquee */}
-                  <div className="form-group" style={{ marginTop: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                    <label htmlFor="marquee_speed" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
-                      ⚡ Kecepatan Teks Berjalan: <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{localSpeed} detik</span>
-                    </label>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                      Semakin kecil nilai detik, teks berjalan akan semakin cepat. Semakin besar nilai detik, teks berjalan akan semakin lambat. (Rekomendasi: 30 - 60 detik)
-                    </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>Cepat (5s)</span>
-                      <input
-                        type="range"
-                        id="marquee_speed"
-                        name="marquee_speed"
-                        min="5"
-                        max="150"
-                        step="5"
-                        value={localSpeed}
-                        onChange={(e) => setLocalSpeed(parseInt(e.target.value, 10))}
-                        style={{
-                          flex: 1,
-                          height: '6px',
-                          borderRadius: '3px',
-                          outline: 'none',
-                          cursor: 'pointer',
-                          accentColor: 'var(--primary)'
-                        }}
-                      />
-                      <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>Lambat (150s)</span>
-                    </div>
-                  </div>
+
 
                   <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', padding: '0.5rem 1rem' }}>💾 Simpan Pengumuman</button>
                 </form>
