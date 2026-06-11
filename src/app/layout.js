@@ -510,6 +510,7 @@ export default async function RootLayout({ children }) {
                   <li><Link href="/">Beranda</Link></li>
                   <li><Link href="/profil">Profil Sekolah</Link></li>
                   <li><Link href="/akademik">Informasi Akademik</Link></li>
+                  <li><Link href="/nilai">Portal Cek Rapor</Link></li>
                   <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
                   <li><Link href="/ppdb">Portal Info PPDB</Link></li>
                   <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>

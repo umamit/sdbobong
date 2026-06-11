@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import GradesClient from '../app/nilai/GradesClient';
 
 const P5_PROJECTS = [
   {
@@ -138,21 +139,23 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         backgroundColor: 'var(--bg-main)', 
         padding: '6px', 
         borderRadius: 'var(--radius-full)', 
-        maxWidth: '500px', 
+        maxWidth: '720px', 
         margin: '0 auto',
         border: '1px solid var(--border-color)',
-        boxShadow: 'var(--shadow-inset)'
+        boxShadow: 'var(--shadow-inset)',
+        flexWrap: 'wrap',
+        gap: '4px'
       }}>
         <button 
           onClick={() => setActiveTab('calendar')}
           style={{
-            flex: 1,
-            padding: '10px 20px',
+            flex: '1 1 180px',
+            padding: '10px 16px',
             borderRadius: 'var(--radius-full)',
             border: 'none',
             fontWeight: 700,
             fontFamily: 'var(--font-heading)',
-            fontSize: '0.9rem',
+            fontSize: '0.85rem',
             cursor: 'pointer',
             transition: 'all 0.25s ease',
             backgroundColor: activeTab === 'calendar' ? 'var(--primary)' : 'transparent',
@@ -164,13 +167,13 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         <button 
           onClick={() => setActiveTab('p5')}
           style={{
-            flex: 1,
-            padding: '10px 20px',
+            flex: '1 1 180px',
+            padding: '10px 16px',
             borderRadius: 'var(--radius-full)',
             border: 'none',
             fontWeight: 700,
             fontFamily: 'var(--font-heading)',
-            fontSize: '0.9rem',
+            fontSize: '0.85rem',
             cursor: 'pointer',
             transition: 'all 0.25s ease',
             backgroundColor: activeTab === 'p5' ? 'var(--primary)' : 'transparent',
@@ -178,6 +181,24 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
           }}
         >
           🌱 Portal Proyek P5 Sekolah
+        </button>
+        <button 
+          onClick={() => setActiveTab('grades')}
+          style={{
+            flex: '1 1 180px',
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-full)',
+            border: 'none',
+            fontWeight: 700,
+            fontFamily: 'var(--font-heading)',
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+            transition: 'all 0.25s ease',
+            backgroundColor: activeTab === 'grades' ? 'var(--primary)' : 'transparent',
+            color: activeTab === 'grades' ? 'white' : 'var(--text-muted)'
+          }}
+        >
+          📊 Portal Rapor Siswa
         </button>
       </div>
 
@@ -376,6 +397,16 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* TAB CONTENT 3: STUDENT GRADES CHECKER */}
+      {activeTab === 'grades' && (
+        <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>
+            Masukkan NISN dan Tanggal Lahir siswa untuk mengakses data rapor hasil belajar digital Kurikulum Merdeka secara aman.
+          </p>
+          <GradesClient />
         </div>
       )}
 
