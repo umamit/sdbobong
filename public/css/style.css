@@ -71,7 +71,11 @@ html {
     scroll-behavior: smooth;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
-    background-color: var(--bg-main);
+    background: linear-gradient(to bottom, var(--secondary) 50%, var(--bg-footer) 50%) no-repeat;
+}
+
+html.is-admin {
+    background: #f8fafc !important;
 }
 
 /* Prevent text selection on public pages to prevent copying and template cloning */
@@ -88,6 +92,7 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 /* Typography Base */
