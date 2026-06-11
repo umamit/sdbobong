@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { updateSession } from './lib/supabase/middleware';
-import { verifyAdminToken } from './lib/auth';
+import { verifyAdminToken, verifyTeacherToken } from './lib/auth';
 
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -119,7 +119,23 @@ export async function middleware(request) {
     return finalResponse;
   }
 
-  // 3. For public pages, we bypass updateSession to optimize speed and database limits
+  // 3. Protect teacher dashboard routes
+  if (path.startsWith('/guru') && path !== '/guru/login') {
+    const teacherToken = request.cookies.get('teacher_session_token')?.value;
+    const isValidTeacher = await verifyTeacherToken(teacherToken);
+
+    if (isValidTeacher) {
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        }
+      });
+    }
+
+    return NextResponse.redirect(new URL('/guru/login', request.url));
+  }
+
+  // 4. For public pages, we bypass updateSession to optimize speed and database limits
   return NextResponse.next({
     request: {
       headers: requestHeaders,

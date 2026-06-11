@@ -43,9 +43,9 @@ export default function LayoutControl() {
       checkMaintenance();
     }
 
-    // 1. Admin Class Control
-    const isAdmin = pathname?.startsWith('/admin');
-    if (isAdmin) {
+    // 1. Admin & Guru Class Control
+    const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru');
+    if (isAdminOrGuru) {
       document.documentElement.classList.add('is-admin');
       return;
     } else {

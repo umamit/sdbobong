@@ -85,3 +85,61 @@ export async function verifyAdminToken(token) {
     return false;
   }
 }
+
+/**
+ * Creates a cryptographically signed token for the teacher session.
+ * The payload contains the teacher's id, name, NIP, and expiration (4 hours).
+ */
+export async function createTeacherToken(teacher) {
+  const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+  const expiry = Date.now() + 4 * 60 * 60 * 1000; // 4 hours expiration
+  const payload = JSON.stringify({
+    role: 'teacher',
+    id: teacher.id,
+    nip: teacher.nip || '',
+    name: teacher.name,
+    expiry
+  });
+  
+  const signature = await signHmacSha256(payload, secret);
+  return btoa(`${payload}.${signature}`);
+}
+
+/**
+ * Verifies if the teacher session token is valid and has not expired.
+ * @param {string} token - The base64-encoded token from cookies.
+ * @returns {object|null} - The payload if valid, null otherwise.
+ */
+export async function verifyTeacherToken(token) {
+  if (!token) return null;
+  
+  try {
+    const secret = process.env.FLASK_SECRET_KEY || 'sdn-bobong-default-secret-key-2026';
+    const raw = atob(token);
+    const parts = raw.split('.');
+    
+    if (parts.length !== 2) return null;
+    
+    const [payloadStr, signature] = parts;
+    const expectedSignature = await signHmacSha256(payloadStr, secret);
+      
+    if (signature !== expectedSignature) {
+      console.warn("Security: Teacher token signature mismatch.");
+      return null;
+    }
+    
+    const payload = JSON.parse(payloadStr);
+    if (payload.role !== 'teacher') return null;
+    
+    if (Date.now() > payload.expiry) {
+      console.warn("Security: Teacher token expired.");
+      return null;
+    }
+    
+    return payload;
+  } catch (err) {
+    console.error("Teacher token verification error:", err);
+    return null;
+  }
+}
+

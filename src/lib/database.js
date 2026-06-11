@@ -824,7 +824,7 @@ export function sortTeachersList(teachersList) {
   });
 }
 
-export async function loadTeachers() {
+export async function loadTeachers(includePassword = false) {
   let localTeachers = [];
   if (fs.existsSync(TEACHERS_JSON)) {
     try {
@@ -834,8 +834,13 @@ export async function loadTeachers() {
     }
   }
 
+  const cleanList = (list) => {
+    if (includePassword) return list;
+    return list.map(({ password, ...rest }) => rest);
+  };
+
   if (!isSupabaseEnabled()) {
-    return sortTeachersList(localTeachers);
+    return cleanList(sortTeachersList(localTeachers));
   }
 
   try {
@@ -858,8 +863,14 @@ export async function loadTeachers() {
       console.log("Supabase teachers table is empty. Seeding from local JSON...");
       const sortedLocal = sortTeachersList(localTeachers);
       for (const t of sortedLocal) {
-        const packedDetails = (t.subject || t.education || t.motto || t.bio)
-          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject || '', education: t.education || '', motto: t.motto || '', bio: t.bio || '' })}-->`
+        const packedDetails = (t.subject || t.education || t.motto || t.bio || t.password)
+          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ 
+              subject: t.subject || '', 
+              education: t.education || '', 
+              motto: t.motto || '', 
+              bio: t.bio || '',
+              password: t.password || ''
+            })}-->`
           : t.details;
         
         const insertObj = {
@@ -876,7 +887,7 @@ export async function loadTeachers() {
         await supabase.from("teachers_sdn_bobong").insert(insertObj);
       }
       await markTableSeeded("teachers");
-      return sortedLocal;
+      return cleanList(sortedLocal);
     }
 
     if (supabaseTeachers && supabaseTeachers.length > 0 && !teachersSeeded) {
@@ -911,6 +922,9 @@ export async function loadTeachers() {
           motto: extra.motto || "",
           bio: extra.bio || ""
         };
+        if (includePassword || extra.password) {
+          obj.password = extra.password || "";
+        }
         if (hasNipColumn) {
           obj.nip = t.nip || "";
         } else if (t.nip !== undefined) {
@@ -933,17 +947,23 @@ export async function loadTeachers() {
         console.error("Error writing teachers cache:", e);
       }
 
-      return sortedList;
+      return cleanList(sortedList);
     }
   } catch (e) {
     console.error("Error loading teachers from Supabase:", e.message || e, ". Falling back to local cache.");
   }
 
-  return sortTeachersList(localTeachers);
+  return cleanList(sortTeachersList(localTeachers));
 }
 
 export async function saveTeachers(teachersList) {
-  const sortedList = sortTeachersList(teachersList);
+  const existingTeachers = await loadTeachers(true);
+  const sortedList = sortTeachersList(teachersList).map(t => {
+    const existing = existingTeachers.find(et => et.id === t.id);
+    const password = t.password !== undefined ? t.password : (existing ? existing.password : "");
+    return { ...t, password };
+  });
+
   let localSaved = false;
   try {
     fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8');
@@ -966,8 +986,14 @@ export async function saveTeachers(teachersList) {
       }
 
       for (const t of sortedList) {
-        const packedDetails = (t.subject || t.education || t.motto || t.bio)
-          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject || '', education: t.education || '', motto: t.motto || '', bio: t.bio || '' })}-->`
+        const packedDetails = (t.subject || t.education || t.motto || t.bio || t.password)
+          ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ 
+              subject: t.subject || '', 
+              education: t.education || '', 
+              motto: t.motto || '', 
+              bio: t.bio || '',
+              password: t.password || ''
+            })}-->`
           : t.details;
 
         const upsertObj = {
