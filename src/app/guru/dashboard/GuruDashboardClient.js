@@ -7,7 +7,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
   const router = useRouter();
   const [students, setStudents] = useState(initialStudents || []);
   const [searchQuery, setSearchQuery] = useState('');
-  const [classFilter, setClassFilter] = useState('All');
+  const [classFilter, setClassFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   
   // State for Editing Grades Modal
@@ -77,6 +77,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
 
   // Filtering & Searching Logic
   const filteredStudents = useMemo(() => {
+    if (!classFilter) return [];
     return students.filter(student => {
       // 1. Class filter
       if (classFilter !== 'All' && String(student.class) !== classFilter) {
@@ -270,6 +271,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
                 value={classFilter}
                 onChange={(e) => setClassFilter(e.target.value)}
               >
+                <option value="">-- Pilih Kelas --</option>
                 <option value="All">Semua Kelas</option>
                 {['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D', '6A', '6B', '6C', '6D'].map(cls => (
                   <option key={cls} value={cls}>Kelas {cls}</option>
@@ -347,8 +349,17 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
                   <tr>
                     <td colSpan="7" className="table-no-data">
                       <div className="empty-state">
-                        <span className="empty-icon">🔍</span>
-                        <p>Tidak ada data siswa yang cocok dengan filter atau pencarian Anda.</p>
+                        {!classFilter ? (
+                          <>
+                            <span className="empty-icon">🏫</span>
+                            <p>Silakan pilih Kelas terlebih dahulu pada filter di atas untuk menampilkan daftar siswa.</p>
+                          </>
+                        ) : (
+                          <>
+                            <span className="empty-icon">🔍</span>
+                            <p>Tidak ada data siswa di kelas {classFilter === 'All' ? 'manapun' : classFilter} atau pencarian Anda tidak ditemukan.</p>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>
