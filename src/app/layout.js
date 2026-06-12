@@ -461,6 +461,104 @@ export default async function RootLayout({ children }) {
       <body>
         <script dangerouslySetInnerHTML={{ __html: `
           document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
+
+          // WebMCP Tools Registration
+          (function() {
+            function registerTools() {
+              const modelContext = navigator.modelContext || (window.navigator && window.navigator.modelContext);
+              if (!modelContext) return;
+
+              const tools = [
+                {
+                  name: "search_school_info",
+                  description: "Mencari informasi profil sekolah, akademik, kesiswaan, tata tertib, dan PPDB di SD Negeri Bobong.",
+                  inputSchema: {
+                    type: "object",
+                    properties: {
+                      query: {
+                        type: "string",
+                        description: "Kata kunci pencarian (misal: 'visi misi', 'ekstrakurikuler', 'jadwal belajar')"
+                      }
+                    },
+                    required: ["query"]
+                  },
+                  execute: async function(params) {
+                    try {
+                      const res = await fetch('/api/chat?message=' + encodeURIComponent("Cari informasi: " + params.query));
+                      const data = await res.json();
+                      return {
+                        content: [{ type: "text", text: data.reply || JSON.stringify(data) }]
+                      };
+                    } catch (err) {
+                      return {
+                        content: [{ type: "text", text: "Gagal mencari: " + err.message }]
+                      };
+                    }
+                  }
+                },
+                {
+                  name: "register_ppdb_student",
+                  description: "Mendaftarkan calon siswa baru secara online melalui PPDB Online SD Negeri Bobong.",
+                  inputSchema: {
+                    type: "object",
+                    properties: {
+                      nama_lengkap: { type: "string", description: "Nama lengkap calon siswa" },
+                      nik: { type: "string", description: "Nomor Induk Kependudukan (NIK) calon siswa (16 digit)" },
+                      tempat_lahir: { type: "string", description: "Tempat lahir calon siswa" },
+                      tanggal_lahir: { type: "string", description: "Tanggal lahir calon siswa (YYYY-MM-DD)" },
+                      jenis_kelamin: { type: "string", enum: ["Laki-laki", "Perempuan"], description: "Jenis kelamin" },
+                      alamat: { type: "string", description: "Alamat tempat tinggal lengkap" },
+                      nama_ibu: { type: "string", description: "Nama lengkap ibu kandung" },
+                      no_hp_orang_tua: { type: "string", description: "Nomor HP/WhatsApp orang tua yang aktif" }
+                    },
+                    required: ["nama_lengkap", "nik", "tempat_lahir", "tanggal_lahir", "jenis_kelamin", "alamat", "nama_ibu", "no_hp_orang_tua"]
+                  },
+                  execute: async function(params) {
+                    try {
+                      const res = await fetch('/api/ppdb', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(params)
+                      });
+                      const data = await res.json();
+                      return {
+                        content: [{ type: "text", text: data.message || JSON.stringify(data) }]
+                      };
+                    } catch (err) {
+                      return {
+                        content: [{ type: "text", text: "Gagal pendaftaran: " + err.message }]
+                      };
+                    }
+                  }
+                }
+              ];
+
+              if (typeof modelContext.registerTool === 'function') {
+                tools.forEach(function(tool) {
+                  try {
+                    modelContext.registerTool(tool);
+                  } catch (e) {
+                    console.error("WebMCP registerTool error:", e);
+                  }
+                });
+              }
+
+              if (typeof modelContext.provideContext === 'function') {
+                try {
+                  modelContext.provideContext({ tools: tools });
+                } catch (e) {
+                  console.error("WebMCP provideContext error:", e);
+                }
+              }
+            }
+
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+              registerTools();
+            } else {
+              window.addEventListener('DOMContentLoaded', registerTools);
+              window.addEventListener('load', registerTools);
+            }
+          })();
         `}} />
         {/* Google tag (gtag.js) */}
         <Script
