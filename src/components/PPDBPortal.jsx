@@ -39,9 +39,15 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   const matchedHumas = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_humas));
   const matchedOperator = teachers.find(t => t.name && normalizeName(t.name) === normalizeName(contacts.nama_operator));
 
-  // Prioritize live database NIP, set to empty if no matching teacher is found
-  const nip_humas = matchedHumas ? matchedHumas.nip : "";
-  const nip_operator = matchedOperator ? matchedOperator.nip : "";
+  const isValidNip = (n) => {
+    if (!n) return false;
+    const cleaned = n.toString().replace(/\s+/g, '');
+    return cleaned.length > 0 && /^\d+$/.test(cleaned);
+  };
+
+  // Prioritize live database NIP, set to empty if no matching teacher is found or not valid numbers
+  const nip_humas = matchedHumas && isValidNip(matchedHumas.nip) ? matchedHumas.nip : "";
+  const nip_operator = matchedOperator && isValidNip(matchedOperator.nip) ? matchedOperator.nip : "";
 
   const hasHumas = !!(contacts.nama_humas?.trim() && contacts.wa_humas?.trim() && matchedHumas);
   const hasOperator = !!(contacts.nama_operator?.trim() && contacts.wa_operator?.trim() && matchedOperator);

@@ -5,6 +5,12 @@ import { useState } from 'react';
 export default function TeachersSectionClient({ teachers }) {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
 
+  const isValidNip = (n) => {
+    if (!n) return false;
+    const cleaned = n.toString().replace(/\s+/g, '');
+    return cleaned.length > 0 && /^\d+$/.test(cleaned);
+  };
+
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
   const tataUsaha = teachers.find(t =>
     (t.role || "").toLowerCase().includes("tata usaha") ||
@@ -107,7 +113,7 @@ export default function TeachersSectionClient({ teachers }) {
                   style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-md)' }}
                 >
                   <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>{kepalaSekolah.name}</div>
-                  {kepalaSekolah.nip && (
+                  {isValidNip(kepalaSekolah.nip) && (
                     <div style={{ fontSize: '0.75rem', opacity: 0.85, fontWeight: 500, margin: '2px 0' }}>NIP. {kepalaSekolah.nip}</div>
                   )}
                   <div style={{ fontSize: '0.8rem', opacity: 0.9 }}>{kepalaSekolah.role}</div>
@@ -133,7 +139,7 @@ export default function TeachersSectionClient({ teachers }) {
                   >
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{komite.name}</div>
-                    {komite.nip && (
+                    {isValidNip(komite.nip) && (
                       <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {komite.nip}</div>
                     )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{komite.role}</div>
@@ -155,7 +161,7 @@ export default function TeachersSectionClient({ teachers }) {
                   >
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{tataUsaha.name}</div>
-                    {tataUsaha.nip && (
+                    {isValidNip(tataUsaha.nip) && (
                       <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {tataUsaha.nip}</div>
                     )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{tataUsaha.role}</div>
@@ -177,7 +183,7 @@ export default function TeachersSectionClient({ teachers }) {
                   >
                     <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
-                    {bendahara.nip && (
+                    {isValidNip(bendahara.nip) && (
                       <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {bendahara.nip}</div>
                     )}
                     <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
@@ -258,7 +264,7 @@ export default function TeachersSectionClient({ teachers }) {
                       <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.2, minHeight: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {guru.name}
                       </div>
-                      {guru.nip && (
+                      {isValidNip(guru.nip) && (
                         <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '500', marginTop: '2px', marginBottom: '2px' }}>
                           NIP. {guru.nip}
                         </div>
@@ -309,7 +315,7 @@ export default function TeachersSectionClient({ teachers }) {
                   <div className="teacher-info" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div className="teacher-role">{teacher.role}</div>
                     <h3 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{teacher.name}</h3>
-                    {teacher.nip && (
+                    {isValidNip(teacher.nip) && (
                       <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '500', marginBottom: teacher.details ? '0.15rem' : '0' }}>
                         NIP. {teacher.nip}
                       </div>
@@ -432,7 +438,7 @@ export default function TeachersSectionClient({ teachers }) {
                 <div style={{ fontSize: '0.9rem', color: 'var(--primary-dark)', fontWeight: 600 }}>
                   {selectedTeacher.role}
                 </div>
-                {selectedTeacher.nip && (
+                {isValidNip(selectedTeacher.nip) && (
                   <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '4px', fontWeight: 500 }}>
                     NIP. {selectedTeacher.nip}
                   </div>
