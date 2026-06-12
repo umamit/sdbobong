@@ -20,7 +20,8 @@ export default async function sitemap() {
     '/galeri',
     '/hubungi-kami',
     '/kelulusan',
-    '/unduh'
+    '/unduh',
+    '/nilai'
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

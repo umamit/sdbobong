@@ -12,6 +12,8 @@ Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /guru
+Disallow: /guru/*
 Disallow: /api
 Disallow: /api/*
 Disallow: /ppdb-online/sukses
