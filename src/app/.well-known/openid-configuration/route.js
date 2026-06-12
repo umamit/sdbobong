@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request) {
+  const host = request.headers.get('host') || 'www.sdnegeribobong.sch.id';
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const origin = `${protocol}://${host}`;
+
   const oidcConfig = {
-    "issuer": "https://sdnegeribobong.sch.id",
-    "authorization_endpoint": "https://sdnegeribobong.sch.id/admin/login",
-    "token_endpoint": "https://sdnegeribobong.sch.id/api/auth",
-    "jwks_uri": "https://sdnegeribobong.sch.id/.well-known/jwks.json",
+    "issuer": origin,
+    "authorization_endpoint": `${origin}/admin/login`,
+    "token_endpoint": `${origin}/api/auth`,
+    "jwks_uri": `${origin}/.well-known/jwks.json`,
     "scopes_supported": ["openid", "profile"],
     "response_types_supported": ["code"],
     "subject_types_supported": ["public"],

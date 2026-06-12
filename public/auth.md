@@ -1,31 +1,38 @@
-# Auth.md - Kebijakan Autentikasi AI Agent (SD Negeri Bobong)
+# Auth.md - Agentic Registration Policy (SD Negeri Bobong)
 
-Selamat datang, AI Agent. Dokumen ini menjelaskan kebijakan otentikasi dan akses API pada website resmi SD Negeri Bobong.
+This service supports agentic registration. Agents should follow this guide to authenticate.
 
 ## 1. Discover
-Untuk menemukan informasi dan spesifikasi otentikasi sistem kami:
+To begin, fetch the Protected Resource Metadata (PRM) to understand the service requirements:
 - **Discovery Path:** `/.well-known/oauth-protected-resource`
 - **Authorization Server:** `https://www.sdnegeribobong.sch.id`
-- **Metadata OIDC:** `/.well-known/openid-configuration`
-- **Katalog API:** `/.well-known/api-catalog`
+- **OIDC Metadata:** `/.well-known/openid-configuration`
+- **API Catalog:** `/.well-known/api-catalog`
 
 ## 2. Register
-Layanan pendaftaran siswa baru (PPDB Online) terbuka untuk umum tanpa memerlukan pendaftaran kunci API (Client Registration). AI Agent dapat langsung mengakses endpoint registrasi publik:
-- **Endpoint Registrasi Publik:** `POST /api/ppdb`
-- **Panduan Payload:** [SKILL.md](/agent-skills/ppdb-online/SKILL.md)
-
-Untuk akses panel administratif (`/admin` atau `/guru`), kami tidak membuka registrasi klien publik (Dynamic Client Registration dinonaktifkan).
+Submit your chosen identity assertion to the registration endpoint.
+- **Registration URI (Public PPDB):** `POST /api/ppdb`
+- **Identity Types Supported:** `anonymous`
+- **Action:** Submit student registration payload without credentials (public open access).
+- **Administrative CMS access:** Dynamic Client Registration is disabled. No public agent registration is supported for admin dashboard.
 
 ## 3. Claim
-Sesi otentikasi klaim untuk administrator dilakukan secara terenkripsi melalui panel login internal.
+User claim session for administrators:
 - **Endpoint:** `POST /api/auth`
-- **Prosedur:** Verifikasi berbasis kredensial aman di database internal (Supabase Auth).
+- **Process:** Secure credential validation via Supabase Auth database.
 
 ## 4. Exchange
-Pertukaran kode token sesi menggunakan HTTP Cookie aman (HttpOnly, Secure, SameSite=Lax).
-- **Prosedur:** Sistem menerbitkan token sesi `admin_session_token` atau `teacher_session_token` setelah proses otentikasi berhasil.
+Token exchange uses secure HttpOnly Cookie:
+- **Grant Type:** `urn:ietf:params:oauth:grant-type:jwt-bearer` (Internal mapping only)
+- **Result:** Issuance of secure `admin_session_token` or `teacher_session_token` cookies.
 
 ## 5. Revocation
-Pencabutan atau penutupan sesi otentikasi (Logout):
-- **Endpoint:** `POST /api/auth?logout=true` atau penghapusan cookies sesi secara otomatis.
+Invalidate credentials and end sessions:
+- **Endpoint:** `POST /api/auth?logout=true`
+- **Process:** Automated deletion of session cookies.
 
+---
+
+*(Versi Bahasa Indonesia)*
+
+Selamat datang, AI Agent. Dokumen ini menjelaskan kebijakan otentikasi dan akses API pada website resmi SD Negeri Bobong. Layanan pendaftaran siswa baru (PPDB Online) terbuka untuk umum tanpa memerlukan pendaftaran kunci API (Client Registration). AI Agent dapat langsung mengakses endpoint registrasi publik `POST /api/ppdb` dengan format payload sesuai berkas [SKILL.md](/agent-skills/ppdb-online/SKILL.md).
