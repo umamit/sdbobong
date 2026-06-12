@@ -11,6 +11,13 @@ export async function GET(request) {
     "version": "1.0.0",
     "protocolVersion": "0.3.0",
     "url": origin,
+    "supportedInterfaces": [
+      {
+        "url": `${origin}/api/chat`,
+        "protocolBinding": "HTTP+JSON",
+        "protocolVersion": "1.0"
+      }
+    ],
     "skills": [
       {
         "id": "tanya_jawab_sekolah",

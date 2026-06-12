@@ -2,20 +2,30 @@
 
 Selamat datang, AI Agent. Dokumen ini menjelaskan kebijakan otentikasi dan akses API pada website resmi SD Negeri Bobong.
 
-## Status Akses API Publik
+## 1. Discover
+Untuk menemukan informasi dan spesifikasi otentikasi sistem kami:
+- **Discovery Path:** `/.well-known/oauth-protected-resource`
+- **Authorization Server:** `https://www.sdnegeribobong.sch.id`
+- **Metadata OIDC:** `/.well-known/openid-configuration`
+- **Katalog API:** `/.well-known/api-catalog`
 
-Website ini menyediakan layanan PPDB Online (Pendaftaran Peserta Didik Baru) yang dapat diakses oleh publik secara terbuka untuk mendaftarkan siswa baru.
+## 2. Register
+Layanan pendaftaran siswa baru (PPDB Online) terbuka untuk umum tanpa memerlukan pendaftaran kunci API (Client Registration). AI Agent dapat langsung mengakses endpoint registrasi publik:
+- **Endpoint Registrasi Publik:** `POST /api/ppdb`
+- **Panduan Payload:** [SKILL.md](/agent-skills/ppdb-online/SKILL.md)
 
-*   **Endpoint Pendaftaran (Publik):** `POST /api/ppdb`
-*   **Format Payload:** Dituliskan secara rinci di dalam dokumen [SKILL.md](/agent-skills/ppdb-online/SKILL.md).
-*   **Keamanan:** Siapapun dapat mendaftarkan calon siswa baru melalui endpoint ini tanpa memerlukan sesi otentikasi.
+Untuk akses panel administratif (`/admin` atau `/guru`), kami tidak membuka registrasi klien publik (Dynamic Client Registration dinonaktifkan).
 
-## Akses Administratif & CMS (Privat)
+## 3. Claim
+Sesi otentikasi klaim untuk administrator dilakukan secara terenkripsi melalui panel login internal.
+- **Endpoint:** `POST /api/auth`
+- **Prosedur:** Verifikasi berbasis kredensial aman di database internal (Supabase Auth).
 
-Semua tindakan perubahan data operasional sekolah, modifikasi informasi dewan guru, manajemen artikel berita terbaru, pengeditan pengumuman marquee, serta penghapusan data PPDB bersifat **PRIVAT** dan dibatasi ketat bagi pengelola sekolah (Administrator).
+## 4. Exchange
+Pertukaran kode token sesi menggunakan HTTP Cookie aman (HttpOnly, Secure, SameSite=Lax).
+- **Prosedur:** Sistem menerbitkan token sesi `admin_session_token` atau `teacher_session_token` setelah proses otentikasi berhasil.
 
-*   **Sistem Otentikasi:** Menggunakan token sesi kriptografis yang aman (HMAC-SHA256) berbasis Cookie HttpOnly yang dihasilkan melalui verifikasi kredensial terenkripsi pada database awan (Supabase Auth).
-*   **Registrasi Klien Publik:** Kami **TIDAK** membuka pendaftaran klien publik, pendaftaran pihak ketiga, maupun endpoint penerbitan token terbuka bagi AI Agent eksternal.
-*   **Batasan Hak:** AI Agent tidak diperkenankan untuk mencoba mengotentikasi, menebak kredensial login, maupun memodifikasi data administratif sekolah.
+## 5. Revocation
+Pencabutan atau penutupan sesi otentikasi (Logout):
+- **Endpoint:** `POST /api/auth?logout=true` atau penghapusan cookies sesi secara otomatis.
 
-Untuk informasi lebih lanjut tentang standar katalog API kami, silakan rujuk berkas [API Catalog](/.well-known/api-catalog).
