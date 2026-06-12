@@ -76,7 +76,7 @@ export default function Header() {
     <header>
       <div className="container navbar">
         <Link href="/" className="logo-container">
-          <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" />
+          <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" fetchPriority="high" decoding="async" />
           <div className="logo-text">
             <span className="logo-title">SD NEGERI BOBONG</span>
             <span className="logo-subtitle">Pulau Taliabu</span>

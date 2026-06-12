@@ -384,6 +384,7 @@ export default async function RootLayout({ children }) {
         <meta name="twitter:image" content="https://www.sdnegeribobong.sch.id/images/logo_sekolah.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" />
         <script dangerouslySetInnerHTML={{ __html: `
           // Zero-flicker theme initialization
           try {

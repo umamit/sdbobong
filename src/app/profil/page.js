@@ -84,7 +84,7 @@ export default async function Profil() {
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2}</p>
             </div>
             <div className="reveal-on-scroll reveal-delay-200" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} decoding="async" />
+              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} loading="lazy" decoding="async" />
             </div>
           </div>
         </div>

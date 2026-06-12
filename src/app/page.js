@@ -94,6 +94,9 @@ export default async function Home() {
 
   return (
     <>
+      {config.stats?.hero_background && !isVideoBg && (
+        <link rel="preload" as="image" href={config.stats.hero_background} fetchPriority="high" />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }}
@@ -231,6 +234,7 @@ export default async function Home() {
                 alt={`Foto ${kepalaSekolah.name}`} 
                 className="welcome-img" 
                 style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '320px' }}
+                loading="lazy"
                 decoding="async"
               />
             ) : (
