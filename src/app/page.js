@@ -166,60 +166,45 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Quick Links (Thumb-Friendly for Mobile) */}
-      <section className="container" style={{ position: 'relative', zIndex: 20 }}>
-        <div className="quick-links-section reveal-on-scroll">
-          <div className="quick-links-grid">
-            {/* Card 1: Portal PPDB */}
-            <Link href="/ppdb" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="quick-link-card card-blue">
-                <div className="quick-link-icon">
-                  <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                </div>
-                <div className="quick-link-info">
-                  <h3>Portal Info PPDB</h3>
-                  <p>Informasi &amp; Alur Lengkap</p>
-                </div>
-              </div>
+      {/* PPDB Interactive Stepper Section */}
+      <section className="container">
+        <div className="stepper-section reveal-on-scroll">
+          <div className="stepper-header">
+            <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
+            <p>Ikuti panduan urutan langkah berikut untuk mendaftarkan putra-putri Anda dengan mudah</p>
+          </div>
+          <div className="stepper-grid">
+            {/* Step 1 */}
+            <Link href="/ppdb" className="stepper-step">
+              <div className="stepper-step-number">1</div>
+              <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
+              <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
             </Link>
 
-            {/* Card 2: PPDB Online */}
-            <Link href="/ppdb-online" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="quick-link-card card-purple">
-                <div className="quick-link-icon">
-                  <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                </div>
-                <div className="quick-link-info">
-                  <h3>Formulir PPDB Online</h3>
-                  <p>Pendaftaran Daring Cepat</p>
-                </div>
-              </div>
+            {/* Step 2 */}
+            <Link href="/ppdb-online" className="stepper-step">
+              <div className="stepper-step-number">2</div>
+              <h3 className="stepper-step-title">Isi Formulir Online</h3>
+              <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
             </Link>
 
-            {/* Card 3: PPDB Offline */}
-            <Link href="/formulir-ppdb" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="quick-link-card card-orange">
-                <div className="quick-link-icon">
-                  <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                </div>
-                <div className="quick-link-info">
-                  <h3>Formulir PPDB Offline</h3>
-                  <p>Unduh Berkas Cetak Fisik</p>
-                </div>
-              </div>
+            {/* Step 3 */}
+            <Link href="/formulir-ppdb" className="stepper-step">
+              <div className="stepper-step-number">3</div>
+              <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
+              <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
             </Link>
 
-            {/* Card 4: WhatsApp Operator */}
-            <a href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20SDN%20Bobong,%20saya%20ingin%20bertanya%20tentang%20pendaftaran...`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="quick-link-card card-green">
-                <div className="quick-link-icon">
-                  <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                </div>
-                <div className="quick-link-info">
-                  <h3>Hubungi Operator WA</h3>
-                  <p>Layanan Cepat Tanggap</p>
-                </div>
-              </div>
+            {/* Step 4 */}
+            <a 
+              href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
+              target="_blank" 
+              rel="noreferrer" 
+              className="stepper-step"
+            >
+              <div className="stepper-step-number">4</div>
+              <h3 className="stepper-step-title">Konfirmasi Operator</h3>
+              <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
             </a>
           </div>
         </div>

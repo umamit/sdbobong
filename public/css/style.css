@@ -3575,3 +3575,139 @@ footer {
     transform: translateX(4px);
     text-shadow: 0 0 8px rgba(86, 194, 193, 0.6);
 }
+
+/* ==========================================================================
+   PPDB Stepper Section (Step-by-Step Enrollment Guide)
+   ========================================================================== */
+.stepper-section {
+    background-color: #ffffff;
+    margin-top: -2.5rem;
+    position: relative;
+    z-index: 20;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-md);
+}
+
+.stepper-header {
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.stepper-header h2 {
+    font-size: 1.35rem;
+    color: var(--primary-dark);
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-heading);
+}
+
+.stepper-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.stepper-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    position: relative;
+}
+
+.stepper-step {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-main);
+    border: 2px solid var(--border-color);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.stepper-step:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    background-color: #ffffff;
+    box-shadow: var(--shadow-md);
+}
+
+.stepper-step-number {
+    width: 44px;
+    height: 44px;
+    background-color: var(--primary);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: var(--space-xs);
+    transition: all var(--transition-normal);
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 6px rgba(11, 60, 93, 0.15);
+    z-index: 2;
+}
+
+.stepper-step:hover .stepper-step-number {
+    background-color: var(--secondary);
+    transform: scale(1.1);
+}
+
+.stepper-step-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-top: var(--space-xs);
+    margin-bottom: 0.25rem;
+}
+
+.stepper-step-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.stepper-step:hover .stepper-step-title {
+    color: var(--primary-light);
+}
+
+@media (min-width: 576px) {
+    .stepper-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+}
+
+@media (min-width: 992px) {
+    .stepper-section {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    .stepper-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .stepper-grid::before {
+        content: '';
+        position: absolute;
+        top: 35px;
+        left: 12.5%;
+        right: 12.5%;
+        height: 2px;
+        background-color: var(--border-color);
+        z-index: 0;
+    }
+    
+    .stepper-step {
+        z-index: 1;
+    }
+}
+
