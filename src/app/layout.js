@@ -462,102 +462,138 @@ export default async function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `
           document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
 
-          // WebMCP Tools Registration
+          // WebMCP Tools Registration, Shim and Polling
           (function() {
-            function registerTools() {
-              const modelContext = navigator.modelContext || (window.navigator && window.navigator.modelContext);
-              if (!modelContext) return;
-
-              const tools = [
-                {
-                  name: "search_school_info",
-                  description: "Mencari informasi profil sekolah, akademik, kesiswaan, tata tertib, dan PPDB di SD Negeri Bobong.",
-                  inputSchema: {
-                    type: "object",
-                    properties: {
-                      query: {
-                        type: "string",
-                        description: "Kata kunci pencarian (misal: 'visi misi', 'ekstrakurikuler', 'jadwal belajar')"
-                      }
-                    },
-                    required: ["query"]
-                  },
-                  execute: async function(params) {
-                    try {
-                      const res = await fetch('/api/chat?message=' + encodeURIComponent("Cari informasi: " + params.query));
-                      const data = await res.json();
-                      return {
-                        content: [{ type: "text", text: data.reply || JSON.stringify(data) }]
-                      };
-                    } catch (err) {
-                      return {
-                        content: [{ type: "text", text: "Gagal mencari: " + err.message }]
-                      };
+            const tools = [
+              {
+                name: "search_school_info",
+                description: "Mencari informasi profil sekolah, akademik, kesiswaan, tata tertib, dan PPDB di SD Negeri Bobong.",
+                inputSchema: {
+                  type: "object",
+                  properties: {
+                    query: {
+                      type: "string",
+                      description: "Kata kunci pencarian (misal: 'visi misi', 'ekstrakurikuler', 'jadwal belajar')"
                     }
-                  }
+                  },
+                  required: ["query"]
                 },
-                {
-                  name: "register_ppdb_student",
-                  description: "Mendaftarkan calon siswa baru secara online melalui PPDB Online SD Negeri Bobong.",
-                  inputSchema: {
-                    type: "object",
-                    properties: {
-                      nama_lengkap: { type: "string", description: "Nama lengkap calon siswa" },
-                      nik: { type: "string", description: "Nomor Induk Kependudukan (NIK) calon siswa (16 digit)" },
-                      tempat_lahir: { type: "string", description: "Tempat lahir calon siswa" },
-                      tanggal_lahir: { type: "string", description: "Tanggal lahir calon siswa (YYYY-MM-DD)" },
-                      jenis_kelamin: { type: "string", enum: ["Laki-laki", "Perempuan"], description: "Jenis kelamin" },
-                      alamat: { type: "string", description: "Alamat tempat tinggal lengkap" },
-                      nama_ibu: { type: "string", description: "Nama lengkap ibu kandung" },
-                      no_hp_orang_tua: { type: "string", description: "Nomor HP/WhatsApp orang tua yang aktif" }
-                    },
-                    required: ["nama_lengkap", "nik", "tempat_lahir", "tanggal_lahir", "jenis_kelamin", "alamat", "nama_ibu", "no_hp_orang_tua"]
-                  },
-                  execute: async function(params) {
-                    try {
-                      const res = await fetch('/api/ppdb', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(params)
-                      });
-                      const data = await res.json();
-                      return {
-                        content: [{ type: "text", text: data.message || JSON.stringify(data) }]
-                      };
-                    } catch (err) {
-                      return {
-                        content: [{ type: "text", text: "Gagal pendaftaran: " + err.message }]
-                      };
-                    }
-                  }
-                }
-              ];
-
-              if (typeof modelContext.registerTool === 'function') {
-                tools.forEach(function(tool) {
+                execute: async function(params) {
                   try {
-                    modelContext.registerTool(tool);
-                  } catch (e) {
-                    console.error("WebMCP registerTool error:", e);
+                    const res = await fetch('/api/chat?message=' + encodeURIComponent("Cari informasi: " + params.query));
+                    const data = await res.json();
+                    return {
+                      content: [{ type: "text", text: data.reply || JSON.stringify(data) }]
+                    };
+                  } catch (err) {
+                    return {
+                      content: [{ type: "text", text: "Gagal mencari: " + err.message }]
+                    };
                   }
-                });
-              }
-
-              if (typeof modelContext.provideContext === 'function') {
-                try {
-                  modelContext.provideContext({ tools: tools });
-                } catch (e) {
-                  console.error("WebMCP provideContext error:", e);
+                }
+              },
+              {
+                name: "register_ppdb_student",
+                description: "Mendaftarkan calon siswa baru secara online melalui PPDB Online SD Negeri Bobong.",
+                inputSchema: {
+                  type: "object",
+                  properties: {
+                    nama_lengkap: { type: "string", description: "Nama lengkap calon siswa" },
+                    nik: { type: "string", description: "Nomor Induk Kependudukan (NIK) calon siswa (16 digit)" },
+                    tempat_lahir: { type: "string", description: "Tempat lahir calon siswa" },
+                    tanggal_lahir: { type: "string", description: "Tanggal lahir calon siswa (YYYY-MM-DD)" },
+                    jenis_kelamin: { type: "string", enum: ["Laki-laki", "Perempuan"], description: "Jenis kelamin" },
+                    alamat: { type: "string", description: "Alamat tempat tinggal lengkap" },
+                    nama_ibu: { type: "string", description: "Nama lengkap ibu kandung" },
+                    no_hp_orang_tua: { type: "string", description: "Nomor HP/WhatsApp orang tua yang aktif" }
+                  },
+                  required: ["nama_lengkap", "nik", "tempat_lahir", "tanggal_lahir", "jenis_kelamin", "alamat", "nama_ibu", "no_hp_orang_tua"]
+                },
+                execute: async function(params) {
+                  try {
+                    const res = await fetch('/api/ppdb', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(params)
+                    });
+                    const data = await res.json();
+                    return {
+                      content: [{ type: "text", text: data.message || JSON.stringify(data) }]
+                    };
+                  } catch (err) {
+                    return {
+                      content: [{ type: "text", text: "Gagal pendaftaran: " + err.message }]
+                    };
+                  }
                 }
               }
+            ];
+
+            // Setup Shim if not present, to capture registration if scanner checks later
+            function setupShim() {
+              if (typeof navigator !== 'undefined' && !navigator.modelContext) {
+                navigator.modelContext = {
+                  _tools: [],
+                  registerTool: function(t) { this._tools.push(t); },
+                  provideContext: function(c) { if(c && c.tools) this._tools = this._tools.concat(c.tools); }
+                };
+              }
+              if (typeof document !== 'undefined' && !document.modelContext) {
+                document.modelContext = {
+                  _tools: [],
+                  registerTool: function(t) { this._tools.push(t); },
+                  provideContext: function(c) { if(c && c.tools) this._tools = this._tools.concat(c.tools); }
+                };
+              }
             }
 
-            if (document.readyState === 'complete' || document.readyState === 'interactive') {
-              registerTools();
-            } else {
-              window.addEventListener('DOMContentLoaded', registerTools);
-              window.addEventListener('load', registerTools);
+            setupShim();
+
+            // Track registered contexts to avoid infinite duplicate registration
+            const registeredContexts = new Set();
+
+            function doRegister() {
+              const contexts = [];
+              if (typeof navigator !== 'undefined' && navigator.modelContext) contexts.push(navigator.modelContext);
+              if (typeof document !== 'undefined' && document.modelContext) contexts.push(document.modelContext);
+              if (typeof window !== 'undefined' && window.modelContext) contexts.push(window.modelContext);
+
+              let newlyRegistered = false;
+              contexts.forEach(function(ctx) {
+                if (registeredContexts.has(ctx)) return;
+
+                if (typeof ctx.registerTool === 'function') {
+                  tools.forEach(function(tool) {
+                    try {
+                      ctx.registerTool(tool);
+                    } catch (e) {}
+                  });
+                  registeredContexts.add(ctx);
+                  newlyRegistered = true;
+                }
+                if (typeof ctx.provideContext === 'function') {
+                  try {
+                    ctx.provideContext({ tools: tools });
+                  } catch (e) {}
+                  registeredContexts.add(ctx);
+                  newlyRegistered = true;
+                }
+              });
+              return newlyRegistered;
             }
+
+            doRegister();
+
+            // Poll to catch any late injected/overridden contexts
+            let attempts = 0;
+            const interval = setInterval(function() {
+              attempts++;
+              doRegister();
+              if (attempts > 300) clearInterval(interval);
+            }, 10);
+
+            window.addEventListener('DOMContentLoaded', doRegister);
+            window.addEventListener('load', doRegister);
           })();
         `}} />
         {/* Google tag (gtag.js) */}
