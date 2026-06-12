@@ -53,10 +53,6 @@ export async function middleware(request) {
     'wget',             // CLI downloader
     'curl',             // CLI downloader
     'scrapy',           // Python scraping framework
-    'headless',         // Headless browser identifier
-    'selenium',         // Automated browser tool
-    'puppeteer',        // Automated browser tool
-    'playwright',       // Automated browser tool
     'python',           // Python requests/urllib
     'urllib',           // Python urllib
     'axios',            // JS HTTP client (often used in scripts)
@@ -71,14 +67,11 @@ export async function middleware(request) {
     'website extractor',// Website extractor cloner
     'site-sucker',      // SiteSucker macOS site cloner
     'sitesucker',       // SiteSucker macOS site cloner
-    'ia_archiver',      // Archive.org crawler (optional, but prevents snapshot cloning)
-    'gptbot',           // OpenAI bot
-    'chatgpt-user',     // ChatGPT web crawler
-    'claudebot',        // Anthropic Claude crawler
-    'google-extended'   // Google AI training bot
+    'ia_archiver'       // Archive.org crawler (optional, but prevents snapshot cloning)
   ];
 
-  const isBlocked = blockedAgents.some(agent => userAgent.includes(agent)) && !path.startsWith('/.well-known');
+  const isPublicAsset = path === '/robots.txt' || path === '/sitemap.xml' || path === '/favicon.ico' || path === '/favicon.png' || path.startsWith('/images/');
+  const isBlocked = blockedAgents.some(agent => userAgent.includes(agent)) && !path.startsWith('/.well-known') && !isPublicAsset;
   if (isBlocked) {
     return new NextResponse('Access Denied: Scraping, cloning, and automated bots are not allowed on this website.', { 
       status: 403,
