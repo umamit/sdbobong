@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request) {
+  const host = request.headers.get('host') || 'www.sdnegeribobong.sch.id';
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const origin = `${protocol}://${host}`;
+
   const resourceMetadata = {
-    "resource": "https://sdnegeribobong.sch.id",
+    "resource": origin,
     "authorization_servers": [
-      "https://sdnegeribobong.sch.id"
+      origin
     ],
     "scopes_supported": ["openid", "profile", "admin"],
     "bearer_methods_supported": ["header"],
-    "resource_documentation": "https://sdnegeribobong.sch.id/auth.md"
+    "resource_documentation": `${origin}/auth.md`
   };
 
   return new Response(JSON.stringify(resourceMetadata), {

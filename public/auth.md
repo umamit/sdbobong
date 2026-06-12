@@ -1,4 +1,4 @@
-# Kebijakan Autentikasi AI Agent (SD Negeri Bobong)
+# Auth.md - Kebijakan Autentikasi AI Agent (SD Negeri Bobong)
 
 Selamat datang, AI Agent. Dokumen ini menjelaskan kebijakan otentikasi dan akses API pada website resmi SD Negeri Bobong.
 

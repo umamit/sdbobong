@@ -1,47 +1,57 @@
-export async function GET() {
+export async function GET(request) {
+  const host = request.headers.get('host') || 'www.sdnegeribobong.sch.id';
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const origin = `${protocol}://${host}`;
+
   const catalog = {
     "linkset": [
       {
-        "anchor": "https://sdnegeribobong.sch.id/",
+        "anchor": `${origin}/`,
         "api-catalog": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/api-catalog",
+            "href": `${origin}/.well-known/api-catalog`,
             "type": "application/linkset+json"
           }
         ],
         "service-doc": [
           {
-            "href": "https://sdnegeribobong.sch.id/profil",
+            "href": `${origin}/profil`,
             "type": "text/html"
           }
         ],
         "agent-skills": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/agent-skills/index.json",
+            "href": `${origin}/.well-known/agent-skills/index.json`,
             "type": "application/json"
           }
         ],
         "mcp-server-card": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/mcp/server-card.json",
+            "href": `${origin}/.well-known/mcp/server-card.json`,
+            "type": "application/json"
+          }
+        ],
+        "agent-card": [
+          {
+            "href": `${origin}/.well-known/agent-card.json`,
             "type": "application/json"
           }
         ],
         "openid-configuration": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/openid-configuration",
+            "href": `${origin}/.well-known/openid-configuration`,
             "type": "application/json"
           }
         ],
         "oauth-authorization-server": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/oauth-authorization-server",
+            "href": `${origin}/.well-known/oauth-authorization-server`,
             "type": "application/json"
           }
         ],
         "oauth-protected-resource": [
           {
-            "href": "https://sdnegeribobong.sch.id/.well-known/oauth-protected-resource",
+            "href": `${origin}/.well-known/oauth-protected-resource`,
             "type": "application/json"
           }
         ]
