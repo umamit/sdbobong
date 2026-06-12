@@ -78,7 +78,7 @@ export async function middleware(request) {
     'google-extended'   // Google AI training bot
   ];
 
-  const isBlocked = blockedAgents.some(agent => userAgent.includes(agent));
+  const isBlocked = blockedAgents.some(agent => userAgent.includes(agent)) && !path.startsWith('/.well-known');
   if (isBlocked) {
     return new NextResponse('Access Denied: Scraping, cloning, and automated bots are not allowed on this website.', { 
       status: 403,
