@@ -462,8 +462,11 @@ export default async function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `
           document.cookie = "maintenance_mode=${(config.stats?.maintenance_mode === true) ? 'true' : 'false'}; path=/; max-age=31536000; SameSite=Lax";
 
-          // WebMCP Tools Registration, Shim and Polling
+          // WebMCP Tools Registration, Shim and Polling with AbortController
           (function() {
+            const controller = new AbortController();
+            const signal = controller.signal;
+
             const tools = [
               {
                 name: "search_school_info",
@@ -534,15 +537,15 @@ export default async function RootLayout({ children }) {
               if (typeof navigator !== 'undefined' && !navigator.modelContext) {
                 navigator.modelContext = {
                   _tools: [],
-                  registerTool: function(t) { this._tools.push(t); },
-                  provideContext: function(c) { if(c && c.tools) this._tools = this._tools.concat(c.tools); }
+                  registerTool: function(t, options) { this._tools.push({ tool: t, options: options }); },
+                  provideContext: function(c, options) { if(c && c.tools) { c.tools.forEach(t => this._tools.push({ tool: t, options: options })); } }
                 };
               }
               if (typeof document !== 'undefined' && !document.modelContext) {
                 document.modelContext = {
                   _tools: [],
-                  registerTool: function(t) { this._tools.push(t); },
-                  provideContext: function(c) { if(c && c.tools) this._tools = this._tools.concat(c.tools); }
+                  registerTool: function(t, options) { this._tools.push({ tool: t, options: options }); },
+                  provideContext: function(c, options) { if(c && c.tools) { c.tools.forEach(t => this._tools.push({ tool: t, options: options })); } }
                 };
               }
             }
@@ -565,7 +568,7 @@ export default async function RootLayout({ children }) {
                 if (typeof ctx.registerTool === 'function') {
                   tools.forEach(function(tool) {
                     try {
-                      ctx.registerTool(tool);
+                      ctx.registerTool(tool, { signal: signal });
                     } catch (e) {}
                   });
                   registeredContexts.add(ctx);
@@ -573,7 +576,7 @@ export default async function RootLayout({ children }) {
                 }
                 if (typeof ctx.provideContext === 'function') {
                   try {
-                    ctx.provideContext({ tools: tools });
+                    ctx.provideContext({ tools: tools }, { signal: signal });
                   } catch (e) {}
                   registeredContexts.add(ctx);
                   newlyRegistered = true;
@@ -594,6 +597,11 @@ export default async function RootLayout({ children }) {
 
             window.addEventListener('DOMContentLoaded', doRegister);
             window.addEventListener('load', doRegister);
+
+            // Clean up on page unload
+            window.addEventListener('unload', function() {
+              controller.abort();
+            });
           })();
         `}} />
         {/* Google tag (gtag.js) */}
