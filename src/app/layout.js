@@ -4,6 +4,7 @@ import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import ChatWidget from '../components/ChatWidget';
+import VisitorCounter from '../components/VisitorCounter';
 
 
 import Script from 'next/script';
@@ -646,6 +647,7 @@ export default async function RootLayout({ children }) {
                 <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
                   {schoolDesc}
                 </p>
+                <VisitorCounter />
               </div>
               <div className="footer-widget">
                 <h3>Navigasi Cepat</h3>
