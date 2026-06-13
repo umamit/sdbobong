@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +77,7 @@ export default function Header() {
     <header>
       <div className="container navbar">
         <Link href="/" className="logo-container">
-          <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" fetchPriority="high" decoding="async" />
+          <Image src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" width={60} height={60} priority />
           <div className="logo-text">
             <span className="logo-title">SD NEGERI BOBONG</span>
             <span className="logo-subtitle">Pulau Taliabu</span>

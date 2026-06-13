@@ -16,7 +16,15 @@ function getAcademicYear(dateStr) {
 
 export async function submitPpdbAction(formData) {
   try {
+    const website_url = formData.get('website_url')?.trim();
     const nama_lengkap = formData.get('nama_lengkap')?.trim();
+    
+    // Shadow drop spam bot if honeypot field is filled
+    if (website_url) {
+      console.warn("Spam bot PPDB submission blocked via honeypot:", nama_lengkap);
+      return { success: true, record: { id: `ppdb-${Math.floor(Date.now() / 1000)}`, nama_lengkap, status: 'Diterima Sistem', waktu_daftar: new Date().toISOString() } };
+    }
+
     const nama_panggilan = formData.get('nama_panggilan')?.trim();
     const nik = formData.get('nik')?.trim();
     const tempat_lahir = formData.get('tempat_lahir')?.trim();

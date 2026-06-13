@@ -9,6 +9,13 @@ export async function submitMessageAction(formData) {
     const role = formData.role?.trim();
     const type = formData.type?.trim(); // 'guestbook' or 'feedback'
     const message = formData.message?.trim();
+    const website_url = formData.website_url?.trim();
+
+    // Shadow drop spam bot if honeypot field is filled
+    if (website_url) {
+      console.warn("Spam bot submission blocked via honeypot:", name);
+      return { success: true, message: { id: `msg-${Date.now()}`, name, role, type, message, status: 'pending', date: new Date().toISOString() } };
+    }
 
     if (!name || !role || !type || !message) {
       return { error: "Semua kolom formulir wajib diisi!" };

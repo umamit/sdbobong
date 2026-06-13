@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 
@@ -214,13 +215,14 @@ export default async function Home() {
         <div className="container welcome-layout">
           <div className="welcome-img-container reveal-on-scroll" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
             {kepalaSekolah ? (
-              <img 
+              <Image 
                 src={kepalaSekolah.image} 
                 alt={`Foto ${kepalaSekolah.name}`} 
                 className="welcome-img" 
+                width={400}
+                height={500}
                 style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '320px' }}
                 loading="lazy"
-                decoding="async"
               />
             ) : (
               <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>

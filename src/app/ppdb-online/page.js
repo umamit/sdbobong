@@ -33,6 +33,7 @@ export default function PPDBOnlineForm() {
 
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [websiteUrl, setWebsiteUrl] = useState('');
 
   // File States
   const [fileKk, setFileKk] = useState(null);
@@ -152,6 +153,7 @@ export default function PPDBOnlineForm() {
       Object.entries(formData).forEach(([key, val]) => {
         submissionData.append(key, val);
       });
+      submissionData.append('website_url', websiteUrl);
       submissionData.append('berkas_kk', fileKk);
       submissionData.append('berkas_akta', fileAkta);
       submissionData.append('berkas_ktp', fileKtp);
@@ -232,6 +234,16 @@ export default function PPDBOnlineForm() {
           )}
 
           <form onSubmit={handleSubmit}>
+            {/* Honeypot field (hidden from real users to trap spam bots) */}
+            <input
+              type="text"
+              name="website_url"
+              value={websiteUrl}
+              onChange={(e) => setWebsiteUrl(e.target.value)}
+              style={{ display: 'none' }}
+              tabIndex="-1"
+              autoComplete="off"
+            />
             {/* BAGIAN 1: DATA CALON PESERTA DIDIK */}
             <div className="form-card-section" style={{
               background: '#fcfcfd',

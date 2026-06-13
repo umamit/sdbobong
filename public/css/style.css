@@ -3580,7 +3580,7 @@ footer {
    PPDB Stepper Section (Step-by-Step Enrollment Guide)
    ========================================================================== */
 .stepper-section {
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     margin-top: -2.5rem;
     position: relative;
     z-index: 20;
@@ -3632,7 +3632,7 @@ footer {
 .stepper-step:hover {
     transform: translateY(-5px);
     border-color: var(--primary);
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     box-shadow: var(--shadow-md);
 }
 
@@ -3710,4 +3710,118 @@ footer {
         z-index: 1;
     }
 }
+
+/* ==========================================================================
+   Dapodik Bento Grid Layout (Halaman Profil)
+   ========================================================================== */
+.dapodik-bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.dapodik-bento-card {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: all var(--transition-normal);
+}
+
+.dapodik-bento-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    background-color: var(--bg-card);
+}
+
+.dapodik-bento-icon {
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background-color: var(--accent-bg);
+    border-radius: 50%;
+}
+
+.dapodik-bento-card:hover .dapodik-bento-icon {
+    background-color: var(--secondary-light);
+    color: var(--primary-dark);
+}
+
+.dapodik-bento-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.dapodik-bento-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+    .dapodik-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+}
+
+@media (min-width: 992px) {
+    .dapodik-bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dapodik-bento-card.span-2 {
+        grid-column: span 2;
+    }
+}
+
+/* ==========================================================================
+   Print Stylesheet for Student Reports and Forms
+   ========================================================================== */
+@media print {
+    body, html {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    header, footer, nav, .hero, .no-print, button, .btn, .btn-primary, .btn-secondary, .btn-outline,
+    .chatbot-floating, #aim-ai-container, .aim-chat-trigger, .aim-chat-panel, .floating-action-btn,
+    .welcome-badge, .stats-header, .stats-category-title, .stats-grid {
+        display: none !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .card-print {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        background: transparent !important;
+    }
+}
+
 

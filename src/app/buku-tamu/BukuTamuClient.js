@@ -10,12 +10,14 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
   const [gtName, setGtName] = useState('');
   const [gtRole, setGtRole] = useState('Alumni');
   const [gtMessage, setGtMessage] = useState('');
+  const [gtWebsiteUrl, setGtWebsiteUrl] = useState('');
   const [gtStatus, setGtStatus] = useState({ type: '', text: '' }); // { type: 'success'|'error', text: '' }
 
   // Feedback/Saran State
   const [srName, setSrName] = useState('');
   const [srRole, setSrRole] = useState('Wali Murid');
   const [srMessage, setSrMessage] = useState('');
+  const [srWebsiteUrl, setSrWebsiteUrl] = useState('');
   const [srStatus, setSrStatus] = useState({ type: '', text: '' });
 
   const roles = ['Alumni', 'Wali Murid', 'Masyarakat', 'Siswa'];
@@ -29,7 +31,8 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
         name: gtName,
         role: gtRole,
         type: 'guestbook',
-        message: gtMessage
+        message: gtMessage,
+        website_url: gtWebsiteUrl
       });
 
       if (res.error) throw new Error(res.error);
@@ -40,6 +43,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
       });
       setGtName('');
       setGtMessage('');
+      setGtWebsiteUrl('');
     } catch (err) {
       setGtStatus({ type: 'error', text: err.message });
     }
@@ -54,7 +58,8 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
         name: srName,
         role: srRole,
         type: 'feedback',
-        message: srMessage
+        message: srMessage,
+        website_url: srWebsiteUrl
       });
 
       if (res.error) throw new Error(res.error);
@@ -65,6 +70,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
       });
       setSrName('');
       setSrMessage('');
+      setSrWebsiteUrl('');
     } catch (err) {
       setSrStatus({ type: 'error', text: err.message });
     }
@@ -136,6 +142,16 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
               )}
 
               <form onSubmit={handleGuestbookSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                {/* Honeypot field (hidden from real users to trap spam bots) */}
+                <input
+                  type="text"
+                  name="website_url"
+                  value={gtWebsiteUrl}
+                  onChange={(e) => setGtWebsiteUrl(e.target.value)}
+                  style={{ display: 'none' }}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', fontSize: '0.9rem', marginBottom: '4px' }}>Nama Lengkap</label>
                   <input
@@ -215,6 +231,16 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
               )}
 
               <form onSubmit={handleFeedbackSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+                {/* Honeypot field (hidden from real users to trap spam bots) */}
+                <input
+                  type="text"
+                  name="website_url"
+                  value={srWebsiteUrl}
+                  onChange={(e) => setSrWebsiteUrl(e.target.value)}
+                  style={{ display: 'none' }}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', fontSize: '0.9rem', marginBottom: '4px' }}>Nama Pengirim (Bisa Anonim)</label>
                   <input

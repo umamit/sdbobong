@@ -1,6 +1,7 @@
 import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
 import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 import TeachersSectionClient from './TeachersSectionClient';
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -84,56 +85,82 @@ export default async function Profil() {
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2}</p>
             </div>
             <div className="reveal-on-scroll reveal-delay-200" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <img src={profil.sejarah_image} alt="Gedung SD Negeri Bobong" style={{ width: '100%', height: '320px', objectFit: 'cover' }} loading="lazy" decoding="async" />
+              <Image 
+                src={profil.sejarah_image} 
+                alt="Gedung SD Negeri Bobong" 
+                width={640}
+                height={320}
+                style={{ width: '100%', height: '320px', objectFit: 'cover' }} 
+                loading="lazy" 
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Identitas Resmi Sekolah (Dapodik) */}
-      <section className="section-padding" style={{ backgroundColor: 'white', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+      {/* Identitas Resmi Sekolah (Dapodik Bento Grid) */}
+      <section className="section-padding" style={{ backgroundColor: 'var(--bg-card)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Data Pokok Pendidikan</span>
-            <h2>Profil Administrasi & Legalitas</h2>
+            <h2>Profil Administrasi &amp; Legalitas</h2>
           </div>
-          <div className="table-responsive reveal-on-scroll">
-            <table className="table-custom">
-              <tbody>
-                <tr>
-                  <td><strong>Nama Resmi Sekolah</strong></td>
-                  <td>{profil.nama_resmi || "SD Negeri Bobong"}</td>
-                </tr>
-                <tr>
-                  <td><strong>NPSN</strong></td>
-                  <td><strong>{profil.npsn || "60200589"}</strong> (Terdaftar resmi di Dapodik Kemendikbudristek)</td>
-                </tr>
-                <tr>
-                  <td><strong>Status Sekolah</strong></td>
-                  <td>{profil.status_sekolah || "Negeri"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Tanggal & No. SK Pendirian</strong></td>
-                  <td>{profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Akreditasi</strong></td>
-                  <td><span className="badge badge-accent" style={{ backgroundColor: '#FFF8E6', color: '#D48408' }}>{profil.akreditasi || "B (Baik)"}</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Kurikulum Operasional</strong></td>
-                  <td>{profil.kurikulum_operasional || "Kurikulum Merdeka"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Alamat Lengkap</strong></td>
-                  <td>{profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}</td>
-                </tr>
-                <tr>
-                  <td><strong>Status Kepemilikan Lahan</strong></td>
-                  <td>{profil.kepemilikan_lahan || "Pemerintah Daerah Kabupaten Pulau Taliabu"}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="dapodik-bento-grid reveal-on-scroll">
+            {/* Card 1: Nama Resmi */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">🏫</div>
+              <span className="dapodik-bento-label">Nama Resmi Sekolah</span>
+              <span className="dapodik-bento-value">{profil.nama_resmi || "SD Negeri Bobong"}</span>
+            </div>
+
+            {/* Card 2: NPSN */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">🔑</div>
+              <span className="dapodik-bento-label">NPSN</span>
+              <span className="dapodik-bento-value" style={{ fontWeight: 'bold' }}>{profil.npsn || "60200589"}</span>
+            </div>
+
+            {/* Card 3: Status Sekolah */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">🏛️</div>
+              <span className="dapodik-bento-label">Status Sekolah</span>
+              <span className="dapodik-bento-value">{profil.status_sekolah || "Negeri"}</span>
+            </div>
+
+            {/* Card 4: SK Pendirian */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">📅</div>
+              <span className="dapodik-bento-label">SK Pendirian</span>
+              <span className="dapodik-bento-value">{profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)"}</span>
+            </div>
+
+            {/* Card 5: Akreditasi */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">🛡️</div>
+              <span className="dapodik-bento-label">Akreditasi</span>
+              <span className="dapodik-bento-value">{profil.akreditasi || "B (Baik)"}</span>
+            </div>
+
+            {/* Card 6: Kurikulum */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">📖</div>
+              <span className="dapodik-bento-label">Kurikulum</span>
+              <span className="dapodik-bento-value">{profil.kurikulum_operasional || "Kurikulum Merdeka"}</span>
+            </div>
+
+            {/* Card 7: Alamat Lengkap (Spans 2 columns) */}
+            <div className="dapodik-bento-card span-2">
+              <div className="dapodik-bento-icon">📍</div>
+              <span className="dapodik-bento-label">Alamat Lengkap</span>
+              <span className="dapodik-bento-value">{profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}</span>
+            </div>
+
+            {/* Card 8: Status Lahan */}
+            <div className="dapodik-bento-card">
+              <div className="dapodik-bento-icon">🌳</div>
+              <span className="dapodik-bento-label">Status Lahan</span>
+              <span className="dapodik-bento-value">{profil.kepemilikan_lahan || "Pemerintah Daerah"}</span>
+            </div>
           </div>
         </div>
       </section>
