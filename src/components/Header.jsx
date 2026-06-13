@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import styles from './Header.module.css';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,39 +75,39 @@ export default function Header() {
   ];
 
   return (
-    <header>
-      <div className="container navbar">
-        <Link href="/" className="logo-container">
-          <Image src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className="school-logo" width={60} height={60} priority />
-          <div className="logo-text">
-            <span className="logo-title">SD NEGERI BOBONG</span>
-            <span className="logo-subtitle">Pulau Taliabu</span>
+    <header className={styles.header}>
+      <div className={`container ${styles.navbar}`}>
+        <Link href="/" className={styles.logoContainer}>
+          <Image src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className={styles.schoolLogo} width={60} height={60} priority />
+          <div className={styles.logoText}>
+            <span className={styles.logoTitle}>SD NEGERI BOBONG</span>
+            <span className={styles.logoSubtitle}>Pulau Taliabu</span>
           </div>
         </Link>
 
         {/* Hamburger Button for Mobile */}
         <button
-          className={`hamburger ${isOpen ? 'active' : ''}`}
+          className={`${styles.hamburger} ${isOpen ? styles.active : ''}`}
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Buka Menu Navigasi"
           aria-expanded={isOpen}
         >
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
         </button>
 
         {/* Navigation Links */}
-        <nav className={`nav-menu-wrapper ${isOpen ? 'active' : ''}`}>
-          <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
+        <nav className={styles.navMenuWrapper}>
+          <ul className={`${styles.navMenu} ${isOpen ? styles.active : ''}`}>
             {navLinks.map((link, idx) => {
               if (link.dropdown) {
                 const isSubActive = link.dropdown.some(sub => pathname === sub.href);
                 const isThisDropdownOpen = activeDropdown === idx;
                 return (
-                  <li key={idx} className={`nav-item nav-item-dropdown ${isThisDropdownOpen ? 'active' : ''}`}>
+                  <li key={idx} className={`${styles.navItem} ${styles.navItemDropdown} ${isThisDropdownOpen ? styles.active : ''}`}>
                     <button
-                      className={`nav-link nav-dropdown-toggle ${isSubActive ? 'active' : ''}`}
+                      className={`${styles.navLink} ${styles.navDropdownToggle} ${isSubActive ? styles.active : ''}`}
                       onClick={(e) => {
                         e.preventDefault();
                         setActiveDropdown(isThisDropdownOpen ? null : idx);
@@ -133,14 +134,14 @@ export default function Header() {
                         <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                     </button>
-                    <ul className={`dropdown-menu ${isThisDropdownOpen ? 'show' : ''}`}>
+                    <ul className={`${styles.dropdownMenu} ${isThisDropdownOpen ? styles.show : ''}`}>
                       {link.dropdown.map((subLink) => {
                         const isChildActive = pathname === subLink.href;
                         return (
                           <li key={subLink.href} className="dropdown-item">
                             <Link
                               href={subLink.href}
-                              className={`dropdown-link ${isChildActive ? 'active' : ''}`}
+                              className={`${styles.dropdownLink} ${isChildActive ? styles.active : ''}`}
                               onClick={() => {
                                 setActiveDropdown(null);
                                 setIsOpen(false);
@@ -158,10 +159,10 @@ export default function Header() {
 
               const isActive = pathname === link.href;
               return (
-                <li key={link.href} className="nav-item">
+                <li key={link.href} className={styles.navItem}>
                   <Link
                     href={link.href}
-                    className={`nav-link ${isActive ? 'active' : ''}`}
+                    className={`${styles.navLink} ${isActive ? styles.active : ''}`}
                   >
                     {link.label}
                   </Link>
@@ -174,7 +175,7 @@ export default function Header() {
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleTheme}
-          className="theme-toggle"
+          className={styles.themeToggle}
           aria-label="Ubah Tema Gelap/Terang"
           title="Ubah Tema"
         >

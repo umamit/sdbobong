@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import styles from './AnnouncementBanner.module.css';
 
 export default function AnnouncementBanner({ initialAnnouncements = [], initialSpeed = 40 }) {
   const [announcements, setAnnouncements] = useState(initialAnnouncements);
@@ -36,8 +37,8 @@ export default function AnnouncementBanner({ initialAnnouncements = [], initialS
   if (!announcements || announcements.length === 0) return null;
 
   return (
-    <div className="announcement-banner no-print public-layout-announcement">
-      <div className="marquee-content" style={{ '--marquee-duration': `${speed}s` }}>
+    <div className={`${styles.announcementBanner} no-print public-layout-announcement`}>
+      <div className={styles.marqueeContent} style={{ '--marquee-duration': `${speed}s` }}>
         {announcements.map((ann, idx) => (
           <span key={idx}>{ann}</span>
         ))}
