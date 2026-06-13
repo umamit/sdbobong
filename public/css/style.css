@@ -1187,6 +1187,21 @@ footer {
     padding-bottom: var(--space-md);
 }
 
+.public-layout-footer .logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.public-layout-footer .school-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: transparent;
+    padding: 0;
+}
+
 .footer-grid {
     display: grid;
     grid-template-columns: 1fr;
