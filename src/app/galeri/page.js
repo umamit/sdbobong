@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Galeri Kegiatan & Dokumentasi - SD Negeri Bobong',
-  description: 'Dokumentasi foto dan video kegiatan belajar mengajar, upacara, pramuka, pentas seni, dan fasilitas pendidikan di SD Negeri Bobong.',
+  title: 'Galeri Foto & Video Kegiatan Sekolah - SD Negeri Bobong',
+  description: 'Dokumentasi visual rangkaian kegiatan siswa, upacara bendera, perlombaan, proyek P5, dan momen prestasi di lingkungan SD Negeri Bobong.',
 };
 
 export default async function GaleriPage() {

@@ -6,6 +6,11 @@ import Image from 'next/image';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
 
+export const metadata = {
+  title: 'Profil, Visi Misi & Sejarah - SD Negeri Bobong',
+  description: 'Pelajari sejarah berdirinya SD Negeri Bobong sejak tahun 1971, visi misi sekolah, profil dewan guru, serta fasilitas sarana prasarana penunjang belajar.',
+};
+
 export default async function Profil() {
   const [teachers, achievements, config] = await Promise.all([
     loadTeachers(),

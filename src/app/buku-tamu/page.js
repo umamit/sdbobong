@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Buku Tamu & Kotak Saran - SD Negeri Bobong',
-  description: 'Kesan dan pesan dari para alumni, wali murid, dan masyarakat untuk SD Negeri Bobong, serta layanan penyampaian saran/aspirasi privat untuk sekolah.',
+  title: 'Buku Tamu Pengunjung & Kotak Saran - SD Negeri Bobong',
+  description: 'Halaman pengisian buku tamu kunjungan resmi atau pengiriman kotak saran masukan privat demi kemajuan pelayanan pendidikan SD Negeri Bobong.',
 };
 
 export default async function BukuTamuPage() {

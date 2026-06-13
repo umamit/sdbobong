@@ -5,6 +5,11 @@ import PPDBPortal from '../../components/PPDBPortal';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Dynamic server page
 
+export const metadata = {
+  title: 'Penerimaan Peserta Didik Baru (PPDB) - SD Negeri Bobong',
+  description: 'Informasi pendaftaran siswa baru SD Negeri Bobong: syarat usia minimal, alur pendaftaran daring/luring, jadwal penting kegiatan seleksi, dan FAQ.',
+};
+
 export default async function PPDBPage() {
   // Try to sync database records in the background (non-blocking) on page load
   syncLocalToSupabase().catch(e => console.error("Database sync failed on background load:", e));

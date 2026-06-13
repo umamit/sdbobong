@@ -4,6 +4,11 @@ import AcademicPortal from '../../components/AcademicPortal';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export const metadata = {
+  title: 'Informasi Akademik & Kurikulum Merdeka - SD Negeri Bobong',
+  description: 'Informasi program pembelajaran Kurikulum Merdeka, jadwal kegiatan belajar mengajar (KBM), program Projek Penguatan Profil Pelajar Pancasila (P5), dan daftar ekstrakurikuler.',
+};
+
 export default async function Akademik() {
   const config = await loadWebConfig();
 

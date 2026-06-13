@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Hubungi Kami & FAQ - SD Negeri Bobong',
-  description: 'Pusat bantuan, FAQ terintegrasi, alamat fisik, peta interaktif, dan formulir kontak resmi humas SD Negeri Bobong.',
+  title: 'Hubungi Kami & Lokasi Peta Sekolah - SD Negeri Bobong',
+  description: 'Hubungi sekolah resmi SD Negeri Bobong. Dapatkan peta navigasi alamat, alamat surat elektronik (email), dan kontak WhatsApp layanan operator humas.',
 };
 
 export default async function HubungiKamiPage() {

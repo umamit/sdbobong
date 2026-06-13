@@ -5,6 +5,11 @@ import NewsCard from '../../components/NewsCard';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
 
+export const metadata = {
+  title: 'Berita, Artikel & Pengumuman Terbaru - SD Negeri Bobong',
+  description: 'Kumpulan informasi berita terkini, artikel edukatif dewan guru, dan pengumuman resmi dari manajemen SD Negeri Bobong.',
+};
+
 export default async function Berita() {
   const newsList = await loadNews();
 

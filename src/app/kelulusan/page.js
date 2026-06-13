@@ -4,8 +4,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Portal Kelulusan Mandiri - SD Negeri Bobong',
-  description: 'Pengumuman kelulusan siswa kelas VI secara online mandiri di SD Negeri Bobong Tahun Ajaran 2025/2026.',
+  title: 'Pengumuman Kelulusan Kelas 6 - SD Negeri Bobong',
+  description: 'Portal resmi pengumuman kelulusan siswa-siswi kelas 6 SD Negeri Bobong tahun ajaran terbaru menggunakan pencarian nomor ujian.',
 };
 
 export default function GraduationPage() {

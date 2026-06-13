@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Pusat Unduhan Dokumen - SD Negeri Bobong',
-  description: 'Download dokumen sekolah penting, kalender akademik, brosur pendaftaran PPDB, dan berkas administrasi resmi SD Negeri Bobong.',
+  title: 'Pusat Unduhan Berkas & Dokumen - SD Negeri Bobong',
+  description: 'Akses katalog berkas resmi sekolah: brosur informasi, formulir pendaftaran PPDB offline, tata tertib siswa, dan dokumen administrasi lainnya.',
 };
 
 export default async function UnduhPage() {
