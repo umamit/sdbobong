@@ -94,7 +94,34 @@ export default function PPDBOnlineForm() {
     e.preventDefault();
     setErrorMsg('');
 
-    // Client-side validations
+    // Sanitization helper
+    const sanitizePhone = (phone) => {
+      if (!phone) return '';
+      let cleaned = phone.trim().replace(/[^\d+]/g, '');
+      if (cleaned.startsWith('+62')) {
+        cleaned = '0' + cleaned.substring(3);
+      } else if (cleaned.startsWith('62')) {
+        cleaned = '0' + cleaned.substring(2);
+      }
+      return cleaned.replace(/\D/g, '');
+    };
+
+    const cleanNik = formData.nik.replace(/\D/g, '');
+    const cleanNoHpAyah = sanitizePhone(formData.no_hp_ayah);
+    const cleanNoHpIbu = sanitizePhone(formData.no_hp_ibu);
+    const cleanNoHp = sanitizePhone(formData.no_hp);
+
+    // Update state with cleaned values so inputs reflect them
+    const cleanedData = {
+      ...formData,
+      nik: cleanNik,
+      no_hp_ayah: cleanNoHpAyah,
+      no_hp_ibu: cleanNoHpIbu,
+      no_hp: cleanNoHp
+    };
+    setFormData(cleanedData);
+
+    // Client-side validations (using cleaned data)
     const requiredFields = [
       'nama_lengkap', 'nama_panggilan', 'nik', 'tempat_lahir', 'tanggal_lahir', 
       'jenis_kelamin', 'agama', 'anak_ke', 'dari_bersaudara', 'alamat', 'jalur_ppdb',
@@ -103,13 +130,13 @@ export default function PPDBOnlineForm() {
     ];
 
     for (const field of requiredFields) {
-      if (!formData[field]) {
+      if (!cleanedData[field]) {
         setErrorMsg("Semua kolom bertanda bintang (*) wajib diisi!");
         return;
       }
     }
 
-    if (formData.nik.length !== 16 || !/^\d+$/.test(formData.nik)) {
+    if (cleanedData.nik.length !== 16 || !/^\d+$/.test(cleanedData.nik)) {
       setErrorMsg("NIK harus terdiri dari 16 digit angka!");
       return;
     }
@@ -121,7 +148,7 @@ export default function PPDBOnlineForm() {
     ];
 
     for (const p of phoneFields) {
-      const val = formData[p.key];
+      const val = cleanedData[p.key];
       if (!/^08\d{8,12}$/.test(val)) {
         setErrorMsg(`Format ${p.label} tidak valid (harus dimulai dengan 08 dan berjumlah 10-14 digit)!`);
         return;
@@ -150,7 +177,7 @@ export default function PPDBOnlineForm() {
 
     try {
       const submissionData = new FormData();
-      Object.entries(formData).forEach(([key, val]) => {
+      Object.entries(cleanedData).forEach(([key, val]) => {
         submissionData.append(key, val);
       });
       submissionData.append('website_url', websiteUrl);

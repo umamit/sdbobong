@@ -26,7 +26,11 @@ export async function submitPpdbAction(formData) {
     }
 
     const nama_panggilan = formData.get('nama_panggilan')?.trim();
-    const nik = formData.get('nik')?.trim();
+    
+    // Sanitize NIK: remove all non-digits
+    let nik = formData.get('nik')?.trim() || "";
+    nik = nik.replace(/\D/g, "");
+
     const tempat_lahir = formData.get('tempat_lahir')?.trim();
     const tanggal_lahir = formData.get('tanggal_lahir')?.trim();
     const jenis_kelamin = formData.get('jenis_kelamin')?.trim();
@@ -38,11 +42,24 @@ export async function submitPpdbAction(formData) {
     // Data Orang Tua
     const nama_ayah = formData.get('nama_ayah')?.trim();
     const pekerjaan_ayah = formData.get('pekerjaan_ayah')?.trim();
-    const no_hp_ayah = formData.get('no_hp_ayah')?.trim();
+    
+    // Sanitize phone numbers helper
+    const sanitizePhone = (phone) => {
+      if (!phone) return "";
+      let cleaned = phone.trim().replace(/[^\d+]/g, "");
+      if (cleaned.startsWith("+62")) {
+        cleaned = "0" + cleaned.substring(3);
+      } else if (cleaned.startsWith("62")) {
+        cleaned = "0" + cleaned.substring(2);
+      }
+      return cleaned.replace(/\D/g, "");
+    };
+
+    let no_hp_ayah = sanitizePhone(formData.get('no_hp_ayah'));
     const nama_ibu = formData.get('nama_ibu')?.trim();
     const pekerjaan_ibu = formData.get('pekerjaan_ibu')?.trim();
-    const no_hp_ibu = formData.get('no_hp_ibu')?.trim();
-    const no_hp = formData.get('no_hp')?.trim();
+    let no_hp_ibu = sanitizePhone(formData.get('no_hp_ibu'));
+    let no_hp = sanitizePhone(formData.get('no_hp'));
     // Data Wali (Opsional)
     const nama_wali = formData.get('nama_wali')?.trim() || "";
     const pekerjaan_wali = formData.get('pekerjaan_wali')?.trim() || "";
