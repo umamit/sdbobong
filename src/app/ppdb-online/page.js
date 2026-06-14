@@ -192,7 +192,6 @@ export default function PPDBOnlineForm() {
           maxWidth: '850px',
           margin: 'var(--space-md) auto',
           background: '#ffffff',
-          padding: '2.25rem var(--space-md)',
           borderRadius: '16px',
           boxShadow: 'var(--shadow-lg)',
           border: '1px solid var(--border-color)',
@@ -250,7 +249,6 @@ export default function PPDBOnlineForm() {
               border: '1px solid var(--border-color)',
               borderLeft: '5px solid var(--formal-blue)',
               borderRadius: '12px',
-              padding: '1.5rem',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
@@ -483,7 +481,6 @@ export default function PPDBOnlineForm() {
               border: '1px solid var(--border-color)',
               borderLeft: '5px solid var(--formal-red)',
               borderRadius: '12px',
-              padding: '1.5rem',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
@@ -622,7 +619,6 @@ export default function PPDBOnlineForm() {
               border: '1px solid var(--border-color)',
               borderLeft: '5px solid #64748b',
               borderRadius: '12px',
-              padding: '1.5rem',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
@@ -669,7 +665,6 @@ export default function PPDBOnlineForm() {
               border: '1px solid var(--border-color)',
               borderLeft: '5px solid #16a34a',
               borderRadius: '12px',
-              padding: '1.5rem',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
@@ -875,6 +870,12 @@ export default function PPDBOnlineForm() {
           --formal-red: #800020;
           --formal-blue: #0B3C5D;
         }
+        .form-container {
+          padding: 2.25rem var(--space-md);
+        }
+        .form-card-section {
+          padding: 1.5rem;
+        }
         .form-control {
           width: 100%;
           padding: 0.75rem var(--space-xs);
@@ -901,6 +902,19 @@ export default function PPDBOnlineForm() {
           .form-row {
             grid-template-columns: repeat(2, 1fr);
             gap: var(--space-sm);
+          }
+        }
+        @media (max-width: 600px) {
+          .form-container {
+            padding: 1.5rem var(--space-sm) !important;
+            border-radius: 12px !important;
+          }
+          .form-card-section {
+            padding: 1rem !important;
+            border-radius: 8px !important;
+          }
+          .form-title-section h2 {
+            font-size: 1.35rem !important;
           }
         }
       `}</style>
