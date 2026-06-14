@@ -6,7 +6,7 @@ import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import ChatWidget from '../components/ChatWidget';
 import PWAInstallPrompt from '../components/PWAInstallPrompt';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import Link from 'next/link';
