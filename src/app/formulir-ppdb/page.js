@@ -163,10 +163,27 @@ export default function FormulirPPDBPrint() {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         html, body {
           background-color: #f3f4f6 !important;
-          padding: var(--space-md);
+          padding: var(--space-md) !important;
+          overflow-x: auto !important;
+        }
+        .no-print-bar {
+          width: 800px !important;
+          min-width: 800px !important;
+          box-sizing: border-box !important;
+        }
+        .form-page {
+          width: 800px !important;
+          min-width: 800px !important;
+          box-sizing: border-box !important;
+          background: #ffffff;
+          margin: 0 auto;
+          padding: var(--space-lg);
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-md);
+          border: 1px solid var(--border-color);
         }
         .form-section-title {
           background-color: var(--bg-main);
@@ -232,15 +249,18 @@ export default function FormulirPPDBPrint() {
         
         /* Print Rules */
         @media print {
-          body {
+          body, html {
             background-color: #ffffff !important;
             padding: 0 !important;
             color: #000000 !important;
+            overflow-x: visible !important;
           }
           .form-page {
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
+            width: 100% !important;
+            min-width: unset !important;
             max-width: 100% !important;
           }
           .no-print {
@@ -253,7 +273,7 @@ export default function FormulirPPDBPrint() {
             print-color-adjust: exact;
           }
         }
-      `}</style>
+      `}} />
     </>
   );
 }
