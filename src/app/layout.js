@@ -5,6 +5,7 @@ import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import ChatWidget from '../components/ChatWidget';
+import PWAInstallPrompt from '../components/PWAInstallPrompt';
 import Script from 'next/script';
 import Link from 'next/link';
 import { headers } from 'next/headers';
@@ -637,6 +638,7 @@ export default async function RootLayout({ children }) {
         {!isPrintableForm && (
           <ChatWidget />
         )}
+        <PWAInstallPrompt />
       </body>
     </html>
   );
