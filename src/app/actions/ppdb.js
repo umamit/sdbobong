@@ -145,6 +145,39 @@ export async function submitPpdbAction(formData) {
     const newId = `ppdb-${Math.floor(Date.now() / 1000)}`;
     const tahun_ajaran = getAcademicYear(waktu_daftar);
 
+    const newRecord = {
+      id: newId,
+      nama_lengkap,
+      nama_panggilan,
+      nik,
+      tempat_lahir,
+      tanggal_lahir,
+      jenis_kelamin,
+      agama,
+      anak_ke,
+      dari_bersaudara,
+      alamat,
+      jalur_ppdb,
+      nama_ayah,
+      pekerjaan_ayah,
+      no_hp_ayah,
+      nama_ibu,
+      pekerjaan_ibu,
+      no_hp_ibu,
+      no_hp,
+      nama_wali,
+      pekerjaan_wali,
+      waktu_daftar,
+      status,
+      tahun_ajaran,
+      berkas_kk,
+      berkas_akta,
+      berkas_ktp,
+      berkas_sptjm,
+      berkas_kip,
+      berkas_ijazah
+    };
+
     let savedToSupabase = false;
 
     // 1. Try to save to Supabase dynamically based on existing columns
@@ -177,7 +210,7 @@ export async function submitPpdbAction(formData) {
           no_hp_ibu,
           nama_wali,
           pekerjaan_wali,
-
+ 
           berkas_kk,
           berkas_akta,
           berkas_ktp,
@@ -226,39 +259,6 @@ export async function submitPpdbAction(formData) {
       
       // Prevent duplicate NIK in local list
       localRecords = localRecords.filter(r => String(r.nik).trim() !== String(nik).trim());
-
-      const newRecord = {
-        id: newId,
-        nama_lengkap,
-        nama_panggilan,
-        nik,
-        tempat_lahir,
-        tanggal_lahir,
-        jenis_kelamin,
-        agama,
-        anak_ke,
-        dari_bersaudara,
-        alamat,
-        jalur_ppdb,
-        nama_ayah,
-        pekerjaan_ayah,
-        no_hp_ayah,
-        nama_ibu,
-        pekerjaan_ibu,
-        no_hp_ibu,
-        no_hp,
-        nama_wali,
-        pekerjaan_wali,
-        waktu_daftar,
-        status,
-        tahun_ajaran,
-        berkas_kk,
-        berkas_akta,
-        berkas_ktp,
-        berkas_sptjm,
-        berkas_kip,
-        berkas_ijazah
-      };
 
       localRecords.unshift(newRecord);
       fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(localRecords, null, 4), 'utf-8');
