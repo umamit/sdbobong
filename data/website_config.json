@@ -13,6 +13,14 @@
         "guru_staf": 23,
         "akreditasi": "B",
         "allow_copy": false,
+        "wa_gateway": {
+            "url": "https://api.fonnte.com/send",
+            "token": "pWVHmndqCuTUCLheb8nG",
+            "enabled": false,
+            "provider": "fonnte",
+            "message_template_rejected": "Berkas Tidak Lengkap",
+            "message_template_verified": "terverifikasi"
+        },
         "cuci_tangan": 4,
         "news_seeded": true,
         "ruang_kelas": 8,
@@ -70,6 +78,7 @@
                 "sejarah_title": "Perjalanan SD Negeri Bobong"
             }
         },
+        "visitor_count": 15,
         "_faqs_fallback": [
             {
                 "id": "faq-1",
@@ -172,11 +181,11 @@
         "nip_humas": "19951010 202203 2 012",
         "nama_humas": "Syareefah",
         "wa_floating": "6282292111638",
-        "wa_operator": "6281356701091",
-        "nip_operator": "",
+        "wa_operator": "6285399487844",
+        "nip_operator": "majapahit101",
         "email_sekolah": "humas@sdnegeribobong.sch.id",
         "jabatan_humas": "Wali Kelas",
-        "nama_operator": "Hermin Majapahit",
+        "nama_operator": "Suharmin, S.Pd",
         "jabatan_operator": "Operator/Guru Kelas 3C"
     },
     "force_local_cache": false,

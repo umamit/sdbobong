@@ -90,12 +90,19 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
   const uniquePrefix = Date.now().toString();
   const uniqueFilename = `${uniquePrefix}_${secureName}`;
 
+  // Read arrayBuffer once at the beginning of the upload operation
+  let buffer;
+  try {
+    const arrayBuffer = await fileObj.arrayBuffer();
+    buffer = Buffer.from(arrayBuffer);
+  } catch (e) {
+    console.error("Failed to read file buffer:", e);
+    return "ERROR";
+  }
+
   // 1. Try to upload to Supabase Storage
   if (isSupabaseEnabled()) {
     try {
-      const arrayBuffer = await fileObj.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
       const { data, error } = await supabase.storage
         .from(bucketName)
         .upload(uniqueFilename, buffer, {
@@ -118,9 +125,6 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
 
   // 2. Local Fallback
   try {
-    const arrayBuffer = await fileObj.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
     const uploadDir = path.join(process.cwd(), 'public', 'images', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
