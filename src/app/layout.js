@@ -6,6 +6,8 @@ import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import ChatWidget from '../components/ChatWidget';
 import PWAInstallPrompt from '../components/PWAInstallPrompt';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import Link from 'next/link';
 import { headers } from 'next/headers';
@@ -639,6 +641,8 @@ export default async function RootLayout({ children }) {
           <ChatWidget />
         )}
         <PWAInstallPrompt />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
