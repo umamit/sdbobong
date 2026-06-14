@@ -103,15 +103,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }}
       />
       {/* Hero Section */}
-      <section 
-        className="hero" 
-        id="hero"
-        style={config.stats?.hero_background && !isVideoBg ? {
-          backgroundImage: `linear-gradient(135deg, rgba(11, 60, 93, 0.85) 0%, rgba(9, 34, 53, 0.9) 100%), url('${config.stats.hero_background}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        } : {}}
-      >
+      <section className="hero" id="hero">
         {isVideoBg ? (
           <>
             <video
@@ -149,8 +141,41 @@ export default async function Home() {
             />
           </>
         ) : (
-          !config.stats?.hero_background && (
-            <div className="hero-overlay" style={{ backgroundImage: "url('/images/hero_school.svg')" }}></div>
+          config.stats?.hero_background ? (
+            <>
+              {/* LCP Optimized Hero Background Image */}
+              <Image
+                src={config.stats.hero_background}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 1 }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.85) 0%, rgba(9, 34, 53, 0.9) 100%)',
+                  zIndex: 1,
+                }}
+              />
+            </>
+          ) : (
+            /* LCP Optimized Fallback SVG Image */
+            <div className="hero-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.15, zIndex: 1 }}>
+              <Image
+                src="/images/hero_school.svg"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
           )
         )}
         <div className="container hero-content">
