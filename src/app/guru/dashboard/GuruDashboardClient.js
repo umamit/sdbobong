@@ -904,6 +904,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
           align-items: center;
           gap: 4px;
           box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+          white-space: nowrap;
         }
 
         .btn-edit-grades:hover {
@@ -1136,6 +1137,134 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
           background: rgba(127, 29, 29, 0.9);
           border: 1px solid #ef4444;
           color: #fca5a5;
+        }
+
+        /* Responsive Mobile Overrides */
+        @media (max-width: 991px) {
+          .guru-control-panel {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .guru-header-nav {
+            flex-direction: column;
+            gap: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+            align-items: center;
+            position: relative;
+          }
+
+          .header-logo-section {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+          }
+
+          .header-profile-section {
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+            align-items: center;
+          }
+
+          .profile-info {
+            text-align: center;
+          }
+
+          .btn-guru-logout {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .guru-main-container {
+            padding: 1.25rem 0.75rem;
+          }
+
+          .guru-stats-grid {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+          }
+
+          .guru-stat-card {
+            padding: 1.25rem;
+          }
+
+          .guru-control-panel {
+            padding: 1.25rem 1rem;
+            gap: 1.25rem;
+          }
+
+          .filter-group {
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+          }
+
+          .status-filter-select-group {
+            width: 100%;
+          }
+
+          .status-filter-select-group select {
+            width: 100%;
+            box-sizing: border-box;
+          }
+
+          .guru-table-section {
+            padding: 1rem;
+          }
+
+          .table-header-flex {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+
+          .guru-responsive-table::-webkit-scrollbar {
+            height: 6px;
+          }
+          .guru-responsive-table::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+          }
+          .guru-responsive-table::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 3px;
+          }
+          .guru-responsive-table::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.5);
+          }
+        }
+
+        @media (max-width: 576px) {
+          .modal-form-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+          }
+
+          .guru-modal-card {
+            padding: 1.5rem 1.25rem;
+            width: 95%;
+            max-height: 95vh;
+          }
+
+          .modal-actions {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+
+          .btn-modal-cancel, .btn-modal-save {
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .modal-form-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </div>
