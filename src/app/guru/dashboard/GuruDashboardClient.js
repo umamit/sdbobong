@@ -442,6 +442,12 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
       {/* Styled JSX blocks to avoid Tailwind dependency and give rich/premium aesthetics */}
       <style jsx global>{`
         /* General Styles for Teacher Portal */
+        html, body {
+          overflow-y: auto !important;
+          overflow-x: hidden !important;
+          background-color: #060913 !important;
+        }
+
         .guru-dashboard-wrapper {
           min-height: 100vh;
           background: #060913; /* Dark Space Background */
