@@ -38,9 +38,7 @@ export default function PPDBOnlineForm() {
   // File States
   const [fileKk, setFileKk] = useState(null);
   const [fileAkta, setFileAkta] = useState(null);
-  const [fileKtp, setFileKtp] = useState(null);
-  const [fileSptjm, setFileSptjm] = useState(null);
-  const [fileKip, setFileKip] = useState(null);
+
   const [fileIjazah, setFileIjazah] = useState(null);
 
   const handleChange = (e) => {
@@ -164,12 +162,8 @@ export default function PPDBOnlineForm() {
       setErrorMsg("Berkas Akta Kelahiran wajib diunggah!");
       return;
     }
-    if (!fileKtp) {
-      setErrorMsg("Berkas Scan KTP Orang Tua wajib diunggah!");
-      return;
-    }
-    if (!fileSptjm) {
-      setErrorMsg("Berkas Scan SPTJM wajib diunggah!");
+    if (!fileIjazah) {
+      setErrorMsg("Berkas Scan Ijazah TK / PAUD wajib diunggah!");
       return;
     }
 
@@ -183,14 +177,8 @@ export default function PPDBOnlineForm() {
       submissionData.append('website_url', websiteUrl);
       submissionData.append('berkas_kk', fileKk);
       submissionData.append('berkas_akta', fileAkta);
-      submissionData.append('berkas_ktp', fileKtp);
-      submissionData.append('berkas_sptjm', fileSptjm);
-      if (fileKip) {
-        submissionData.append('berkas_kip', fileKip);
-      }
-      if (fileIjazah) {
-        submissionData.append('berkas_ijazah', fileIjazah);
-      }
+
+      submissionData.append('berkas_ijazah', fileIjazah);
 
       const res = await submitPpdbAction(submissionData);
 
@@ -756,86 +744,9 @@ export default function PPDBOnlineForm() {
               </div>
 
               <div className="form-row" style={{ marginTop: '0.5rem' }}>
-                <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                  <label htmlFor="berkas_ktp" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
-                    Scan KTP Orang Tua (Ayah & Ibu dijadikan 1 PDF) *
-                  </label>
-                  <input
-                    type="file"
-                    id="berkas_ktp"
-                    name="berkas_ktp"
-                    accept=".pdf"
-                    onChange={(e) => handleFileChange(e, setFileKtp, "KTP Orang Tua")}
-                    style={{ 
-                      padding: '0.5rem',
-                      display: 'block',
-                      width: '100%',
-                      fontSize: '0.85rem',
-                      color: '#475569',
-                      backgroundColor: '#f8fafc',
-                      border: '1px solid #cbd5e1',
-                      borderRadius: '8px',
-                      cursor: 'pointer'
-                    }}
-                    required
-                  />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
-                </div>
-                <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                  <label htmlFor="berkas_sptjm" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
-                    Scan SPTJM *
-                  </label>
-                  <input
-                    type="file"
-                    id="berkas_sptjm"
-                    name="berkas_sptjm"
-                    accept=".pdf"
-                    onChange={(e) => handleFileChange(e, setFileSptjm, "SPTJM")}
-                    style={{ 
-                      padding: '0.5rem',
-                      display: 'block',
-                      width: '100%',
-                      fontSize: '0.85rem',
-                      color: '#475569',
-                      backgroundColor: '#f8fafc',
-                      border: '1px solid #cbd5e1',
-                      borderRadius: '8px',
-                      cursor: 'pointer'
-                    }}
-                    required
-                  />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
-                </div>
-              </div>
-
-              <div className="form-row" style={{ marginTop: '0.5rem' }}>
-                <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label htmlFor="berkas_kip" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
-                    Scan KIP / PKH (Opsional)
-                  </label>
-                  <input
-                    type="file"
-                    id="berkas_kip"
-                    name="berkas_kip"
-                    accept=".pdf"
-                    onChange={(e) => handleFileChange(e, setFileKip, "KIP/PKH")}
-                    style={{ 
-                      padding: '0.5rem',
-                      display: 'block',
-                      width: '100%',
-                      fontSize: '0.85rem',
-                      color: '#475569',
-                      backgroundColor: '#f8fafc',
-                      border: '1px solid #cbd5e1',
-                      borderRadius: '8px',
-                      cursor: 'pointer'
-                    }}
-                  />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
-                </div>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label htmlFor="berkas_ijazah" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
-                    Scan Ijazah TK / PAUD (Opsional)
+                    Scan Ijazah TK / PAUD *
                   </label>
                   <input
                     type="file"
@@ -854,8 +765,9 @@ export default function PPDBOnlineForm() {
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
+                    required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
               </div>
             </div>

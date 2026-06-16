@@ -93,9 +93,6 @@ export async function submitPpdbAction(formData) {
     // File Extraction & Validation
     const berkas_kk_file = formData.get('berkas_kk');
     const berkas_akta_file = formData.get('berkas_akta');
-    const berkas_ktp_file = formData.get('berkas_ktp');
-    const berkas_sptjm_file = formData.get('berkas_sptjm');
-    const berkas_kip_file = formData.get('berkas_kip');
     const berkas_ijazah_file = formData.get('berkas_ijazah');
 
     const processUpload = async (fileObj, label, required = true) => {
@@ -124,18 +121,12 @@ export async function submitPpdbAction(formData) {
 
     let berkas_kk = "";
     let berkas_akta = "";
-    let berkas_ktp = "";
-    let berkas_sptjm = "";
-    let berkas_kip = "";
     let berkas_ijazah = "";
 
     try {
       berkas_kk = await processUpload(berkas_kk_file, "Kartu Keluarga", true);
       berkas_akta = await processUpload(berkas_akta_file, "Akta Kelahiran", true);
-      berkas_ktp = await processUpload(berkas_ktp_file, "KTP Orang Tua", true);
-      berkas_sptjm = await processUpload(berkas_sptjm_file, "SPTJM", true);
-      berkas_kip = await processUpload(berkas_kip_file, "KIP/PKH", false);
-      berkas_ijazah = await processUpload(berkas_ijazah_file, "Ijazah TK/PAUD", false);
+      berkas_ijazah = await processUpload(berkas_ijazah_file, "Ijazah TK/PAUD", true);
     } catch (uploadErr) {
       return { error: uploadErr.message };
     }
@@ -172,9 +163,6 @@ export async function submitPpdbAction(formData) {
       tahun_ajaran,
       berkas_kk,
       berkas_akta,
-      berkas_ktp,
-      berkas_sptjm,
-      berkas_kip,
       berkas_ijazah
     };
 
@@ -213,9 +201,6 @@ export async function submitPpdbAction(formData) {
  
           berkas_kk,
           berkas_akta,
-          berkas_ktp,
-          berkas_sptjm,
-          berkas_kip,
           berkas_ijazah
         };
 
@@ -227,14 +212,11 @@ export async function submitPpdbAction(formData) {
         }
 
         // Check if we need to pack berkas into alamat_domisili (fallback for zero-migration)
-        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ktp', 'berkas_sptjm', 'berkas_kip', 'berkas_ijazah'].some(c => !availableCols.includes(c));
+        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ijazah'].some(c => !availableCols.includes(c));
         if (missingBerkasCols) {
           const berkasData = {
             berkas_kk,
             berkas_akta,
-            berkas_ktp,
-            berkas_sptjm,
-            berkas_kip,
             berkas_ijazah
           };
           supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, berkasData);
