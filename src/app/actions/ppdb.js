@@ -126,7 +126,7 @@ export async function submitPpdbAction(formData) {
     try {
       berkas_kk = await processUpload(berkas_kk_file, "Kartu Keluarga", true);
       berkas_akta = await processUpload(berkas_akta_file, "Akta Kelahiran", true);
-      berkas_ijazah = await processUpload(berkas_ijazah_file, "Ijazah TK/PAUD", true);
+      berkas_ijazah = await processUpload(berkas_ijazah_file, "Ijazah TK/PAUD", false);
     } catch (uploadErr) {
       return { error: uploadErr.message };
     }

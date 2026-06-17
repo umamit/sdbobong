@@ -162,10 +162,6 @@ export default function PPDBOnlineForm() {
       setErrorMsg("Berkas Akta Kelahiran wajib diunggah!");
       return;
     }
-    if (!fileIjazah) {
-      setErrorMsg("Berkas Scan Ijazah TK / PAUD wajib diunggah!");
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -178,7 +174,9 @@ export default function PPDBOnlineForm() {
       submissionData.append('berkas_kk', fileKk);
       submissionData.append('berkas_akta', fileAkta);
 
-      submissionData.append('berkas_ijazah', fileIjazah);
+      if (fileIjazah) {
+        submissionData.append('berkas_ijazah', fileIjazah);
+      }
 
       const res = await submitPpdbAction(submissionData);
 
@@ -746,7 +744,7 @@ export default function PPDBOnlineForm() {
               <div className="form-row" style={{ marginTop: '0.5rem' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label htmlFor="berkas_ijazah" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.85rem', color: 'var(--primary-dark)' }}>
-                    Scan Ijazah TK / PAUD *
+                    Scan Ijazah TK / PAUD (Opsional)
                   </label>
                   <input
                     type="file"
@@ -765,9 +763,8 @@ export default function PPDBOnlineForm() {
                       borderRadius: '8px',
                       cursor: 'pointer'
                     }}
-                    required
                   />
-                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Wajib, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>Opsional, format PDF disarankan 150KB - 350KB (maks. 350KB)</small>
                 </div>
               </div>
             </div>
