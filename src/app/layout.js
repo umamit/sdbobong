@@ -361,13 +361,16 @@ export default async function RootLayout({ children }) {
 
 
 
+  const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname.startsWith('/ppdb-online/sukses');
+  const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
+
   return (
     <html lang="id">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow" />
+        <meta name="robots" content={robotsContent} />
+        <meta name="googlebot" content={robotsContent} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#4f46e5" />
         <meta property="og:type" content="website" />
