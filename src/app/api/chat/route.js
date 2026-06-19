@@ -565,7 +565,7 @@ ${berkasText}${jadwalText}${alurText}
 Ada yang ingin Anda tanyakan lagi mengenai PPDB sekolah kami? 😊`;
   }
 
-  if (q.includes("kontak") || q.includes("telepon") || q.includes("whatsapp") || q.includes("wa") || q.includes("hubungi") || q.includes("nomor")) {
+  if (q.includes("kontak") || q.includes("telepon") || q.includes("whatsapp") || q.includes("wa") || q.includes("hubungi") || q.includes("nomor") || q.includes("humas") || q.includes("operator") || q.includes("panitia")) {
     return `${welcomeMessage}
     
 📞 **Kontak Resmi Panitia PPDB & Sekolah:**
