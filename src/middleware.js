@@ -70,7 +70,7 @@ export async function middleware(request) {
     'ia_archiver'       // Archive.org crawler (optional, but prevents snapshot cloning)
   ];
 
-  const isPublicAsset = path === '/robots.txt' || path === '/sitemap.xml' || path === '/favicon.ico' || path === '/favicon.png' || path.startsWith('/images/');
+  const isPublicAsset = path === '/robots.txt' || path === '/sitemap.xml' || path === '/security.txt' || path === '/favicon.ico' || path === '/favicon.png' || path.startsWith('/images/');
   const isBlocked = blockedAgents.some(agent => userAgent.includes(agent)) && !path.startsWith('/.well-known') && !isPublicAsset;
   if (isBlocked) {
     return new NextResponse('Access Denied: Scraping, cloning, and automated bots are not allowed on this website.', { 
