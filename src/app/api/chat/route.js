@@ -69,11 +69,21 @@ export async function POST(req) {
     if (profil.alamat_lengkap) alamat = profil.alamat_lengkap;
     if (profil.sk_pendirian) skPendirian = profil.sk_pendirian;
     if (profil.kepemilikan_lahan) kepemilikanLahan = profil.kepemilikan_lahan;
-    if (contacts.nama_humas) namaHumas = contacts.nama_humas;
-    if (contacts.wa_humas) waHumas = contacts.wa_humas;
-    if (contacts.nama_operator) namaOperator = contacts.nama_operator;
-    if (contacts.wa_operator) waOperator = contacts.wa_operator;
-    if (contacts.email_sekolah) emailSekolah = contacts.email_sekolah;
+    if (contacts.nama_humas !== undefined) {
+      namaHumas = contacts.nama_humas && contacts.nama_humas.trim() !== "" ? contacts.nama_humas.trim() : "Belum ditetapkan / Belum ada";
+    }
+    if (contacts.wa_humas !== undefined) {
+      waHumas = contacts.wa_humas && contacts.wa_humas.trim() !== "" ? contacts.wa_humas.trim() : "Belum ditentukan";
+    }
+    if (contacts.nama_operator !== undefined) {
+      namaOperator = contacts.nama_operator && contacts.nama_operator.trim() !== "" ? contacts.nama_operator.trim() : "Belum ditetapkan / Belum ada";
+    }
+    if (contacts.wa_operator !== undefined) {
+      waOperator = contacts.wa_operator && contacts.wa_operator.trim() !== "" ? contacts.wa_operator.trim() : "Belum ditentukan";
+    }
+    if (contacts.email_sekolah !== undefined) {
+      emailSekolah = contacts.email_sekolah && contacts.email_sekolah.trim() !== "" ? contacts.email_sekolah.trim() : "Belum ditentukan";
+    }
 
     // Dapatkan tanggal dan waktu aktual dalam zona waktu WIT (Waktu Indonesia Timur)
     const now = new Date();
@@ -471,11 +481,21 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
       if (profil.kurikulum_operasional) kurikulum = profil.kurikulum_operasional;
       if (profil.alamat_lengkap) alamat = profil.alamat_lengkap;
       if (profil.sk_pendirian) skPendirian = profil.sk_pendirian;
-      if (contacts.nama_humas) namaHumas = contacts.nama_humas;
-      if (contacts.wa_humas) waHumas = contacts.wa_humas;
-      if (contacts.nama_operator) namaOperator = contacts.nama_operator;
-      if (contacts.wa_operator) waOperator = contacts.wa_operator;
-      if (contacts.email_sekolah) emailSekolah = contacts.email_sekolah;
+      if (contacts.nama_humas !== undefined) {
+        namaHumas = contacts.nama_humas && contacts.nama_humas.trim() !== "" ? contacts.nama_humas.trim() : "Belum ditetapkan / Belum ada";
+      }
+      if (contacts.wa_humas !== undefined) {
+        waHumas = contacts.wa_humas && contacts.wa_humas.trim() !== "" ? contacts.wa_humas.trim() : "Belum ditentukan";
+      }
+      if (contacts.nama_operator !== undefined) {
+        namaOperator = contacts.nama_operator && contacts.nama_operator.trim() !== "" ? contacts.nama_operator.trim() : "Belum ditetapkan / Belum ada";
+      }
+      if (contacts.wa_operator !== undefined) {
+        waOperator = contacts.wa_operator && contacts.wa_operator.trim() !== "" ? contacts.wa_operator.trim() : "Belum ditentukan";
+      }
+      if (contacts.email_sekolah !== undefined) {
+        emailSekolah = contacts.email_sekolah && contacts.email_sekolah.trim() !== "" ? contacts.email_sekolah.trim() : "Belum ditentukan";
+      }
 
       const marqueeAnnouncements = config.marquee_announcements || [];
       const now = new Date();
@@ -566,11 +586,18 @@ Ada yang ingin Anda tanyakan lagi mengenai PPDB sekolah kami? 😊`;
   }
 
   if (q.includes("kontak") || q.includes("telepon") || q.includes("whatsapp") || q.includes("wa") || q.includes("hubungi") || q.includes("nomor") || q.includes("humas") || q.includes("operator") || q.includes("panitia")) {
+    const humasContactText = schoolData.waHumas && schoolData.waHumas !== "Belum ditentukan"
+      ? `(WA: +${schoolData.waHumas})`
+      : "";
+    const operatorContactText = schoolData.waOperator && schoolData.waOperator !== "Belum ditentukan"
+      ? `(WA: +${schoolData.waOperator})`
+      : "";
+
     return `${welcomeMessage}
     
 📞 **Kontak Resmi Panitia PPDB & Sekolah:**
-* **Humas Sekolah:** ${schoolData.namaHumas} (WA: +${schoolData.waHumas})
-* **Operator Sekolah:** ${schoolData.namaOperator} (WA: +${schoolData.waOperator})
+* **Humas Sekolah:** ${schoolData.namaHumas} ${humasContactText}
+* **Operator Sekolah:** ${schoolData.namaOperator} ${operatorContactText}
 * **Email Resmi:** ${schoolData.emailSekolah}
 
 💡 *Tips:* Anda juga dapat langsung mengklik **Tombol WhatsApp Melayang berwarna hijau** di pojok kanan bawah layar Anda untuk terhubung langsung dengan operator kami secara instan!`;
