@@ -1,8 +1,56 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-// Stable private session key to sign tokens
-const SESSION_SECRET_KEY = 'sdn-bobong-session-secret-key-2026-secure-hmac';
+// Secure private session key loading with environment variables
+const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY || 
+                           process.env.FLASK_SECRET_KEY || 
+                           'sdn-bobong-session-secret-key-2026-secure-hmac';
+
+if (process.env.NODE_ENV === 'production' && 
+    (!process.env.SESSION_SECRET_KEY && !process.env.FLASK_SECRET_KEY)) {
+  console.warn("WARNING: Using default hardcoded SESSION_SECRET_KEY in production! Please configure SESSION_SECRET_KEY env variable.");
+}
+
 const secretKey = new TextEncoder().encode(SESSION_SECRET_KEY);
+
+/**
+ * Centralized, secure authentication check for administrative operations.
+ * Checks both local admin cookie token and Supabase authenticated user credentials.
+ * @returns {Promise<boolean>} - True if authenticated as administrator, false otherwise.
+ */
+export async function checkAuth() {
+  try {
+    // 1. Check local cookie JWT token
+    const { cookies } = await import('next/headers');
+    const cookieStore = await cookies();
+    const token = cookieStore.get('admin_session_token')?.value;
+    if (token && await verifyAdminToken(token)) {
+      return true;
+    }
+
+    // 2. Fallback to Supabase authenticated session with role/email verification
+    const { createClient } = await import('./supabase/server');
+    const supabase = createClient();
+    if (!supabase) return false;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return false;
+
+    const userEmail = (user.email || '').toLowerCase().trim();
+    const configuredAdmin = (process.env.ADMIN_USERNAME || '').toLowerCase().trim();
+
+    const isAuthorized = 
+      user.user_metadata?.role === 'admin' ||
+      user.app_metadata?.role === 'admin' ||
+      userEmail === 'admin@sdnbobong.sch.id' ||
+      (configuredAdmin && userEmail === configuredAdmin);
+
+    return !!isAuthorized;
+  } catch (err) {
+    console.error("Centralized checkAuth error:", err);
+    return false;
+  }
+}
+
 
 /**
  * Creates a cryptographically signed JWT token for the admin session.

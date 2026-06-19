@@ -1,29 +1,12 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import { createClient } from '../../../lib/supabase/server';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements } from '../../../lib/database';
-import { verifyAdminToken } from '../../../lib/auth';
+import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-async function checkAuth() {
-  try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('admin_session_token')?.value;
-    if (await verifyAdminToken(token)) {
-      return true;
-    }
-
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    return !!user;
-  } catch {
-    return false;
-  }
-}
 
 export async function POST(request) {
   if (!(await checkAuth())) {
