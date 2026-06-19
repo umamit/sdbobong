@@ -1,5 +1,6 @@
 # Security contact information for SD Negeri Bobong
-Contact: mailto:sdn.bobong.taliabu@gmail.com
+Contact: mailto:humas@sdnegeribobong.sch.id
 Expires: 2027-06-19T12:00:00.000Z
 Preferred-Languages: id, en
 Canonical: https://sdnegeribobong.sch.id/.well-known/security.txt
+
