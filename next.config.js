@@ -40,6 +40,10 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://qtqqwyicanoszwvkbzwc.supabase.co https://*.supabase.co https://images.unsplash.com https://*.unsplash.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://qtqqwyicanoszwvkbzwc.supabase.co wss://qtqqwyicanoszwvkbzwc.supabase.co https://api.groq.com https://vitals.vercel-insights.com; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests;",
+          },
         ],
       },
       {
