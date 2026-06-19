@@ -1590,192 +1590,51 @@ export default function PagesTab() {
                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
                     border: '1px solid var(--border-color)',
                   }}>
-                    <h3>Kelola Kontak Informasi & Humas PPDB</h3>
+                    <h3>Kelola Kontak Umum & Tombol WhatsApp Melayang</h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                      Konfigurasikan nama, jabatan, dan nomor WhatsApp panitia PPDB yang akan ditampilkan pada portal PPDB utama publik.
+                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
                     </p>
 
-                    {(!config?.ppdb_contacts?.nama_humas || !config?.ppdb_contacts?.wa_humas || !config?.ppdb_contacts?.nama_operator || !config?.ppdb_contacts?.wa_operator) && (
-                      <div style={{
-                        backgroundColor: '#FDF2F2',
-                        color: '#9B1C1C',
-                        border: '1px solid #FBD5D5',
-                        padding: '0.75rem 1rem',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '0.85rem',
-                        marginBottom: 'var(--space-md)',
-                        fontWeight: 600
-                      }}>
-                        ⚠️ Peringatan: Kontak PPDB belum lengkap! Tulisan peringatan merah akan muncul di halaman publik jika bagian ini kosong.
-                      </div>
-                    )}
-
                     <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config?.ppdb_contacts) : 'empty'}>
+                      {/* Hidden inputs to preserve existing humas/operator values during form submission */}
+                      <input type="hidden" name="nama_humas" value={config?.ppdb_contacts?.nama_humas || ''} />
+                      <input type="hidden" name="wa_humas" value={config?.ppdb_contacts?.wa_humas || ''} />
+                      <input type="hidden" name="jabatan_humas" value={config?.ppdb_contacts?.jabatan_humas || ''} />
+                      <input type="hidden" name="nip_humas" value={config?.ppdb_contacts?.nip_humas || ''} />
+                      <input type="hidden" name="nama_operator" value={config?.ppdb_contacts?.nama_operator || ''} />
+                      <input type="hidden" name="wa_operator" value={config?.ppdb_contacts?.wa_operator || ''} />
+                      <input type="hidden" name="jabatan_operator" value={config?.ppdb_contacts?.jabatan_operator || ''} />
+                      <input type="hidden" name="nip_operator" value={config?.ppdb_contacts?.nip_operator || ''} />
+
                       <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                        {/* Humas */}
-                        <div>
-                          <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>1. Kontak Informasi & Humas</h4>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="nama_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Humas</label>
-                            <input
-                              type="text"
-                              id="nama_humas"
-                              name="nama_humas"
-                              className="form-control"
-                              value={inputNamaHumas}
-                              onChange={(e) => setInputNamaHumas(e.target.value)}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: Ibu Husnita Usman, M.Pd."
-                            />
-                            {inputNamaHumas && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaHumas)) && (
-                              <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
-                                ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
-                              </span>
-                            )}
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="jabatan_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Humas</label>
-                            <input
-                              type="text"
-                              id="jabatan_humas"
-                              name="jabatan_humas"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.jabatan_humas || ''}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: Pendidik Bidang Studi / Humas"
-                            />
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="nip_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Humas (Disinkronkan Otomatis)</label>
-                            <input
-                              type="text"
-                              id="nip_humas"
-                              name="nip_humas"
-                              className="form-control"
-                              value={currentNipHumas}
-                              style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
-                              placeholder="Terisi otomatis dari daftar guru"
-                              readOnly
-                            />
-                            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
-                              ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Humas.
-                            </span>
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="wa_humas" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
-                            <input
-                              type="text"
-                              id="wa_humas"
-                              name="wa_humas"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.wa_humas || ''}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: 6281234567890"
-                            />
-                          </div>
+                        <div className="form-group">
+                          <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
+                          <input
+                            type="text"
+                            id="wa_floating"
+                            name="wa_floating"
+                            className="form-control"
+                            defaultValue={config?.ppdb_contacts?.wa_floating || ''}
+                            style={{ width: '100%' }}
+                            placeholder="Contoh: 6281234567890"
+                          />
                         </div>
-
-                        {/* Operator */}
-                        <div>
-                          <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>2. Kontak Dukungan Teknis & Operator</h4>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="nama_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Nama Operator</label>
-                            <input
-                              type="text"
-                              id="nama_operator"
-                              name="nama_operator"
-                              className="form-control"
-                              value={inputNamaOperator}
-                              onChange={(e) => setInputNamaOperator(e.target.value)}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: Bapak Kasmudin"
-                            />
-                            {inputNamaOperator && !teachers.some(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaOperator)) && (
-                              <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 'bold', display: 'block', marginTop: '3px' }}>
-                                ⚠️ Guru tidak ditemukan di daftar guru (Tidak Aktif / Sudah Dihapus).
-                              </span>
-                            )}
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="jabatan_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Jabatan Operator</label>
-                            <input
-                              type="text"
-                              id="jabatan_operator"
-                              name="jabatan_operator"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.jabatan_operator || ''}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: Operator Sekolah"
-                            />
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="nip_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>NIP Operator (Disinkronkan Otomatis)</label>
-                            <input
-                              type="text"
-                              id="nip_operator"
-                              name="nip_operator"
-                              className="form-control"
-                              value={currentNipOperator}
-                              style={{ width: '100%', backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed', border: '1px solid #cbd5e1' }}
-                              placeholder="Terisi otomatis dari daftar guru"
-                              readOnly
-                            />
-                            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', display: 'block', marginTop: '3px' }}>
-                              ℹ️ NIP disinkronkan langsung dari daftar guru & staf berdasarkan nama Operator.
-                            </span>
-                          </div>
-                          <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                            <label htmlFor="wa_operator" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp (Gunakan Format Angka: 628xxx)</label>
-                            <input
-                              type="text"
-                              id="wa_operator"
-                              name="wa_operator"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.wa_operator || ''}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: 6281234567890"
-                            />
-                          </div>
+                        <div className="form-group">
+                          <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
+                          <input
+                            type="email"
+                            id="email_sekolah"
+                            name="email_sekolah"
+                            className="form-control"
+                            defaultValue={config?.ppdb_contacts?.email_sekolah || 'humas@sdnegeribobong.sch.id'}
+                            style={{ width: '100%' }}
+                            placeholder="Contoh: humas@sdnegeribobong.sch.id"
+                            required
+                          />
                         </div>
                       </div>
 
-                      <hr style={{ border: '0', borderTop: '1px solid var(--border-color)', margin: 'var(--space-md) 0' }} />
-                      
-                      <div style={{ marginBottom: 'var(--space-md)' }}>
-                        <h4 style={{ color: 'var(--primary-dark)', marginBottom: 'var(--space-xs)', borderBottom: '2px solid var(--secondary)', paddingBottom: '4px', fontSize: '0.95rem' }}>3. WhatsApp Tombol Melayang & Email Resmi</h4>
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-xs)' }}>
-                          Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
-                        </p>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginTop: '10px' }}>
-                          <div className="form-group">
-                            <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
-                            <input
-                              type="text"
-                              id="wa_floating"
-                              name="wa_floating"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.wa_floating || ''}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: 6281234567890"
-                            />
-                          </div>
-                          <div className="form-group">
-                            <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
-                            <input
-                              type="email"
-                              id="email_sekolah"
-                              name="email_sekolah"
-                              className="form-control"
-                              defaultValue={config?.ppdb_contacts?.email_sekolah || 'humas@sdnegeribobong.sch.id'}
-                              style={{ width: '100%' }}
-                              placeholder="Contoh: humas@sdnegeribobong.sch.id"
-                              required
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak PPDB & Tombol Melayang</button>
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak Umum & Tombol Melayang</button>
                     </form>
                   </div>
                 </div>
