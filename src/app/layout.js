@@ -6,11 +6,13 @@ import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import ChatWidget from '../components/ChatWidget';
 import PWAInstallPrompt from '../components/PWAInstallPrompt';
+import WebVitals from '../components/WebVitals';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import Link from 'next/link';
 import { headers } from 'next/headers';
+
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -646,6 +648,7 @@ export default async function RootLayout({ children }) {
         <PWAInstallPrompt />
         <Analytics />
         <SpeedInsights />
+        <WebVitals />
       </body>
     </html>
   );
