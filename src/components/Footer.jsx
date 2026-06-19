@@ -6,7 +6,7 @@ import { loadWebConfig } from '../lib/database';
 export default async function Footer() {
   const config = await loadWebConfig();
   const contacts = config.ppdb_contacts || {};
-  const schoolEmail = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
+  const schoolEmail = contacts.email_sekolah || "humas@sdnegeribobong.sch.id";
 
   const profil = config.stats?.page_contents?.profil || {};
   const schoolDesc = profil.footer_description || "SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.";
@@ -89,7 +89,7 @@ export default async function Footer() {
             Lead Developer
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <Link href="/guru/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Guru</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.4.5</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <Link href="/guru/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Guru</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.4.6</span>
           </p>
 
 

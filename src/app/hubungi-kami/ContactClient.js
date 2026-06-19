@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export default function ContactClient({ initialFaqs, contacts = {} }) {
-  const schoolEmail = contacts.email_sekolah || "sdn.bobong.taliabu@gmail.com";
+  const schoolEmail = contacts.email_sekolah || "humas@sdnegeribobong.sch.id";
   const operatorPhone = contacts.wa_operator ? `+${contacts.wa_operator}` : "+62 822-9211-1638";
   const operatorName = contacts.nama_operator || "Operator Humas";
   // FAQ accordion state: stores the ID of the currently expanded item, or null

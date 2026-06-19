@@ -226,7 +226,7 @@ export async function loadWebConfig() {
       nama_operator: "Bapak Kasmudin",
       wa_operator: "6281234567890",
       jabatan_operator: "Operator Sekolah SD Negeri Bobong",
-      email_sekolah: "sdn.bobong.taliabu@gmail.com"
+      email_sekolah: "humas@sdnegeribobong.sch.id"
     },
     downloads: [
       { id: "dl-1", title: "Brosur Informasi PPDB 2026/2027", category: "PPDB", fileUrl: "/files/brosur-ppdb-2026.pdf", date: "2026-05-01" },

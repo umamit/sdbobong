@@ -25,7 +25,8 @@ export async function POST(req) {
   let waHumas = "6281234567890";
   let namaOperator = "Bapak Kasmudin";
   let waOperator = "6281234567890";
-  let emailSekolah = "sdn.bobong.taliabu@gmail.com";
+  let emailSekolah = "humas@sdnegeribobong.sch.id";
+
 
   try {
     const body = await req.json();
