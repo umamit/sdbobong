@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { loadWebConfig, loadTeachers, loadAchievements } from '../../../lib/database';
+import { loadWebConfig, loadTeachers, loadAchievements, loadNews } from '../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,10 +40,11 @@ export async function POST(req) {
     latestMessage = messages[messages.length - 1]?.content || "";
 
     // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel
-    const [dbConfig, teachersList, achievementsList] = await Promise.all([
+    const [dbConfig, teachersList, achievementsList, newsList] = await Promise.all([
       loadWebConfig(),
       loadTeachers(),
-      loadAchievements()
+      loadAchievements(),
+      loadNews()
     ]);
 
     config = dbConfig || {};
@@ -74,6 +75,22 @@ export async function POST(req) {
     if (contacts.wa_operator) waOperator = contacts.wa_operator;
     if (contacts.email_sekolah) emailSekolah = contacts.email_sekolah;
 
+    // Dapatkan tanggal dan waktu aktual dalam zona waktu WIT (Waktu Indonesia Timur)
+    const now = new Date();
+    const currentDateText = now.toLocaleDateString('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'Asia/Jayapura'
+    }) + " WIT (Waktu Indonesia Timur)";
+
+    // Format Pengumuman Berjalan (Marquee)
+    const marqueeAnnouncements = config.marquee_announcements || [];
+    const listMarqueeText = marqueeAnnouncements && marqueeAnnouncements.length > 0
+      ? marqueeAnnouncements.map((m, idx) => `${idx + 1}. ${m}`).join('\n')
+      : "Tidak ada pengumuman berjalan saat ini.";
+
     // 2. Cek apakah GROQ_API_KEY tersedia di environment
     const groqApiKey = process.env.GROQ_API_KEY;
 
@@ -82,7 +99,10 @@ export async function POST(req) {
       npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian, kepemilikanLahan,
       namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
       stats, faqs, downloads,
-      beranda, profil, ppdb, akademik, kesiswaan
+      beranda, profil, ppdb, akademik, kesiswaan,
+      news: newsList,
+      marquee: marqueeAnnouncements,
+      currentDate: currentDateText
     };
 
     if (!groqApiKey) {
@@ -107,6 +127,21 @@ export async function POST(req) {
     const listUnduhanText = downloads && downloads.length > 0
       ? downloads.map(d => `- Berkas: ${d.title} (Kategori: ${d.category}, Link: ${d.fileUrl})`).join('\n')
       : "- Formulir PPDB Offline (Tersedia di sekolah)";
+
+    const listNewsText = newsList && newsList.length > 0
+      ? [...newsList]
+          .sort((a, b) => {
+            const valA = parseInt(a.id?.replace('news-', '') || 0, 10);
+            const valB = parseInt(b.id?.replace('news-', '') || 0, 10);
+            return valB - valA;
+          })
+          .slice(0, 5)
+          .map(n => {
+            const cleanContent = (n.content || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+            return `- **Judul**: ${n.title}\n  **Tanggal**: ${n.date || 'Terbaru'}\n  **Kategori**: ${n.category || 'Kegiatan'}\n  **Ringkasan**: ${cleanContent.substring(0, 200)}...`;
+          })
+          .join('\n\n')
+      : "Tidak ada berita kegiatan terbaru yang diunggah.";
 
     // Format Data Halaman Publik
     const visiText = profil.visi || `"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global."`;
@@ -334,6 +369,16 @@ ${listUnduhanText}
 12. FAQ Sekolah Umum:
 ${listFaqText}
 
+13. Berita & Pengumuman Terbaru (Database):
+${listNewsText}
+
+14. Pengumuman Berjalan (Marquee):
+${listMarqueeText}
+
+=== INFORMASI WAKTU SEKARANG (PENTING) ===
+Hari ini adalah: ${currentDateText}
+Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu informasi atau agenda kegiatan di masa depan masih berlaku atau sudah lewat/usang/lampau. Jangan pernah menginformasikan agenda yang sudah lewat seolah-olah akan terjadi di masa depan.
+
 === ATURAN PPDB ONLINE & OFFLINE ===
 - Pendaftaran PPDB Online dapat diakses langsung oleh wali murid melalui tombol "Pendaftaran" di menu atas, atau menuju ke link \`/ppdb-online\` di website ini.
 - Pendaftaran PPDB Offline dapat dilakukan dengan datang langsung ke sekolah menemui panitia PPDB pada jam kerja (Senin - Sabtu pukul 08:00 - 12:00 WIT). Formulir pendaftaran offline juga dapat diunduh di halaman Unduh berkas di website ini.
@@ -402,7 +447,10 @@ ${listFaqText}
     console.error("⚠️ Error calling Groq API in chat route. Falling back to local responder:", error.message || error);
     try {
       // Re-load variables defensively for catch block fallback
-      const [dbConfig] = await Promise.all([loadWebConfig()]);
+      const [dbConfig, newsList] = await Promise.all([
+        loadWebConfig(),
+        loadNews()
+      ]);
       const config = dbConfig || {};
       const contacts = config.ppdb_contacts || {};
       const stats = config.stats || {};
@@ -429,11 +477,24 @@ ${listFaqText}
       if (contacts.wa_operator) waOperator = contacts.wa_operator;
       if (contacts.email_sekolah) emailSekolah = contacts.email_sekolah;
 
+      const marqueeAnnouncements = config.marquee_announcements || [];
+      const now = new Date();
+      const currentDateText = now.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'Asia/Jayapura'
+      }) + " WIT (Waktu Indonesia Timur)";
+
       const fallbackData = {
         npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian,
         namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
         stats, faqs, downloads,
-        beranda, profil, ppdb, akademik, kesiswaan
+        beranda, profil, ppdb, akademik, kesiswaan,
+        news: newsList,
+        marquee: marqueeAnnouncements,
+        currentDate: currentDateText
       };
 
       const reply = generateFallbackResponse(latestMessage, fallbackData);
@@ -456,6 +517,7 @@ function generateFallbackResponse(query, schoolData) {
   const q = query.toLowerCase();
 
   const welcomeMessage = `✨ Halo! Saya **Aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫
+[Hari ini: ${schoolData.currentDate || '-'}]
 
 Saat ini saya sedang berjalan dalam **Mode Demo / Pemeliharaan Sistem** oleh Administrator sekolah. Meskipun fitur kecerdasan penuh saya sedang dipersiapkan, saya tetap dapat membantu Anda menjawab beberapa informasi dasar mengenai sekolah secara otomatis! 👇`;
 
@@ -610,6 +672,34 @@ Kami sangat bangga dengan dedikasi dan prestasi luar biasa dari anak-anak kami! 
 Seluruh biaya pendaftaran PPDB maupun proses belajar mengajar harian di SD Negeri Bobong adalah **100% GRATIS (Rp 0)** karena didukung penuh oleh dana BOS dan program Pemerintah Daerah. Jangan ragu untuk mendaftarkan putra-putri Anda! 🎒`;
   }
 
+  if (q.includes("berita") || q.includes("pengumuman") || q.includes("artikel") || q.includes("terbaru") || q.includes("kabar") || q.includes("info terkini") || q.includes("pesona")) {
+    const newsList = schoolData.news || [];
+    if (newsList && newsList.length > 0) {
+      const sortedNews = [...newsList].sort((a, b) => {
+        const valA = parseInt(a.id?.replace('news-', '') || 0, 10);
+        const valB = parseInt(b.id?.replace('news-', '') || 0, 10);
+        return valB - valA;
+      });
+      
+      const newsText = sortedNews.slice(0, 3).map((n) => {
+        const cleanContent = (n.content || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+        return `📰 **${n.title}** (${n.date || 'Terbaru'})\n${cleanContent.substring(0, 150)}...\n[Baca selengkapnya di menu Berita]`;
+      }).join('\n\n');
+
+      return `${welcomeMessage}
+      
+📢 **Berita & Pengumuman Terbaru Sekolah:**
+${newsText}
+
+Apakah ada informasi lain yang ingin Anda ketahui? 😊`;
+    } else {
+      return `${welcomeMessage}
+      
+📢 **Berita & Pengumuman Sekolah:**
+Belum ada berita kegiatan terbaru yang diunggah saat ini. Silakan kunjungi menu **Berita** di atas untuk melihat warta terdahulu. 😊`;
+    }
+  }
+
   // Jawaban Default jika kata kunci tidak cocok
   return `${welcomeMessage}
   
@@ -623,6 +713,7 @@ Saya dapat memberikan informasi instan mengenai hal-hal berikut:
 7. 🏆 **Prestasi Siswa** (ketik: *prestasi*, *juara*)
 8. 🏫 **Fasilitas & Ruang Kelas** (ketik: *fasilitas*, *kelas*, *lapangan*)
 9. 💰 **Biaya Pendaftaran** (ketik: *biaya*, *bayar*)
+10. 📰 **Berita & Pengumuman Terbaru** (ketik: *berita*, *pengumuman*, *kabar*)
 
 Silakan ketik pertanyaan Anda atau klik tombol saran pertanyaan di bawah ini untuk memulai! 😊`;
 }
