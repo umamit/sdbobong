@@ -33,18 +33,8 @@ export async function checkAuth() {
     if (!supabase) return false;
 
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
+    return !!user;
 
-    const userEmail = (user.email || '').toLowerCase().trim();
-    const configuredAdmin = (process.env.ADMIN_USERNAME || '').toLowerCase().trim();
-
-    const isAuthorized = 
-      user.user_metadata?.role === 'admin' ||
-      user.app_metadata?.role === 'admin' ||
-      userEmail === 'admin@sdnbobong.sch.id' ||
-      (configuredAdmin && userEmail === configuredAdmin);
-
-    return !!isAuthorized;
   } catch (err) {
     console.error("Centralized checkAuth error:", err);
     return false;

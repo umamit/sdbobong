@@ -153,6 +153,17 @@ export async function POST(request) {
     // Successful Supabase login
     const response = NextResponse.json({ success: true });
     
+    // Set local admin session token cookie for unified API auth access
+    const secureToken = await createAdminToken();
+    response.cookies.set('admin_session_token', secureToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 3600 // 1 hour
+    });
+
+    
     await createAuditLog('LOGIN', `Admin berhasil login (Metode: Supabase Auth - ${email})`, request);
 
     // Reset block status on successful login
