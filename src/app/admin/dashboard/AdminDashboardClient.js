@@ -825,32 +825,7 @@ function AdminDashboardShell() {
             font-size: 0.75rem;
             font-weight: 700;
         }
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 80px;
-                top: 80px;
-            }
-            .sidebar-brand span, .sidebar-link span:last-child, .sidebar-footer button span:last-child {
-                display: none;
-            }
-            .sidebar-brand {
-                justify-content: center;
-                padding: 1.5rem 0;
-            }
-            .sidebar-link {
-                justify-content: center;
-                padding: 1rem 0;
-            }
-            .main-wrapper {
-                margin-left: 80px;
-                margin-top: 80px;
-                height: calc(100vh - 80px);
-            }
-            .top-navbar {
-                padding-left: calc(80px + 1.5rem);
-                padding-right: 1.5rem;
-            }
-        }
+
 
         /* PREMIUM STYLES FOR DASHBOARD UPGRADES */
         .analytics-card {

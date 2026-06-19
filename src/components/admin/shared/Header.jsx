@@ -15,8 +15,21 @@ export default function Header({ onToggleSidebar }) {
             className="mobile-menu-toggle" 
             onClick={onToggleSidebar}
             aria-label="Toggle Menu"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0.25rem',
+              color: '#0f172a',
+              width: '40px',
+              height: '40px',
+              borderRadius: '8px',
+              transition: 'background-color 0.2s'
+            }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
