@@ -97,9 +97,10 @@ const SecurityTab = dynamic(() => import('../../../components/admin/tabs/Securit
 
 function AdminDashboardShell() {
   const { activeTab, isDetailModalOpen, isProcessing, processingMessage } = useAdminDashboard();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
 
   return (
-    <div className={`admin-dashboard-layout ${isDetailModalOpen ? 'print-detail-open' : ''}`}>
+    <div className={`admin-dashboard-layout ${isDetailModalOpen ? 'print-detail-open' : ''} ${mobileSidebarOpen ? 'mobile-sidebar-open' : ''}`}>
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -1739,12 +1740,112 @@ function AdminDashboardShell() {
         .btn-threat-action:active {
             transform: translateY(0);
         }
+
+        /* Responsive Mobile Layout Adjustments */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            color: #334155;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-smooth);
+        }
+        .mobile-menu-toggle:hover {
+            background-color: rgba(99, 102, 241, 0.08);
+            color: var(--primary);
+        }
+        .mobile-menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+        .mobile-sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sidebar-backdrop {
+                display: block;
+            }
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            .sidebar {
+                width: 260px !important;
+                transform: translateX(-100%);
+                z-index: 1000 !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                position: fixed !important;
+                box-shadow: none;
+            }
+            .sidebar-brand span, 
+            .sidebar-link span:last-child, 
+            .sidebar-footer button span:last-child {
+                display: block !important;
+            }
+            .sidebar-brand {
+                justify-content: flex-start !important;
+                padding: 1.75rem 1.5rem !important;
+            }
+            .sidebar-link {
+                justify-content: flex-start !important;
+                padding: 0.85rem 1.15rem !important;
+            }
+            .admin-dashboard-layout.mobile-sidebar-open .sidebar {
+                transform: translateX(0) !important;
+                box-shadow: 15px 0 35px rgba(0, 0, 0, 0.3) !important;
+            }
+            .main-wrapper {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            .top-navbar {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+            .content-body {
+                padding: 1.25rem 1rem !important;
+            }
+            .table-responsive {
+                margin: 0 0.5rem 1rem 0.5rem !important;
+            }
+            .security-threat-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .btn-threat-action {
+                width: 100%;
+                text-align: center;
+            }
+        }
       ` }} />
       
-      <Sidebar />
+      <Sidebar onClose={() => setMobileSidebarOpen(false)} />
+      
+      {mobileSidebarOpen && (
+        <div 
+          className="mobile-sidebar-backdrop" 
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
       
       <div className="main-wrapper">
-        <Header />
+        <Header onToggleSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
         
         <main className="content-body">
           {activeTab === 'overview' && <OverviewTab />}
