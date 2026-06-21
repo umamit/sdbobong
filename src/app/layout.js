@@ -44,9 +44,28 @@ export default async function RootLayout({ children }) {
 
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
-  
+
   const isPrintableForm = pathname === '/formulir-ppdb';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
+
+  if (isPrintableForm) {
+    return (
+      <html lang="id" data-theme="light">
+        <head>
+          <meta charSet="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="robots" content="noindex, nofollow" />
+          <link rel="icon" href="/favicon.ico" />
+          <title>Formulir PPDB Offline - SD Negeri Bobong</title>
+        </head>
+        <body style={{ background: '#ffffff', color: '#000000', margin: 0, padding: 0 }}>
+          <main style={{ background: '#ffffff', color: '#000000', margin: 0, padding: 0 }}>
+            {children}
+          </main>
+        </body>
+      </html>
+    );
+  }
 
   if (isMaintenanceActive) {
     return (

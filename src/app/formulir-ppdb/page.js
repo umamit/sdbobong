@@ -161,6 +161,14 @@ export default function FormulirPPDBPrint() {
         </div>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
+        /* Globally bypass any user-select restrictions on this page */
+        *, html, body, main, .form-page {
+          -webkit-user-select: text !important;
+          -moz-user-select: text !important;
+          -ms-user-select: text !important;
+          user-select: text !important;
+        }
+
         @media screen {
           html, body {
             background-color: #f3f4f6 !important;
