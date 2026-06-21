@@ -43,8 +43,8 @@ export default async function RootLayout({ children }) {
   const floatingPhone = (contacts.wa_floating || contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
   const headersList = await headers();
-  const pathname = headersList.get('x-pathname') || '';
-
+  const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+  const isBypassPath = bypassPaths.includes(pathname);
   const isPrintableForm = pathname === '/formulir-ppdb';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
@@ -367,8 +367,13 @@ export default async function RootLayout({ children }) {
   const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname.startsWith('/ppdb-online/sukses');
   const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
 
+  const htmlClassNames = [
+    isPrintableForm ? "is-admin" : "",
+    isBypassPath ? "allow-select" : ""
+  ].filter(Boolean).join(" ");
+
   return (
-    <html lang="id" className={isPrintableForm ? "is-admin" : undefined} data-theme={isPrintableForm ? "light" : undefined}>
+    <html lang="id" className={htmlClassNames || undefined} data-theme={isPrintableForm ? "light" : undefined}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -406,15 +411,24 @@ export default async function RootLayout({ children }) {
           }
 
           // Anti-cloning protection script for public pages (exempting admin and printable pages)
-          const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
-          if (${config.stats?.allow_copy === true ? 'false' : 'true'} && !window.location.pathname.startsWith('/admin') && !bypassPaths.includes(window.location.pathname)) {
+          if (${config.stats?.allow_copy === true ? 'false' : 'true'}) {
+            const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+            
             // 1. Prevent Right-Click
             document.addEventListener('contextmenu', function(e) {
+              const currentPath = window.location.pathname;
+              if (currentPath.startsWith('/admin') || bypassPaths.includes(currentPath)) {
+                return;
+              }
               e.preventDefault();
             });
 
             // 2. Prevent keyboard shortcuts for inspection, view-source, saving, copy, pasting, and printing
             document.addEventListener('keydown', function(e) {
+              const currentPath = window.location.pathname;
+              if (currentPath.startsWith('/admin') || bypassPaths.includes(currentPath)) {
+                return;
+              }
               // Disable Ctrl+S / Cmd+S (Save)
               if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                 e.preventDefault();
@@ -447,6 +461,10 @@ export default async function RootLayout({ children }) {
 
             // 3. Prevent dragging and dropping images (prevents saving images by dragging)
             document.addEventListener('dragstart', function(e) {
+              const currentPath = window.location.pathname;
+              if (currentPath.startsWith('/admin') || bypassPaths.includes(currentPath)) {
+                return;
+              }
               if (e.target.nodeName === 'IMG') {
                 e.preventDefault();
               }
@@ -455,7 +473,7 @@ export default async function RootLayout({ children }) {
         `}} />
         {config.stats?.allow_copy === true && (
           <style dangerouslySetInnerHTML={{ __html: `
-            html:not(.is-admin) {
+            html:not(.is-admin):not(.allow-select) {
               -webkit-user-select: text !important;
               -moz-user-select: text !important;
               -ms-user-select: text !important;

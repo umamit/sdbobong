@@ -43,7 +43,16 @@ export default function LayoutControl() {
       checkMaintenance();
     }
 
-    // 1. Admin & Guru Class Control
+    // 1. Admin & Guru & Bypass Class Control
+    const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+    const isBypass = pathname && bypassPaths.includes(pathname);
+    
+    if (isBypass) {
+      document.documentElement.classList.add('allow-select');
+    } else {
+      document.documentElement.classList.remove('allow-select');
+    }
+
     const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru');
     if (isAdminOrGuru) {
       document.documentElement.classList.add('is-admin');
