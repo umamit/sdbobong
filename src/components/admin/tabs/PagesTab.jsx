@@ -1626,9 +1626,9 @@ export default function PagesTab() {
                             id="email_sekolah"
                             name="email_sekolah"
                             className="form-control"
-                            defaultValue={config?.ppdb_contacts?.email_sekolah || 'humas@sdnegeribobong.sch.id'}
+                            defaultValue={config?.ppdb_contacts?.email_sekolah || 'admin@sdnegeribobong.sch.id'}
                             style={{ width: '100%' }}
-                            placeholder="Contoh: humas@sdnegeribobong.sch.id"
+                            placeholder="Contoh: admin@sdnegeribobong.sch.id"
                             required
                           />
                         </div>

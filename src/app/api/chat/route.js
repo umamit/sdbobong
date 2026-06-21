@@ -25,7 +25,7 @@ export async function POST(req) {
   let waHumas = "6281234567890";
   let namaOperator = "Bapak Kasmudin";
   let waOperator = "6281234567890";
-  let emailSekolah = "humas@sdnegeribobong.sch.id";
+  let emailSekolah = "admin@sdnegeribobong.sch.id";
 
 
   try {

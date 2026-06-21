@@ -6,7 +6,7 @@ import { loadWebConfig } from '../lib/database';
 export default async function Footer() {
   const config = await loadWebConfig();
   const contacts = config.ppdb_contacts || {};
-  const schoolEmail = contacts.email_sekolah || "humas@sdnegeribobong.sch.id";
+  const schoolEmail = contacts.email_sekolah || "admin@sdnegeribobong.sch.id";
 
   const profil = config.stats?.page_contents?.profil || {};
   const schoolDesc = profil.footer_description || "SD Negeri Bobong adalah sekolah dasar negeri unggulan di Ibukota Kabupaten Pulau Taliabu, Maluku Utara. Berdedikasi mencetak generasi cerdas, berkarakter mulia, dan berbudaya luhur.";
