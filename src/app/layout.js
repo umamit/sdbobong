@@ -43,6 +43,7 @@ export default async function RootLayout({ children }) {
   const floatingPhone = (contacts.wa_floating || contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
   const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
   const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
   const isBypassPath = bypassPaths.includes(pathname);
   const isPrintableForm = pathname === '/formulir-ppdb';
