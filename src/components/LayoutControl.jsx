@@ -53,7 +53,7 @@ export default function LayoutControl() {
       document.documentElement.classList.remove('allow-select');
     }
 
-    const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru');
+    const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru') || pathname === '/formulir-ppdb';
     if (isAdminOrGuru) {
       document.documentElement.classList.add('is-admin');
       return;
