@@ -40,7 +40,7 @@ export default function FormulirPPDBPrint() {
         background: '#ffffff',
         maxWidth: '800px',
         margin: '0 auto',
-        padding: 'var(--space-lg)',
+        padding: '1.25rem 2rem',
         borderRadius: 'var(--radius-md)',
         boxShadow: 'var(--shadow-md)',
         border: '1px solid var(--border-color)'
@@ -50,26 +50,26 @@ export default function FormulirPPDBPrint() {
           display: 'flex',
           alignItems: 'center',
           borderBottom: '3px double var(--primary)',
-          paddingBottom: 'var(--space-sm)',
-          marginBottom: 'var(--space-md)',
+          paddingBottom: '0.4rem',
+          marginBottom: '0.4rem',
           gap: 'var(--space-sm)'
         }}>
-          <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="form-logo" style={{ width: '80px', height: '80px', objectFit: 'contain' }} decoding="async" />
+          <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="form-logo" style={{ width: '60px', height: '60px', objectFit: 'contain' }} decoding="async" />
           <div className="form-title-container" style={{ flex: 1, textAlign: 'center' }}>
-            <h1 style={{ fontSize: '1.25rem', color: 'var(--text-main)', marginBottom: '0.15rem', textTransform: 'uppercase', fontWeight: 800, lineHeight: 1.2 }}>Pemerintah Kabupaten Pulau Taliabu</h1>
-            <h2 style={{ fontSize: '1.1rem', color: 'var(--text-main)', marginBottom: '0.15rem', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1.2 }}>Dinas Pendidikan dan Kebudayaan</h2>
-            <h1 style={{ fontSize: '1.5rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 800, marginBottom: '0.25rem' }}>SD Negeri Bobong</h1>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
-            <p style={{ fontSize: '0.75rem', marginTop: '0.15rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+            <h1 style={{ fontSize: '1.05rem', color: 'var(--text-main)', marginBottom: '0.1rem', textTransform: 'uppercase', fontWeight: 800, lineHeight: 1.1 }}>Pemerintah Kabupaten Pulau Taliabu</h1>
+            <h2 style={{ fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.1rem', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1.1 }}>Dinas Pendidikan dan Kebudayaan</h2>
+            <h1 style={{ fontSize: '1.25rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 800, marginBottom: '0.15rem' }}>SD Negeri Bobong</h1>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
+            <p style={{ fontSize: '0.7rem', marginTop: '0.1rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
           </div>
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '105px', height: '105px', objectFit: 'contain', marginTop: '-12.5px', marginBottom: '-12.5px' }} decoding="async" />
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '75px', height: '75px', objectFit: 'contain', marginTop: '-8px', marginBottom: '-8px' }} decoding="async" />
         </div>
-
-        <div style={{ textAlign: 'center', marginBottom: 'var(--space-md)' }}>
-          <h2 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-heading)', textDecoration: 'underline' }}>FORMULIR PENDAFTARAN PESERTA DIDIK BARU (PPDB)</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: 500 }}>Tahun Ajaran 2026/2027</p>
+ 
+        <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
+          <h2 style={{ fontSize: '1.05rem', fontFamily: 'var(--font-heading)', textDecoration: 'underline', margin: '0 0 2px 0' }}>FORMULIR PENDAFTARAN PESERTA DIDIK BARU (PPDB)</h2>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: 600, margin: 0 }}>Tahun Ajaran 2026/2027</p>
         </div>
-
+ 
         {/* Section 1: Data Calon Siswa */}
         <div className="form-section-title">A. Data Calon Peserta Didik</div>
         <div className="form-grid">
@@ -99,16 +99,16 @@ export default function FormulirPPDBPrint() {
           
           <div className="form-label">8. Alamat Tempat Tinggal</div>
           <div className="form-value-line"></div>
-
+ 
           <div className="form-label">9. Jalur Pendaftaran</div>
-          <div className="checkbox-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px', marginTop: '0.25rem' }}>
+          <div className="checkbox-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px', marginTop: '0.15rem' }}>
             <div className="checkbox-item"><span className="checkbox-box"></span> Zonasi (Domisili Terdekat)</div>
             <div className="checkbox-item"><span className="checkbox-box"></span> Afirmasi (Keluarga Ekonomi Kurang Mampu)</div>
             <div className="checkbox-item"><span className="checkbox-box"></span> Perpindahan Tugas Orang Tua / Wali</div>
             <div className="checkbox-item"><span className="checkbox-box"></span> Prestasi (Akademik / Non-Akademik)</div>
           </div>
         </div>
-
+ 
         {/* Section 2: Data Orang Tua / Wali */}
         <div className="form-section-title">B. Data Orang Tua / Wali</div>
         <div className="form-grid">
@@ -136,32 +136,36 @@ export default function FormulirPPDBPrint() {
           <div className="form-label">8. Pekerjaan Wali</div>
           <div className="form-value-line"></div>
         </div>
-
+ 
         {/* Section 3: Checklist Kelengkapan Berkas */}
         <div className="form-section-title">C. Persyaratan Berkas Lampiran (Diisi Panitia)</div>
-        <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+        <div style={{ fontSize: '0.75rem', marginTop: '0.25rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Akta Kelahiran Calon Siswa (2 Lembar)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu Keluarga / KK (2 Lembar)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Ijazah TK / PAUD (Opsional jika memiliki)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Pas Foto Calon Siswa Ukuran 3x4 Latar Belakang Merah (2 Lembar)</div>
         </div>
-
+ 
         {/* Section 4: Pernyataan & Tanda Tangan */}
         <div className="sig-container">
           <div className="sig-box">
             <div>Mengetahui,</div>
             <div style={{ fontWeight: 'bold', textDecoration: 'underline', marginBottom: '2px' }}>.............................................</div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Panitia PPDB SDN Bobong</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Panitia PPDB SDN Bobong</div>
           </div>
           <div className="sig-box">
             <div>Bobong, .................................... 2026</div>
             <div style={{ fontWeight: 'bold', textDecoration: 'underline', marginBottom: '2px' }}>.............................................</div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Orang Tua / Wali Calon Siswa</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Orang Tua / Wali Calon Siswa</div>
           </div>
         </div>
       </div>
-
+ 
       <style dangerouslySetInnerHTML={{ __html: `
+        @page {
+          size: A4;
+          margin: 10mm 15mm;
+        }
         html, body {
           background-color: #f3f4f6 !important;
           padding: var(--space-md) !important;
@@ -178,7 +182,7 @@ export default function FormulirPPDBPrint() {
           box-sizing: border-box !important;
           background: #ffffff;
           margin: 0 auto;
-          padding: var(--space-lg);
+          padding: 1.25rem 2rem;
           border-radius: var(--radius-md);
           box-shadow: var(--shadow-md);
           border: 1px solid var(--border-color);
@@ -186,20 +190,20 @@ export default function FormulirPPDBPrint() {
         .form-section-title {
           background-color: var(--bg-main);
           color: var(--primary-dark);
-          padding: 0.5rem var(--space-xs);
+          padding: 0.3rem var(--space-xs);
           font-weight: 700;
-          font-size: 0.95rem;
+          font-size: 0.8rem;
           border-left: 4px solid var(--primary);
-          margin: var(--space-md) 0 var(--space-xs) 0;
+          margin: 0.5rem 0 0.25rem 0;
           text-transform: uppercase;
         }
         .form-grid {
           display: grid;
-          grid-template-columns: 200px 1fr;
-          row-gap: var(--space-xs);
+          grid-template-columns: 180px 1fr;
+          row-gap: 2px;
           column-gap: var(--space-sm);
-          margin-bottom: var(--space-sm);
-          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+          font-size: 0.8rem;
         }
         .form-label {
           font-weight: 600;
@@ -209,40 +213,41 @@ export default function FormulirPPDBPrint() {
         }
         .form-value-line {
           border-bottom: 1px dashed var(--text-light);
-          height: 2rem;
+          height: 1.45rem;
           display: flex;
           align-items: flex-end;
-          padding-bottom: 2px;
+          padding-bottom: 1px;
         }
         .checkbox-container {
           display: flex;
           gap: var(--space-md);
-          margin-top: 0.5rem;
+          margin-top: 0.25rem;
         }
         .checkbox-item {
           display: flex;
           align-items: center;
           gap: var(--space-xs);
+          font-size: 0.75rem;
         }
         .checkbox-box {
-          width: 18px;
-          height: 18px;
+          width: 14px;
+          height: 14px;
           border: 1px solid var(--text-light);
-          border-radius: 3px;
+          border-radius: 2px;
           display: inline-block;
         }
         .sig-container {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          margin-top: var(--space-lg);
+          margin-top: 0.75rem;
           text-align: center;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
         }
         .sig-box {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          height: 120px;
+          height: 75px;
         }
         
         /* Print Rules */
