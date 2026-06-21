@@ -403,8 +403,9 @@ export default async function RootLayout({ children }) {
             document.documentElement.classList.add('is-admin');
           }
 
-          // Anti-cloning protection script for public pages
-          if (${config.stats?.allow_copy === true ? 'false' : 'true'} && !window.location.pathname.startsWith('/admin')) {
+          // Anti-cloning protection script for public pages (exempting admin and printable pages)
+          const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+          if (${config.stats?.allow_copy === true ? 'false' : 'true'} && !window.location.pathname.startsWith('/admin') && !bypassPaths.includes(window.location.pathname)) {
             // 1. Prevent Right-Click
             document.addEventListener('contextmenu', function(e) {
               e.preventDefault();
