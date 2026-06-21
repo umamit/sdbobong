@@ -40,7 +40,7 @@ export default function FormulirPPDBPrint() {
         background: '#ffffff',
         maxWidth: '800px',
         margin: '0 auto',
-        padding: '1.25rem 2rem',
+        padding: '0.8rem 1.5rem',
         borderRadius: 'var(--radius-md)',
         boxShadow: 'var(--shadow-md)',
         border: '1px solid var(--border-color)'
@@ -50,11 +50,11 @@ export default function FormulirPPDBPrint() {
           display: 'flex',
           alignItems: 'center',
           borderBottom: '3px double var(--primary)',
-          paddingBottom: '0.4rem',
-          marginBottom: '0.4rem',
+          paddingBottom: '0.2rem',
+          marginBottom: '0.2rem',
           gap: 'var(--space-sm)'
         }}>
-          <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="form-logo" style={{ width: '60px', height: '60px', objectFit: 'contain' }} decoding="async" />
+          <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda" className="form-logo" style={{ width: '50px', height: '50px', objectFit: 'contain' }} decoding="async" />
           <div className="form-title-container" style={{ flex: 1, textAlign: 'center' }}>
             <h1 style={{ fontSize: '1.05rem', color: 'var(--text-main)', marginBottom: '0.1rem', textTransform: 'uppercase', fontWeight: 800, lineHeight: 1.1 }}>Pemerintah Kabupaten Pulau Taliabu</h1>
             <h2 style={{ fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.1rem', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1.1 }}>Dinas Pendidikan dan Kebudayaan</h2>
@@ -62,10 +62,10 @@ export default function FormulirPPDBPrint() {
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
             <p style={{ fontSize: '0.7rem', marginTop: '0.1rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
           </div>
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '75px', height: '75px', objectFit: 'contain', marginTop: '-8px', marginBottom: '-8px' }} decoding="async" />
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '65px', height: '65px', objectFit: 'contain', marginTop: '-4px', marginBottom: '-4px' }} decoding="async" />
         </div>
  
-        <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '0.3rem' }}>
           <h2 style={{ fontSize: '1.05rem', fontFamily: 'var(--font-heading)', textDecoration: 'underline', margin: '0 0 2px 0' }}>FORMULIR PENDAFTARAN PESERTA DIDIK BARU (PPDB)</h2>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: 600, margin: 0 }}>Tahun Ajaran 2026/2027</p>
         </div>
@@ -205,7 +205,7 @@ export default function FormulirPPDBPrint() {
           font-weight: 700;
           font-size: 0.8rem;
           border-left: 4px solid #1e40af;
-          margin: 0.5rem 0 0.25rem 0;
+          margin: 0.35rem 0 0.15rem 0;
           text-transform: uppercase;
         }
         
@@ -226,7 +226,7 @@ export default function FormulirPPDBPrint() {
         
         .form-value-line {
           border-bottom: 1px dashed #94a3b8 !important;
-          height: 1.45rem;
+          height: 1.25rem;
           display: flex;
           align-items: flex-end;
           padding-bottom: 1px;
@@ -256,7 +256,7 @@ export default function FormulirPPDBPrint() {
         .sig-container {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          margin-top: 0.75rem;
+          margin-top: 0.4rem;
           text-align: center;
           font-size: 0.8rem;
         }
@@ -265,7 +265,7 @@ export default function FormulirPPDBPrint() {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          height: 75px;
+          height: 60px;
         }
 
         /* Print Override rules */
