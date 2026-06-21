@@ -286,7 +286,6 @@ export default function FormulirPPDBPrint() {
             color: #000000 !important;
             padding: 0 !important;
             margin: 0 !important;
-            display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
             height: auto !important;

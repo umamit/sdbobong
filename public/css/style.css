@@ -3441,6 +3441,11 @@ img {
         user-select: text !important;
     }
 
+    html.is-admin body, .is-admin body {
+        overflow: visible !important;
+        height: auto !important;
+    }
+
     @page {
         size: A4;
         margin: 10mm 15mm;
