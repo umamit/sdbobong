@@ -180,12 +180,8 @@ export async function POST(req) {
     const ppdbUsiaText = ppdb.syarat_usia || "Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli 2026...";
     const ppdbBerkasList = ppdb.syarat_berkas || [
       "Scan Akta Kelahiran asli (Format PDF, 150KB - 350KB) *",
-      "Scan Kartu Keluarga (KK) terbaru asli (Format PDF, 150KB - 350KB) *",
-      "Scan KTP Orang Tua (Ayah & Ibu dijadikan 1 file PDF, 150KB - 350KB) *",
-      "Scan SPTJM (Surat Pertanggungjawaban Mutlak) asli (Format PDF, 150KB - 350KB) *",
-      "Scan KIP / PKH asli (Format PDF, 150KB - 350KB) (Opsional)",
-      "Scan Ijazah TK / PAUD asli (Format PDF, 150KB - 350KB) (Opsional)",
-      "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar."
+      "Scan Kartu Keluarga (KK) asli (Format PDF, 150KB - 350KB) *",
+      "Scan Ijazah TK / PAUD asli (Format PDF, 150KB - 350KB) (Opsional)"
     ];
     const listPpdbBerkasText = Array.isArray(ppdbBerkasList)
       ? ppdbBerkasList.map(b => `- ${b}`).join('\n')
@@ -551,12 +547,8 @@ Saat ini saya sedang berjalan dalam **Mode Demo / Pemeliharaan Sistem** oleh Adm
   
   const syaratBerkas = ppdb.syarat_berkas || [
     "Scan Akta Kelahiran asli *",
-    "Scan Kartu Keluarga (KK) terbaru *",
-    "Scan KTP Orang Tua (Ayah & Ibu dijadikan 1 file PDF) *",
-    "Scan SPTJM (Surat Pertanggungjawaban Mutlak) asli *",
-    "Scan KIP / PKH (Opsional)",
-    "Scan Ijazah TK / PAUD (Opsional)",
-    "Pas foto berwarna ukuran 3x4 latar merah sebanyak 2 lembar."
+    "Scan Kartu Keluarga (KK) asli *",
+    "Scan Ijazah TK / PAUD (Opsional)"
   ];
 
   const alurSteps = ppdb.alur_steps || [];

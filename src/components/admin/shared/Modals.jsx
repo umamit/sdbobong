@@ -1037,9 +1037,6 @@ export default function Modals() {
                   {[
                     { label: "Kartu Keluarga", field: "berkas_kk", icon: "📋" },
                     { label: "Akta Kelahiran", field: "berkas_akta", icon: "👶" },
-                    { label: "KTP Orang Tua", field: "berkas_ktp", icon: "🪪" },
-                    { label: "SPTJM", field: "berkas_sptjm", icon: "✍️" },
-                    { label: "KIP / PKH (Opsional)", field: "berkas_kip", icon: "💳" },
                     { label: "Ijazah TK / PAUD (Opsional)", field: "berkas_ijazah", icon: "🎓" }
                   ].map((doc, idx) => {
                     const url = selectedRecord[doc.field];
@@ -1125,7 +1122,7 @@ export default function Modals() {
                   <h5 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>⚠️ INSTRUKSI DAFTAR ULANG:</h5>
                   <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.75rem', color: '#475569', lineHeight: '1.6' }}>
                     <li>Simpan atau cetak bukti pendaftaran elektronik ini secara fisik.</li>
-                    <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC KTP Orang Tua, SPTJM) ke SDN Bobong.</li>
+                    <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC Ijazah TK jika ada, dan Pas Foto 3x4) ke SDN Bobong.</li>
                     <li>Serahkan seluruh berkas ke Panitia PPDB di ruang sekretariat pada jam kerja (08:00 - 12:00 WITA) untuk validasi berkas fisik.</li>
                   </ol>
                 </div>

@@ -68,12 +68,8 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   
   const syarat_berkas = ppdbConfig.syarat_berkas || [
     "Scan Akta Kelahiran asli (Format PDF, 150KB - 350KB) *",
-    "Scan Kartu Keluarga (KK) terbaru asli (Format PDF, 150KB - 350KB) *",
-    "Scan KTP Orang Tua (Ayah & Ibu dijadikan 1 file PDF, 150KB - 350KB) *",
-    "Scan SPTJM (Surat Pertanggungjawaban Mutlak) asli (Format PDF, 150KB - 350KB) *",
-    "Scan KIP / PKH asli (Format PDF, 150KB - 350KB) (Opsional jika memiliki)",
-    "Scan Ijazah TK / PAUD asli (Format PDF, 150KB - 350KB) (Opsional jika memiliki)",
-    "Pas foto berwarna ukuran 3x4 (Latar Merah) sebanyak 2 lembar (untuk keperluan fisik/tatap muka)."
+    "Scan Kartu Keluarga (KK) asli (Format PDF, 150KB - 350KB) *",
+    "Scan Ijazah TK / PAUD asli (Format PDF, 150KB - 350KB) (Opsional jika memiliki)"
   ];
 
   const alur_steps = ppdbConfig.alur_steps || [
@@ -94,7 +90,7 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
     },
     {
       q: "Bagaimana jika kami tidak bisa mengisi formulir pendaftaran online?",
-      a: "Orang tua murid tidak perlu khawatir. Anda cukup membawa semua dokumen fotokopi yang diperlukan (Akta Lahir, KK, KTP) ke sekolah. Operator dan Panitia PPDB SD Negeri Bobong akan membantu memasukkan data anak Anda ke sistem pendaftaran digital sekolah."
+      a: "Orang tua murid tidak perlu khawatir. Anda cukup membawa semua dokumen fotokopi yang diperlukan (Akta Lahir, KK, Ijazah TK) ke sekolah. Operator dan Panitia PPDB SD Negeri Bobong akan membantu memasukkan data anak Anda ke sistem pendaftaran digital sekolah."
     },
     {
       q: "Kapan pengumuman hasil seleksi diumumkan?",
