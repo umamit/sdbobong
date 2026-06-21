@@ -172,6 +172,11 @@ export default function FormulirPPDBPrint() {
         @media screen {
           html, body {
             background-color: #f3f4f6 !important;
+            overflow: auto !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            height: auto !important;
+            min-height: 100vh !important;
           }
           .form-page {
             width: 800px !important;

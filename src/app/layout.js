@@ -368,7 +368,7 @@ export default async function RootLayout({ children }) {
   const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
 
   return (
-    <html lang="id" data-theme={isPrintableForm ? "light" : undefined}>
+    <html lang="id" className={isPrintableForm ? "is-admin" : undefined} data-theme={isPrintableForm ? "light" : undefined}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
