@@ -305,7 +305,6 @@ export default function FormulirPPDBPrint() {
           .form-label,
           .checkbox-item {
             color: #000000 !important;
-            display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
           }
