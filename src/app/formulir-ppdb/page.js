@@ -144,7 +144,8 @@ export default function FormulirPPDBPrint() {
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu Keluarga / KK (2 Lembar)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi KTP Orang Tua / Wali (Ayah & Ibu)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Surat Pertanggungjawaban Mutlak (SPTJM) bermeterai asli</div>
-          <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu KIP / PKH (Bagi penerima bantuan / jalur Afirmasi)</div>
+          <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Kartu KIP / PKH (Bagi penerima bantuan / jalur Afirmasi - Opsional)</div>
+          <div className="checkbox-item"><span className="checkbox-box"></span> Fotokopi Ijazah TK / PAUD (Opsional jika memiliki)</div>
           <div className="checkbox-item"><span className="checkbox-box"></span> Pas Foto Calon Siswa Ukuran 3x4 Latar Belakang Merah (2 Lembar)</div>
         </div>
 
