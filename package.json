@@ -8,6 +8,7 @@
 
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/check-print-safety.mjs",
     "dev": "next dev -p 5001",
     "build": "next build",
     "start": "next start -p 5001"
