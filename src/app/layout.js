@@ -48,24 +48,6 @@ export default async function RootLayout({ children }) {
   const isPrintableForm = pathname === '/formulir-ppdb';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
-  if (isPrintableForm) {
-    return (
-      <html lang="id" data-theme="light">
-        <head>
-          <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta name="robots" content="noindex, nofollow" />
-          <link rel="icon" href="/favicon.ico" />
-          <title>Formulir PPDB Offline - SD Negeri Bobong</title>
-        </head>
-        <body style={{ background: '#ffffff', color: '#000000', margin: 0, padding: 0 }}>
-          <main style={{ background: '#ffffff', color: '#000000', margin: 0, padding: 0 }}>
-            {children}
-          </main>
-        </body>
-      </html>
-    );
-  }
 
   if (isMaintenanceActive) {
     return (
@@ -386,7 +368,7 @@ export default async function RootLayout({ children }) {
   const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
 
   return (
-    <html lang="id">
+    <html lang="id" data-theme={isPrintableForm ? "light" : undefined}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -410,9 +392,10 @@ export default async function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `
           // Zero-flicker theme initialization
           try {
+            const isPrintable = window.location.pathname === '/formulir-ppdb';
             const savedTheme = localStorage.getItem('theme');
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            const initialTheme = savedTheme || systemTheme;
+            const initialTheme = isPrintable ? 'light' : (savedTheme || systemTheme);
             document.documentElement.setAttribute('data-theme', initialTheme);
           } catch (e) {
             console.error('Failed to load theme preference', e);
