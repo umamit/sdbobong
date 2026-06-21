@@ -180,20 +180,31 @@ export default function FormulirPPDBPrint() {
           width: 800px !important;
           min-width: 800px !important;
           box-sizing: border-box !important;
-          background: #ffffff;
+          background: #ffffff !important;
           margin: 0 auto;
           padding: 1.25rem 2rem;
           border-radius: var(--radius-md);
           box-shadow: var(--shadow-md);
-          border: 1px solid var(--border-color);
+          border: 1px solid #cbd5e1;
+        }
+        /* Explicitly force dark text on screen for all elements inside form-page */
+        .form-page,
+        .form-page h1, 
+        .form-page h2, 
+        .form-page p, 
+        .form-page div, 
+        .form-page span,
+        .form-label,
+        .checkbox-item {
+          color: #0f172a !important;
         }
         .form-section-title {
-          background-color: var(--bg-main);
-          color: var(--primary-dark);
+          background-color: #f1f5f9 !important;
+          color: #1e3a8a !important;
           padding: 0.3rem var(--space-xs);
           font-weight: 700;
           font-size: 0.8rem;
-          border-left: 4px solid var(--primary);
+          border-left: 4px solid #1e40af;
           margin: 0.5rem 0 0.25rem 0;
           text-transform: uppercase;
         }
@@ -207,12 +218,11 @@ export default function FormulirPPDBPrint() {
         }
         .form-label {
           font-weight: 600;
-          color: var(--text-main);
           display: flex;
           align-items: center;
         }
         .form-value-line {
-          border-bottom: 1px dashed var(--text-light);
+          border-bottom: 1px dashed #94a3b8 !important;
           height: 1.45rem;
           display: flex;
           align-items: flex-end;
@@ -232,7 +242,7 @@ export default function FormulirPPDBPrint() {
         .checkbox-box {
           width: 14px;
           height: 14px;
-          border: 1px solid var(--text-light);
+          border: 1px solid #94a3b8 !important;
           border-radius: 2px;
           display: inline-block;
         }
@@ -254,6 +264,7 @@ export default function FormulirPPDBPrint() {
         @media print {
           body, html {
             background-color: #ffffff !important;
+            background: #ffffff !important;
             padding: 0 !important;
             color: #000000 !important;
             overflow-x: visible !important;
@@ -265,15 +276,33 @@ export default function FormulirPPDBPrint() {
             width: 100% !important;
             min-width: unset !important;
             max-width: 100% !important;
+            background-color: #ffffff !important;
+            background: #ffffff !important;
           }
-          .no-print {
-            display: none !important;
+          .form-page h1, 
+          .form-page h2, 
+          .form-page p, 
+          .form-page div, 
+          .form-page span,
+          .form-label,
+          .checkbox-item {
+            color: #000000 !important;
+          }
+          .form-value-line {
+            border-bottom: 1px dashed #000000 !important;
+          }
+          .checkbox-box {
+            border: 1px solid #000000 !important;
           }
           .form-section-title {
             background-color: #f3f4f6 !important;
             border-left: 4px solid #000000 !important;
+            color: #000000 !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+          }
+          .no-print {
+            display: none !important;
           }
         }
       `}} />
