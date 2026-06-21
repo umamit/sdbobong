@@ -368,10 +368,7 @@ export default async function RootLayout({ children }) {
   const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname.startsWith('/ppdb-online/sukses');
   const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
 
-  const htmlClassNames = [
-    isPrintableForm ? "is-admin" : "",
-    isBypassPath ? "allow-select" : ""
-  ].filter(Boolean).join(" ");
+  const htmlClassNames = isBypassPath ? "allow-select" : "";
 
   return (
     <html lang="id" className={htmlClassNames || undefined} data-theme={isPrintableForm ? "light" : undefined}>
