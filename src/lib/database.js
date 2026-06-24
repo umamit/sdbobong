@@ -88,3 +88,11 @@ export {
 export {
   getStorageUsage,
 } from './db/storage.js';
+
+// Config defaults & shape contract
+export {
+  DEFAULT_CONFIG,
+  DEFAULT_STATS,
+  DEFAULT_PAGE_CONTENTS,
+  mergeWithDefaults,
+} from './db/config.defaults.js';

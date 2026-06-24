@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { supabase, isSupabaseEnabled, setCachedConfig, WEBSITE_CONFIG_JSON } from './core.js';
+import { mergeWithDefaults } from './config.defaults.js';
 
 export async function isTableSeeded(tableName) {
   if (!isSupabaseEnabled()) return true;
@@ -90,9 +91,10 @@ export async function loadWebConfig() {
           faqs: data.faqs || data.stats?._faqs_fallback || localConfig.faqs || [],
           gallery: data.gallery || data.stats?._gallery_fallback || localConfig.gallery || []
         };
-        setCachedConfig(dbConfig);
-        try { fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(dbConfig, null, 4), 'utf-8'); } catch (e) {}
-        return dbConfig;
+        const safeDbConfig = mergeWithDefaults(dbConfig);
+        setCachedConfig(safeDbConfig);
+        try { fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(safeDbConfig, null, 4), 'utf-8'); } catch (e) {}
+        return safeDbConfig;
       } else if (error && error.code === 'PGRST116') {
         const seedData = { id: "global_config", marquee_announcements: localConfig.marquee_announcements, stats: localConfig.stats, ppdb_contacts: localConfig.ppdb_contacts, force_local_cache: localConfig.force_local_cache === true };
         try { await supabase.from("config_sdn_bobong").insert({ ...seedData, downloads: localConfig.downloads, faqs: localConfig.faqs, gallery: localConfig.gallery }); }
@@ -101,8 +103,9 @@ export async function loadWebConfig() {
     } catch (e) { console.error("Error loading web config from Supabase:", e.message || e); }
   }
 
-  setCachedConfig(localConfig);
-  return localConfig;
+  const safeLocalConfig = mergeWithDefaults(localConfig);
+  setCachedConfig(safeLocalConfig);
+  return safeLocalConfig;
 }
 
 export async function saveWebConfig(config) {
