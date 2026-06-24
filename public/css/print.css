@@ -49,10 +49,10 @@
 
     @page {
         size: A4;
-        margin: 10mm 15mm;
+        margin: 8mm 12mm 8mm 12mm !important;
     }
 
-    body, html, main, .form-page {
+    body, html, main {
         background-color: #ffffff !important;
         background: #ffffff !important;
         color: #000000 !important;
@@ -64,6 +64,27 @@
         height: auto !important;
         min-height: 0 !important;
         overflow: visible !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+    }
+
+    .form-page {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0.4rem 0.8rem !important;
+        margin: 0 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        width: 100% !important;
+        min-width: unset !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 
     .form-page h1, 
@@ -78,20 +99,47 @@
         opacity: 1 !important;
     }
 
-    .form-value-line {
-        border-bottom: 1px dashed #000000 !important;
-    }
-
-    .checkbox-box {
-        border: 1px solid #000000 !important;
-    }
-
     .form-section-title {
         background-color: #f3f4f6 !important;
         border-left: 4px solid #000000 !important;
         color: #000000 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        margin: 0.25rem 0 0.1rem 0 !important;
+        padding: 0.15rem 4px !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .form-grid {
+        row-gap: 1px !important;
+        column-gap: 8px !important;
+        margin-bottom: 0.15rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .form-value-line {
+        border-bottom: 1px dashed #000000 !important;
+        height: 1.05rem !important;
+    }
+
+    .checkbox-container {
+        margin-top: 0.1rem !important;
+    }
+
+    .checkbox-box {
+        border: 1px solid #000000 !important;
+    }
+
+    .sig-container {
+        margin-top: 0.3rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .sig-box {
+        height: 50px !important;
     }
 
     .no-print {
