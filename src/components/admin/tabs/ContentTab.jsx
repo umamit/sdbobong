@@ -5,7 +5,6 @@ import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardCo
 
 export default function ContentTab() {
   const {
-    B,
     activeTab,
     config,
     handleAllowCopyToggle,

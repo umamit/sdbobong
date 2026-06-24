@@ -6,7 +6,7 @@ import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardCo
 export default function GalleryTab() {
   const {
     activeTab,
-    filteredGallery,
+    config,
     gallerySearch,
     handleDeleteGalleryItem,
     setEditingGalleryItem,
@@ -21,6 +21,13 @@ export default function GalleryTab() {
     setGalleryType,
     setGalleryUrl
   } = useAdminDashboard();
+
+  const filteredGallery = (config?.gallery || []).filter(item => {
+    const query = (gallerySearch || '').toLowerCase();
+    return (item.title || '').toLowerCase().includes(query) ||
+           (item.category || '').toLowerCase().includes(query) ||
+           (item.type || '').toLowerCase().includes(query);
+  });
 
   return (
     <section id="tab-gallery" className={`tab-pane ${activeTab === 'gallery' ? 'active' : ''}`}>

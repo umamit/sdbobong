@@ -320,6 +320,63 @@ export default function useConfigHandlers({
     }
   };
 
+  const handleStatsUpdate = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const siswa_aktif = parseInt(form.siswa_aktif.value, 10) || 0;
+    const guru_staf = parseInt(form.guru_staf.value, 10) || 0;
+    const ruang_kelas = parseInt(form.ruang_kelas.value, 10) || 0;
+    const akreditasi = form.akreditasi.value.trim().toUpperCase() || 'B';
+    const rombel = parseInt(form.rombel.value, 10) || 0;
+    const uks = parseInt(form.uks.value, 10) || 0;
+    const gudang = parseInt(form.gudang.value, 10) || 0;
+    const toilet = parseInt(form.toilet.value, 10) || 0;
+    const cuci_tangan = parseInt(form.cuci_tangan.value, 10) || 0;
+
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          action_type: 'stats', 
+          siswa_aktif, 
+          guru_staf, 
+          ruang_kelas, 
+          akreditasi,
+          rombel,
+          uks,
+          gudang,
+          toilet,
+          cuci_tangan
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', 'Statistik sekolah berhasil disimpan.');
+        setConfig(prev => ({
+          ...prev,
+          stats: {
+            ...(prev.stats || {}),
+            siswa_aktif,
+            guru_staf,
+            ruang_kelas,
+            akreditasi,
+            rombel,
+            uks,
+            gudang,
+            toilet,
+            cuci_tangan
+          }
+        }));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal menyimpan statistik.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleAnnouncementsUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -677,6 +734,7 @@ export default function useConfigHandlers({
     handleAnnouncementsUpdate,
     handleMaintenanceModeToggle,
     handleAllowCopyToggle,
+    handleStatsUpdate,
     handleHeroBgUpdate,
     handleContactsUpdate,
     handleDbToggle,

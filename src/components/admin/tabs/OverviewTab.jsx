@@ -6,7 +6,6 @@ import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardCo
 
 export default function OverviewTab() {
   const {
-    B,
     activeTab,
     chartTooltip,
     confirmPassword,
