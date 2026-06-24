@@ -6,80 +6,21 @@
     ],
     "marquee_speed": 40,
     "stats": {
+        "siswa_aktif": 340,
+        "guru_staf": 23,
+        "ruang_kelas": 8,
+        "akreditasi": "B",
+        "rombel": 14,
         "uks": 1,
         "gudang": 1,
-        "rombel": 14,
         "toilet": 2,
-        "guru_staf": 23,
-        "akreditasi": "B",
-        "allow_copy": false,
-        "wa_gateway": {
-            "url": "https://api.fonnte.com/send",
-            "token": "pWVHmndqCuTUCLheb8nG",
-            "enabled": false,
-            "provider": "fonnte",
-            "message_template_rejected": "Berkas Tidak Lengkap",
-            "message_template_verified": "terverifikasi"
-        },
         "cuci_tangan": 4,
-        "news_seeded": true,
-        "ruang_kelas": 8,
-        "siswa_aktif": 340,
+        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158871860_20260611_130741.jpg",
+        "allow_copy": false,
+        "maintenance_mode": false,
         "marquee_speed": 40,
-        "page_contents": {
-            "ppdb": {},
-            "galeri": {
-                "gallery_items": [
-                    {
-                        "id": "gallery_1",
-                        "alt": "Dzikir Bersama",
-                        "src": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780866991205_20260605_081308.jpg"
-                    },
-                    {
-                        "id": "gallery_2",
-                        "alt": "Upacara Bendera Hari Senin",
-                        "src": "/images/gallery_2.svg"
-                    },
-                    {
-                        "id": "gallery_3",
-                        "alt": "Latihan Tari Tradisional Maluku Utara",
-                        "src": "/images/gallery_3.svg"
-                    },
-                    {
-                        "id": "gallery_4",
-                        "alt": "Praktek Pembelajaran Olahraga di Lapangan",
-                        "src": "/images/gallery_4.svg"
-                    },
-                    {
-                        "id": "gallery_5",
-                        "alt": "Kegiatan Membaca Buku di Perpustakaan",
-                        "src": "/images/gallery_5.svg"
-                    },
-                    {
-                        "id": "gallery_6",
-                        "alt": "Pemberian Materi Kemah Pramuka",
-                        "src": "/images/gallery_6.svg"
-                    }
-                ]
-            },
-            "profil": {
-                "misi": [
-                    "Melaksanakan pembelajaran aktif, kreatif, efektif, dan menyenangkan untuk mengoptimalkan kecerdasan siswa.",
-                    "Menanamkan keimanan, ketakwaan, serta nilai budi pekerti luhur dalam aktivitas harian sekolah.",
-                    "Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.",
-                    "Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.",
-                    "Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak."
-                ],
-                "visi": "\"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global.\"",
-                "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.\n\nSelama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
-                "banner_text": "Mengenal lebih dekat sejarah, visi misi, dan jajaran pendidik SD Negeri Bobong.",
-                "banner_title": "Profil Sekolah",
-                "sejarah_badge": "SEJARAH SEKOLAH",
-                "sejarah_image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158923764_20260611_130741.jpg",
-                "sejarah_title": "Perjalanan SD Negeri Bobong"
-            }
-        },
-        "visitor_count": 107,
+        "visitor_count": 134,
+        "_downloads_fallback": [],
         "_faqs_fallback": [
             {
                 "id": "faq-1",
@@ -97,11 +38,6 @@
                 "question": "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?"
             }
         ],
-        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158871860_20260611_130741.jpg",
-        "messages_seeded": true,
-        "students_seeded": true,
-        "teachers_seeded": true,
-        "maintenance_mode": false,
         "_gallery_fallback": [
             {
                 "id": "gal-1",
@@ -173,23 +109,120 @@
                 "category": "umum"
             }
         ],
+        "page_contents": {
+            "beranda": {
+                "hero_subtitle": "Membangun Masa Depan di Jantung Taliabu",
+                "hero_title": "Selamat Datang di Website Resmi SD Negeri Bobong",
+                "hero_text": "\"Cerdas, Berkarakter, dan Berbudaya.\" Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.",
+                "welcome_badge": "Sambutan Kepala Sekolah",
+                "welcome_title": "Mendidik dengan Hati dan Budaya Taliabu",
+                "welcome_quote": "\"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya.\"",
+                "welcome_p1": "Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
+                "welcome_p2": "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman."
+            },
+            "profil": {
+                "banner_title": "Profil Sekolah",
+                "banner_text": "Mengenal lebih dekat sejarah, visi misi, dan jajaran pendidik SD Negeri Bobong.",
+                "npsn": "60200589",
+                "tahun_berdiri": "1978",
+                "status": "Negeri",
+                "akreditasi": "B",
+                "kurikulum": "Kurikulum Merdeka",
+                "kepala_sekolah": "",
+                "nip_kepala": "",
+                "visi": "\"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global.\"",
+                "misi": [
+                    "Melaksanakan pembelajaran aktif, kreatif, efektif, dan menyenangkan untuk mengoptimalkan kecerdasan siswa.",
+                    "Menanamkan keimanan, ketakwaan, serta nilai budi pekerti luhur dalam aktivitas harian sekolah.",
+                    "Mengintegrasikan muatan lokal kebudayaan Maluku Utara dalam pembelajaran seni dan keterampilan daerah.",
+                    "Membina kemandirian dan rasa peduli lingkungan hidup melalui program Sabtu Bersih dan penghijauan sekolah.",
+                    "Menjalin hubungan kemitraan yang harmonis dengan orang tua siswa dan masyarakat sekitar demi kesuksesan belajar anak."
+                ],
+                "sejarah": "",
+                "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.\n\nSelama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
+                "sejarah_badge": "SEJARAH SEKOLAH",
+                "sejarah_image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158923764_20260611_130741.jpg",
+                "sejarah_title": "Perjalanan SD Negeri Bobong"
+            },
+            "akademik": {
+                "banner_title": "Akademik",
+                "banner_text": "Informasi kurikulum, jadwal, dan program akademik SD Negeri Bobong."
+            },
+            "kesiswaan": {
+                "banner_title": "Kesiswaan",
+                "banner_text": "Ekstrakurikuler, prestasi, dan karya siswa SD Negeri Bobong.",
+                "ekstrakurikuler": [],
+                "prestasi": [],
+                "karya": []
+            },
+            "ppdb": {
+                "banner_title": "Penerimaan Peserta Didik Baru",
+                "banner_text": "Informasi lengkap PPDB SD Negeri Bobong.",
+                "syarat": [],
+                "jadwal": []
+            },
+            "galeri": {
+                "gallery_items": [
+                    {
+                        "id": "gallery_1",
+                        "alt": "Dzikir Bersama",
+                        "src": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780866991205_20260605_081308.jpg"
+                    },
+                    {
+                        "id": "gallery_2",
+                        "alt": "Upacara Bendera Hari Senin",
+                        "src": "/images/gallery_2.svg"
+                    },
+                    {
+                        "id": "gallery_3",
+                        "alt": "Latihan Tari Tradisional Maluku Utara",
+                        "src": "/images/gallery_3.svg"
+                    },
+                    {
+                        "id": "gallery_4",
+                        "alt": "Praktek Pembelajaran Olahraga di Lapangan",
+                        "src": "/images/gallery_4.svg"
+                    },
+                    {
+                        "id": "gallery_5",
+                        "alt": "Kegiatan Membaca Buku di Perpustakaan",
+                        "src": "/images/gallery_5.svg"
+                    },
+                    {
+                        "id": "gallery_6",
+                        "alt": "Pemberian Materi Kemah Pramuka",
+                        "src": "/images/gallery_6.svg"
+                    }
+                ]
+            }
+        },
+        "wa_gateway": {
+            "url": "https://api.fonnte.com/send",
+            "token": "pWVHmndqCuTUCLheb8nG",
+            "enabled": false,
+            "provider": "fonnte",
+            "message_template_rejected": "Berkas Tidak Lengkap",
+            "message_template_verified": "terverifikasi"
+        },
+        "news_seeded": true,
+        "messages_seeded": true,
+        "students_seeded": true,
+        "teachers_seeded": true,
         "graduation_seeded": true,
-        "_downloads_fallback": [],
         "achievements_seeded": true
     },
     "ppdb_contacts": {
-        "wa_humas": "6281340123496",
-        "nip_humas": "19951010 202203 2 012",
         "nama_humas": "Syareefah",
-        "wa_floating": "6282292111638",
-        "wa_operator": "6285399487844",
-        "nip_operator": "majapahit101",
-        "email_sekolah": "admin@sdnegeribobong.sch.id",
+        "wa_humas": "6281340123496",
         "jabatan_humas": "Wali Kelas",
+        "wa_floating": "6282292111638",
         "nama_operator": "Suharmin, S.Pd",
-        "jabatan_operator": "Operator/Guru Kelas 3C"
+        "wa_operator": "6285399487844",
+        "jabatan_operator": "Operator/Guru Kelas 3C",
+        "email_sekolah": "admin@sdnegeribobong.sch.id",
+        "nip_humas": "19951010 202203 2 012",
+        "nip_operator": "majapahit101"
     },
-    "force_local_cache": false,
     "downloads": [],
     "faqs": [
         {
@@ -278,5 +311,9 @@
             "title": "Kelulusan",
             "category": "umum"
         }
-    ]
+    ],
+    "force_local_cache": false,
+    "suspicious_attempts": {},
+    "manual_blacklist": [],
+    "security_settings": {}
 }

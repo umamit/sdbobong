@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import '../../../../public/css/admin.css';
 
 export default function GuruLogin() {
   const router = useRouter();
