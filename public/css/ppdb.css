@@ -1,0 +1,285 @@
+/* PPDB Process Section */
+.ppdb-steps {
+    position: relative;
+    padding: var(--space-sm) 0;
+}
+
+.ppdb-step-item {
+    position: relative;
+    padding-left: 45px;
+    margin-bottom: var(--space-md);
+}
+
+.ppdb-step-item:last-child {
+    margin-bottom: 0;
+}
+
+.ppdb-step-number {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.ppdb-step-item::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 34px;
+    bottom: -22px;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.ppdb-step-item:last-child::before {
+    display: none;
+}
+
+.ppdb-step-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    color: var(--primary-dark);
+}
+
+/* ==========================================================================
+   PPDB Stepper Section (Step-by-Step Enrollment Guide)
+   ========================================================================== */
+.stepper-section {
+    background-color: var(--bg-card);
+    margin-top: -2.5rem;
+    position: relative;
+    z-index: 20;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-md);
+}
+
+.stepper-header {
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.stepper-header h2 {
+    font-size: 1.35rem;
+    color: var(--primary-dark);
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-heading);
+}
+
+.stepper-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.stepper-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    position: relative;
+}
+
+.stepper-step {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-main);
+    border: 2px solid var(--border-color);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.stepper-step:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    background-color: var(--bg-card);
+    box-shadow: var(--shadow-md);
+}
+
+.stepper-step-number {
+    width: 44px;
+    height: 44px;
+    background-color: var(--primary);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: var(--space-xs);
+    transition: all var(--transition-normal);
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 6px rgba(11, 60, 93, 0.15);
+    z-index: 2;
+}
+
+.stepper-step:hover .stepper-step-number {
+    background-color: var(--secondary);
+    transform: scale(1.1);
+}
+
+.stepper-step-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-top: var(--space-xs);
+    margin-bottom: 0.25rem;
+}
+
+.stepper-step-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.stepper-step:hover .stepper-step-title {
+    color: var(--primary-light);
+}
+
+@media (min-width: 576px) {
+    .stepper-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+}
+
+@media (min-width: 992px) {
+    .stepper-section {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    .stepper-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .stepper-grid::before {
+        content: '';
+        position: absolute;
+        top: 35px;
+        left: 12.5%;
+        right: 12.5%;
+        height: 2px;
+        background-color: var(--border-color);
+        z-index: 0;
+    }
+    
+    .stepper-step {
+        z-index: 1;
+    }
+}
+
+/* ==========================================================================
+   PPDB Offline Form Print Layout (A4 optimized & dark-mode resilient)
+   ========================================================================== */
+.form-page {
+    width: 800px !important;
+    min-width: 800px !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    border: 1px solid #cbd5e1;
+}
+
+/* Explicitly force dark text on screen for all elements inside form-page */
+.form-page,
+.form-page h1, 
+.form-page h2, 
+.form-page p, 
+.form-page div, 
+.form-page span,
+.form-page .form-label,
+.form-page .checkbox-item {
+    color: #0f172a !important;
+}
+
+.form-section-title {
+    background-color: #f1f5f9 !important;
+    color: #1e3a8a !important;
+    padding: 0.3rem var(--space-xs);
+    font-weight: 700;
+    font-size: 0.8rem;
+    border-left: 4px solid #1e40af;
+    margin: 0.35rem 0 0.15rem 0;
+    text-transform: uppercase;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    row-gap: 2px;
+    column-gap: var(--space-sm);
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+}
+
+.form-page .form-label {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    color: #0f172a !important;
+}
+
+.form-value-line {
+    border-bottom: 1px dashed #94a3b8 !important;
+    height: 1.25rem;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 1px;
+}
+
+.checkbox-container {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: 0.25rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.75rem;
+}
+
+.checkbox-box {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #94a3b8 !important;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.sig-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0.4rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.sig-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60px;
+}
