@@ -27,6 +27,23 @@ export default function RichTextEditor({ defaultValue = '', placeholder = 'Tulis
     }
   }, [defaultValue]);
 
+  // Listen to native input event for external dispatching (like AI draft application)
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const handleNativeInput = () => {
+      const currentHtml = editor.innerHTML;
+      const normalizedHtml = currentHtml === '<break>' || currentHtml === '<br>' ? '' : currentHtml;
+      setHtml(normalizedHtml);
+    };
+
+    editor.addEventListener('input', handleNativeInput);
+    return () => {
+      editor.removeEventListener('input', handleNativeInput);
+    };
+  }, []);
+
   // Save the current selection range before losing focus to modal input
   const saveSelection = () => {
     if (typeof window !== 'undefined') {

@@ -537,6 +537,9 @@ export default function NewsTab() {
                   <div className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                     <label htmlFor="news_image" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Pilih Ilustrasi Bawaan *</label>
                     <select id="news_image" name="image" className="form-control" defaultValue={editingNews ? editingNews.image : '/images/news_hari_guru.svg'} style={{ width: '100%' }} required>
+                      {editingNews && editingNews.image && !['/images/news_hari_guru.svg', '/images/news_imunisasi.svg', '/images/news_kerja_bakti.svg', '/images/news_rapat_komite.svg'].includes(editingNews.image) && (
+                        <option value={editingNews.image}>Gambar Unggahan Saat Ini ({editingNews.image.split('/').pop()})</option>
+                      )}
                       <option value="/images/news_hari_guru.svg">Hari Guru Nasional (Merah/Gold)</option>
                       <option value="/images/news_imunisasi.svg">Program Imunisasi / BIAS (Biru Medis)</option>
                       <option value="/images/news_kerja_bakti.svg">Sabtu Bersih / Lingkungan (Hijau Alam)</option>
