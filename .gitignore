@@ -21,6 +21,14 @@ images/uploads/*
 
 # Scratch files
 scratch/
+scratch_curl.html
+
+# Test/debug output files
+test_print.pdf
+test_print_page.png
+screenshot.png
+screenshot_pdf.png
+public/test_print.pdf
 
 # Local databases (Sensitive info)
 data/pendaftaran.json
