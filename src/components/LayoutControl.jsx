@@ -49,15 +49,18 @@ export default function LayoutControl() {
     
     if (isBypass) {
       document.documentElement.classList.add('allow-select');
+      // IMPORTANT: bypass paths must NOT get is-admin class
+      // is-admin triggers overflow: hidden on body (admin.css), causing blank PDF prints
+      document.documentElement.classList.remove('is-admin');
     } else {
       document.documentElement.classList.remove('allow-select');
     }
 
-    const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru') || isBypass;
+    const isAdminOrGuru = pathname?.startsWith('/admin') || pathname?.startsWith('/guru');
     if (isAdminOrGuru) {
       document.documentElement.classList.add('is-admin');
       return;
-    } else {
+    } else if (!isBypass) {
       document.documentElement.classList.remove('is-admin');
     }
 

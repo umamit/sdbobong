@@ -170,7 +170,8 @@ export default function FormulirPPDBPrint() {
         }
 
         @media screen {
-          html, body {
+          /* Force body to be scrollable — override any .is-admin body { overflow: hidden } from admin.css */
+          html, body, .is-admin body, html.is-admin body {
             background-color: #f3f4f6 !important;
             overflow: auto !important;
             overflow-y: auto !important;
