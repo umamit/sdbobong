@@ -334,6 +334,27 @@ export function AdminDashboardProvider({
     };
   }, []);
 
+  const getPageTitle = () => {
+    const titles = {
+      overview: 'Ringkasan Dashboard',
+      ppdb: 'Manajemen Data PPDB',
+      content: 'Pengumuman & Statistik',
+      news: 'Manajemen Berita Sekolah',
+      teachers: 'Manajemen Guru & Kepala Sekolah',
+      achievements: 'Manajemen Prestasi Sekolah',
+      pages: 'Kelola Konten Halaman',
+      agenda: 'Sistem Agenda & Kegiatan Sekolah',
+      downloads: 'Manajemen Pusat Unduhan',
+      faqs: 'Manajemen FAQ & Hubungi',
+      gallery: 'Manajemen Galeri Kegiatan',
+      messages: 'Moderasi Kotak Masuk & Buku Tamu',
+      graduation: 'Kelola Portal Kelulusan Siswa',
+      students: 'Manajemen Data Siswa',
+      security: 'Jejak Audit & Keamanan Sistem'
+    };
+    return titles[systemStuff?.activeTab] || 'Dashboard Admin';
+  };
+
   const value = {
     // Global properties
     router,
@@ -346,6 +367,7 @@ export function AdminDashboardProvider({
     setToast,
     showToast,
     dbStatus,
+    getPageTitle,
 
     // Shared States
     config,

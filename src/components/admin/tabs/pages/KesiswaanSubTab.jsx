@@ -14,11 +14,6 @@ export default function KesiswaanSubTab(props) {
     handleAddKesiswaanPrestasi,
     handleUpdateKesiswaanPrestasi,
     handleRemoveKesiswaanPrestasi,
-    p5Previews,
-    handleP5FileChange,
-    handleAddP5Project,
-    handleUpdateP5Project,
-    handleRemoveP5Project,
     handleAddKarya,
     handleUpdateKarya,
     handleRemoveKarya

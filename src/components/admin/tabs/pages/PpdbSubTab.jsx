@@ -10,12 +10,12 @@ export default function PpdbSubTab(props) {
     teachers = [],
     normalizeTeacherName,
     handleContactsUpdate,
-    handleAddSeragam,
-    handleUpdateSeragam,
-    handleRemoveSeragam,
     handleAddPPDBFaq,
     handleUpdatePPDBFaq,
-    handleRemovePPDBFaq
+    handleRemovePPDBFaq,
+    handleAddPPDBJadwal,
+    handleUpdatePPDBJadwal,
+    handleRemovePPDBJadwal
   } = props;
 
   const [inputNamaHumas, setInputNamaHumas] = React.useState('');

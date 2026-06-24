@@ -8,9 +8,14 @@ export default function AkademikSubTab(props) {
     handleFieldChange,
     kurikulumPreview,
     handleKurikulumFileChange,
-    handleAddPPDBJadwal,
-    handleUpdatePPDBJadwal,
-    handleRemovePPDBJadwal
+    p5Previews,
+    handleP5FileChange,
+    handleAddP5Project,
+    handleUpdateP5Project,
+    handleRemoveP5Project,
+    handleAddSeragam,
+    handleUpdateSeragam,
+    handleRemoveSeragam
   } = props;
 
   return (
