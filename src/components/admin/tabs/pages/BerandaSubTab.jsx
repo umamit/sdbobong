@@ -4,6 +4,7 @@ import React from 'react';
 
 export default function BerandaSubTab(props) {
   const {
+    config,
     pageContents,
     handleHeroBgUpdate,
     handleFieldChange
