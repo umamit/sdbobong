@@ -4,7 +4,7 @@ import React from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 
 export default function Header({ onToggleSidebar }) {
-  const { getPageTitle, toast, activeThreats, setActiveTab } = useAdminDashboard();
+  const { getPageTitle, toast } = useAdminDashboard();
 
   return (
     <>
@@ -16,6 +16,7 @@ export default function Header({ onToggleSidebar }) {
             onClick={onToggleSidebar}
             aria-label="Toggle Menu"
             style={{
+              display: 'flex',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -45,24 +46,6 @@ export default function Header({ onToggleSidebar }) {
       {toast && (
         <div className={`alert-toast alert-toast-${toast.type}`}>
           {toast.type === 'success' ? '✅' : '⚠️'} {toast.message}
-        </div>
-      )}
-
-      {/* Suspicious login threat banner */}
-      {activeThreats.length > 0 && (
-        <div className="security-threat-banner">
-          <div className="threat-banner-content">
-            <div className="threat-icon-wrapper">
-              <span className="threat-icon">⚠️</span>
-            </div>
-            <div className="threat-text">
-              <h4 className="threat-title">Peringatan Keamanan Sistem</h4>
-              <p className="threat-desc">Terdeteksi {activeThreats.length} alamat IP mencurigakan dengan kegagalan login beruntun yang berpotensi membahayakan sistem!</p>
-            </div>
-          </div>
-          <button className="btn-threat-action" onClick={() => setActiveTab('security')}>
-            Periksa & Selesaikan Ancaman
-          </button>
         </div>
       )}
     </>
