@@ -339,11 +339,43 @@ export default function FormulirPPDBPrint() {
           }
 
           .form-grid {
-            row-gap: 1px !important;
-            column-gap: 8px !important;
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            -webkit-flex-wrap: wrap !important;
+            flex-wrap: wrap !important;
+            -webkit-align-items: center !important;
+            align-items: center !important;
+            row-gap: 2px !important;
+            column-gap: 0 !important;
             margin-bottom: 0.15rem !important;
             page-break-inside: avoid;
             break-inside: avoid;
+          }
+
+          .form-grid .form-label {
+            -webkit-flex: 0 0 180px !important;
+            flex: 0 0 180px !important;
+            width: 180px !important;
+            min-width: 180px !important;
+            max-width: 180px !important;
+            padding-right: 8px !important;
+            box-sizing: border-box !important;
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            -webkit-align-items: center !important;
+            align-items: center !important;
+          }
+
+          .form-grid .form-value-line,
+          .form-grid .checkbox-container {
+            -webkit-flex: 0 0 calc(100% - 180px) !important;
+            flex: 0 0 calc(100% - 180px) !important;
+            width: calc(100% - 180px) !important;
+            min-width: calc(100% - 180px) !important;
+            max-width: calc(100% - 180px) !important;
+            box-sizing: border-box !important;
           }
 
           .form-value-line {
@@ -352,20 +384,35 @@ export default function FormulirPPDBPrint() {
           }
 
           .checkbox-container {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            -webkit-flex-wrap: wrap !important;
+            flex-wrap: wrap !important;
+            gap: 4px !important;
             margin-top: 0.1rem !important;
           }
 
           .checkbox-box {
             border: 1px solid #000000 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
 
           .sig-container {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            -webkit-flex-direction: row !important;
+            flex-direction: row !important;
             margin-top: 0.3rem !important;
             page-break-inside: avoid;
             break-inside: avoid;
           }
 
           .sig-box {
+            -webkit-flex: 1 !important;
+            flex: 1 !important;
             height: 50px !important;
           }
 

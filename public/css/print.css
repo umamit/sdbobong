@@ -119,9 +119,9 @@
         display: flex !important;
         -webkit-flex-wrap: wrap !important;
         flex-wrap: wrap !important;
-        -webkit-align-items: flex-start !important;
-        align-items: flex-start !important;
-        row-gap: 1px !important;
+        -webkit-align-items: center !important;
+        align-items: center !important;
+        row-gap: 2px !important;
         column-gap: 0 !important;
         margin-bottom: 0.15rem !important;
         page-break-inside: avoid;
@@ -129,20 +129,28 @@
     }
 
     .form-grid .form-label {
-        -webkit-flex: 0 0 175px !important;
-        flex: 0 0 175px !important;
-        width: 175px !important;
-        min-width: 175px !important;
-        max-width: 175px !important;
+        -webkit-flex: 0 0 180px !important;
+        flex: 0 0 180px !important;
+        width: 180px !important;
+        min-width: 180px !important;
+        max-width: 180px !important;
         padding-right: 8px !important;
+        box-sizing: border-box !important;
+        display: -webkit-box !important;
+        display: -webkit-flex !important;
+        display: flex !important;
+        -webkit-align-items: center !important;
+        align-items: center !important;
     }
 
     .form-grid .form-value-line,
     .form-grid .checkbox-container {
-        -webkit-flex: 1 !important;
-        flex: 1 !important;
-        min-width: 0 !important;
-        width: auto !important;
+        -webkit-flex: 0 0 calc(100% - 180px) !important;
+        flex: 0 0 calc(100% - 180px) !important;
+        width: calc(100% - 180px) !important;
+        min-width: calc(100% - 180px) !important;
+        max-width: calc(100% - 180px) !important;
+        box-sizing: border-box !important;
     }
 
     /* Safari fix: override any inline display:grid on .checkbox-container */
