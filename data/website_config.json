@@ -1,8 +1,8 @@
 {
     "marquee_announcements": [
-        "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 22 Juni, jangan lupa persiapkan berkasmu😘",
-        "📅 INFO: Ujian Akhir Semester Genap Sedang Berlangsung Minggu Ini",
-        "💡Bapak/Ibu Guru tolong cek fitur upload berkas PPDB nya berfungsi atau tidak! agar diperbaiki segera"
+        "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 20 Juni-04 Juli 2026, jangan lupa persiapkan berkasmu😘",
+        "📅 INFO: Pertemua Guru dan Orang Tua murid serta Komite Sekolah berhasil dilaksanakan kemarin",
+        "💡Libur Telah Tiba!, manfaatkan AIM AI pada sudut kanan bawah layar gadget anda, untuk bertanya"
     ],
     "marquee_speed": 40,
     "stats": {
@@ -27,6 +27,7 @@
         "siswa_aktif": 340,
         "marquee_speed": 40,
         "page_contents": {
+            "ppdb": {},
             "galeri": {
                 "gallery_items": [
                     {
@@ -78,7 +79,7 @@
                 "sejarah_title": "Perjalanan SD Negeri Bobong"
             }
         },
-        "visitor_count": 15,
+        "visitor_count": 107,
         "_faqs_fallback": [
             {
                 "id": "faq-1",
