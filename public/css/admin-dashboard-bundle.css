@@ -1,0 +1,4 @@
+/* Admin dashboard styles — loaded only under /admin routes */
+@import url('./admin-dashboard-layout.css');
+@import url('./admin-dashboard-components.css');
+@import url('./admin-dashboard-print.css');

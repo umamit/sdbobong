@@ -1,0 +1,3 @@
+/* Teacher dashboard styles — loaded only under /guru routes */
+@import url('./teacher-dashboard-layout.css');
+@import url('./teacher-dashboard-components.css');
