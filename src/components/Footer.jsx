@@ -21,7 +21,7 @@ export default async function Footer() {
             <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className={styles.schoolLogo} loading="lazy" decoding="async" />
             <span className={styles.logoTitle}>SD NEGERI BOBONG</span>
           </Link>
-          <p style={{ color: '#9CA3AF', fontSize: '0.9rem', marginTop: '1rem' }}>
+          <p style={{ color: '#94A3B8', fontSize: '0.9rem', marginTop: '1rem' }}>
             {schoolDesc}
           </p>
           <VisitorCounter />

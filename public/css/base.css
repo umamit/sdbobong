@@ -25,6 +25,7 @@
     --bg-main: #F9FAFB;
     --bg-card: #FFFFFF;
     --bg-footer: #092235;
+    --bg-footer-deep: #061a28;
     --text-main: #1F2937;
     --text-color: var(--text-main); /* Legacy alias */
     --text-muted: #6B7280;

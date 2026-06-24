@@ -2,7 +2,7 @@
 .hero {
     position: relative;
     padding: var(--space-xl) var(--space-sm);
-    background: linear-gradient(135deg, rgba(11, 60, 93, 0.95) 0%, rgba(9, 34, 53, 0.98) 100%);
+    background: linear-gradient(180deg, #0B3C5D 0%, #092235 100%);
     color: #ffffff;
     overflow: hidden;
 }

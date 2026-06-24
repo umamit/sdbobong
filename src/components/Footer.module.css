@@ -188,10 +188,12 @@
 }
 
 .footerBottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--bg-footer-deep);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
     font-size: 0.85rem;
-    color: #9CA3AF;
+    color: #64748B;
 }
 
 .footerBottomFlex {
