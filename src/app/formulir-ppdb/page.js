@@ -101,11 +101,11 @@ export default function FormulirPPDBPrint() {
           <div className="form-value-line"></div>
  
           <div className="form-label">9. Jalur Pendaftaran</div>
-          <div className="checkbox-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px', marginTop: '0.15rem' }}>
-            <div className="checkbox-item"><span className="checkbox-box"></span> Zonasi (Domisili Terdekat)</div>
-            <div className="checkbox-item"><span className="checkbox-box"></span> Afirmasi (Keluarga Ekonomi Kurang Mampu)</div>
-            <div className="checkbox-item"><span className="checkbox-box"></span> Perpindahan Tugas Orang Tua / Wali</div>
-            <div className="checkbox-item"><span className="checkbox-box"></span> Prestasi (Akademik / Non-Akademik)</div>
+          <div className="checkbox-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '0.15rem' }}>
+            <div className="checkbox-item" style={{ flexBasis: '48%' }}><span className="checkbox-box"></span> Zonasi (Domisili Terdekat)</div>
+            <div className="checkbox-item" style={{ flexBasis: '48%' }}><span className="checkbox-box"></span> Afirmasi (Keluarga Ekonomi Kurang Mampu)</div>
+            <div className="checkbox-item" style={{ flexBasis: '48%' }}><span className="checkbox-box"></span> Perpindahan Tugas Orang Tua / Wali</div>
+            <div className="checkbox-item" style={{ flexBasis: '48%' }}><span className="checkbox-box"></span> Prestasi (Akademik / Non-Akademik)</div>
           </div>
         </div>
  
