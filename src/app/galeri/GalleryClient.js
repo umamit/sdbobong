@@ -382,7 +382,7 @@ export default function GalleryClient({ initialGallery }) {
                       <img
                         src={thumbUrl}
                         alt={item.title}
-                        style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
+                        style={{ width: '100%', height: '120px', objectFit: 'cover', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
                         loading="lazy"
                         className="gallery-thumbnail-img"
                       />

@@ -436,10 +436,38 @@
     box-shadow: var(--shadow-lg);
 }
 
+/* ==========================================================================
+   Gallery Grid — 4 Columns Layout (Humanized)
+   ========================================================================== */
+.gallery-masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+}
+
+@media (max-width: 1024px) {
+    .gallery-masonry-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-masonry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-masonry-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .gallery-masonry-item {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    margin-bottom: var(--space-md);
+    margin-bottom: 0;
     break-inside: avoid;
     background-color: white;
     border-radius: var(--radius-md);
