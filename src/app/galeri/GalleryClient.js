@@ -302,7 +302,11 @@ export default function GalleryClient({ initialGallery }) {
             return (
               <div
                 key={item.id}
-                onClick={() => setActiveImage(item)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveImage(item);
+                }}
                 className="gallery-masonry-item"
               >
                 {/* Category Badge overlay */}
@@ -560,7 +564,7 @@ export default function GalleryClient({ initialGallery }) {
             {activeItem.type === 'video' ? (
               getYoutubeId(activeItem.url) ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${getYoutubeId(activeItem.url)}`}
+                  src={`https://www.youtube.com/embed/${getYoutubeId(activeItem.url)}?autoplay=0&rel=0`}
                   title={activeItem.title}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
