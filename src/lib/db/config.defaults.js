@@ -120,7 +120,7 @@ export const DEFAULT_CONFIG = {
   force_local_cache: false,
 
   // Security (diisi oleh admin, bukan publik)
-  suspicious_attempts: {},
+  suspicious_attempts: [],
   manual_blacklist: [],
   security_settings: {},
 };
@@ -131,9 +131,16 @@ export const DEFAULT_CONFIG = {
 // Gunakan ini di setiap page/component yang butuh config lengkap.
 // ===========================================================================
 export function mergeWithDefaults(rawConfig = {}) {
+  // Normalize suspicious_attempts: pastikan selalu array (bisa jadi objek {} dari data lama)
+  let normalizedAttempts = rawConfig.suspicious_attempts;
+  if (!normalizedAttempts || !Array.isArray(normalizedAttempts)) {
+    normalizedAttempts = [];
+  }
+
   const merged = {
     ...DEFAULT_CONFIG,
     ...rawConfig,
+    suspicious_attempts: normalizedAttempts,
     stats: {
       ...DEFAULT_STATS,
       ...(rawConfig.stats || {}),
