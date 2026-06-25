@@ -2,6 +2,7 @@
 
 import React from 'react';
 import OverviewCharts from './OverviewCharts';
+import AISummaryWidget from '../../admin/ai/AISummaryWidget';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 
 export default function OverviewTab() {
@@ -30,6 +31,7 @@ export default function OverviewTab() {
 
   return (
     <section id="tab-overview" className={`tab-pane ${activeTab === 'overview' ? 'active' : ''}`}>
+            <AISummaryWidget />
             <div className="stats-overview-grid">
               <div className="overview-card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

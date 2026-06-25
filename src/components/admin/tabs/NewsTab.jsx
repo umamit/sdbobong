@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 import RichTextEditor from '../../../components/RichTextEditor';
+import AIContentRecommendations from '../../admin/ai/AIContentRecommendations';
 
 export default function NewsTab() {
   const {
@@ -97,6 +98,7 @@ export default function NewsTab() {
   return (
     <section id="tab-news" className={`tab-pane ${activeTab === 'news' ? 'active' : ''}`}>
             <div className="news-cms-grid news-stacked-layout">
+              <AIContentRecommendations />
               {/* ASISTEN AI PEMBUAT DRAF BERITA SEKOLAH */}
               {!editingNews && (
                 <div style={{

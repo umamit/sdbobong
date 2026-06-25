@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 
 export default function MessagesTab() {
@@ -18,6 +18,59 @@ export default function MessagesTab() {
     setMessageSearch
   } = useAdminDashboard();
 
+  const [sentiments, setSentiments] = useState({});
+  const [analyzing, setAnalyzing] = useState(false);
+
+  const handleAnalyzeSentiment = useCallback(async () => {
+    if (messages.length === 0) return;
+    setAnalyzing(true);
+    try {
+      const res = await fetch('/api/admin/ai-sentiment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages })
+      });
+      const data = await res.json();
+      if (data?.sentiments?.length > 0) {
+        const map = {};
+        data.sentiments.forEach(s => { map[s.id] = s; });
+        setSentiments(prev => ({ ...prev, ...map }));
+      }
+    } catch (e) {
+      console.error('Sentiment analysis error:', e);
+    } finally {
+      setAnalyzing(false);
+    }
+  }, [messages]);
+
+  const getSentimentBadge = (msgId) => {
+    const s = sentiments[msgId];
+    if (!s) return null;
+    const colors = {
+      positif: { bg: '#d1fae5', text: '#065f46', icon: '😊' },
+      negatif: { bg: '#fee2e2', text: '#991b1b', icon: '😟' },
+      urgent: { bg: '#fef3c7', text: '#92400e', icon: '🔴' },
+      netral: { bg: '#e2e8f0', text: '#475569', icon: '😐' },
+    };
+    const c = colors[s.sentiment] || colors.netral;
+    return (
+      <span style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '3px',
+        padding: '2px 8px',
+        borderRadius: '12px',
+        fontSize: '0.7rem',
+        fontWeight: 700,
+        backgroundColor: c.bg,
+        color: c.text,
+        marginLeft: '6px'
+      }}>
+        {c.icon} {s.sentiment}
+      </span>
+    );
+  };
+
   return (
     <section id="tab-messages" className={`tab-pane ${activeTab === 'messages' ? 'active' : ''}`}>
             <div className="admin-table">
@@ -26,6 +79,33 @@ export default function MessagesTab() {
                   <h3 style={{ margin: 0 }}>Kotak Masuk Hubungi Kami & Buku Tamu</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Moderasi pesan testimoni Buku Tamu dan baca pesan privat/saran yang dikirimkan oleh publik.</p>
                 </div>
+                <button
+                  type="button"
+                  onClick={handleAnalyzeSentiment}
+                  disabled={analyzing || messages.length === 0}
+                  style={{
+                    background: analyzing ? 'rgba(99,102,241,0.5)' : 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '8px 16px',
+                    fontSize: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: analyzing || messages.length === 0 ? 'not-allowed' : 'pointer',
+                    opacity: analyzing || messages.length === 0 ? 0.6 : 1,
+                    boxShadow: '0 4px 12px rgba(99,102,241,0.3)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {analyzing ? (
+                    <>⏳ Menganalisis...</>
+                  ) : (
+                    <>🤖 Analisis Sentimen AI</>
+                  )}
+                </button>
               </div>
 
               {/* Messages Filters Row */}
@@ -99,7 +179,10 @@ export default function MessagesTab() {
                         <tr key={msg.id || idx}>
                           <td style={{ textAlign: 'center', fontWeight: 600 }}>{idx + 1}</td>
                           <td style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
-                            <div>{msg.name || '-'}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                              {msg.name || '-'}
+                              {getSentimentBadge(msg.id)}
+                            </div>
                             <div style={{ fontSize: '0.75rem', fontWeight: 500, color: '#64748b', marginTop: '2px' }}>👤 {msg.role || '-'}</div>
                           </td>
                           <td style={{ textAlign: 'center' }}>
