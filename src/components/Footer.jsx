@@ -15,6 +15,11 @@ export default async function Footer() {
 
   return (
     <footer className={`no-print public-layout-footer ${styles.footer}`}>
+      <div className="footer-wave" aria-hidden="true">
+        <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+          <path className="footer-wave-shape" d="M0,20 C150,35 350,5 600,20 C850,35 1050,5 1200,20 L1200,40 L0,40 Z" />
+        </svg>
+      </div>
       <div className={`container ${styles.footerGrid}`}>
         <div className={styles.footerWidget}>
           <Link href="/" className={styles.logoContainer}>

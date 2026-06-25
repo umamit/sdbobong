@@ -4,6 +4,54 @@
    ========================================================================== */
 
 /* ==========================================================================
+   Taliabu Cultural Variables & Pattern (Subtle Background Decoration)
+   ========================================================================== */
+:root {
+    --taliabu-red: #C8102E;
+}
+
+.taliabu-pattern-bg {
+    position: relative;
+}
+
+.taliabu-pattern-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 15 L45 15 L37 22 L40 32 L30 26 L20 32 L23 22 L15 15 L25 15 Z' fill='%230B3C5D' fill-opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Wave Footer (Maluku Sea Inspiration) */
+.footer-wave {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.footer-wave svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 40px;
+}
+
+.footer-wave-shape {
+    fill: var(--bg-footer);
+}
+
+/* ==========================================================================
    PREMIUM DARK MODE & GLASSMORPHISM 2.0 (Next-Level SDN Bobong Update)
    ========================================================================== */
 
@@ -371,24 +419,21 @@
 }
 
 /* ==========================================================================
-   Masonry Grid Layout for Premium Gallery
+   Stats Cards — Solid Style (Humanized)
    ========================================================================== */
-.gallery-masonry-grid {
-    column-count: 3;
-    column-gap: var(--space-md);
-    width: 100%;
+.stats-section .stat-item {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-xs);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+    box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 900px) {
-    .gallery-masonry-grid {
-        column-count: 2;
-    }
-}
-
-@media (max-width: 600px) {
-    .gallery-masonry-grid {
-        column-count: 1;
-    }
+.stats-section .stat-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--secondary);
+    box-shadow: var(--shadow-lg);
 }
 
 .gallery-masonry-item {

@@ -210,21 +210,25 @@ img {
 .btn-secondary {
     background-color: var(--secondary);
     color: var(--primary-dark);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
     background-color: var(--secondary-light);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-accent {
     background-color: var(--accent);
     color: #ffffff;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-accent:hover {
     background-color: var(--accent-light);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-outline {

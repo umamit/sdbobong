@@ -75,7 +75,7 @@ export default function Header() {
   ];
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} taliabu-pattern-bg`}>
       <div className={`container ${styles.navbar}`}>
         <Link href="/" className={styles.logoContainer}>
           <Image src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className={styles.schoolLogo} width={60} height={60} priority />
