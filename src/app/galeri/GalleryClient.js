@@ -382,7 +382,7 @@ export default function GalleryClient({ initialGallery }) {
                       <img
                         src={thumbUrl}
                         alt={item.title}
-                        style={{ width: '100%', height: 'auto', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
+                        style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
                         loading="lazy"
                         className="gallery-thumbnail-img"
                       />
@@ -556,39 +556,33 @@ export default function GalleryClient({ initialGallery }) {
           )}
 
           {/* Media Content */}
-          <div className="lightbox-media-wrapper" style={{ maxWidth: '90%', maxHeight: '80%', display: 'flex', justifyContent: 'center' }}>
+          <div className="lightbox-media-wrapper" style={{ maxWidth: '90%', maxHeight: '85vh', display: 'flex', justifyContent: 'center' }}>
             {activeItem.type === 'video' ? (
               getYoutubeId(activeItem.url) ? (
                 <iframe
-                  width="720"
-                  height="405"
                   src={`https://www.youtube.com/embed/${getYoutubeId(activeItem.url)}`}
                   title={activeItem.title}
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  style={{ borderRadius: 'var(--radius-md)', border: '1px solid #333', maxWidth: '100%', aspectRatio: '16/9' }}
+                  style={{ borderRadius: 'var(--radius-md)', border: '1px solid #333', maxWidth: '100%', maxHeight: '70vh', aspectRatio: '16/9', width: '100%' }}
                 ></iframe>
               ) : isFacebookUrl(activeItem.url) ? (
                 <iframe
                   src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(activeItem.url)}&show_text=true&width=500`}
-                  width="500"
-                  height="400"
                   scrolling="no"
                   frameBorder="0"
                   allowFullScreen={true}
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '80vh', backgroundColor: 'white', aspectRatio: '500/400' }}
+                  allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '70vh', backgroundColor: 'white', aspectRatio: '500/400', width: '100%' }}
                 ></iframe>
               ) : isGoogleDriveUrl(activeItem.url) ? (
                 <iframe
                   src={getCleanGoogleDriveUrl(activeItem.url, 'video')}
-                  width="720"
-                  height="405"
                   frameBorder="0"
                   allowFullScreen={true}
                   allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', aspectRatio: '16/9' }}
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '70vh', aspectRatio: '16/9', width: '100%' }}
                 ></iframe>
               ) : (
                 <video
