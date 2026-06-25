@@ -302,11 +302,7 @@ export default function GalleryClient({ initialGallery }) {
             return (
               <div
                 key={item.id}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveImage(item);
-                }}
+                onClick={() => setActiveImage(item)}
                 className="gallery-masonry-item"
               >
                 {/* Category Badge overlay */}
