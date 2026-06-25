@@ -555,8 +555,8 @@ export default function GalleryClient({ initialGallery }) {
             </>
           )}
 
-          {/* Media Content */}
-          <div className="lightbox-media-wrapper" style={{ maxWidth: '90%', maxHeight: '85vh', display: 'flex', justifyContent: 'center' }}>
+          {/* Media Content - Fullscreen Video Container */}
+          <div style={{ width: '95%', height: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {activeItem.type === 'video' ? (
               getYoutubeId(activeItem.url) ? (
                 <iframe
@@ -565,7 +565,7 @@ export default function GalleryClient({ initialGallery }) {
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                  style={{ borderRadius: 'var(--radius-md)', border: '1px solid #333', maxWidth: '100%', maxHeight: '70vh', aspectRatio: '16/9', width: '100%' }}
+                  style={{ width: '100%', height: '100%', border: 'none', borderRadius: 'var(--radius-md)' }}
                 ></iframe>
               ) : isFacebookUrl(activeItem.url) ? (
                 <iframe
@@ -574,7 +574,7 @@ export default function GalleryClient({ initialGallery }) {
                   frameBorder="0"
                   allowFullScreen={true}
                   allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '70vh', backgroundColor: 'white', aspectRatio: '500/400', width: '100%' }}
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', width: '100%', height: '100%', backgroundColor: 'white' }}
                 ></iframe>
               ) : isGoogleDriveUrl(activeItem.url) ? (
                 <iframe
@@ -582,7 +582,7 @@ export default function GalleryClient({ initialGallery }) {
                   frameBorder="0"
                   allowFullScreen={true}
                   allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  style={{ borderRadius: 'var(--radius-md)', border: 'none', maxWidth: '100%', maxHeight: '70vh', aspectRatio: '16/9', width: '100%' }}
+                  style={{ borderRadius: 'var(--radius-md)', border: 'none', width: '100%', height: '100%' }}
                 ></iframe>
               ) : (
                 <video
@@ -618,8 +618,8 @@ export default function GalleryClient({ initialGallery }) {
             )}
           </div>
 
-          {/* Caption Card */}
-          <div className="lightbox-caption-card" style={{ color: 'white', textAlign: 'center' }}>
+          {/* Caption Card - Overlay */}
+          <div className="lightbox-caption-card" style={{ color: 'white', textAlign: 'center', position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(10px)', width: '90%', maxWidth: '600px' }}>
             <span style={{
               display: 'inline-block',
               padding: '3px 12px',
