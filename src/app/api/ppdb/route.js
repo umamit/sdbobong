@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns, unpackBerkasFromAlamat, loadWebConfig } from '../../../lib/database';
+import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import fs from 'fs';
@@ -42,8 +43,9 @@ export async function GET(request) {
     // Fetch records
     if (supabase) {
       try {
-        const { data, error } = await supabase.from("ppdb_sdn_bobong").select("*").order("waktu_daftar", { ascending: false });
-        if (error) throw error;
+        const data = await prisma.pPDB.findMany({
+          orderBy: { waktu_daftar: 'desc' }
+        });
         if (data) {
           records = data.map(r => {
             const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
@@ -325,24 +327,28 @@ export async function PUT(request) {
         // Try updating by NIK first (since NIK is unique and stable)
         const targetNik = nik || id;
         if (targetNik && /^\d{16}$/.test(String(targetNik).trim())) {
-          const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("nik_siswa", String(targetNik).trim()).select();
-          if (error) throw error;
-          if (data && data.length > 0) {
+          const data = await prisma.pPDB.updateMany({
+            where: { nik_siswa: String(targetNik).trim() },
+            data: { status: newStatus }
+          });
+          if (data && data.count > 0) {
             supabaseUpdated = true;
           }
         }
 
         // Try updating by integer ID next if not updated yet
         if (!supabaseUpdated && id && /^\d+$/.test(String(id).trim())) {
-          const { data, error } = await supabase.from("ppdb_sdn_bobong").update({ status: newStatus }).eq("id", parseInt(id, 10)).select();
-          if (error) throw error;
-          if (data && data.length > 0) {
+          const data = await prisma.pPDB.updateMany({
+            where: { id: parseInt(id, 10) },
+            data: { status: newStatus }
+          });
+          if (data && data.count > 0) {
             supabaseUpdated = true;
           }
         }
       } catch (e) {
-        console.error("Error updating status in Supabase:", e);
-        return NextResponse.json({ error: "Gagal menyinkronkan status ke Supabase: " + e.message }, { status: 500 });
+        console.error("Error updating status via Prisma:", e);
+        return NextResponse.json({ error: "Gagal menyinkronkan status ke database: " + e.message }, { status: 500 });
       }
     }
 
@@ -362,7 +368,9 @@ export async function PUT(request) {
           }
           
           if (!pendaftar && supabaseActive) {
-            const { data } = await supabase.from("ppdb_sdn_bobong").select("*").eq("nik_siswa", String(nik || id).trim()).maybeSingle();
+            const data = await prisma.pPDB.findUnique({
+              where: { nik_siswa: String(nik || id).trim() }
+            });
             if (data) {
               pendaftar = data;
             }
@@ -420,15 +428,18 @@ export async function DELETE(request) {
 
       if (supabaseActive && (scope === 'both' || scope === 'supabase')) {
         try {
-          const { error } = await supabase.from("ppdb_sdn_bobong").delete().neq("id", 0);
-          if (error) throw error;
+          await prisma.pPDB.deleteMany({
+            where: {
+              id: { not: 0 }
+            }
+          });
           supabaseDeleted = true;
         } catch (e) {
-          console.error("Error clearing Supabase:", e);
-          return NextResponse.json({ error: "Gagal menghapus data di Supabase: " + e.message }, { status: 500 });
+          console.error("Error clearing database:", e);
+          return NextResponse.json({ error: "Gagal menghapus data di database: " + e.message }, { status: 500 });
         }
       } else {
-        supabaseDeleted = true; // skipped supabase
+        supabaseDeleted = true; // skipped database
       }
 
       if (deletedOk || supabaseDeleted) {
@@ -667,9 +678,9 @@ export async function POST(request) {
           supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, extraData);
         }
 
-        const { data, error } = await supabase.from("ppdb_sdn_bobong").insert(supabaseData).select();
-
-        if (error) throw error;
+        const data = await prisma.pPDB.create({
+          data: supabaseData
+        });
         savedToSupabase = true;
       } catch (e) {
         console.error("Error saving to Supabase during PPDB POST:", e.message || e);

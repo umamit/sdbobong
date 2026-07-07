@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { supabase, isSupabaseEnabled, PENDAFTARAN_JSON, packBerkasIntoAlamat, unpackBerkasFromAlamat } from './core.js';
+import { prisma } from '../prisma.js';
 
 let cachedSupabaseColumns = null;
 
@@ -48,8 +49,7 @@ export async function syncLocalToSupabase() {
     if (nik) localByNik[nik] = r;
   }
   try {
-    const { data: supabaseRecords, error } = await supabase.from("ppdb_sdn_bobong").select("*");
-    if (error) throw error;
+    const supabaseRecords = await prisma.pPDB.findMany();
     const supabaseByNik = {};
     for (const r of (supabaseRecords || [])) {
       const nik = String(r.nik_siswa || r.nik || "").trim();
@@ -88,18 +88,29 @@ export async function syncLocalToSupabase() {
           }
           supabaseData.alamat_domisili = packBerkasIntoAlamat(localR.alamat || localR.alamat_domisili || "", extraData);
         }
-        try { await supabase.from("ppdb_sdn_bobong").insert(supabaseData); syncedToSupabaseCount++; }
-        catch (e) {
+        try {
+          await prisma.pPDB.create({ data: supabaseData });
+          syncedToSupabaseCount++;
+        } catch (e) {
           if (supabaseData.status) delete supabaseData.status;
-          try { await supabase.from("ppdb_sdn_bobong").insert(supabaseData); syncedToSupabaseCount++; }
-          catch (e2) { console.error(`Failed syncing local record NIK ${nik} to Supabase:`, e2.message || e2); }
+          try {
+            await prisma.pPDB.create({ data: supabaseData });
+            syncedToSupabaseCount++;
+          } catch (e2) {
+            console.error(`Failed syncing local record NIK ${nik} to database via Prisma:`, e2.message || e2);
+          }
         }
       } else {
         const supabaseR = supabaseByNik[nik];
         const localStatus = localR.status, supabaseStatus = supabaseR.status;
         if (localStatus !== supabaseStatus) {
           if (["Terverifikasi","Ditolak"].includes(localStatus) && !["Terverifikasi","Ditolak"].includes(supabaseStatus)) {
-            try { await supabase.from("ppdb_sdn_bobong").update({ status: localStatus }).eq("nik_siswa", nik); } catch (e) {}
+            try {
+              await prisma.pPDB.updateMany({
+                where: { nik_siswa: nik },
+                data: { status: localStatus }
+              });
+            } catch (e) {}
           } else if (["Terverifikasi","Ditolak"].includes(supabaseStatus) && !["Terverifikasi","Ditolak"].includes(localStatus)) {
             localR.status = supabaseStatus;
           }

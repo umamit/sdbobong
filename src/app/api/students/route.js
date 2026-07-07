@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { loadStudents, saveStudents, supabase, isSupabaseEnabled } from '../../../lib/database';
+import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -221,9 +222,9 @@ export async function DELETE(request) {
     if (filteredList.length === studentsList.length) {
       if (isSupabaseEnabled() && supabase) {
         try {
-          await supabase.from("students_sdn_bobong").delete().eq("id", id);
+          await prisma.student.deleteMany({ where: { id } });
         } catch (dbErr) {
-          console.error("Error direct delete from Supabase:", dbErr.message);
+          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
         }
       }
       await createAuditLog('DELETE_STUDENT', `Menghapus data siswa (langsung dari DB): "${studentName}" (NISN: ${studentNisn})`, request);

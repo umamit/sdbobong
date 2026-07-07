@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { isSupabaseEnabled, supabase } from './database';
+import { prisma } from './prisma';
 
 const BUNDLED_DATA_DIR = path.join(process.cwd(), 'data');
 const AUDIT_LOGS_JSON = path.join(BUNDLED_DATA_DIR, 'audit_logs.json');
@@ -84,14 +85,17 @@ export async function saveAuditLogs(logsList) {
         action: l.action,
         details: l.details,
         ip: l.ip,
-        user_agent: l.userAgent
+        user_agent: l.userAgent || ''
       }));
       
-      const { error } = await supabase.from("audit_logs_sdn_bobong").upsert(batchData);
-      if (error) throw error;
+      // Perform batch insert skipping existing log IDs since logs are immutable
+      await prisma.auditLog.createMany({
+        data: batchData,
+        skipDuplicates: true
+      });
       return true;
     } catch (e) {
-      console.error("Supabase saveAuditLogs failed:", e.message || e);
+      console.error("Prisma saveAuditLogs failed:", e.message || e);
       return localSaved;
     }
   }
@@ -238,20 +242,26 @@ export async function purgeAuditLogs(actionDetails = "Pembersihan log audit dila
   if (isSupabaseEnabled()) {
     try {
       // First delete all existing logs
-      await supabase.from("audit_logs_sdn_bobong").delete().neq("id", "none");
+      await prisma.auditLog.deleteMany({
+        where: {
+          id: { not: "none" }
+        }
+      });
       
       // Then insert the purge log
-      await supabase.from("audit_logs_sdn_bobong").insert({
-        id: singlePurgeLog.id,
-        timestamp: singlePurgeLog.timestamp,
-        username: singlePurgeLog.username,
-        action: singlePurgeLog.action,
-        details: singlePurgeLog.details,
-        ip: singlePurgeLog.ip,
-        user_agent: singlePurgeLog.userAgent
+      await prisma.auditLog.create({
+        data: {
+          id: singlePurgeLog.id,
+          timestamp: singlePurgeLog.timestamp,
+          username: singlePurgeLog.username,
+          action: singlePurgeLog.action,
+          details: singlePurgeLog.details,
+          ip: singlePurgeLog.ip,
+          user_agent: singlePurgeLog.userAgent || ''
+        }
       });
     } catch (e) {
-      console.error("Supabase purgeAuditLogs failed:", e.message || e);
+      console.error("Prisma purgeAuditLogs failed:", e.message || e);
     }
   }
 

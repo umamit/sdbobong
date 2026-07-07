@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getAvailableSupabaseColumns, handlePhotoUpload, packBerkasIntoAlamat } from '../../lib/database';
+import { prisma } from '../../lib/prisma';
 import fs from 'fs';
 import path from 'path';
 
@@ -221,12 +222,12 @@ export async function submitPpdbAction(formData) {
           supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, extraData);
         }
 
-        const { error } = await supabase.from("ppdb_sdn_bobong").insert(supabaseData);
-
-        if (error) throw error;
+        await prisma.pPDB.create({
+          data: supabaseData
+        });
         savedToSupabase = true;
       } catch (e) {
-        console.error("Error saving to Supabase during PPDB Server Action:", e.message || e);
+        console.error("Error saving to Supabase via Prisma during PPDB Server Action:", e.message || e);
       }
     }
 

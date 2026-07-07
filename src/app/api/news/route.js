@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { loadNews, saveNews, handlePhotoUpload, isSupabaseEnabled, supabase } from '../../../lib/database';
+import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -218,9 +219,9 @@ export async function DELETE(request) {
     if (filteredList.length === newsList.length) {
       if (isSupabaseEnabled() && supabase) {
         try {
-          await supabase.from("news_sdn_bobong").delete().eq("id", id);
+          await prisma.news.deleteMany({ where: { id } });
         } catch (dbErr) {
-          console.error("Error direct delete from Supabase:", dbErr.message);
+          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
         }
       }
       await createAuditLog('DELETE_NEWS', `Menghapus artikel berita (langsung dari DB): "${newsTitle}"`, request);

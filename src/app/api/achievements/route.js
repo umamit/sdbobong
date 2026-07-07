@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { loadAchievements, saveAchievements, supabase, isSupabaseEnabled } from '../../../lib/database';
+import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -137,9 +138,9 @@ export async function DELETE(request) {
     if (filteredList.length === achievementsList.length) {
       if (isSupabaseEnabled() && supabase) {
         try {
-          await supabase.from("achievements_sdn_bobong").delete().eq("id", id);
+          await prisma.achievement.deleteMany({ where: { id } });
         } catch (dbErr) {
-          console.error("Error direct delete from Supabase:", dbErr.message);
+          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
         }
       }
       await createAuditLog('DELETE_ACHIEVEMENT', `Menghapus prestasi sekolah (langsung dari DB): "${achievementTitle}"${achievementLevel}`, request);

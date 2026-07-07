@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { loadTeachers, saveTeachers, handlePhotoUpload, supabase, isSupabaseEnabled } from '../../../lib/database';
+import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -281,9 +282,9 @@ export async function DELETE(request) {
     if (filteredList.length === teachersList.length) {
       if (isSupabaseEnabled() && supabase) {
         try {
-          await supabase.from("teachers_sdn_bobong").delete().eq("id", id);
+          await prisma.teacher.deleteMany({ where: { id } });
         } catch (dbErr) {
-          console.error("Error direct delete from Supabase:", dbErr.message);
+          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
         }
       }
       await createAuditLog('DELETE_TEACHER', `Menghapus data guru (langsung dari DB): "${teacherName}"${teacherRole}`, request);
