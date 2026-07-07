@@ -494,8 +494,8 @@
 }
 
 .ai-chat-input:disabled {
-    background-color: #f3f4f6;
-    color: #9ca3af;
+    background-color: rgba(18, 165, 184, 0.05);
+    color: #7E8F9F;
     cursor: not-allowed;
 }
 
@@ -527,8 +527,8 @@
 }
 
 .ai-send-btn:disabled {
-    background-color: #e5e7eb;
-    color: #9ca3af;
+    background-color: rgba(18, 165, 184, 0.05);
+    color: #7E8F9F;
     box-shadow: none;
     cursor: not-allowed;
 }
@@ -589,7 +589,7 @@
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     border-radius: 50%;
-    border: 2px solid #ef4444;
+    border: 2px solid var(--formal-red, #FF3B30);
     animation: mic-pulsate 1.5s infinite ease-out;
     pointer-events: none;
 }

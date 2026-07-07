@@ -55,33 +55,33 @@
    PREMIUM DARK MODE & GLASSMORPHISM 2.0 (Next-Level SDN Bobong Update)
    ========================================================================== */
 
-/* Premium Dark Theme Variables (Apple HIG Grouped Dark Palette) */
+/* Premium Dark Theme Variables — aligned to school logo palette in dark environment */
 :root[data-theme='dark'] {
-    --primary: #0A84FF; /* SF Blue (Dark) */
-    --primary-light: #BF5AF2; /* SF Purple (Dark) */
-    --primary-dark: #0056B3;
+    --primary: #1AC8DE;       /* Toska Muda brightened for dark bg */
+    --primary-light: #48D8EC;
+    --primary-dark: #12A5B8;
     --primary-color: var(--primary);
-    --secondary: #FF9F0A; /* SF Orange (Dark) */
-    --secondary-light: #FFD60A;
-    --secondary-dark: #D48408;
+    --secondary: #FFC83B;     /* Emas Muda logo — readable on dark */
+    --secondary-light: #FFD966;
+    --secondary-dark: #E5A900;
     --secondary-color: var(--secondary);
-    --accent: #64D2FF; /* SF Teal (Dark) */
-    --accent-light: #70D7FF;
-    --accent-bg: #0C4A6E;
+    --accent: #4CD964;        /* Hijau Muda — Apple SF Green Dark */
+    --accent-light: #70E080;
+    --accent-bg: #0D2E1A;
     --accent-color: var(--accent);
-    --formal-blue: #0A84FF;
-    --formal-red: #FF453A; /* SF Red (Dark) */
-    
+    --formal-blue: #1AC8DE;
+    --formal-red: #FF453A;    /* SF Red (Dark) */
+
     /* Neutrals */
-    --bg-main: #1C1C1E; /* System Grouped Background - Dark */
-    --bg-card: #2C2C2E; /* Secondary System Grouped Background - Dark */
+    --bg-main: #1C1C1E;
+    --bg-card: #2C2C2E;
     --bg-footer: #0A0A0C;
-    --text-main: #FFFFFF; /* Primary Label - Dark */
+    --text-main: #FFFFFF;
     --text-color: var(--text-main);
-    --text-muted: #EBEBF5; /* Secondary Label - Dark */
-    --text-light: #8E8E93; /* Tertiary Label */
+    --text-muted: #EBEBF5;
+    --text-light: #8E8E93;
     --border-color: rgba(235, 235, 245, 0.08);
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -248,7 +248,7 @@ header {
     overflow: visible;
 }
 .svg-chart-grid-line {
-    stroke: #e2e8f0;
+    stroke: rgba(18, 36, 56, 0.15);
     stroke-dasharray: 4,4;
 }
 .svg-chart-bar {
@@ -383,8 +383,8 @@ header {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(245, 166, 35, 0.15) !important; /* Opacity for Taliabu Gold */
-    color: #F5A623 !important; /* Traditional Taliabu Gold */
+    background: rgba(229, 169, 0, 0.15) !important; /* School Secondary Gold tint */
+    color: var(--secondary, #E5A900) !important; /* School logo gold */
     display: flex;
     align-items: center;
     justify-content: center;

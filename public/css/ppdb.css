@@ -198,7 +198,7 @@
     padding: 1.25rem 2rem;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    border: 1px solid #cbd5e1;
+    border: 1px solid rgba(18, 36, 56, 0.15);
 }
 
 /* Explicitly force dark text on screen for all elements inside form-page */
@@ -210,16 +210,16 @@
 .form-page span,
 .form-page .form-label,
 .form-page .checkbox-item {
-    color: #0f172a !important;
+    color: #122438 !important;
 }
 
 .form-section-title {
-    background-color: #f1f5f9 !important;
-    color: #1e3a8a !important;
+    background-color: rgba(18, 165, 184, 0.08) !important;
+    color: #122438 !important;
     padding: 0.3rem var(--space-xs);
     font-weight: 700;
     font-size: 0.8rem;
-    border-left: 4px solid #1e40af;
+    border-left: 4px solid #0A7E8D;
     margin: 0.35rem 0 0.15rem 0;
     text-transform: uppercase;
 }
@@ -237,11 +237,11 @@
     font-weight: 600;
     display: flex;
     align-items: center;
-    color: #0f172a !important;
+    color: #122438 !important;
 }
 
 .form-value-line {
-    border-bottom: 1px dashed #94a3b8 !important;
+    border-bottom: 1px dashed rgba(18, 36, 56, 0.3) !important;
     height: 1.25rem;
     display: flex;
     align-items: flex-end;
@@ -264,7 +264,7 @@
 .checkbox-box {
     width: 14px;
     height: 14px;
-    border: 1px solid #94a3b8 !important;
+    border: 1px solid rgba(18, 36, 56, 0.25) !important;
     border-radius: 2px;
     display: inline-block;
 }
