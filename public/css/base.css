@@ -5,32 +5,35 @@
 */
 
 :root {
-    /* Apple HIG System Colors */
-    --primary: #007AFF; /* SF Blue */
-    --primary-light: #5856D6; /* SF Purple */
-    --primary-dark: #0056B3;
+    /* Apple HIG & School Logo System Colors */
+    --primary: #12A5B8; /* Biru Toska Logo (SF Turquoise) */
+    --primary-light: #48C4D3; /* Toska Muda */
+    --primary-dark: #0A7E8D; /* Toska Tua */
     --primary-color: var(--primary); /* Legacy alias */
-    --secondary: #FF9500; /* SF Orange */
-    --secondary-light: #FFB340;
-    --secondary-dark: #C77300;
+    
+    --secondary: #E5A900; /* Emas / Kuning Logo (SF Gold) */
+    --secondary-light: #FFC83B; /* Emas Muda */
+    --secondary-dark: #B28300; /* Emas Tua */
     --secondary-color: var(--secondary); /* Legacy alias */
-    --accent: #30B0C7; /* SF Teal */
-    --accent-light: #32ADE6;
-    --accent-bg: #E5F6F8;
+    
+    --accent: #2A9D5C; /* Hijau Daun Logo (SF Green) */
+    --accent-light: #4CD964;
+    --accent-bg: #EBF7F0;
     --accent-color: var(--accent); /* Legacy alias */
-    --formal-blue: #007AFF;
+    
+    --formal-blue: #12A5B8;
     --formal-red: #FF3B30; /* SF Red */
     
-    /* Neutrals (Apple System Grouped Light Palette) */
-    --bg-main: #F2F2F7; /* System Grouped Background */
-    --bg-card: #FFFFFF; /* Secondary System Grouped Background */
-    --bg-footer: #1C1C1E; /* System Gray 6 */
-    --bg-footer-deep: #000000;
-    --text-main: #1C1C1E; /* Primary Label */
+    /* Neutrals (Putih Marmer & Navy Logo) */
+    --bg-main: #F3F9FA; /* Light Marble Gray/Teal Tint */
+    --bg-card: #FFFFFF;
+    --bg-footer: #122438; /* Dark Navy Logo */
+    --bg-footer-deep: #0A1624;
+    --text-main: #122438; /* Dark Navy for high contrast */
     --text-color: var(--text-main); /* Legacy alias */
-    --text-muted: #5C5C60; /* Secondary Label */
-    --text-light: #8E8E93; /* Tertiary Label */
-    --border-color: rgba(60, 60, 67, 0.08); /* Subtle separator */
+    --text-muted: #4A5B6D; /* Medium slate gray */
+    --text-light: #7E8F9F;
+    --border-color: rgba(18, 36, 56, 0.08); /* Subtle navy-tinted border */
     
     /* Typography - Apple System HIG hierarchy */
     --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Outfit", "Segoe UI", sans-serif;

@@ -415,8 +415,8 @@ header {
 .stats-section .stat-item:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.1);
-    border-color: #F5A623 !important; /* Traditional Emas Taliabu */
-    box-shadow: 0 15px 30px rgba(245, 166, 35, 0.15) !important;
+    border-color: var(--secondary) !important; /* Logo Emas */
+    box-shadow: 0 15px 30px rgba(229, 169, 0, 0.15) !important;
 }
 
 @media (min-width: 769px) {
@@ -451,8 +451,8 @@ header {
 .stats-section .stat-item:hover {
     transform: translateY(-4px) !important;
     background: rgba(255, 255, 255, 0.12) !important;
-    border-color: #F5A623 !important; /* Traditional Emas Taliabu */
-    box-shadow: 0 8px 24px rgba(245, 166, 35, 0.2) !important;
+    border-color: var(--secondary) !important; /* Logo Emas */
+    box-shadow: 0 8px 24px rgba(229, 169, 0, 0.20) !important;
 }
 
 /* ==========================================================================
