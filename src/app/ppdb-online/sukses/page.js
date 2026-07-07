@@ -227,53 +227,28 @@ export default function PPDBSukses() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                border: 'none',
-                backgroundColor: '#0b3c5d',
-                color: '#fff',
-                padding: '0.6rem 1.2rem',
-                borderRadius: '8px',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                cursor: 'pointer',
-                boxShadow: '0 4px 6px -1px rgba(11, 60, 93, 0.2)'
               }}
             >
               🖨️ Cetak / Simpan PDF
             </button>
             <Link 
               href="/ppdb" 
-              className="btn" 
+              className="btn btn-outline" 
               style={{ 
                 display: 'inline-flex',
                 alignItems: 'center',
-                border: '1px solid #cbd5e1',
-                backgroundColor: '#fff',
-                color: '#334155',
-                padding: '0.6rem 1.2rem',
-                borderRadius: '8px',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                textDecoration: 'none',
-                cursor: 'pointer'
+                gap: '0.5rem',
               }}
             >
               Kembali ke Portal PPDB
             </Link>
             <Link 
               href="/" 
-              className="btn" 
+              className="btn btn-outline" 
               style={{ 
                 display: 'inline-flex',
                 alignItems: 'center',
-                border: '1px solid #cbd5e1',
-                backgroundColor: '#fff',
-                color: '#334155',
-                padding: '0.6rem 1.2rem',
-                borderRadius: '8px',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                textDecoration: 'none',
-                cursor: 'pointer'
+                gap: '0.5rem',
               }}
             >
               Kembali ke Beranda

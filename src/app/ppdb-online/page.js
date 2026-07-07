@@ -612,17 +612,13 @@ export default function PPDBOnlineForm() {
                 className="btn btn-primary" 
                 style={{ 
                   minWidth: '280px', 
-                  fontSize: '1.1rem', 
-                  padding: '0.85rem 2rem', 
-                  borderRadius: '30px',
-                  fontWeight: 700,
-                  boxShadow: '0 10px 15px -3px rgba(11, 60, 93, 0.3)',
-                  transition: 'transform 0.2s ease',
+                  fontSize: '1.05rem', 
+                  padding: '0.8rem 2.2rem', 
+                  borderRadius: 'var(--radius-md)',
+                  fontWeight: 600,
                   cursor: isSubmitting ? 'not-allowed' : 'pointer'
                 }}
                 disabled={isSubmitting}
-                onMouseEnter={(e) => !isSubmitting && (e.currentTarget.style.transform = 'translateY(-2px)')}
-                onMouseLeave={(e) => !isSubmitting && (e.currentTarget.style.transform = 'translateY(0)')}
               >
                 {isSubmitting ? (
                   <span className="btn-loading-container">

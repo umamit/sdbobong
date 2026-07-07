@@ -136,32 +136,19 @@ export default function DownloadClient({ initialDownloads }) {
                 </p>
               </div>
 
-              {/* Action Button */}
+               {/* Action Button */}
               <div style={{ marginTop: 'auto' }}>
                 {doc.fileUrl && doc.fileUrl.startsWith('/') && !doc.fileUrl.includes('.') ? (
                   <a
                     href={doc.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="btn btn-primary"
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
                       width: '100%',
-                      padding: '10px',
-                      borderRadius: 'var(--radius-sm)',
-                      backgroundColor: 'var(--primary-color)',
-                      color: 'white',
-                      fontWeight: '600',
-                      fontSize: '0.95rem',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      cursor: 'pointer',
-                      transition: 'opacity 0.2s ease'
+                      boxSizing: 'border-box'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -173,25 +160,12 @@ export default function DownloadClient({ initialDownloads }) {
                   <a
                     href={doc.fileUrl}
                     download
+                    className="btn btn-accent"
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
                       width: '100%',
-                      padding: '10px',
-                      borderRadius: 'var(--radius-sm)',
-                      backgroundColor: 'var(--accent-color)',
-                      color: 'white',
-                      fontWeight: '600',
-                      fontSize: '0.95rem',
-                      textDecoration: 'none',
-                      textAlign: 'center',
-                      cursor: 'pointer',
-                      transition: 'opacity 0.2s ease'
+                      boxSizing: 'border-box'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
