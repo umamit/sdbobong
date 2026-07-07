@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getAvailableSupabaseColumns, handlePhotoUpload, packBerkasIntoAlamat } from '../../lib/database';
 import { prisma } from '../../lib/prisma';
+import { ppdbSchema } from '../../lib/validators';
 import fs from 'fs';
 import path from 'path';
 
@@ -65,30 +66,24 @@ export async function submitPpdbAction(formData) {
     const nama_wali = formData.get('nama_wali')?.trim() || "";
     const pekerjaan_wali = formData.get('pekerjaan_wali')?.trim() || "";
 
-    if (
-      !nama_lengkap || !nama_panggilan || !nik || !tempat_lahir || !tanggal_lahir || 
-      !jenis_kelamin || !agama || !anak_ke || !dari_bersaudara || !alamat || !jalur_ppdb ||
-      !nama_ayah || !pekerjaan_ayah || !no_hp_ayah ||
-      !nama_ibu || !pekerjaan_ibu || !no_hp_ibu || !no_hp
-    ) {
-      return { error: "Semua kolom formulir wajib diisi!" };
-    }
+    // ── Zod validation ─────────────────────────────────────────────────────
+    const zodResult = ppdbSchema.safeParse({
+      nama_lengkap, nama_panggilan, nik, tempat_lahir, tanggal_lahir,
+      jenis_kelamin, agama, anak_ke, dari_bersaudara, alamat, jalur_ppdb,
+      nama_ayah, pekerjaan_ayah, no_hp_ayah,
+      nama_ibu, pekerjaan_ibu, no_hp_ibu,
+      no_hp, nama_wali, pekerjaan_wali,
+    });
 
-    if (nik.length !== 16 || !/^\d+$/.test(nik)) {
-      return { error: "NIK harus terdiri dari 16 digit angka!" };
-    }
-
-    // Phone format validation
-    const phoneFields = [
-      { val: no_hp_ayah, label: 'Nomor HP Ayah' },
-      { val: no_hp_ibu, label: 'Nomor HP Ibu' },
-      { val: no_hp, label: 'Nomor HP Utama Kontak' }
-    ];
-
-    for (const p of phoneFields) {
-      if (!/^08\d{8,12}$/.test(p.val)) {
-        return { error: `Format ${p.label} tidak valid (harus dimulai dengan 08 dan berjumlah 10-14 digit)!` };
-      }
+    if (!zodResult.success) {
+      const issues = zodResult.error.issues.map((i) => ({
+        field: i.path.join('.'),
+        message: i.message,
+      }));
+      return {
+        error: 'Validasi gagal. Periksa kembali data yang dikirim.',
+        issues,
+      };
     }
 
     // File Extraction & Validation

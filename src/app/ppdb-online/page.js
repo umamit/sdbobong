@@ -182,6 +182,24 @@ export default function PPDBOnlineForm() {
       const res = await submitPpdbAction(submissionData);
 
       if (res.error) {
+        // Handle Zod per-field validation errors from server
+        if (res.issues && Array.isArray(res.issues) && res.issues.length > 0) {
+          const fieldLabels = {
+            nama_lengkap: 'Nama Lengkap', nama_panggilan: 'Nama Panggilan',
+            nik: 'NIK', tempat_lahir: 'Tempat Lahir', tanggal_lahir: 'Tanggal Lahir',
+            jenis_kelamin: 'Jenis Kelamin', agama: 'Agama',
+            anak_ke: 'Anak Ke-', dari_bersaudara: 'Dari Bersaudara',
+            alamat: 'Alamat', jalur_ppdb: 'Jalur PPDB',
+            nama_ayah: 'Nama Ayah', pekerjaan_ayah: 'Pekerjaan Ayah', no_hp_ayah: 'No. HP Ayah',
+            nama_ibu: 'Nama Ibu', pekerjaan_ibu: 'Pekerjaan Ibu', no_hp_ibu: 'No. HP Ibu',
+            no_hp: 'No. HP Kontak', nama_wali: 'Nama Wali', pekerjaan_wali: 'Pekerjaan Wali',
+          };
+          const lines = res.issues.map(i => {
+            const label = fieldLabels[i.field] || i.field;
+            return `• ${label}: ${i.message}`;
+          });
+          throw new Error('Mohon periksa kembali:\n' + lines.join('\n'));
+        }
         throw new Error(res.error);
       }
 
@@ -189,11 +207,11 @@ export default function PPDBOnlineForm() {
       if (res.record) {
         sessionStorage.setItem('ppdb_receipt', JSON.stringify(res.record));
       }
-      
+
       // Success redirect
       router.push('/ppdb-online/sukses');
     } catch (err) {
-      setErrorMsg(err.message || "Terjadi kesalahan koneksi internet.");
+      setErrorMsg(err.message || 'Terjadi kesalahan koneksi internet.');
     } finally {
       setIsSubmitting(false);
     }
@@ -233,14 +251,13 @@ export default function PPDBOnlineForm() {
               padding: '0.85rem 1.25rem',
               borderRadius: 'var(--radius-sm)',
               marginBottom: '1.5rem',
-              fontSize: '0.9rem',
-              fontWeight: 600,
+              fontSize: '0.88rem',
+              fontWeight: 500,
               backgroundColor: '#FDF2F2',
               color: '#9B1C1C',
               border: '1px solid #FBD5D5',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
+              whiteSpace: 'pre-line',
+              lineHeight: 1.7,
             }}>
               ⚠️ {errorMsg}
             </div>
