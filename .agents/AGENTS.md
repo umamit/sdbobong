@@ -29,6 +29,7 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **Image Optimization Quota Protection**: Use Next.js `next/image` with the `priority` property ONLY for above-the-fold main LCP Hero headers. All secondary images, student gallery lists, and below-the-fold photos must use native HTML `<img>` tags with `loading="lazy"` to preserve Vercel's free tier image optimization limit.
 * **Layout Shift Prevention**: When using native HTML `<img>` tags, you MUST explicitly define `width` and `height` aspect-ratio attributes to avoid worsening the Cumulative Layout Shift (CLS) score.
 * **Codebase File-Length Boundary**: Application source files (`.js`, `.jsx`, `.css`) must NOT exceed **800 lines** to maintain compile speed and clean architecture.
+* **DRY (Don't Repeat Yourself) Enforcement**: Always abstract duplicated API handlers, data fetch loops, and DB query wrappers into centralized helper files (e.g., `src/lib/api-helper.js`) instead of repeating boilerplate code. Keep all source files compact, modular, and reuse-oriented.
 
 ## 4. Token Conservation & Patching Rules (Anti-Waste for Beginners)
 * **Strict Minimal Outputs**: Never rewrite unchanged UI, layout, or JSX wrapper code. If modifying a function (e.g., `handleSubmit`), output ONLY that specific function or block. Use concise code comments like `// ... existing UI code remains unchanged ...` to prevent token cutoff.
