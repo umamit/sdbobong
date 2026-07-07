@@ -1,0 +1,144 @@
+datasource db {
+  provider  = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Config {
+  id                    String   @id @default("global_config")
+  marquee_announcements Json     // array of string
+  stats                 Json     // { siswa_aktif, guru_staf, ruang_kelas, akreditasi, ... }
+  ppdb_contacts         Json     // { nama_humas, wa_humas, ... }
+  force_local_cache     Boolean  @default(false)
+  downloads             Json?    // array of objects
+  faqs                  Json?    // array of objects
+  gallery               Json?    // array of objects
+
+  @@map("config_sdn_bobong")
+}
+
+model News {
+  id       String @id
+  title    String
+  date     String
+  category String
+  image    String
+  content  String
+  images   Json?  // array of string
+
+  @@map("news_sdn_bobong")
+}
+
+model Teacher {
+  id       String  @id
+  name     String
+  role     String
+  details  String
+  status   String
+  image    String
+  nip      String?
+
+  @@map("teachers_sdn_bobong")
+}
+
+model Student {
+  id           String  @id
+  nisn         String
+  nis          String
+  name         String
+  class        String
+  gender       String
+  birth_place  String
+  birth_date   String
+  address      String
+  parent_name  String
+  parent_phone String
+  status       String
+
+  @@map("students_sdn_bobong")
+}
+
+model Graduation {
+  id          String @id
+  nisn        String
+  no_peserta  String
+  name        String
+  status      String
+  sk_number   String
+  birth_place String
+  birth_date  String
+  parent_name String
+
+  @@map("graduation_sdn_bobong")
+}
+
+model Message {
+  id      String @id
+  name    String
+  role    String
+  type    String
+  message String
+  status  String
+  date    String
+
+  @@map("messages_sdn_bobong")
+}
+
+model Achievement {
+  id          String @id
+  title       String
+  level       String
+  year        String
+  description String
+
+  @@map("achievements_sdn_bobong")
+}
+
+model AuditLog {
+  id         String @id
+  timestamp  String
+  username   String
+  action     String
+  details    String
+  ip         String
+  user_agent String @map("user_agent")
+
+  @@map("audit_logs_sdn_bobong")
+}
+
+model PPDB {
+  id                Int     @id @default(autoincrement())
+  nama_lengkap      String
+  nik_siswa         String  @unique
+  tempat_lahir      String
+  tanggal_lahir     String
+  jenis_kelamin     String
+  nama_ibu_kandung  String
+  alamat_domisili   String
+  nomor_hp_orangtua String
+  jalur_ppdb        String
+  waktu_daftar      String
+  status            String
+  tahun_ajaran      String?
+  nama_panggilan    String?
+  agama             String?
+  anak_ke           Int?
+  dari_bersaudara   Int?
+  nama_ayah         String?
+  pekerjaan_ayah    String?
+  no_hp_ayah        String?
+  pekerjaan_ibu     String?
+  no_hp_ibu         String?
+  nama_wali         String?
+  pekerjaan_wali    String?
+  berkas_kk         String?
+  berkas_akta       String?
+  berkas_ktp        String?
+  berkas_sptjm      String?
+  berkas_kip        String?
+  berkas_ijazah     String?
+
+  @@map("ppdb_sdn_bobong")
+}

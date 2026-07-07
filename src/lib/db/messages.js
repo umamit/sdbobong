@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, MESSAGES_JSON } from './core.js';
+import { isSupabaseEnabled, MESSAGES_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
+import { prisma } from '../prisma.js';
 
 export async function loadMessages() {
   let localMessages = [];
@@ -10,12 +11,14 @@ export async function loadMessages() {
   }
   if (!isSupabaseEnabled()) return localMessages;
   try {
-    const { data: dbMessages, error } = await supabase.from("messages_sdn_bobong").select("*");
-    if (!error && dbMessages) {
+    const dbMessages = await prisma.message.findMany();
+    if (dbMessages) {
       const messagesSeeded = await isTableSeeded("messages");
       if (dbMessages.length === 0 && localMessages.length > 0 && !messagesSeeded) {
         for (const m of localMessages) {
-          await supabase.from("messages_sdn_bobong").insert({ id: m.id, name: m.name, role: m.role, type: m.type, message: m.message, status: m.status, date: m.date });
+          await prisma.message.create({
+            data: { id: m.id, name: m.name, role: m.role, type: m.type, message: m.message, status: m.status, date: m.date }
+          });
         }
         await markTableSeeded("messages");
         return localMessages;
@@ -25,7 +28,7 @@ export async function loadMessages() {
       try { fs.writeFileSync(MESSAGES_JSON, JSON.stringify(messagesList, null, 4), 'utf-8'); } catch (fsErr) {}
       return messagesList;
     }
-  } catch (e) { console.error("Supabase loadMessages failed, falling back to local:", e.message || e); }
+  } catch (e) { console.error("Supabase loadMessages failed via Prisma, falling back to local:", e.message || e); }
   return localMessages;
 }
 
@@ -36,18 +39,23 @@ export async function saveMessages(messagesList) {
   if (isSupabaseEnabled()) {
     try {
       for (const m of messagesList) {
-        const { error } = await supabase.from("messages_sdn_bobong").upsert({ id: m.id, name: m.name, role: m.role, type: m.type, message: m.message, status: m.status, date: m.date });
-        if (error) throw error;
+        await prisma.message.upsert({
+          where: { id: m.id },
+          update: { name: m.name, role: m.role, type: m.type, message: m.message, status: m.status, date: m.date },
+          create: { id: m.id, name: m.name, role: m.role, type: m.type, message: m.message, status: m.status, date: m.date }
+        });
       }
       const localIds = new Set(messagesList.map(m => m.id));
-      const { data: dbMessages, error: selectError } = await supabase.from("messages_sdn_bobong").select("id");
-      if (!selectError && dbMessages) {
+      const dbMessages = await prisma.message.findMany({ select: { id: true } });
+      if (dbMessages) {
         for (const row of dbMessages) {
-          if (!localIds.has(row.id)) await supabase.from("messages_sdn_bobong").delete().eq("id", row.id);
+          if (!localIds.has(row.id)) {
+            await prisma.message.delete({ where: { id: row.id } });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Supabase saveMessages failed:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Supabase saveMessages failed via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

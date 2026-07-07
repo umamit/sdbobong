@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, STUDENTS_JSON } from './core.js';
+import { isSupabaseEnabled, STUDENTS_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
+import { prisma } from '../prisma.js';
 
 export async function loadStudents() {
   let localStudents = [];
@@ -10,13 +11,15 @@ export async function loadStudents() {
   }
   if (!isSupabaseEnabled()) return localStudents;
   try {
-    const { data: dbStudents, error } = await supabase.from("students_sdn_bobong").select("*");
-    if (!error && dbStudents) {
+    const dbStudents = await prisma.student.findMany();
+    if (dbStudents) {
       const studentsSeeded = await isTableSeeded("students");
       if (dbStudents.length === 0 && localStudents.length > 0 && !studentsSeeded) {
         for (const s of localStudents) {
           const packedAddress = s.grades ? `${s.address || ""}<!--GRADES:${JSON.stringify(s.grades)}-->` : s.address;
-          await supabase.from("students_sdn_bobong").insert({ id: s.id, nisn: s.nisn, nis: s.nis, name: s.name, class: s.class, gender: s.gender, birth_place: s.birth_place, birth_date: s.birth_date, address: packedAddress, parent_name: s.parent_name, parent_phone: s.parent_phone, status: s.status });
+          await prisma.student.create({
+            data: { id: s.id, nisn: s.nisn, nis: s.nis, name: s.name, class: s.class, gender: s.gender, birth_place: s.birth_place, birth_date: s.birth_date, address: packedAddress, parent_name: s.parent_name, parent_phone: s.parent_phone, status: s.status }
+          });
         }
         await markTableSeeded("students");
         return localStudents;
@@ -32,7 +35,7 @@ export async function loadStudents() {
       try { fs.writeFileSync(STUDENTS_JSON, JSON.stringify(studList, null, 4), 'utf-8'); } catch (fsErr) {}
       return studList;
     }
-  } catch (e) { console.error("Supabase loadStudents failed:", e.message || e); }
+  } catch (e) { console.error("Supabase loadStudents failed via Prisma:", e.message || e); }
   return localStudents;
 }
 
@@ -44,18 +47,23 @@ export async function saveStudents(studentsList) {
     try {
       for (const s of studentsList) {
         const packedAddress = s.grades ? `${s.address || ""}<!--GRADES:${JSON.stringify(s.grades)}-->` : s.address;
-        const { error } = await supabase.from("students_sdn_bobong").upsert({ id: s.id, nisn: s.nisn, nis: s.nis, name: s.name, class: s.class, gender: s.gender, birth_place: s.birth_place, birth_date: s.birth_date, address: packedAddress, parent_name: s.parent_name, parent_phone: s.parent_phone, status: s.status });
-        if (error) throw error;
+        await prisma.student.upsert({
+          where: { id: s.id },
+          update: { nisn: s.nisn, nis: s.nis, name: s.name, class: s.class, gender: s.gender, birth_place: s.birth_place, birth_date: s.birth_date, address: packedAddress, parent_name: s.parent_name, parent_phone: s.parent_phone, status: s.status },
+          create: { id: s.id, nisn: s.nisn, nis: s.nis, name: s.name, class: s.class, gender: s.gender, birth_place: s.birth_place, birth_date: s.birth_date, address: packedAddress, parent_name: s.parent_name, parent_phone: s.parent_phone, status: s.status }
+        });
       }
       const localIds = new Set(studentsList.map(s => s.id));
-      const { data: dbStud, error: selectError } = await supabase.from("students_sdn_bobong").select("id");
-      if (!selectError && dbStud) {
+      const dbStud = await prisma.student.findMany({ select: { id: true } });
+      if (dbStud) {
         for (const row of dbStud) {
-          if (!localIds.has(row.id)) await supabase.from("students_sdn_bobong").delete().eq("id", row.id);
+          if (!localIds.has(row.id)) {
+            await prisma.student.delete({ where: { id: row.id } });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Supabase saveStudents failed:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Supabase saveStudents failed via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

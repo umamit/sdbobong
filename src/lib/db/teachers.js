@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, TEACHERS_JSON } from './core.js';
+import { isSupabaseEnabled, TEACHERS_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
+import { prisma } from '../prisma.js';
 
 function getTeacherSortWeight(teacher) {
   const role = (teacher.role || "").toLowerCase();
@@ -39,10 +40,7 @@ export async function loadTeachers(includePassword = false) {
   if (!isSupabaseEnabled()) return cleanList(sortTeachersList(localTeachers));
 
   try {
-    const { data: supabaseTeachers, error } = await supabase.from("teachers_sdn_bobong").select("*");
-    if (error) throw error;
-    let hasNipColumn = false;
-    try { const { error: nipError } = await supabase.from("teachers_sdn_bobong").select("nip").limit(1); if (!nipError) hasNipColumn = true; } catch (e) {}
+    const supabaseTeachers = await prisma.teacher.findMany();
     const teachersSeeded = await isTableSeeded("teachers");
     if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0 && !teachersSeeded) {
       const sortedLocal = sortTeachersList(localTeachers);
@@ -50,9 +48,9 @@ export async function loadTeachers(includePassword = false) {
         const packedDetails = (t.subject || t.education || t.motto || t.bio || t.password)
           ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject||'', education: t.education||'', motto: t.motto||'', bio: t.bio||'', password: t.password||'' })}-->`
           : t.details;
-        const insertObj = { id: t.id, name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image };
-        if (hasNipColumn) insertObj.nip = t.nip || "";
-        await supabase.from("teachers_sdn_bobong").insert(insertObj);
+        await prisma.teacher.create({
+          data: { id: t.id, name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image, nip: t.nip || "" }
+        });
       }
       await markTableSeeded("teachers");
       return cleanList(sortedLocal);
@@ -66,15 +64,15 @@ export async function loadTeachers(includePassword = false) {
         }
         const obj = { id: t.id, name: t.name, role: t.role, details, status: t.status, image: t.image, subject: extra.subject||"", education: extra.education||"", motto: extra.motto||"", bio: extra.bio||"" };
         if (includePassword || extra.password) obj.password = extra.password || "";
-        if (hasNipColumn) obj.nip = t.nip || "";
-        else { const localMatch = localTeachers.find(lt => lt.id === t.id); if (localMatch?.nip) obj.nip = localMatch.nip; }
+        obj.nip = t.nip || "";
+        if (!obj.nip) { const localMatch = localTeachers.find(lt => lt.id === t.id); if (localMatch?.nip) obj.nip = localMatch.nip; }
         return obj;
       });
       const sortedList = sortTeachersList(teachersList);
       try { fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8'); } catch (e) {}
       return cleanList(sortedList);
     }
-  } catch (e) { console.error("Error loading teachers from Supabase:", e.message || e); }
+  } catch (e) { console.error("Error loading teachers from Supabase via Prisma:", e.message || e); }
   return cleanList(sortTeachersList(localTeachers));
 }
 
@@ -89,27 +87,27 @@ export async function saveTeachers(teachersList) {
   catch (e) { console.error("Error saving teachers locally:", e); }
   if (isSupabaseEnabled()) {
     try {
-      let hasNipColumn = false;
-      try { const { error: nipError } = await supabase.from("teachers_sdn_bobong").select("nip").limit(1); if (!nipError) hasNipColumn = true; } catch (e) {}
       for (const t of sortedList) {
         const packedDetails = (t.subject || t.education || t.motto || t.bio || t.password)
           ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject||'', education: t.education||'', motto: t.motto||'', bio: t.bio||'', password: t.password||'' })}-->`
           : t.details;
-        const upsertObj = { id: t.id, name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image };
-        if (hasNipColumn) upsertObj.nip = t.nip || "";
-        const { error } = await supabase.from("teachers_sdn_bobong").upsert(upsertObj);
-        if (error) throw error;
+        await prisma.teacher.upsert({
+          where: { id: t.id },
+          update: { name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image, nip: t.nip || "" },
+          create: { id: t.id, name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image, nip: t.nip || "" }
+        });
       }
       const localIds = new Set(sortedList.map(t => t.id));
-      const { data: supabaseTeachers, error: selectError } = await supabase.from("teachers_sdn_bobong").select("id");
-      if (selectError) throw selectError;
+      const supabaseTeachers = await prisma.teacher.findMany({ select: { id: true } });
       if (supabaseTeachers) {
         for (const row of supabaseTeachers) {
-          if (!localIds.has(row.id)) { const { error: deleteError } = await supabase.from("teachers_sdn_bobong").delete().eq("id", row.id); if (deleteError) throw deleteError; }
+          if (!localIds.has(row.id)) {
+            await prisma.teacher.delete({ where: { id: row.id } });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Error saving teachers to Supabase:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Error saving teachers to Supabase via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

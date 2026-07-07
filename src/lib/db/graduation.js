@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, GRADUATION_JSON } from './core.js';
+import { isSupabaseEnabled, GRADUATION_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
+import { prisma } from '../prisma.js';
 
 export async function loadGraduation() {
   let localGraduation = [];
@@ -10,22 +11,24 @@ export async function loadGraduation() {
   }
   if (!isSupabaseEnabled()) return localGraduation;
   try {
-    const { data: dbGraduation, error } = await supabase.from("graduation_sdn_bobong").select("*");
-    if (!error && dbGraduation) {
-      const graduationSeeded = await isTableSeeded("graduation");
-      if (dbGraduation.length === 0 && localGraduation.length > 0 && !graduationSeeded) {
-        for (const g of localGraduation) {
-          await supabase.from("graduation_sdn_bobong").insert({ id: g.id, nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name });
-        }
-        await markTableSeeded("graduation");
-        return localGraduation;
+    const dbGraduation = await prisma.graduation.findMany();
+    const graduationSeeded = await isTableSeeded("graduation");
+    if ((!dbGraduation || dbGraduation.length === 0) && localGraduation.length > 0 && !graduationSeeded) {
+      for (const g of localGraduation) {
+        await prisma.graduation.create({
+          data: { id: g.id, nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name }
+        });
       }
-      if (dbGraduation.length > 0 && !graduationSeeded) await markTableSeeded("graduation");
+      await markTableSeeded("graduation");
+      return localGraduation;
+    }
+    if (dbGraduation && dbGraduation.length > 0 && !graduationSeeded) await markTableSeeded("graduation");
+    if (dbGraduation) {
       const gradList = dbGraduation.map(g => ({ id: g.id, nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name }));
       try { fs.writeFileSync(GRADUATION_JSON, JSON.stringify(gradList, null, 4), 'utf-8'); } catch (fsErr) {}
       return gradList;
     }
-  } catch (e) { console.error("Supabase loadGraduation failed:", e.message || e); }
+  } catch (e) { console.error("Supabase loadGraduation failed via Prisma:", e.message || e); }
   return localGraduation;
 }
 
@@ -36,18 +39,23 @@ export async function saveGraduation(gradList) {
   if (isSupabaseEnabled()) {
     try {
       for (const g of gradList) {
-        const { error } = await supabase.from("graduation_sdn_bobong").upsert({ id: g.id, nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name });
-        if (error) throw error;
+        await prisma.graduation.upsert({
+          where: { id: g.id },
+          update: { nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name },
+          create: { id: g.id, nisn: g.nisn, no_peserta: g.no_peserta, name: g.name, status: g.status, sk_number: g.sk_number, birth_place: g.birth_place, birth_date: g.birth_date, parent_name: g.parent_name }
+        });
       }
       const localIds = new Set(gradList.map(g => g.id));
-      const { data: dbGrad, error: selectError } = await supabase.from("graduation_sdn_bobong").select("id");
-      if (!selectError && dbGrad) {
+      const dbGrad = await prisma.graduation.findMany({ select: { id: true } });
+      if (dbGrad) {
         for (const row of dbGrad) {
-          if (!localIds.has(row.id)) await supabase.from("graduation_sdn_bobong").delete().eq("id", row.id);
+          if (!localIds.has(row.id)) {
+            await prisma.graduation.delete({ where: { id: row.id } });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Supabase saveGraduation failed:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Supabase saveGraduation failed via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

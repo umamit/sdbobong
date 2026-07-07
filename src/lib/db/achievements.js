@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, ACHIEVEMENTS_JSON } from './core.js';
+import { isSupabaseEnabled, ACHIEVEMENTS_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
+import { prisma } from '../prisma.js';
 
 export async function loadAchievements() {
   let localAchievements = [];
@@ -10,12 +11,13 @@ export async function loadAchievements() {
   }
   if (!isSupabaseEnabled()) return localAchievements;
   try {
-    const { data: supabaseAchievements, error } = await supabase.from("achievements_sdn_bobong").select("*");
-    if (error) throw error;
+    const supabaseAchievements = await prisma.achievement.findMany();
     const achievementsSeeded = await isTableSeeded("achievements");
     if ((!supabaseAchievements || supabaseAchievements.length === 0) && localAchievements.length > 0 && !achievementsSeeded) {
       for (const ach of localAchievements) {
-        await supabase.from("achievements_sdn_bobong").insert({ id: ach.id, title: ach.title, level: ach.level, year: ach.year, description: ach.description });
+        await prisma.achievement.create({
+          data: { id: ach.id, title: ach.title, level: ach.level, year: ach.year, description: ach.description }
+        });
       }
       await markTableSeeded("achievements");
       return localAchievements;
@@ -27,7 +29,7 @@ export async function loadAchievements() {
       try { fs.writeFileSync(ACHIEVEMENTS_JSON, JSON.stringify(achievementsList, null, 4), 'utf-8'); } catch (e) {}
       return achievementsList;
     }
-  } catch (e) { console.error("Error loading achievements from Supabase:", e.message || e); }
+  } catch (e) { console.error("Error loading achievements from Supabase via Prisma:", e.message || e); }
   return localAchievements;
 }
 
@@ -38,19 +40,27 @@ export async function saveAchievements(achievementsList) {
   if (isSupabaseEnabled()) {
     try {
       for (const ach of achievementsList) {
-        const { error } = await supabase.from("achievements_sdn_bobong").upsert({ id: ach.id, title: ach.title, level: ach.level, year: ach.year, description: ach.description });
-        if (error) throw error;
+        await prisma.achievement.upsert({
+          where: { id: ach.id },
+          update: { title: ach.title, level: ach.level, year: ach.year, description: ach.description },
+          create: { id: ach.id, title: ach.title, level: ach.level, year: ach.year, description: ach.description }
+        });
       }
       const localIds = new Set(achievementsList.map(ach => ach.id));
-      const { data: supabaseAchievements, error: selectError } = await supabase.from("achievements_sdn_bobong").select("id");
-      if (selectError) throw selectError;
+      const supabaseAchievements = await prisma.achievement.findMany({
+        select: { id: true }
+      });
       if (supabaseAchievements) {
         for (const row of supabaseAchievements) {
-          if (!localIds.has(row.id)) { const { error: deleteError } = await supabase.from("achievements_sdn_bobong").delete().eq("id", row.id); if (deleteError) throw deleteError; }
+          if (!localIds.has(row.id)) {
+            await prisma.achievement.delete({
+              where: { id: row.id }
+            });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Error saving achievements to Supabase:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Error saving achievements to Supabase via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

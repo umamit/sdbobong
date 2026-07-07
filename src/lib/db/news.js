@@ -1,18 +1,10 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent } from './core.js';
+import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
-
-let cachedNewsColumns = null;
+import { prisma } from '../prisma.js';
 
 export async function getAvailableNewsColumns() {
-  if (cachedNewsColumns) return cachedNewsColumns;
-  const defaultColumns = ['id', 'title', 'date', 'category', 'image', 'content'];
-  if (!supabase || !isSupabaseEnabled()) { cachedNewsColumns = defaultColumns; return defaultColumns; }
-  try {
-    const { error } = await supabase.from("news_sdn_bobong").select("images").limit(0);
-    cachedNewsColumns = !error ? [...defaultColumns, 'images'] : defaultColumns;
-  } catch (e) { cachedNewsColumns = defaultColumns; }
-  return cachedNewsColumns;
+  return ['id', 'title', 'date', 'category', 'image', 'content', 'images'];
 }
 
 function getNewsSortKey(item) {
@@ -46,16 +38,21 @@ export async function loadNews() {
   }
   if (!isSupabaseEnabled()) return localNews;
   try {
-    const { data: supabaseNews, error } = await supabase.from("news_sdn_bobong").select("*");
-    if (error) throw error;
+    const supabaseNews = await prisma.news.findMany();
     const newsSeeded = await isTableSeeded("news");
     if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0 && !newsSeeded) {
-      const availableCols = await getAvailableNewsColumns();
-      const hasImagesCol = availableCols.includes('images');
       for (const article of localNews) {
-        const insertObj = { id: article.id, title: article.title, date: article.date, category: article.category, image: article.image, content: packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : [])) };
-        if (hasImagesCol) insertObj.images = article.images || (article.image ? [article.image] : []);
-        await supabase.from("news_sdn_bobong").insert(insertObj);
+        await prisma.news.create({
+          data: {
+            id: article.id,
+            title: article.title,
+            date: article.date,
+            category: article.category,
+            image: article.image,
+            content: packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : [])),
+            images: article.images || (article.image ? [article.image] : [])
+          }
+        });
       }
       await markTableSeeded("news");
       return localNews;
@@ -72,7 +69,7 @@ export async function loadNews() {
       try { fs.writeFileSync(NEWS_JSON, JSON.stringify(newsList, null, 4), 'utf-8'); } catch (e) {}
       return newsList;
     }
-  } catch (e) { console.error("Error loading news from Supabase:", e.message || e); }
+  } catch (e) { console.error("Error loading news from Supabase via Prisma:", e.message || e); }
   return localNews;
 }
 
@@ -82,24 +79,41 @@ export async function saveNews(newsList) {
   catch (e) { console.error("Error saving news locally:", e); }
   if (isSupabaseEnabled()) {
     try {
-      const availableCols = await getAvailableNewsColumns();
-      const hasImagesCol = availableCols.includes('images');
       for (const article of newsList) {
-        const payload = { id: article.id, title: article.title, date: article.date, category: article.category, image: article.image, content: packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : [])) };
-        if (hasImagesCol) payload.images = article.images || (article.image ? [article.image] : []);
-        const { error } = await supabase.from("news_sdn_bobong").upsert(payload);
-        if (error) throw error;
+        const packedContent = packImagesIntoContent(article.content, article.images || (article.image ? [article.image] : []));
+        const imagesPayload = article.images || (article.image ? [article.image] : []);
+        await prisma.news.upsert({
+          where: { id: article.id },
+          update: {
+            title: article.title,
+            date: article.date,
+            category: article.category,
+            image: article.image,
+            content: packedContent,
+            images: imagesPayload
+          },
+          create: {
+            id: article.id,
+            title: article.title,
+            date: article.date,
+            category: article.category,
+            image: article.image,
+            content: packedContent,
+            images: imagesPayload
+          }
+        });
       }
       const localIds = new Set(newsList.map(n => n.id));
-      const { data: supabaseNews, error: selectError } = await supabase.from("news_sdn_bobong").select("id");
-      if (selectError) throw selectError;
+      const supabaseNews = await prisma.news.findMany({ select: { id: true } });
       if (supabaseNews) {
         for (const row of supabaseNews) {
-          if (!localIds.has(row.id)) { const { error: deleteError } = await supabase.from("news_sdn_bobong").delete().eq("id", row.id); if (deleteError) throw deleteError; }
+          if (!localIds.has(row.id)) {
+            await prisma.news.delete({ where: { id: row.id } });
+          }
         }
       }
       return true;
-    } catch (e) { console.error("Error saving news to Supabase:", e.message || e); return localSaved; }
+    } catch (e) { console.error("Error saving news to Supabase via Prisma:", e.message || e); return localSaved; }
   }
   return localSaved;
 }

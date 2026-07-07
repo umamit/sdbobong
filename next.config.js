@@ -4,6 +4,7 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.join(__dirname, './'),
+  serverExternalPackages: ['@prisma/client', 'pg'],
   experimental: {
     serverActions: {
       bodySizeLimit: '4mb',
