@@ -148,7 +148,7 @@ export default function useSystemHandlers({
         showToast('success', `Ancaman keamanan untuk IP ${ip} berhasil diselesaikan dan dibebaskan!`);
         setConfig(data.config);
         
-        const logRes = await fetch('/api/config/audit_logs');
+        const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
         if (logRes.ok) {
           const logData = await logRes.json();
           setAuditLogs(logData.auditLogs || []);
@@ -164,7 +164,7 @@ export default function useSystemHandlers({
 
   const handleRefreshAuditLogs = async () => {
     try {
-      const logRes = await fetch('/api/config/audit_logs');
+      const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
       if (logRes.ok) {
         const logData = await logRes.json();
         setAuditLogs(logData.auditLogs || []);
@@ -199,7 +199,7 @@ export default function useSystemHandlers({
         setConfig(data.config);
         setBlacklistIp('');
         setBlacklistReason('');
-        const logRes = await fetch('/api/config/audit_logs');
+        const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
         if (logRes.ok) {
           const logData = await logRes.json();
           setAuditLogs(logData.auditLogs || []);
@@ -227,7 +227,7 @@ export default function useSystemHandlers({
       if (res.ok) {
         showToast('success', `IP ${ip} berhasil dibebaskan dari daftar hitam.`);
         setConfig(data.config);
-        const logRes = await fetch('/api/config/audit_logs');
+        const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
         if (logRes.ok) {
           const logData = await logRes.json();
           setAuditLogs(logData.auditLogs || []);
@@ -258,7 +258,7 @@ export default function useSystemHandlers({
       if (res.ok) {
         showToast('success', 'Konfigurasi kebijakan keamanan berhasil diperbarui!');
         setConfig(data.config);
-        const logRes = await fetch('/api/config/audit_logs');
+        const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
         if (logRes.ok) {
           const logData = await logRes.json();
           setAuditLogs(logData.auditLogs || []);
@@ -291,7 +291,7 @@ export default function useSystemHandlers({
         showToast('success', 'Seluruh jurnal audit berhasil dikosongkan!');
         setPurgeLogsConfirmation('');
         setIsPurgeModalOpen(false);
-        const logRes = await fetch('/api/config/audit_logs');
+        const logRes = await fetch(`/api/config/audit_logs?t=${Date.now()}`, { headers: { 'Cache-Control': 'no-cache, no-store' } });
         if (logRes.ok) {
           const logData = await logRes.json();
           setAuditLogs(logData.auditLogs || []);
