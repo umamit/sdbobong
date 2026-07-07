@@ -55,7 +55,19 @@ export async function GET(request) {
               berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
               berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
               berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || "",
-              berkas_ijazah: r.berkas_ijazah || unpacked.berkas.berkas_ijazah || ""
+              berkas_ijazah: r.berkas_ijazah || unpacked.berkas.berkas_ijazah || "",
+              nama_panggilan: r.nama_panggilan || unpacked.berkas.nama_panggilan || "",
+              agama: r.agama || unpacked.berkas.agama || "",
+              anak_ke: r.anak_ke || unpacked.berkas.anak_ke || "",
+              dari_bersaudara: r.dari_bersaudara || unpacked.berkas.dari_bersaudara || "",
+              nama_ayah: r.nama_ayah || unpacked.berkas.nama_ayah || "",
+              pekerjaan_ayah: r.pekerjaan_ayah || unpacked.berkas.pekerjaan_ayah || "",
+              no_hp_ayah: r.no_hp_ayah || unpacked.berkas.no_hp_ayah || "",
+              pekerjaan_ibu: r.pekerjaan_ibu || unpacked.berkas.pekerjaan_ibu || "",
+              no_hp_ibu: r.no_hp_ibu || unpacked.berkas.no_hp_ibu || "",
+              nama_wali: r.nama_wali || unpacked.berkas.nama_wali || "",
+              pekerjaan_wali: r.pekerjaan_wali || unpacked.berkas.pekerjaan_wali || "",
+              tahun_ajaran: r.tahun_ajaran || unpacked.berkas.tahun_ajaran || ""
             };
           });
         }
@@ -644,6 +656,15 @@ export async function POST(request) {
           if (availableCols.includes(col)) {
             supabaseData[col] = val;
           }
+        }
+
+        const missingCols = Object.keys(colMap).filter(c => !availableCols.includes(c));
+        if (missingCols.length > 0) {
+          const extraData = {};
+          for (const col of missingCols) {
+            extraData[col] = colMap[col];
+          }
+          supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, extraData);
         }
 
         const { data, error } = await supabase.from("ppdb_sdn_bobong").insert(supabaseData).select();

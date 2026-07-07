@@ -211,15 +211,14 @@ export async function submitPpdbAction(formData) {
           }
         }
 
-        // Check if we need to pack berkas into alamat_domisili (fallback for zero-migration)
-        const missingBerkasCols = ['berkas_kk', 'berkas_akta', 'berkas_ijazah'].some(c => !availableCols.includes(c));
-        if (missingBerkasCols) {
-          const berkasData = {
-            berkas_kk,
-            berkas_akta,
-            berkas_ijazah
-          };
-          supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, berkasData);
+        // Check if we need to pack missing fields into alamat_domisili (fallback for zero-migration)
+        const missingCols = Object.keys(colMap).filter(c => !availableCols.includes(c));
+        if (missingCols.length > 0) {
+          const extraData = {};
+          for (const col of missingCols) {
+            extraData[col] = colMap[col];
+          }
+          supabaseData.alamat_domisili = packBerkasIntoAlamat(alamat, extraData);
         }
 
         const { error } = await supabase.from("ppdb_sdn_bobong").insert(supabaseData);

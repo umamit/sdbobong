@@ -80,10 +80,13 @@ export async function syncLocalToSupabase() {
         };
         const supabaseData = {};
         for (const [col, val] of Object.entries(fullMap)) { if (availableCols.includes(col)) supabaseData[col] = val; }
-        const missingBerkasCols = ['berkas_kk','berkas_akta','berkas_ktp','berkas_sptjm','berkas_kip','berkas_ijazah'].some(c => !availableCols.includes(c));
-        if (missingBerkasCols) {
-          const berkasData = { berkas_kk: localR.berkas_kk||"", berkas_akta: localR.berkas_akta||"", berkas_ktp: localR.berkas_ktp||"", berkas_sptjm: localR.berkas_sptjm||"", berkas_kip: localR.berkas_kip||"", berkas_ijazah: localR.berkas_ijazah||"" };
-          supabaseData.alamat_domisili = packBerkasIntoAlamat(localR.alamat || localR.alamat_domisili || "", berkasData);
+        const missingCols = Object.keys(fullMap).filter(c => !availableCols.includes(c));
+        if (missingCols.length > 0) {
+          const extraData = {};
+          for (const col of missingCols) {
+            extraData[col] = fullMap[col];
+          }
+          supabaseData.alamat_domisili = packBerkasIntoAlamat(localR.alamat || localR.alamat_domisili || "", extraData);
         }
         try { await supabase.from("ppdb_sdn_bobong").insert(supabaseData); syncedToSupabaseCount++; }
         catch (e) {
