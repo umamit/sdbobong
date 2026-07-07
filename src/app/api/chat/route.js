@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { loadWebConfig, loadTeachers, loadAchievements, loadNews } from '../../../lib/database';
+import { chatSchema, parseBody } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,12 +30,9 @@ export async function POST(req) {
 
 
   try {
-    const body = await req.json();
-    const { messages } = body;
-
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json({ error: "Format pesan tidak valid." }, { status: 400 });
-    }
+    const parsed = await parseBody(req, chatSchema);
+    if (!parsed.success) return parsed.error;
+    const { messages } = parsed.data;
 
     // Ambil pesan terbaru dari pengguna
     latestMessage = messages[messages.length - 1]?.content || "";

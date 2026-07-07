@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { createClient } from '../../../../lib/supabase/server';
 import { verifyAdminToken } from '../../../../lib/auth';
+import { changePasswordSchema, parseBody } from '../../../../lib/validators';
 
 export async function POST(request) {
   try {
@@ -25,15 +26,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Unauthorized: Akses ditolak.' }, { status: 401 });
     }
 
-    const { currentPassword, newPassword } = await request.json();
-
-    if (!currentPassword || !newPassword) {
-      return NextResponse.json({ error: 'Password saat ini dan password baru wajib diisi!' }, { status: 400 });
-    }
-
-    if (newPassword.length < 6) {
-      return NextResponse.json({ error: 'Password baru minimal harus 6 karakter!' }, { status: 400 });
-    }
+    const parsed = await parseBody(request, changePasswordSchema);
+    if (!parsed.success) return parsed.error;
+    const { currentPassword, newPassword } = parsed.data;
 
     // 1. Case: Local Admin Session (using ADMIN_PASSWORD in .env)
     if (isLocalAdminSession) {

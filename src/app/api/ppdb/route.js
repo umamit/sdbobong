@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { PENDAFTARAN_JSON, loadLocalStatuses, supabase, isSupabaseEnabled, getAvailableSupabaseColumns, unpackBerkasFromAlamat, loadWebConfig } from '../../../lib/database';
 import { prisma } from '../../../lib/prisma';
+import {
+  supabase, saveData, loadData, isSupabaseEnabled,
+  PENDAFTARAN_JSON, loadLocalStatuses, getAvailableSupabaseColumns,
+  unpackBerkasFromAlamat, loadWebConfig
+} from '../../../lib/database';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { revalidatePath } from 'next/cache';
+import { ppdbSchema, ppdbStatusSchema, parseBody } from '../../../lib/validators';
 import fs from 'fs';
 import path from 'path';
 
@@ -584,44 +589,15 @@ export async function DELETE(request) {
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    const parsed = await parseBody(request, ppdbSchema);
+    if (!parsed.success) return parsed.error;
     const {
-      nama_lengkap,
-      nama_panggilan,
-      nik,
-      tempat_lahir,
-      tanggal_lahir,
-      jenis_kelamin,
-      agama,
-      anak_ke,
-      dari_bersaudara,
-      alamat,
-      jalur_ppdb,
-      // Data Orang Tua
-      nama_ayah,
-      pekerjaan_ayah,
-      no_hp_ayah,
-      nama_ibu,
-      pekerjaan_ibu,
-      no_hp_ibu,
-      no_hp,
-      // Data Wali (Opsional)
-      nama_wali,
-      pekerjaan_wali
-    } = body;
-
-    if (
-      !nama_lengkap || !nama_panggilan || !nik || !tempat_lahir || !tanggal_lahir || 
-      !jenis_kelamin || !agama || !anak_ke || !dari_bersaudara || !alamat || !jalur_ppdb ||
-      !nama_ayah || !pekerjaan_ayah || !no_hp_ayah ||
-      !nama_ibu || !pekerjaan_ibu || !no_hp_ibu || !no_hp
-    ) {
-      return NextResponse.json({ error: "Semua kolom formulir wajib diisi!" }, { status: 400 });
-    }
-
-    if (nik.length !== 16 || !/^\d+$/.test(nik)) {
-      return NextResponse.json({ error: "NIK harus terdiri dari 16 digit angka!" }, { status: 400 });
-    }
+      nama_lengkap, nama_panggilan, nik, tempat_lahir, tanggal_lahir,
+      jenis_kelamin, agama, anak_ke, dari_bersaudara, alamat, jalur_ppdb,
+      nama_ayah, pekerjaan_ayah, no_hp_ayah,
+      nama_ibu, pekerjaan_ibu, no_hp_ibu,
+      no_hp, nama_wali, pekerjaan_wali
+    } = parsed.data;
 
     const waktu_daftar = new Date().toISOString().replace('T', ' ').split('.')[0];
     const status = "Diterima Sistem";

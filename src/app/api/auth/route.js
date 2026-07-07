@@ -3,12 +3,15 @@ import { createClient } from '../../../lib/supabase/server';
 import { createAdminToken } from '../../../lib/auth';
 import { loadWebConfig, saveWebConfig } from '../../../lib/database';
 import { createAuditLog, getClientIp } from '../../../lib/audit';
+import { adminAuthSchema, parseBody } from '../../../lib/validators';
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const parsed = await parseBody(request, adminAuthSchema);
+    if (!parsed.success) return parsed.error;
+    const { email, password } = parsed.data;
 
-    const cleanPass = (password || '').trim();
+    const cleanPass = password.trim();
     const serviceRoleKey = process.env.SUPABASE_KEY || '';
 
     // Track login IP

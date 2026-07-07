@@ -5,6 +5,7 @@ import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import { handleApiDelete } from '../../../lib/api-helper';
+import { messageSchema, parseBody } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -30,23 +31,13 @@ export async function GET() {
 // POST: Accepts new Guest Book or Feedback submission
 export async function POST(request) {
   try {
-    const body = await request.json();
-    const name = body.name?.toString().trim();
-    const role = body.role?.toString().trim();
-    const type = body.type?.toString().trim(); // 'guestbook' or 'feedback'
-    const message = body.message?.toString().trim();
-
-    if (!name || !role || !type || !message) {
-      return NextResponse.json({ error: "Semua kolom formulir wajib diisi!" }, { status: 400 });
-    }
-
-    if (!['guestbook', 'feedback'].includes(type)) {
-      return NextResponse.json({ error: "Tipe pesan tidak valid!" }, { status: 400 });
-    }
+    const parsed = await parseBody(request, messageSchema);
+    if (!parsed.success) return parsed.error;
+    const { name, role, type, message } = parsed.data;
 
     const allowedRoles = ['Alumni', 'Wali Murid', 'Masyarakat', 'Siswa'];
     if (!allowedRoles.includes(role)) {
-      return NextResponse.json({ error: "Kategori pengirim tidak valid!" }, { status: 400 });
+      return NextResponse.json({ error: 'Kategori pengirim tidak valid!' }, { status: 400 });
     }
 
     const allMessages = await loadMessages();
