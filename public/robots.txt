@@ -1,31 +1,53 @@
 # =========================================================================
 # PENTING BAGI DEVELOPER / ADMIN:
 # Jika ada penambahan rute halaman publik baru di masa mendatang, pastikan:
-# 1. Halaman tersebut diizinkan (Allow) secara default di bawah ini.
-# 2. Jika rute tersebut bersifat internal, sensitif, atau administratif (seperti /admin),
-#    tambahkan baris 'Disallow: /nama-rute' di bawah block 'User-agent: *'.
-# 3. Tambahkan rute publik baru tersebut ke berkas 'src/app/sitemap.js' agar sitemap.xml selalu sinkron.
+# 1. Halaman tersebut diizinkan (Allow) secara default di bawah.
+# 2. Jika rute bersifat internal / admin, tambahkan baris 'Disallow'.
+# 3. Tambahkan rute publik baru ke 'src/app/sitemap.js' agar selalu sinkron.
 # =========================================================================
 
+# ── Semua Bot Pengindeks Umum ─────────────────────────────────────────────
 User-agent: *
 Allow: /
 
+# Larang akses ke halaman admin & internal
+Disallow: /admin
+Disallow: /admin/
+Disallow: /guru
+Disallow: /guru/
+Disallow: /api/
+Disallow: /ppdb-online/sukses
+Disallow: /_next/
+
+# ── Bot AI Scraper (Blokir Training Data) ────────────────────────────────
 User-agent: GPTBot
 Disallow: /
 
 User-agent: ChatGPT-User
 Disallow: /
 
+User-agent: OAI-SearchBot
+Disallow: /
+
 User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Anthropic-AI
+Disallow: /
+
+User-agent: Claude-Web
 Disallow: /
 
 User-agent: Google-Extended
 Disallow: /
 
+User-agent: Gemini-AI
+Disallow: /
+
 User-agent: CCBot
 Disallow: /
 
-User-agent: Anthropic-AI
+User-agent: omgili
 Disallow: /
 
 User-agent: Omgilibot
@@ -34,4 +56,17 @@ Disallow: /
 User-agent: FacebookBot
 Disallow: /
 
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# ── Sitemap ───────────────────────────────────────────────────────────────
 Sitemap: https://sdnegeribobong.sch.id/sitemap.xml
