@@ -41,7 +41,7 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **One Task Per Prompt**: Break down complex features into single, atomic steps. Do not ask the agent to "build a feature"; instead, ask it to "create the database query", then "create the API route", then "bind it to the UI".
 * **Explicit File Targeting**: Always start a prompt by specifying the exact file path (e.g., `src/app/gallery/GalleryClient.jsx`). Do not let the agent search the whole workspace to guess where to write code.
 * **Inline Error Pasting**: If a runtime or compilation error occurs, paste the exact error stack trace directly into the prompt. The agent must immediately identify the root cause without analyzing unaffected files.
-* **No Code Hallucination**: If the agent is unsure about a local helper function, configuration, or asset path, it must ask the user for clarification instead of guessing or inventing fake code blocks.
+* **No Code Hallucination**: The agent is strictly prohibited from hallucinating or inventing code, dependencies, file paths, or configurations. If the agent is unsure about a local helper function, configuration, or asset path, it must immediately ask the user for clarification instead of guessing or inventing fake code blocks.
 * **No Overhead Re-styling**: Do not add, modify, or rewrite Tailwind classes or CSS properties unless explicitly requested by the user. Focus strictly on repairing or adding logic.
 
 ## 6. Fullstack Architecture Safeguards (Anti-Crash Rules)
