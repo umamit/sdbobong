@@ -1,6 +1,7 @@
 import AdminDashboardClient from './AdminDashboardClient';
 import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation, loadStudents, unpackBerkasFromAlamat } from '../../../lib/database';
 import { loadAuditLogs } from '../../../lib/audit';
+import { prisma } from '../../../lib/prisma';
 import fs from 'fs';
 
 export const dynamic = 'force-dynamic';
@@ -30,12 +31,11 @@ export default async function AdminDashboardPage() {
 
   if (supabaseActive) {
     try {
-      const { data, error } = await supabase
-        .from("ppdb_sdn_bobong")
-        .select("*")
-        .order("waktu_daftar", { ascending: false });
+      const data = await prisma.pPDB.findMany({
+        orderBy: { waktu_daftar: 'desc' }
+      });
       
-      if (!error && data) {
+      if (data) {
         records = data.map(r => {
           const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
           return {
@@ -52,7 +52,7 @@ export default async function AdminDashboardPage() {
         dbStatus = 'active';
       }
     } catch (e) {
-      console.error("Error querying Supabase for admin dashboard page:", e);
+      console.error("Error querying database via Prisma for admin dashboard page:", e);
     }
   } else {
     // If Supabase is disabled manually, or key is missing
