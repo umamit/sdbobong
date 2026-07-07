@@ -190,8 +190,8 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                 <button
                   type="submit"
                   disabled={gtStatus.type === 'loading'}
-                  className="btn-primary"
-                  style={{ width: '100%', padding: '12px', fontWeight: '600', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.2s' }}
+                  className="btn btn-primary"
+                  style={{ width: '100%' }}
                 >
                   {gtStatus.type === 'loading' ? (
                     <span className="btn-loading-container">
@@ -278,8 +278,8 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                 <button
                   type="submit"
                   disabled={srStatus.type === 'loading'}
-                  className="btn-primary"
-                  style={{ width: '100%', padding: '12px', fontWeight: '600', borderRadius: 'var(--radius-sm)', cursor: 'pointer', transition: 'all 0.2s' }}
+                  className="btn btn-primary"
+                  style={{ width: '100%' }}
                 >
                   {srStatus.type === 'loading' ? (
                     <span className="btn-loading-container">

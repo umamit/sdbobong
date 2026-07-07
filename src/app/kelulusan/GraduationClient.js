@@ -127,13 +127,7 @@ export default function GraduationClient() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary"
-            style={{
-              padding: '12px 24px',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
+            className="btn btn-primary"
           >
             {loading ? 'Memeriksa...' : 'Cari'}
           </button>

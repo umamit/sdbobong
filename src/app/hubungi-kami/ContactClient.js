@@ -192,8 +192,8 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
             </div>
 
             <button
-              type="submit" disabled={formStatus.type === 'loading'} className="btn-primary"
-              style={{ width: '100%', padding: '10px', fontWeight: '600', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
+              type="submit" disabled={formStatus.type === 'loading'} className="btn btn-primary"
+              style={{ width: '100%' }}
             >
               {formStatus.type === 'loading' ? 'Mengirim...' : 'Kirim Pesan Hubungi'}
             </button>

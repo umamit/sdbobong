@@ -165,12 +165,8 @@ export default function GradesClient() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary"
+            className="btn btn-primary"
             style={{
-              padding: '12px',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: '600',
-              cursor: 'pointer',
               width: '100%'
             }}
           >
