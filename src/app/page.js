@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
+import StatsCounter from '../components/StatsCounter';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
@@ -284,43 +285,21 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Stats Counter */}
+      {/* Stats Counter — Animated Apple HIG */}
       <section className="section-padding stats-section">
         <div className="container">
           <div className="stats-header reveal-on-scroll" style={{ textAlign: 'center', marginBottom: 'var(--space-md)', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
-            <h2 className="stats-main-title" style={{ color: '#ffffff', fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', fontWeight: 800, marginBottom: 'var(--space-xs)' }}>Statistik & Fasilitas Sekolah</h2>
+            <h2 className="stats-main-title" style={{ color: '#ffffff', fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', fontWeight: 800, marginBottom: 'var(--space-xs)' }}>Statistik &amp; Fasilitas Sekolah</h2>
             <p className="stats-main-subtitle" style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.95rem', lineHeight: '1.6' }}>SD Negeri Bobong berkomitmen untuk selalu menyajikan informasi transparan serta menyediakan fasilitas sarana prasarana yang mendukung proses belajar mengajar secara optimal.</p>
           </div>
-          
-          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>📊</span> Profil Akademik & Keanggotaan
-          </div>
-          <div className="stats-grid akademik-grid" style={{ marginBottom: 'var(--space-md)' }}>
-            <div className="stat-item reveal-on-scroll reveal-delay-100">
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-              </div>
-              <div className="stat-number">{stats.siswa_aktif}</div>
-              <div className="stat-label">Siswa Aktif</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-200">
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
-              </div>
-              <div className="stat-number">{stats.guru_staf}</div>
-              <div className="stat-label">Guru & Staf</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-delay-300">
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></svg>
-              </div>
-              <div className="stat-number">{stats.akreditasi}</div>
-              <div className="stat-label">Akreditasi Sekolah</div>
-            </div>
+
+          {/* Animated Stats Counter Component */}
+          <div style={{ marginBottom: 'var(--space-md)' }}>
+            <StatsCounter stats={stats} />
           </div>
 
           <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>🏫</span> Sarana, Prasarana & Sanitasi
+            <span>🏫</span> Sarana, Prasarana &amp; Sanitasi
           </div>
           <div className="stats-grid sarpras-grid">
             <div className="stat-item reveal-on-scroll reveal-delay-100">
