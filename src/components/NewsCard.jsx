@@ -164,33 +164,31 @@ export default function NewsCard({ news, className = '' }) {
           userSelect: 'none'
         }}
       >
-        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-          {images.map((imgUrl, index) => (
-            <div
-              key={index}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                opacity: index === activeIndex ? 1 : 0,
-                transform: `scale(${index === activeIndex ? 1 : 1.05})`,
-                transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                zIndex: index === activeIndex ? 2 : 1,
-              }}
-            >
-              <img
-                src={imgUrl}
-                alt={`${news.title} - ${index + 1}`}
-                className="card-img-slider"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', userSelect: 'none' }}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          ))}
-        </div>
+        {images.map((imgUrl, index) => (
+          <div
+            key={index}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              opacity: index === activeIndex ? 1 : 0,
+              transform: `scale(${index === activeIndex ? 1 : 1.05})`,
+              transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+              zIndex: index === activeIndex ? 2 : 1,
+            }}
+          >
+            <img
+              src={imgUrl}
+              alt={`${news.title} - ${index + 1}`}
+              className="card-img-slider"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', userSelect: 'none' }}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ))}
 
         {/* Navigation Arrow Controls for Multiple Photos */}
         {images.length > 1 && (
