@@ -4,6 +4,7 @@ import { loadMessages, saveMessages, isSupabaseEnabled, supabase } from '../../.
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { handleApiDelete } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -125,10 +126,6 @@ export async function PUT(request) {
 
 // DELETE: Deletes a message (admin only)
 export async function DELETE(request) {
-  if (!(await checkAuth())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -137,43 +134,16 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "ID pesan tidak ditentukan." }, { status: 400 });
     }
 
-    const allMessages = await loadMessages();
-    const msgToDelete = allMessages.find(m => m.id === id);
-    const senderName = msgToDelete ? msgToDelete.name : id;
-    const msgType = msgToDelete?.type === 'guestbook' ? 'Buku Tamu' : 'Saran';
-
-    const filteredList = allMessages.filter(m => m.id !== id);
-
-    if (filteredList.length === allMessages.length) {
-      if (isSupabaseEnabled() && supabase) {
-        try {
-          await prisma.message.deleteMany({ where: { id } });
-        } catch (dbErr) {
-          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
-        }
-      }
-      await createAuditLog('DELETE_MESSAGE', `Menghapus pesan ${msgType} (langsung dari DB) dari "${senderName}" (ID: ${id})`, request);
-      try {
-        revalidatePath('/buku-tamu');
-      } catch (cacheErr) {
-        console.error("Cache revalidation failed in messages DELETE:", cacheErr);
-      }
-      return NextResponse.json({ success: true, message: "Pesan sudah tidak ada." });
-    }
-
-    const saved = await saveMessages(filteredList);
-
-    if (saved) {
-      await createAuditLog('DELETE_MESSAGE', `Menghapus pesan ${msgType} dari "${senderName}" (ID: ${id})`, request);
-      try {
-        revalidatePath('/buku-tamu');
-      } catch (cacheErr) {
-        console.error("Cache revalidation failed in messages DELETE:", cacheErr);
-      }
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ error: "Gagal menghapus pesan." }, { status: 500 });
-    }
+    return handleApiDelete({
+      request,
+      id,
+      loadFn: loadMessages,
+      saveFn: saveMessages,
+      prismaModel: prisma.message,
+      auditAction: 'DELETE_MESSAGE',
+      getItemName: (m) => `pesan ${m.type === 'guestbook' ? 'Buku Tamu' : 'Saran'} dari "${m.name}" (ID: ${m.id})`,
+      revalidatePaths: ['/buku-tamu']
+    });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }

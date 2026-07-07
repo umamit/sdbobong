@@ -4,6 +4,7 @@ import { loadStudents, saveStudents, supabase, isSupabaseEnabled } from '../../.
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { handleApiDelete } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -200,10 +201,6 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-  if (!(await checkAuth())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -212,38 +209,16 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "ID siswa tidak ditentukan." }, { status: 400 });
     }
 
-    const studentsList = await loadStudents();
-    const studentToDelete = studentsList.find(s => s.id === id);
-    const studentName = studentToDelete ? studentToDelete.name : id;
-    const studentNisn = studentToDelete ? studentToDelete.nisn : '';
-
-    const filteredList = studentsList.filter(s => s.id !== id);
-
-    if (filteredList.length === studentsList.length) {
-      if (isSupabaseEnabled() && supabase) {
-        try {
-          await prisma.student.deleteMany({ where: { id } });
-        } catch (dbErr) {
-          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
-        }
-      }
-      await createAuditLog('DELETE_STUDENT', `Menghapus data siswa (langsung dari DB): "${studentName}" (NISN: ${studentNisn})`, request);
-      return NextResponse.json({ success: true, message: "Data siswa sudah tidak ada." });
-    }
-
-    const saved = await saveStudents(filteredList);
-
-    if (saved) {
-      await createAuditLog('DELETE_STUDENT', `Menghapus data siswa: "${studentName}" (NISN: ${studentNisn})`, request);
-      try {
-        revalidatePath('/', 'layout');
-      } catch (cacheErr) {
-        console.error("Cache revalidation failed in students DELETE:", cacheErr);
-      }
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ error: "Gagal menghapus data siswa." }, { status: 500 });
-    }
+    return handleApiDelete({
+      request,
+      id,
+      loadFn: loadStudents,
+      saveFn: saveStudents,
+      prismaModel: prisma.student,
+      auditAction: 'DELETE_STUDENT',
+      getItemName: (s) => `${s.name}${s.nisn ? ` (NISN: ${s.nisn})` : ''}`,
+      revalidatePaths: ['/']
+    });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }

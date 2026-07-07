@@ -4,6 +4,7 @@ import { loadGraduation, saveGraduation, isSupabaseEnabled, supabase } from '../
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { handleApiDelete } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -167,10 +168,6 @@ export async function PUT(request) {
 
 // DELETE: Delete student record (admin only)
 export async function DELETE(request) {
-  if (!(await checkAuth())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -179,39 +176,16 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "ID data siswa tidak ditentukan." }, { status: 400 });
     }
 
-    const gradList = await loadGraduation();
-    const studentToDelete = gradList.find(g => g.id === id);
-    const studentName = studentToDelete ? studentToDelete.name : id;
-    const studentNisn = studentToDelete ? ` (NISN: ${studentToDelete.nisn})` : '';
-
-    const filteredList = gradList.filter(g => g.id !== id);
-
-    if (filteredList.length === gradList.length) {
-      if (isSupabaseEnabled() && supabase) {
-        try {
-          await prisma.graduation.deleteMany({ where: { id } });
-        } catch (dbErr) {
-          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
-        }
-      }
-      await createAuditLog('DELETE_GRADUATE', `Menghapus data kelulusan siswa (langsung dari DB): "${studentName}"${studentNisn}`, request);
-      try {
-        revalidatePath('/kelulusan');
-      } catch (cacheErr) {}
-      return NextResponse.json({ success: true, message: "Data siswa sudah tidak ada." });
-    }
-
-    const saved = await saveGraduation(filteredList);
-
-    if (saved) {
-      await createAuditLog('DELETE_GRADUATE', `Menghapus data kelulusan siswa: "${studentName}"${studentNisn}`, request);
-      try {
-        revalidatePath('/kelulusan');
-      } catch (cacheErr) {}
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ error: "Gagal menghapus data siswa." }, { status: 500 });
-    }
+    return handleApiDelete({
+      request,
+      id,
+      loadFn: loadGraduation,
+      saveFn: saveGraduation,
+      prismaModel: prisma.graduation,
+      auditAction: 'DELETE_GRADUATE',
+      getItemName: (g) => `${g.name}${g.nisn ? ` (NISN: ${g.nisn})` : ''}`,
+      revalidatePaths: ['/kelulusan']
+    });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }

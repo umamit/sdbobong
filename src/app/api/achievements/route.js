@@ -4,6 +4,7 @@ import { loadAchievements, saveAchievements, supabase, isSupabaseEnabled } from 
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { handleApiDelete } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -116,10 +117,6 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-  if (!(await checkAuth())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -128,38 +125,16 @@ export async function DELETE(request) {
       return NextResponse.json({ error: "ID prestasi tidak ditentukan." }, { status: 400 });
     }
 
-    const achievementsList = await loadAchievements();
-    const achievementToDelete = achievementsList.find(a => a.id === id);
-    const achievementTitle = achievementToDelete ? achievementToDelete.title : id;
-    const achievementLevel = achievementToDelete ? ` (${achievementToDelete.level})` : '';
-
-    const filteredList = achievementsList.filter(a => a.id !== id);
-
-    if (filteredList.length === achievementsList.length) {
-      if (isSupabaseEnabled() && supabase) {
-        try {
-          await prisma.achievement.deleteMany({ where: { id } });
-        } catch (dbErr) {
-          console.error("Error direct delete from Prisma:", dbErr.message || dbErr);
-        }
-      }
-      await createAuditLog('DELETE_ACHIEVEMENT', `Menghapus prestasi sekolah (langsung dari DB): "${achievementTitle}"${achievementLevel}`, request);
-      return NextResponse.json({ success: true, message: "Data prestasi sudah tidak ada." });
-    }
-
-    const saved = await saveAchievements(filteredList);
-
-    if (saved) {
-      await createAuditLog('DELETE_ACHIEVEMENT', `Menghapus prestasi sekolah: "${achievementTitle}"${achievementLevel}`, request);
-      try {
-        revalidatePath('/', 'layout');
-      } catch (cacheErr) {
-        console.error("Cache revalidation failed in achievements DELETE:", cacheErr);
-      }
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ error: "Gagal menghapus data prestasi." }, { status: 500 });
-    }
+    return handleApiDelete({
+      request,
+      id,
+      loadFn: loadAchievements,
+      saveFn: saveAchievements,
+      prismaModel: prisma.achievement,
+      auditAction: 'DELETE_ACHIEVEMENT',
+      getItemName: (a) => `${a.title}${a.level ? ` (${a.level})` : ''}`,
+      revalidatePaths: ['/']
+    });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }
