@@ -1,40 +1,40 @@
 /* 
    SD Negeri Bobong - Design System & Custom Stylesheet
    Created with Mobile-First and High Performance Principles
+   Redesigned under Apple Human Interface Guidelines (HIG)
 */
 
-
 :root {
-    /* Color Palette - Taliabu Marine & School Theme */
-    --primary: #0B3C5D;
-    --primary-light: #155B8B;
-    --primary-dark: #07253B;
+    /* Apple HIG System Colors */
+    --primary: #007AFF; /* SF Blue */
+    --primary-light: #5856D6; /* SF Purple */
+    --primary-dark: #0056B3;
     --primary-color: var(--primary); /* Legacy alias */
-    --secondary: #F5A623;
-    --secondary-light: #FFC058;
-    --secondary-dark: #D48408;
+    --secondary: #FF9500; /* SF Orange */
+    --secondary-light: #FFB340;
+    --secondary-dark: #C77300;
     --secondary-color: var(--secondary); /* Legacy alias */
-    --accent: #329D9C;
-    --accent-light: #56C2C1;
-    --accent-bg: #E8F6F6;
+    --accent: #30B0C7; /* SF Teal */
+    --accent-light: #32ADE6;
+    --accent-bg: #E5F6F8;
     --accent-color: var(--accent); /* Legacy alias */
-    --formal-blue: #0B3C5D;
-    --formal-red: #800020;
+    --formal-blue: #007AFF;
+    --formal-red: #FF3B30; /* SF Red */
     
-    /* Neutrals */
-    --bg-main: #F9FAFB;
-    --bg-card: #FFFFFF;
-    --bg-footer: #092235;
-    --bg-footer-deep: #061a28;
-    --text-main: #1F2937;
+    /* Neutrals (Apple System Grouped Light Palette) */
+    --bg-main: #F2F2F7; /* System Grouped Background */
+    --bg-card: #FFFFFF; /* Secondary System Grouped Background */
+    --bg-footer: #1C1C1E; /* System Gray 6 */
+    --bg-footer-deep: #000000;
+    --text-main: #1C1C1E; /* Primary Label */
     --text-color: var(--text-main); /* Legacy alias */
-    --text-muted: #6B7280;
-    --text-light: #9CA3AF;
-    --border-color: #E5E7EB;
+    --text-muted: #5C5C60; /* Secondary Label */
+    --text-light: #8E8E93; /* Tertiary Label */
+    --border-color: rgba(60, 60, 67, 0.08); /* Subtle separator */
     
-    /* Typography */
-    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* Typography - Apple System HIG hierarchy */
+    --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Outfit", "Segoe UI", sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
     
     /* Spacing */
     --space-xs: 0.5rem;
@@ -43,21 +43,21 @@
     --space-lg: 2.5rem;
     --space-xl: 4rem;
     
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --shadow-lg: 0 10px 15px -3px rgba(11, 60, 93, 0.08), 0 4px 6px -2px rgba(11, 60, 93, 0.04);
-    --shadow-inset: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    /* Shadows - Ultra-subtle Apple-like elevation */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 4px 18px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.06);
+    --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.04);
     
-    /* Border Radius */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1.25rem;
+    /* Border Radius - Apple Smooth Corners */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
     --radius-full: 9999px;
     
-    /* Transitions */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Transitions - Apple Spring Curves */
+    --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Global Reset & Base Styles */
@@ -75,7 +75,7 @@ html {
 }
 
 html.is-admin {
-    background: #f8fafc !important;
+    background: #f2f2f7 !important;
 }
 
 /* Prevent text selection on public pages to prevent copying and template cloning */
@@ -98,25 +98,26 @@ body {
 /* Typography Base */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    color: var(--primary-dark);
+    color: var(--text-main);
     font-weight: 700;
     line-height: 1.25;
-    text-wrap: balance; /* Prevent single words on new line for short headings */
+    letter-spacing: -0.02em; /* SF Pro Display letter spacing */
+    text-wrap: balance;
 }
 
-h1 { font-size: clamp(2rem, 5vw, 3rem); }
-h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
-h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
-h4 { font-size: clamp(1.1rem, 2vw, 1.35rem); }
+h1 { font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 700; }
+h3 { font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 600; }
+h4 { font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 600; }
 
 p, blockquote, li {
-    text-wrap: pretty; /* Prevent orphans ("runts") at the end of paragraphs */
+    text-wrap: pretty;
 }
 
 p {
     margin-bottom: var(--space-sm);
     color: var(--text-muted);
-    line-height: 1.75; /* Premium reading spacing */
+    line-height: 1.7;
 }
 
 a {
@@ -178,7 +179,7 @@ img {
     gap: var(--space-md);
 }
 
-/* Buttons and Links */
+/* Buttons and Links - Apple Touch / Hover Effects */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -186,60 +187,66 @@ img {
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 0.95rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 1.4rem;
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     border: none;
     gap: 0.5rem;
     width: auto;
+    transform: scale(1);
+    user-select: none;
+}
+
+.btn:active {
+    transform: scale(0.96) !important; /* iOS tap feedback */
 }
 
 .btn-primary {
     background-color: var(--primary);
     color: #ffffff;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 4px rgba(0, 122, 255, 0.15);
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    background-color: #0066D6;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 122, 255, 0.25);
 }
 
 .btn-secondary {
     background-color: var(--secondary);
-    color: var(--primary-dark);
-    box-shadow: var(--shadow-sm);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(255, 149, 0, 0.15);
 }
 
 .btn-secondary:hover {
-    background-color: var(--secondary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    background-color: #E08200;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(255, 149, 0, 0.25);
 }
 
 .btn-accent {
     background-color: var(--accent);
     color: #ffffff;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 4px rgba(48, 176, 199, 0.15);
 }
 
 .btn-accent:hover {
-    background-color: var(--accent-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    background-color: #2692A4;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(48, 176, 199, 0.25);
 }
 
 .btn-outline {
     background-color: transparent;
-    border: 2px solid var(--primary);
+    border: 1.5px solid var(--primary);
     color: var(--primary);
 }
 
 .btn-outline:hover {
-    background-color: var(--primary);
-    color: #ffffff;
+    background-color: rgba(0, 122, 255, 0.05);
+    transform: scale(1.02);
 }
 
 .btn-block {

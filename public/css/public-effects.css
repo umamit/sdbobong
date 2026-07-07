@@ -55,38 +55,37 @@
    PREMIUM DARK MODE & GLASSMORPHISM 2.0 (Next-Level SDN Bobong Update)
    ========================================================================== */
 
-/* Premium Dark Theme Variables (HSL Tailormade Colors) */
+/* Premium Dark Theme Variables (Apple HIG Grouped Dark Palette) */
 :root[data-theme='dark'] {
-    /* Color Palette - HSL tailored marine slate */
-    --primary: #5c9df5;
-    --primary-light: #80b5ff;
-    --primary-dark: #cbd5e1;
+    --primary: #0A84FF; /* SF Blue (Dark) */
+    --primary-light: #BF5AF2; /* SF Purple (Dark) */
+    --primary-dark: #0056B3;
     --primary-color: var(--primary);
-    --secondary: #f5a623;
-    --secondary-light: #ffc058;
-    --secondary-dark: #d48408;
+    --secondary: #FF9F0A; /* SF Orange (Dark) */
+    --secondary-light: #FFD60A;
+    --secondary-dark: #D48408;
     --secondary-color: var(--secondary);
-    --accent: #38bdf8;
-    --accent-light: #7dd3fc;
-    --accent-bg: #0c4a6e;
+    --accent: #64D2FF; /* SF Teal (Dark) */
+    --accent-light: #70D7FF;
+    --accent-bg: #0C4A6E;
     --accent-color: var(--accent);
-    --formal-blue: #388bfd;
-    --formal-red: #ff7b72;
+    --formal-blue: #0A84FF;
+    --formal-red: #FF453A; /* SF Red (Dark) */
     
     /* Neutrals */
-    --bg-main: #0b0f17;
-    --bg-card: #161e2e;
-    --bg-footer: #06080f;
-    --text-main: #f3f4f6;
+    --bg-main: #1C1C1E; /* System Grouped Background - Dark */
+    --bg-card: #2C2C2E; /* Secondary System Grouped Background - Dark */
+    --bg-footer: #0A0A0C;
+    --text-main: #FFFFFF; /* Primary Label - Dark */
     --text-color: var(--text-main);
-    --text-muted: #9ca3af;
-    --text-light: #4b5563;
-    --border-color: #1f2937;
+    --text-muted: #EBEBF5; /* Secondary Label - Dark */
+    --text-light: #8E8E93; /* Tertiary Label */
+    --border-color: rgba(235, 235, 245, 0.08);
     
     /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.7);
 }
 
 /* Headings Dark Mode Contrast Override */
@@ -99,11 +98,21 @@
     color: var(--text-main) !important;
 }
 
-/* Sticky Header Glassmorphism in Dark Mode */
+/* Sticky Header Glassmorphism in Light & Dark Mode */
+header {
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: saturate(190%) blur(20px) !important;
+    -webkit-backdrop-filter: saturate(190%) blur(20px) !important;
+    border-bottom: 1px solid rgba(60, 60, 67, 0.08) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
 [data-theme='dark'] header {
-    background-color: rgba(11, 15, 23, 0.8) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
+    background-color: rgba(28, 28, 30, 0.75) !important;
+    backdrop-filter: saturate(190%) blur(20px) !important;
+    -webkit-backdrop-filter: saturate(190%) blur(20px) !important;
+    border-bottom: 1px solid rgba(235, 235, 245, 0.08) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Premium Glassmorphism 2.0 Overrides */
@@ -115,11 +124,11 @@
 [data-theme='dark'] .prestasi-card,
 [data-theme='dark'] .karya-card,
 [data-theme='dark'] .form-card-section {
-    background: rgba(22, 30, 46, 0.65) !important;
-    backdrop-filter: blur(16px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    background: rgba(44, 44, 46, 0.8) !important;
+    backdrop-filter: blur(20px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(190%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Hover effects for Glassmorphic cards in Dark Mode */
@@ -129,29 +138,30 @@
 [data-theme='dark'] .teacher-card:hover,
 [data-theme='dark'] .prestasi-card:hover,
 [data-theme='dark'] .karya-card:hover {
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-4px) !important;
 }
 
 /* Inputs, Textareas, and Select Overrides in Dark Mode */
 [data-theme='dark'] .form-container {
-    background: rgba(22, 30, 46, 0.8) !important;
+    background: rgba(44, 44, 46, 0.9) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
 }
 
 [data-theme='dark'] input,
 [data-theme='dark'] select,
 [data-theme='dark'] textarea,
 [data-theme='dark'] .form-control {
-    background-color: #1e293b !important;
+    background-color: #2c2c2e !important;
     color: var(--text-main) !important;
-    border-color: #334155 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 [data-theme='dark'] input::placeholder,
 [data-theme='dark'] textarea::placeholder {
-    color: #64748b !important;
+    color: #8e8e93 !important;
 }
 
 /* ==========================================================================

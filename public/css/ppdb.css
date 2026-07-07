@@ -290,23 +290,27 @@
    ========================================================================== */
 
 :root {
-  --formal-red: #800020;
-  --formal-blue: #0B3C5D;
+  --formal-red: #FF3B30; /* SF Red */
+  --formal-blue: #007AFF; /* SF Blue */
 }
 .form-container {
   padding: 2.25rem var(--space-md);
+  border-radius: var(--radius-lg) !important;
 }
 .form-card-section {
   padding: 1.5rem;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
 }
 .form-control {
   width: 100%;
   padding: 0.75rem var(--space-xs);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(60, 60, 67, 0.15);
+  border-radius: 10px; /* Apple standard rounded input */
   font-family: var(--font-body);
   font-size: 0.95rem;
-  transition: var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--bg-main);
   box-sizing: border-box;
 }
@@ -314,7 +318,7 @@
   outline: none;
   border-color: var(--primary);
   background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 .form-row {
   display: grid;
@@ -330,11 +334,11 @@
 @media (max-width: 600px) {
   .form-container {
     padding: 1.5rem var(--space-sm) !important;
-    border-radius: 12px !important;
+    border-radius: var(--radius-lg) !important;
   }
   .form-card-section {
     padding: 1rem !important;
-    border-radius: 8px !important;
+    border-radius: var(--radius-md) !important;
   }
   .form-title-section h2 {
     font-size: 1.35rem !important;
