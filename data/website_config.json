@@ -212,15 +212,15 @@
         "achievements_seeded": true
     },
     "ppdb_contacts": {
-        "nama_humas": "Syareefah",
-        "wa_humas": "6281340123496",
-        "jabatan_humas": "Wali Kelas",
+        "nama_humas": "",
+        "wa_humas": "",
+        "jabatan_humas": "",
         "wa_floating": "6282292111638",
         "nama_operator": "Suharmin, S.Pd",
         "wa_operator": "6285399487844",
         "jabatan_operator": "Operator/Guru Kelas 3C",
         "email_sekolah": "admin@sdnegeribobong.sch.id",
-        "nip_humas": "19951010 202203 2 012",
+        "nip_humas": "",
         "nip_operator": "majapahit101"
     },
     "downloads": [],
@@ -313,7 +313,7 @@
         }
     ],
     "force_local_cache": false,
-    "suspicious_attempts": {},
+    "suspicious_attempts": [],
     "manual_blacklist": [],
     "security_settings": {}
 }
