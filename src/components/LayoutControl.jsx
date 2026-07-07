@@ -25,9 +25,12 @@ export default function LayoutControl() {
           return;
         }
 
-        // Fallback check from public GET endpoint
+        // Fallback check from public GET endpoint (no-store to bypass browser cache)
         try {
-          const res = await fetch('/api/config');
+          const res = await fetch(`/api/config?t=${Date.now()}`, {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache, no-store' }
+          });
           if (res.ok) {
             const data = await res.json();
             if (data.maintenance_mode) {

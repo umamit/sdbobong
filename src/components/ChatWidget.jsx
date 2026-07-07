@@ -326,16 +326,21 @@ export default function ChatWidget() {
     setIsTyping(true);
 
     try {
-      // 2. Kirim ke API Route /api/chat
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage]
-        }),
-      });
+      // 2. Kirim ke API Route /api/chat dengan timeout 30 detik
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+      let response;
+      try {
+        response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: [...messages, userMessage] }),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
 
       const data = await response.json();
 
@@ -349,9 +354,12 @@ export default function ChatWidget() {
       }
     } catch (err) {
       console.error("Gagal mengirim pesan chat:", err);
+      const isTimeout = err.name === 'AbortError';
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: '⚠️ Waduh, jaringan sepertinya terputus. Silakan periksa kembali koneksi internet Anda dan coba lagi ya! 😊' 
+        content: isTimeout
+          ? '⏱️ Asisten membutuhkan waktu terlalu lama untuk merespons. Silakan coba lagi dalam beberapa saat ya! 😊'
+          : '⚠️ Waduh, jaringan sepertinya terputus. Silakan periksa kembali koneksi internet Anda dan coba lagi ya! 😊'
       }]);
     } finally {
       setIsTyping(false);
