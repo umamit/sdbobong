@@ -63,12 +63,61 @@ export default function RichTextEditor({ defaultValue = '', placeholder = 'Tulis
     }
   };
 
+  // Modern helper: query inline format state via Selection API
+  // Falls back to execCommand state for block-level queries (justify)
+  const queryFormatState = (command) => {
+    if (typeof document === 'undefined') return false;
+    try {
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return false;
+
+      // Use Selection API for inline formats
+      if (command === 'bold') {
+        const el = sel.anchorNode?.parentElement;
+        if (el) {
+          const fw = window.getComputedStyle(el).fontWeight;
+          return fw === 'bold' || parseInt(fw, 10) >= 700 ||
+            !!el.closest('b,strong') ||
+            !!el.closest('[style*="font-weight: bold"]') ||
+            !!el.closest('[style*="font-weight:bold"]');
+        }
+      }
+      if (command === 'italic') {
+        const el = sel.anchorNode?.parentElement;
+        if (el) {
+          return window.getComputedStyle(el).fontStyle === 'italic' ||
+            !!el.closest('i,em');
+        }
+      }
+      if (command === 'underline') {
+        const el = sel.anchorNode?.parentElement;
+        if (el) {
+          return window.getComputedStyle(el).textDecorationLine?.includes('underline') ||
+            !!el.closest('u');
+        }
+      }
+      // Block-level alignment — still use execCommand state (no native API alternative)
+      // eslint-disable-next-line no-undef
+      return document.queryCommandState(command);
+    } catch {
+      return false;
+    }
+  };
+
   const executeCommand = (command, value = null) => {
     if (typeof document === 'undefined') return;
-    document.execCommand(command, false, value);
+    try {
+      // execCommand is deprecated but remains the only cross-browser
+      // way to apply rich-text formatting to contentEditable elements.
+      // Browsers have committed to keeping it functional for this use case.
+      // See: https://github.com/w3c/editing/blob/gh-pages/docs/execCommand.md
+      document.execCommand(command, false, value);
+    } catch (err) {
+      console.warn(`[RichTextEditor] execCommand('${command}') failed:`, err);
+    }
     updateActiveFormats();
     handleContentChange();
-    
+
     // Maintain focus back to editor
     if (editorRef.current) {
       editorRef.current.focus();
@@ -90,13 +139,13 @@ export default function RichTextEditor({ defaultValue = '', placeholder = 'Tulis
   const updateActiveFormats = () => {
     if (typeof document === 'undefined') return;
     setActiveFormats({
-      bold: document.queryCommandState('bold'),
-      italic: document.queryCommandState('italic'),
-      underline: document.queryCommandState('underline'),
-      justifyLeft: document.queryCommandState('justifyLeft'),
-      justifyCenter: document.queryCommandState('justifyCenter'),
-      justifyRight: document.queryCommandState('justifyRight'),
-      justifyFull: document.queryCommandState('justifyFull'),
+      bold: queryFormatState('bold'),
+      italic: queryFormatState('italic'),
+      underline: queryFormatState('underline'),
+      justifyLeft: queryFormatState('justifyLeft'),
+      justifyCenter: queryFormatState('justifyCenter'),
+      justifyRight: queryFormatState('justifyRight'),
+      justifyFull: queryFormatState('justifyFull'),
     });
   };
 
