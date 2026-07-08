@@ -12,6 +12,7 @@
     z-index: 10;
     max-width: 800px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .hero-subtitle {
@@ -30,10 +31,11 @@
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.hero-description {
-    color: rgba(255, 255, 255, 0.85);
+.hero-text {
+    color: rgba(255, 255, 255, 0.95);
     font-size: clamp(1rem, 2vw, 1.15rem);
     margin-bottom: var(--space-md);
+    line-height: 1.6;
 }
 
 .hero-actions {
