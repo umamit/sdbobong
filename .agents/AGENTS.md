@@ -13,13 +13,18 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **Bypass Anti-Copy on Print Pages**: Pages designed to be printed or saved as PDF (such as `/formulir-ppdb`, `/nilai`, registration receipts) MUST have `user-select: text !important` globally across screen & print layouts. They must remain completely unaffected by anti-copy script protections.
 * **Layout Flexbox/Grid Integrity**: Inside `@media print` style sheets, never force block formatting (`display: block !important`) on generic tags (`div`, `span`) that are structural parts of Flexbox/Grid layouts (such as School Letterheads/KOP, form rows, or signature columns) to prevent vertical layout stacking corruption.
 * **No Page Cut-Offs**: Do not apply `overflow: hidden !important` to `html` or `body` elements during the print cycle to prevent document truncation or rendering blank pages in PDF exports.
+* **Layout Bypass on Print Pages**: Any new page designed to be printed (such as new reports, grades, or registration receipts) must be registered in the `bypassPaths` array inside `src/app/layout.js` to ensure headers, footers, and floating elements (like the chat widget) do not show up and clutter the print output.
 * **Strict Single-Page A4 Budget**: To force the entire document into exactly ONE page of A4 without spilling over to a second page, the agent must enforce these print styles:
   * Force micro-margins: `@page { size: A4; margin: 8mm 12mm 8mm 12mm !important; }`
   * Scale down typography globally for print: `html, body { font-size: 11px !important; line-height: 1.2 !important; }`
   * Compress row spacings and padding: Force all form blocks, table rows, and signatures to use tight, minimal paddings/margins during print.
   * Prevent page-break lines inside elements: Apply `page-break-inside: avoid; break-inside: avoid;` to all major document sections.
 
-## 2a. Cache Busting & Data Revalidation (Anti-Stale Dashboard Rules)
+## 2a. Database Pooling, Cache Busting & Data Revalidation
+* **PgBouncer & Connection Pooling (Supabase)**: When configuring database URL connections in serverless environments, ensure:
+  * `connection_limit` is set to `5` or higher (never `1` to prevent timeout queues under load).
+  * `statement_cache_size=0` is appended to `DATABASE_URL` to disable prepared statements on transaction-mode pools (port `6543`), avoiding `ColumnNotFound` or `type "serial" does not exist` errors after migrations.
+  * Always use the direct connection URL (port `5432`) for schema changes (`prisma db push`), and pooled connection (port `6543`) for application runtime queries.
 * **On-Demand Revalidation**: Every time a mutation occurs via the Admin/School Dashboard (e.g., uploading gallery images, updating dynamic announcements, or patching student records), the handler MUST explicitly trigger cache revalidation for all affected public routes.
 * **Dynamic Content Fetching**: Public pages displaying frequently changed data (like School Announcements, Agenda, or Gallery) must be forced to dynamic rendering using `export const dynamic = 'force-dynamic'` or `revalidate = 0` on those page components to bypass Next.js aggressive build-time caching.
 * **Browser Cache-Busting**: When client components fetch local data API endpoints, always append a dynamic timestamp parameter (e.g., `fetch(\`/api/gallery?t=\${Date.now()}\`)`) and inject strict `no-cache, no-store` headers to avoid browser-level caching.
@@ -43,6 +48,7 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **Inline Error Pasting**: If a runtime or compilation error occurs, paste the exact error stack trace directly into the prompt. The agent must immediately identify the root cause without analyzing unaffected files.
 * **No Code Hallucination**: The agent is strictly prohibited from hallucinating or inventing code, dependencies, file paths, or configurations. If the agent is unsure about a local helper function, configuration, or asset path, it must immediately ask the user for clarification instead of guessing or inventing fake code blocks.
 * **No Overhead Re-styling**: Do not add, modify, or rewrite Tailwind classes or CSS properties unless explicitly requested by the user. Focus strictly on repairing or adding logic.
+* **Pre-Push Compile Verification**: Every time imports are refactored or files are modified, always execute `npm run build` locally to verify that there are no compilation errors or missing imports (e.g. ReferenceError) before pushing changes to GitHub.
 
 ## 6. Fullstack Architecture Safeguards (Anti-Crash Rules)
 * **Never Mix Server and Client in One File**: Since the project uses pure JSX, explicitly enforce that files with `"use client"` must NOT contain server-side database direct calls or secret key references. Data must be fetched via endpoints or route handlers.
