@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 
 export default function PpdbTab() {
@@ -62,6 +62,30 @@ export default function PpdbTab() {
     });
   };
 
+  // --- AI Anomaly Detection ---
+  const [anomalyResult, setAnomalyResult] = useState(null);
+  const [analyzingAnomaly, setAnalyzingAnomaly] = useState(false);
+
+  const handleAnalyzeAnomalies = useCallback(async () => {
+    if (!records || records.length === 0) return;
+    setAnalyzingAnomaly(true);
+    setAnomalyResult(null);
+    try {
+      const res = await fetch('/api/admin/ppdb-anomaly', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ records })
+      });
+      const data = await res.json();
+      setAnomalyResult(data);
+    } catch (e) {
+      console.error('Anomaly detection error:', e);
+      setAnomalyResult({ anomalies: [], total_checked: 0, total_flagged: 0, ai_summary: [] });
+    } finally {
+      setAnalyzingAnomaly(false);
+    }
+  }, [records]);
+
   return (
     <section id="tab-ppdb" className={`tab-pane ${activeTab === 'ppdb' ? 'active' : ''}`}>
             <div className="admin-table">
@@ -86,18 +110,40 @@ export default function PpdbTab() {
 
               <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
                 <h3>Daftar Lengkap Formulir Masuk</h3>
-                <div className="no-print" style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button 
-                    type="button"
-                    onClick={() => window.print()} 
-                    className="btn btn-secondary" 
-                    style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
-                  >
-                    🖨️ Cetak Laporan (PDF)
-                  </button>
-                  <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                    📥 Ekspor Data ke Excel/CSV
-                  </a>
+                  <div className="no-print" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={handleAnalyzeAnomalies}
+                      disabled={analyzingAnomaly || records.length === 0}
+                      style={{
+                        background: analyzingAnomaly ? 'rgba(239,68,68,0.5)' : 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                        color: '#fff',
+                        fontWeight: 700,
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '0.5rem 1rem',
+                        fontSize: '0.8rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        cursor: analyzingAnomaly || records.length === 0 ? 'not-allowed' : 'pointer',
+                        opacity: records.length === 0 ? 0.5 : 1,
+                        boxShadow: '0 4px 12px rgba(239,68,68,0.3)'
+                      }}
+                    >
+                      {analyzingAnomaly ? '⏳ Menganalisis...' : '🧠 Analisis Anomali AI'}
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => window.print()} 
+                      className="btn btn-secondary" 
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                    >
+                      🖸️ Cetak Laporan (PDF)
+                    </button>
+                    <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+                      📥 Ekspor Data ke Excel/CSV
+                    </a>
                   {records.length > 0 && (
                     <button 
                       onClick={handleDeleteAllPPDB} 
@@ -109,6 +155,75 @@ export default function PpdbTab() {
                   )}
                 </div>
               </div>
+
+              {/* AI Anomaly Results Panel */}
+              {anomalyResult && (
+                <div style={{
+                  background: anomalyResult.total_flagged > 0
+                    ? 'rgba(239,68,68,0.04)'
+                    : 'rgba(16,185,129,0.04)',
+                  border: `1px solid ${anomalyResult.total_flagged > 0 ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.2)'}`,
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  marginBottom: '1.5rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '1.2rem' }}>{anomalyResult.total_flagged > 0 ? '🚨' : '✅'}</span>
+                      <strong style={{ fontSize: '0.95rem', color: anomalyResult.total_flagged > 0 ? '#dc2626' : '#059669' }}>
+                        {anomalyResult.total_flagged > 0
+                          ? `${anomalyResult.total_flagged} dari ${anomalyResult.total_checked} pendaftar terindikasi anomali`
+                          : `Semua ${anomalyResult.total_checked} data pendaftar terlihat normal`}
+                      </strong>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAnomalyResult(null)}
+                      style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '1.1rem', color: '#64748b' }}
+                    >×</button>
+                  </div>
+
+                  {anomalyResult.ai_summary?.length > 0 && (
+                    <div style={{ padding: '10px 14px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: '8px', marginBottom: '12px', fontSize: '0.85rem', color: '#4f46e5', lineHeight: 1.5 }}>
+                      🧠 <strong>Ringkasan AI:</strong> {anomalyResult.ai_summary[0]}
+                    </div>
+                  )}
+
+                  {anomalyResult.anomalies.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '320px', overflowY: 'auto' }}>
+                      {anomalyResult.anomalies.map((a, i) => (
+                        <div key={a.id || i} style={{
+                          background: '#fff',
+                          border: '1px solid #fecaca',
+                          borderRadius: '8px',
+                          padding: '10px 14px'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#1e293b' }}>{i + 1}. {a.nama_lengkap}</span>
+                            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>NIK: {a.nik}</span>
+                          </div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                            {a.issues.map((iss, j) => (
+                              <div key={j} style={{
+                                display: 'inline-flex',
+                                flexDirection: 'column',
+                                background: '#fef2f2',
+                                border: '1px solid #fecaca',
+                                borderRadius: '6px',
+                                padding: '4px 10px',
+                                fontSize: '0.75rem'
+                              }}>
+                                <strong style={{ color: '#dc2626' }}>{iss.label}</strong>
+                                <span style={{ color: '#64748b', marginTop: '2px' }}>{iss.detail}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Advanced Filter Toolbar */}
               <div className="table-filters" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', backgroundColor: '#ffffff', padding: '1rem', borderRadius: '12px', border: '1px solid #e2e8f0', alignItems: 'center' }}>

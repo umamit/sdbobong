@@ -11,7 +11,13 @@ export async function GET(req) {
 
   const groqApiKey = process.env.GROQ_API_KEY;
   if (!groqApiKey) {
-    return NextResponse.json({ error: 'Groq API Key tidak terkonfigurasi.' }, { status: 500 });
+    return NextResponse.json({
+      summary: [
+        { icon: "📊", text: `Total pengunjung saat ini tercatat sebanyak ${visitorCount} orang.` },
+        { icon: "🏫", text: `Sekolah memiliki ${configStats.guru_staf || 14} guru aktif dan ${configStats.siswa_aktif || 205} siswa.` },
+        { icon: "ℹ️", text: "Aktifkan kunci API Groq untuk menerima insight AI otomatis." }
+      ]
+    }, { status: 200 });
   }
 
   try {

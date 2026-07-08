@@ -10,7 +10,30 @@ export async function POST(req) {
 
   const groqApiKey = process.env.GROQ_API_KEY;
   if (!groqApiKey) {
-    return NextResponse.json({ error: 'Groq API Key tidak terkonfigurasi.' }, { status: 500 });
+    // Programmatic sentiment analyzer fallback
+    try {
+      const { messages } = await req.json();
+      if (!messages || !Array.isArray(messages)) return NextResponse.json({ sentiments: [] });
+      const sentiments = messages.map(m => {
+        const msg = (m.message || '').toLowerCase();
+        let sentiment = 'netral';
+        let reason = 'Analisis lokal otomatis';
+        if (msg.includes('bagus') || msg.includes('terima kasih') || msg.includes('hebat') || msg.includes('keren') || msg.includes('mantap') || msg.includes('senang') || msg.includes('puas')) {
+          sentiment = 'positif';
+          reason = 'Kata positif terdeteksi';
+        } else if (msg.includes('jelek') || msg.includes('kecewa') || msg.includes('lambat') || msg.includes('buruk') || msg.includes('kurang') || msg.includes('rugi')) {
+          sentiment = 'negatif';
+          reason = 'Kritik terdeteksi';
+        } else if (msg.includes('darurat') || msg.includes('tolong') || msg.includes('urgent') || msg.includes('cepat') || msg.includes('bahaya') || msg.includes('lapor')) {
+          sentiment = 'urgent';
+          reason = 'Kata krusial terdeteksi';
+        }
+        return { id: m.id, sentiment, reason };
+      });
+      return NextResponse.json({ sentiments }, { status: 200 });
+    } catch (e) {
+      return NextResponse.json({ sentiments: [] }, { status: 200 });
+    }
   }
 
   try {

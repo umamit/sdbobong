@@ -81,6 +81,12 @@ export default function NewsTab() {
       editorDiv.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
+    // Show SEO info in a toast if available
+    if (generatedDraft.seo_title || generatedDraft.seo_description) {
+      console.info('[SEO Draft] seo_title:', generatedDraft.seo_title);
+      console.info('[SEO Draft] seo_description:', generatedDraft.seo_description);
+    }
+
     // Reset prompt and close modal
     setAiPrompt('');
     setShowPreviewModal(false);
@@ -388,6 +394,57 @@ export default function NewsTab() {
                           </div>
                         </div>
                       </div>
+
+                      {/* SEO Preview — only shown when AI returned seo_title or seo_description */}
+                      {(generatedDraft.seo_title || generatedDraft.seo_description) && (
+                        <div style={{
+                          padding: '14px 16px',
+                          background: 'rgba(16, 185, 129, 0.06)',
+                          border: '1px solid rgba(16, 185, 129, 0.2)',
+                          borderRadius: '10px'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                            <span style={{ fontSize: '1rem' }}>🔍</span>
+                            <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Rekomendasi SEO untuk Google</label>
+                          </div>
+                          {generatedDraft.seo_title && (
+                            <div style={{ marginBottom: '10px' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase' }}>SEO Title</span>
+                                <span style={{
+                                  fontSize: '0.68rem', fontWeight: 700,
+                                  color: generatedDraft.seo_title.length <= 60 ? '#10b981' : '#f59e0b',
+                                  background: generatedDraft.seo_title.length <= 60 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+                                  padding: '1px 6px', borderRadius: '10px'
+                                }}>
+                                  {generatedDraft.seo_title.length}/60
+                                </span>
+                              </div>
+                              <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', color: '#60a5fa', fontWeight: 600, fontSize: '0.9rem' }}>
+                                {generatedDraft.seo_title}
+                              </div>
+                            </div>
+                          )}
+                          {generatedDraft.seo_description && (
+                            <div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase' }}>Meta Description</span>
+                                <span style={{
+                                  fontSize: '0.68rem', fontWeight: 700,
+                                  color: generatedDraft.seo_description.length <= 160 ? '#10b981' : '#f59e0b',
+                                  background: generatedDraft.seo_description.length <= 160 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+                                  padding: '1px 6px', borderRadius: '10px'
+                                }}>
+                                  {generatedDraft.seo_description.length}/160
+                                </span>
+                              </div>
+                              <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', color: '#e2e8f0', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                                {generatedDraft.seo_description}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       {/* Content Preview */}
                       <div>

@@ -31,14 +31,16 @@ export async function POST(req) {
 
     const systemInstruction = `
 Kamu adalah asisten administratif sekolah SD Negeri Bobong yang bertugas membantu menulis draf berita/artikel kegiatan sekolah untuk dipublikasikan di website sekolah.
-Tugas Anda adalah membuat draf berita premium, rapi, bernada hangat, dan formal-ceria berdasarkan petunjuk dari pengguna.
+Tugas Anda adalah membuat draf berita premium, rapi, bernada hangat, dan formal-ceria berdasarkan petunjuk dari pengguna. Kamu juga WAJIB menghasilkan judul dan deskripsi SEO untuk Google Search.
 
 Format keluaran harus berupa JSON objek yang valid dengan struktur berikut:
 {
   "title": "Judul Berita Ciri Khas SD Negeri Bobong yang Menarik",
   "category": "Kategori berita (misalnya: Kegiatan, Prestasi, Pengumuman, Akademik)",
   "date": "Tanggal berita, gunakan default ini: ${currentDateText}",
-  "content": "Isi lengkap berita dalam format tag HTML standar rich text. Gunakan paragraf <p style=\\"text-align: justify;\\">, cetak tebal <b> untuk penekanan, sub-judul menggunakan <h3> atau <h4>, dan daftar list menggunakan <ul>/<li> jika diperlukan. Berikan paragraf pembuka yang baik, isi berita secara mendetail, dan paragraf penutup/harapan yang hangat. Jangan gunakan tag <html> atau <body>."
+  "content": "Isi lengkap berita dalam format tag HTML standar rich text. Gunakan paragraf <p style=\\"text-align: justify;\\">, cetak tebal <b> untuk penekanan, sub-judul menggunakan <h3> atau <h4>, dan daftar list menggunakan <ul>/<li> jika diperlukan. Berikan paragraf pembuka yang baik, isi berita secara mendetail, dan paragraf penutup/harapan yang hangat. Jangan gunakan tag <html> atau <body>.",
+  "seo_title": "Judul halaman untuk Google Search yang deskriptif dan menarik klik. Maksimal 60 karakter. Sertakan nama sekolah di akhir jika muat, misalnya '| SDN Bobong'.",
+  "seo_description": "Deskripsi meta halaman untuk mesin pencari. Maksimal 160 karakter. Harus ringkas, informatif, mencerminkan isi berita, dan mendorong pembaca untuk mengklik."
 }
 
 PENTING: Hanya kembalikan objek JSON mentah yang valid, tanpa teks markdown pembungkus (tanpa \`\`\`json).

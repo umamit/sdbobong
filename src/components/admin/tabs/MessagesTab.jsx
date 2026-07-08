@@ -43,6 +43,29 @@ export default function MessagesTab() {
     }
   }, [messages]);
 
+  // --- AI Reply Draft ---
+  const [replyModal, setReplyModal] = useState(null); // { msg, draft, subject, loading }
+
+  const handleGenerateReply = useCallback(async (msg) => {
+    setReplyModal({ msg, draft: null, subject: null, loading: true });
+    try {
+      const res = await fetch('/api/admin/reply-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: msg.message,
+          name: msg.name,
+          role: msg.role,
+          type: msg.type
+        })
+      });
+      const data = await res.json();
+      setReplyModal({ msg, draft: data.draft || 'Gagal membuat draf.', subject: data.subject || 'Balasan', loading: false });
+    } catch (e) {
+      setReplyModal({ msg, draft: 'Terjadi kesalahan. Coba lagi.', subject: 'Balasan', loading: false });
+    }
+  }, []);
+
   const getSentimentBadge = (msgId) => {
     const s = sentiments[msgId];
     if (!s) return null;
@@ -107,6 +130,83 @@ export default function MessagesTab() {
                   )}
                 </button>
               </div>
+
+              {/* AI Reply Draft Modal */}
+              {replyModal && (
+                <div style={{
+                  position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+                  background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(6px)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 9999, padding: '20px', boxSizing: 'border-box'
+                }}>
+                  <div style={{
+                    background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '16px', width: '100%', maxWidth: '600px',
+                    boxShadow: '0 20px 50px rgba(0,0,0,0.4)', overflow: 'hidden'
+                  }}>
+                    <div style={{ padding: '16px 22px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h3 style={{ margin: 0, border: 'none', padding: 0, color: '#f8fafc', fontSize: '1.05rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        🧠 Draf Balasan AI
+                        {replyModal.msg.name && <span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#94a3b8' }}>untuk {replyModal.msg.name}</span>}
+                      </h3>
+                      <button type="button" onClick={() => setReplyModal(null)}
+                        style={{ border: 'none', background: 'none', color: '#94a3b8', fontSize: '1.4rem', cursor: 'pointer', lineHeight: 1 }}>×</button>
+                    </div>
+                    <div style={{ padding: '20px 22px' }}>
+                      {replyModal.loading ? (
+                        <div style={{ textAlign: 'center', padding: '30px 0', color: '#94a3b8', fontSize: '0.9rem' }}>
+                          ⏳ Merumuskan draf balasan...
+                        </div>
+                      ) : (
+                        <>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '6px' }}>Pesan Asli</label>
+                          <div style={{ padding: '10px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '14px', maxHeight: '80px', overflowY: 'auto' }}>
+                            {replyModal.msg.message}
+                          </div>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '6px' }}>Draf Balasan</label>
+                          <textarea
+                            readOnly
+                            value={replyModal.draft}
+                            style={{
+                              width: '100%', minHeight: '180px', padding: '12px 14px',
+                              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
+                              borderRadius: '8px', color: '#e2e8f0', fontSize: '0.87rem',
+                              lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box'
+                            }}
+                          />
+                          <div style={{ display: 'flex', gap: '10px', marginTop: '14px', justifyContent: 'flex-end' }}>
+                            <button
+                              type="button"
+                              onClick={() => { navigator.clipboard.writeText(replyModal.draft); }}
+                              style={{
+                                background: 'rgba(255,255,255,0.06)', color: '#cbd5e1',
+                                border: '1px solid rgba(255,255,255,0.12)', borderRadius: '8px',
+                                padding: '8px 16px', fontSize: '0.82rem', cursor: 'pointer', fontWeight: 600
+                              }}
+                            >
+                              📋 Salin Teks
+                            </button>
+                            {(replyModal.msg.no_hp || replyModal.msg.no_hp_ayah || replyModal.msg.no_hp_ibu) && (
+                              <a
+                                href={`https://wa.me/${(replyModal.msg.no_hp || replyModal.msg.no_hp_ayah || '').replace(/[^0-9]/g,'').replace(/^0/,'62')}?text=${encodeURIComponent(replyModal.draft)}`}
+                                target="_blank" rel="noopener noreferrer"
+                                style={{
+                                  background: 'linear-gradient(135deg, #25d366 0%, #128c7e 100%)',
+                                  color: '#fff', border: 'none', borderRadius: '8px',
+                                  padding: '8px 18px', fontSize: '0.82rem', fontWeight: 700,
+                                  textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '5px'
+                                }}
+                              >
+                                📲 Kirim via WhatsApp
+                              </a>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Messages Filters Row */}
               <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
@@ -247,6 +347,18 @@ export default function MessagesTab() {
                                   </button>
                                 </div>
                               )}
+                              <button
+                                type="button"
+                                onClick={() => handleGenerateReply(msg)}
+                                style={{
+                                  padding: '0.3rem 0.5rem', fontSize: '0.75rem', margin: 0,
+                                  width: '100%', background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+                                  color: '#fff', border: 'none', borderRadius: '6px',
+                                  cursor: 'pointer', fontWeight: 700, marginBottom: '4px'
+                                }}
+                              >
+                                🧠 Draf Balasan AI
+                              </button>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteMessage(msg.id)}
