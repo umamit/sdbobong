@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import dynamic from 'next/dynamic';
 import { AdminDashboardProvider, useAdminDashboard } from './AdminDashboardContext';
 import Sidebar from '../../../components/admin/shared/Sidebar';

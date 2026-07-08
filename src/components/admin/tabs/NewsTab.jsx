@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 import RichTextEditor from '../../../components/RichTextEditor';
 import AIContentRecommendations from '../../admin/ai/AIContentRecommendations';

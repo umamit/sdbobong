@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 
 export default function AIDraftModal({ generatedDraft, onClose, onApply }) {
   if (!generatedDraft) return null;

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import OverviewCharts from './OverviewCharts';
 import AISummaryWidget from '../../admin/ai/AISummaryWidget';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';

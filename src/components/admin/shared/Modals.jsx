@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 import TeacherModals from './modals/TeacherModals';
 import PpdbModals from './modals/PpdbModals';
 import EventModals from './modals/EventModals';

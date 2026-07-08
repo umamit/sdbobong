@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { FACILITIES_DATA } from '../data/facilitiesData';
 import FacilityMapSvg from './FacilityMapSvg';

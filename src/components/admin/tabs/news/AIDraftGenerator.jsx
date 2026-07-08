@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+
 
 const SUGGESTION_PROMPTS = [
   { label: '🧹 Kerja Bakti / Sabtu Bersih', prompt: 'Kegiatan gotong royong kerja bakti Sabtu Bersih oleh siswa-siswi dan guru untuk membersihkan lingkungan sekolah dan kelas.' },
