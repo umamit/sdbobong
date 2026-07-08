@@ -206,7 +206,7 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
           {/* Map Frame Card */}
           <div className="card-custom" style={{ padding: '8px', overflow: 'hidden', background: 'white' }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.176463991275!2d124.476483!3d-1.74128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d0af4f3d1b11b5d%3A0xe5f99238c3866160!2sBobong%2C%20Taliabu%20Bar.%2C%20Kabupaten%20Pulau%20Taliabu%2C%20Maluku%20Utara!5e0!3m2!1sid!2sid!4v1780512345678!5m2!1sid!2sid"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.043513366014!2d124.381792!3d-1.9555387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d82af02f400b117%3A0xad730af8b715bc9b!2sSD+NEGERI+BOBONG!5e0!3m2!1sid!2sid!4v1719999999999!5m2!1sid!2sid"
               width="100%"
               height="280"
               style={{ border: 0, borderRadius: 'var(--radius-sm)' }}
