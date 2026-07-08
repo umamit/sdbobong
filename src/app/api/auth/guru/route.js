@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { sensitiveJson } from '../../../../lib/api-helper';
 import { loadTeachers } from '../../../../lib/database';
 import { createTeacherToken } from '../../../../lib/auth';
 import { createAuditLog } from '../../../../lib/audit';
@@ -14,7 +15,7 @@ export async function POST(request) {
     const cleanInputPassword = (password || '').toString().trim();
 
     if (!cleanInputNip || !cleanInputPassword) {
-      return NextResponse.json({ error: "NIP dan Password wajib diisi!" }, { status: 400 });
+      return sensitiveJson({ error: "NIP dan Password wajib diisi!" }, 400);
     }
 
     const teachersList = await loadTeachers(true);
@@ -28,7 +29,7 @@ export async function POST(request) {
 
     if (!teacher) {
       await createAuditLog('GURU_LOGIN_FAILED', `Gagal login guru: NIP ${nip} tidak ditemukan`, request);
-      return NextResponse.json({ error: "NIP atau Password salah!" }, { status: 401 });
+      return sensitiveJson({ error: "NIP atau Password salah!" }, 401);
     }
 
     // Determine expected password
@@ -47,11 +48,11 @@ export async function POST(request) {
 
     if (!isMatch) {
       await createAuditLog('GURU_LOGIN_FAILED', `Gagal login guru: Password salah untuk NIP ${teacher.nip}`, request);
-      return NextResponse.json({ error: "NIP atau Password salah!" }, { status: 401 });
+      return sensitiveJson({ error: "NIP atau Password salah!" }, 401);
     }
 
     // Successful login
-    const response = NextResponse.json({
+    const response = sensitiveJson({
       success: true,
       teacher: {
         id: teacher.id,
@@ -74,13 +75,13 @@ export async function POST(request) {
     return response;
 
   } catch (e) {
-    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+    return sensitiveJson({ error: "Terjadi kesalahan server: " + e.message }, 500);
   }
 }
 
 export async function DELETE(request) {
   try {
-    const response = NextResponse.json({ success: true });
+    const response = sensitiveJson({ success: true });
     
     // Clear teacher session token cookie
     response.cookies.set('teacher_session_token', '', {
@@ -93,6 +94,6 @@ export async function DELETE(request) {
     await createAuditLog('GURU_LOGOUT', `Guru keluar dari sistem (Sesi diakhiri secara manual)`, request);
     return response;
   } catch (e) {
-    return NextResponse.json({ error: "Gagal logout: " + e.message }, { status: 500 });
+    return sensitiveJson({ error: "Gagal logout: " + e.message }, 500);
   }
 }

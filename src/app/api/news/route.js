@@ -34,9 +34,6 @@ export async function POST(request) {
 
     // Process multiple photo uploads
     const photoFiles = formData.getAll('photos');
-    console.log("=== Backend POST news - photoFiles received ===");
-    console.log("Jumlah file diterima backend:", photoFiles.length);
-    console.log(photoFiles);
     let images = [];
 
     if (photoFiles && photoFiles.length > 0) {
@@ -144,9 +141,6 @@ export async function PUT(request) {
 
     // Process multiple photo uploads
     const photoFiles = formData.getAll('photos');
-    console.log("=== Backend PUT news - photoFiles received ===");
-    console.log("Jumlah file diterima backend:", photoFiles.length);
-    console.log(photoFiles);
     let images = [];
 
     if (photoFiles && photoFiles.length > 0) {

@@ -256,7 +256,7 @@ export default function ErrorBoundary({ error, reset }) {
 
         <div className="error-card">
           <div className="logo-sec">
-            <img src="/images/logo_sekolah.png" alt="Logo" className="logo-img" />
+            <img src="/images/logo_sekolah.png" alt="Logo" width="60" height="60" className="logo-img" />
             <span className="logo-text">SD NEGERI BOBONG</span>
           </div>
 

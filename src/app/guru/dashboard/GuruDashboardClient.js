@@ -191,7 +191,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
       {/* Header Panel */}
       <header className="guru-header-nav">
         <div className="header-logo-section">
-          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="header-school-logo" />
+          <img src="/images/logo_sekolah.png" alt="Logo Sekolah" width="36" height="36" className="header-school-logo" />
           <div>
             <h1>Portal Guru</h1>
             <p className="school-name">SD Negeri Bobong</p>

@@ -256,6 +256,8 @@ export default function TeachersSectionClient({ teachers }) {
                         <img 
                           src={guru.image || '/images/teacher_1.png'} 
                           alt={guru.name} 
+                          width="120"
+                          height="120"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                           loading="lazy"
                           decoding="async"

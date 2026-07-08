@@ -409,7 +409,6 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
 
     for (const modelName of modelsToTry) {
       try {
-        console.log(`[Aim AI] Menghubungi Groq API menggunakan model: ${modelName}`);
         const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {

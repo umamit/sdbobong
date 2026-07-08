@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { sensitiveJson } from '../../../lib/api-helper';
 import { createClient } from '../../../lib/supabase/server';
 import { createAdminToken } from '../../../lib/auth';
 import { loadWebConfig, saveWebConfig } from '../../../lib/database';
@@ -31,9 +32,9 @@ export async function POST(request) {
           `IP daftar hitam ${ip} mencoba masuk. Alasan blokir: ${blacklistRecord.reason || 'Tanpa alasan'}.`,
           request
         );
-        return NextResponse.json({
+        return sensitiveJson({
           error: `Akses ditolak. IP Anda (${ip}) telah diblokir secara permanen oleh administrator. Alasan: ${blacklistRecord.reason || 'Pelanggaran keamanan'}.`
-        }, { status: 403 });
+        }, 403);
       }
     }
 
@@ -61,9 +62,9 @@ export async function POST(request) {
           request
         );
 
-        return NextResponse.json({ 
+        return sensitiveJson({ 
           error: `IP Anda (${ip}) diblokir sementara demi keamanan selama ${remainingTimeSec} detik karena mendeteksi ${maxAttempts}+ kegagalan login berturut-turut.` 
-        }, { status: 429 });
+        }, 429);
       } else {
         // Exceeded block duration, reset counter and resolved status
         ipRecord.attempts = 0;
@@ -77,7 +78,7 @@ export async function POST(request) {
     const isLocalAdmin = email === process.env.ADMIN_USERNAME && cleanPass === process.env.ADMIN_PASSWORD;
 
     if (isServiceRoleKey || isLocalAdmin) {
-      const response = NextResponse.json({ success: true });
+      const response = sensitiveJson({ success: true });
       const secureToken = await createAdminToken();
       response.cookies.set('admin_session_token', secureToken, {
         httpOnly: true,
@@ -150,11 +151,11 @@ export async function POST(request) {
 
       await saveWebConfig(config);
 
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return sensitiveJson({ error: error.message }, 401);
     }
 
     // Successful Supabase login
-    const response = NextResponse.json({ success: true });
+    const response = sensitiveJson({ success: true });
     
     // Set local admin session token cookie for unified API auth access
     const secureToken = await createAdminToken();
@@ -178,13 +179,13 @@ export async function POST(request) {
 
     return response;
   } catch (e) {
-    return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
+    return sensitiveJson({ error: "Terjadi kesalahan server: " + e.message }, 500);
   }
 }
 
 export async function DELETE(request) {
   try {
-    const response = NextResponse.json({ success: true });
+    const response = sensitiveJson({ success: true });
     
     // Clear local admin session token
     response.cookies.set('admin_session_token', '', {
@@ -205,6 +206,6 @@ export async function DELETE(request) {
 
     return response;
   } catch (e) {
-    return NextResponse.json({ error: "Gagal logout: " + e.message }, { status: 500 });
+    return sensitiveJson({ error: "Gagal logout: " + e.message }, 500);
   }
 }

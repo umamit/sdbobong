@@ -16,7 +16,7 @@ export default function Sidebar({ onClose }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <img src="/images/logo_sekolah.png" alt="Logo" />
+        <img src="/images/logo_sekolah.png" alt="Logo" width="40" height="40" />
         <span>SD NEGERI BOBONG</span>
       </div>
       <ul className="sidebar-menu">

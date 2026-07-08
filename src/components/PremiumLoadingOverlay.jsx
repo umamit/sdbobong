@@ -9,7 +9,7 @@ export default function PremiumLoadingOverlay({ active, message = "Memproses..."
         <div className="loading-orbit-outer"></div>
         <div className="loading-orbit-inner"></div>
         <div className="loading-logo-glow">
-          <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" onError={(e) => {
+          <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" width="80" height="80" onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'flex';
           }} />

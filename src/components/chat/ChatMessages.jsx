@@ -69,7 +69,7 @@ export default function ChatMessages({ messages, isTyping, activeSpeakingIndex, 
             className={`${styles.aiMessageBubble} ${isAssistant ? styles.assistant : styles.user}`}
           >
             {isAssistant && (
-              <img src="/images/logo_sekolah.png" alt="Avatar AI" className={styles.aiMessageAvatar} />
+              <img src="/images/logo_sekolah.png" alt="Avatar AI" width="32" height="32" className={styles.aiMessageAvatar} />
             )}
             <div className={styles.aiMessageContent}>
               {/* Equalizer animation for speaking assistant bubble */}
@@ -113,7 +113,7 @@ export default function ChatMessages({ messages, isTyping, activeSpeakingIndex, 
       {/* Typing Indicator */}
       {isTyping && (
         <div className={`${styles.aiMessageBubble} ${styles.assistant}`}>
-          <img src="/images/logo_sekolah.png" alt="Avatar AI" className={styles.aiMessageAvatar} />
+          <img src="/images/logo_sekolah.png" alt="Avatar AI" width="32" height="32" className={styles.aiMessageAvatar} />
           <div className={styles.aiMessageContent} style={{ padding: 0 }}>
             <div className={styles.typingIndicator}>
               <span></span>

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { sensitiveJson } from '../../../../lib/api-helper';
 import { cookies } from 'next/headers';
 import fs from 'fs/promises';
 import path from 'path';
@@ -23,7 +24,7 @@ export async function POST(request) {
 
     // Must be either local admin session or Supabase admin user
     if (!isLocalAdminSession && !supabaseUser) {
-      return NextResponse.json({ error: 'Unauthorized: Akses ditolak.' }, { status: 401 });
+      return sensitiveJson({ error: 'Unauthorized: Akses ditolak.' }, 401);
     }
 
     const parsed = await parseBody(request, changePasswordSchema);
@@ -35,7 +36,7 @@ export async function POST(request) {
       const expectedOldPassword = process.env.ADMIN_PASSWORD || 'sdnbobong2026';
       
       if (currentPassword !== expectedOldPassword) {
-        return NextResponse.json({ error: 'Password saat ini salah!' }, { status: 400 });
+        return sensitiveJson({ error: 'Password saat ini salah!' }, 400);
       }
 
       // We need to update .env file
@@ -65,9 +66,9 @@ export async function POST(request) {
         // Also dynamically update current process.env value so that the current running process uses the new password immediately
         process.env.ADMIN_PASSWORD = newPassword;
 
-        return NextResponse.json({ success: true, message: 'Password admin lokal berhasil diperbarui!' });
+        return sensitiveJson({ success: true, message: 'Password admin lokal berhasil diperbarui!' });
       } catch (err) {
-        return NextResponse.json({ error: 'Gagal memperbarui file konfigurasi di server: ' + err.message }, { status: 500 });
+        return sensitiveJson({ error: 'Gagal memperbarui file konfigurasi di server: ' + err.message }, 500);
       }
     }
 
@@ -82,7 +83,7 @@ export async function POST(request) {
       });
 
       if (signInError) {
-        return NextResponse.json({ error: 'Password saat ini salah!' }, { status: 400 });
+        return sensitiveJson({ error: 'Password saat ini salah!' }, 400);
       }
 
       // Update password
@@ -91,14 +92,14 @@ export async function POST(request) {
       });
 
       if (updateError) {
-        return NextResponse.json({ error: 'Gagal memperbarui password di Supabase: ' + updateError.message }, { status: 500 });
+        return sensitiveJson({ error: 'Gagal memperbarui password di Supabase: ' + updateError.message }, 500);
       }
 
-      return NextResponse.json({ success: true, message: 'Password admin Supabase berhasil diperbarui!' });
+      return sensitiveJson({ success: true, message: 'Password admin Supabase berhasil diperbarui!' });
     }
 
-    return NextResponse.json({ error: 'Terjadi kesalahan pemrosesan.' }, { status: 500 });
+    return sensitiveJson({ error: 'Terjadi kesalahan pemrosesan.' }, 500);
   } catch (err) {
-    return NextResponse.json({ error: 'Terjadi kesalahan server: ' + err.message }, { status: 500 });
+    return sensitiveJson({ error: 'Terjadi kesalahan server: ' + err.message }, 500);
   }
 }

@@ -273,7 +273,6 @@ export function AdminDashboardProvider({
   useEffect(() => {
     if (!clientSupabase) return;
 
-    console.log('Establishing Realtime connections...');
 
     // Listen to new registrations in ppdb_sdn_bobong table
     const ppdbChannel = clientSupabase
@@ -282,7 +281,6 @@ export function AdminDashboardProvider({
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'ppdb_sdn_bobong' },
         (payload) => {
-          console.log('Realtime PPDB INSERT payload:', payload);
           const newRecord = payload.new;
           if (newRecord) {
             newRecord.id = newRecord.id || newRecord.nik_siswa || newRecord.nik;
@@ -313,7 +311,6 @@ export function AdminDashboardProvider({
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages_sdn_bobong' },
         (payload) => {
-          console.log('Realtime Guestbook INSERT payload:', payload);
           const newMsg = payload.new;
           if (newMsg) {
             contentUtilityStuff.setMessages(prev => {
@@ -328,7 +325,6 @@ export function AdminDashboardProvider({
       .subscribe();
 
     return () => {
-      console.log('Cleaning up Realtime channels...');
       clientSupabase.removeChannel(ppdbChannel);
       clientSupabase.removeChannel(guestbookChannel);
     };

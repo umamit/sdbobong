@@ -197,13 +197,11 @@ async function sendWhatsAppNotification(pendaftar, status) {
     const config = await loadWebConfig();
     const gateway = config.stats?.wa_gateway;
     if (!gateway || !gateway.enabled) {
-      console.log("WA notification skipped: Gateway not enabled.");
       return;
     }
 
     const phone = pendaftar.nomor_hp_orangtua || pendaftar.no_hp_ibu || pendaftar.no_hp_ayah;
     if (!phone) {
-      console.log("WA notification skipped: Phone number not found.");
       return;
     }
 
@@ -238,7 +236,6 @@ async function sendWhatsAppNotification(pendaftar, status) {
     const token = gateway.token || '';
     const provider = gateway.provider || 'fonnte';
 
-    console.log(`Sending WA via ${provider} to ${cleanPhone}...`);
 
     let bodyData;
     let headers = {
@@ -276,7 +273,6 @@ async function sendWhatsAppNotification(pendaftar, status) {
     });
 
     const resText = await res.text();
-    console.log("WA Gateway response status:", res.status, resText);
   } catch (err) {
     console.error("Failed to send WA notification:", err);
   }

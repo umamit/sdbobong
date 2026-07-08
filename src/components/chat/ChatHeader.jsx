@@ -7,7 +7,7 @@ export default function ChatHeader({ isSoundEnabled, toggleSound, toggleChat }) 
     <div className={styles.aiHeader}>
       <div className={styles.aiHeaderProfile}>
         <div className={styles.aiAvatarContainer}>
-          <img src="/images/logo_sekolah.png" alt="Logo Aim AI" className={styles.aiAvatar} />
+          <img src="/images/logo_sekolah.png" alt="Logo Aim AI" width="36" height="36" className={styles.aiAvatar} />
           <span className={styles.aiOnlineIndicator}></span>
         </div>
         <div className={styles.aiTitleDetails}>

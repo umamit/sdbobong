@@ -18,7 +18,6 @@ export default function PWAInstallPrompt() {
       (navigator).standalone === true;
 
     if (isStandalone) {
-      console.log('[PWA] App is already running in standalone mode.');
       return;
     }
 
@@ -27,7 +26,6 @@ export default function PWAInstallPrompt() {
     if (dismissedTime) {
       const diffDays = (Date.now() - parseInt(dismissedTime, 10)) / (1000 * 60 * 60 * 24);
       if (diffDays < 7) {
-        console.log('[PWA] Install prompt was dismissed recently. Skipping.');
         return;
       }
     }
@@ -48,7 +46,6 @@ export default function PWAInstallPrompt() {
       setDeferredPrompt(e);
       // Show the install banner
       setShowPrompt(true);
-      console.log('[PWA] beforeinstallprompt event fired and captured.');
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -79,7 +76,6 @@ export default function PWAInstallPrompt() {
 
     // Wait for the user response
     const { outcome } = await deferredPrompt.userChoice;
-    console.log(`[PWA] User response to install prompt: ${outcome}`);
 
     // We no longer need the prompt, clear it
     setDeferredPrompt(null);

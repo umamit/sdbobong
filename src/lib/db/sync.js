@@ -148,7 +148,7 @@ export async function syncLocalToSupabase() {
     }
     const mergedRecords = Object.values(localByNik);
     mergedRecords.sort((a, b) => (b.waktu_daftar||"").localeCompare(a.waktu_daftar||""));
-    try { fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(mergedRecords, null, 4), 'utf-8'); if (syncedToSupabaseCount > 0) console.log(`Sync: ${syncedToSupabaseCount} local records uploaded to Supabase.`); }
+    try { fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(mergedRecords, null, 4), 'utf-8'); ; }
     catch (e) { console.error("Error saving merged records locally:", e); }
   } catch (e) { console.error("Error during Supabase sync check:", e.message || e); }
 }
