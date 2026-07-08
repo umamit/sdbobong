@@ -79,6 +79,13 @@ export function isSupabaseEnabled() {
 
 // --- Shared helper utilities ---
 
+/**
+ * Uploads a file either to Supabase Storage (if enabled) or falls back to local storage.
+ * Note: When using Supabase Storage, the following buckets MUST be created and set to public read:
+ * - 'teachers' (for teacher avatars, facilities, hero bg, gallery)
+ * - 'news' (for news photos)
+ * - 'ppdb_berkas' (for student registration PDFs)
+ */
 export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowedExts = ['png', 'jpg', 'jpeg']) {
   if (!fileObj || typeof fileObj === 'string' || !fileObj.name) return "NO_FILE";
   const extension = fileObj.name.split('.').pop().toLowerCase();
