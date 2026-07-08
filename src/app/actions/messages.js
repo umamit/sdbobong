@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { loadMessages, saveMessages } from '../../lib/database';
+import crypto from 'crypto';
 
 export async function submitMessageAction(formData) {
   try {
@@ -32,7 +33,7 @@ export async function submitMessageAction(formData) {
 
     const allMessages = await loadMessages();
     const newMsg = {
-      id: `msg-${Date.now()}`,
+      id: `msg-${crypto.randomUUID()}`,
       name,
       role,
       type,

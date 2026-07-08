@@ -23,7 +23,7 @@ export default async function Footer() {
       <div className={`container ${styles.footerGrid}`}>
         <div className={styles.footerWidget}>
           <Link href="/" className={styles.logoContainer}>
-            <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className={styles.schoolLogo} loading="lazy" decoding="async" />
+            <img src="/images/logo_sekolah.png" alt="Logo SD Negeri Bobong" className={styles.schoolLogo} width={60} height={60} loading="lazy" decoding="async" />
             <span className={styles.logoTitle}>SD NEGERI BOBONG</span>
           </Link>
           <p style={{ color: '#94A3B8', fontSize: '0.9rem', marginTop: '1rem' }}>
@@ -73,15 +73,15 @@ export default async function Footer() {
           <span className={styles.affiliationsLabel}>Afiliasi Resmi:</span>
           <div className={styles.affiliationsLogos}>
             <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Pemerintah Kabupaten Pulau Taliabu">
-              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} loading="lazy" decoding="async" />
+              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Pemerintah Kabupaten Pulau Taliabu</span>
             </a>
             <div className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
-              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className={styles.affiliationLogo} loading="lazy" decoding="async" />
+              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Dinas Pendidikan Taliabu</span>
             </div>
             <div className={styles.affiliationItem} title="Kurikulum Merdeka - Merdeka Belajar">
-              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className={styles.affiliationLogo} loading="lazy" decoding="async" />
+              <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Kurikulum Merdeka</span>
             </div>
           </div>

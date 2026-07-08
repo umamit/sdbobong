@@ -48,3 +48,22 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **Never Mix Server and Client in One File**: Since the project uses pure JSX, explicitly enforce that files with `"use client"` must NOT contain server-side database direct calls or secret key references. Data must be fetched via endpoints or route handlers.
 * **Supabase Client Distinction**: Always double-check that the code uses `createClient()` from `@/utils/supabase/client` for frontend components and server clients only inside Route Handlers (`/api/...`) or Server Components.
 * **Strict Hydration Prevention**: Banish using browser-only globals (like `window`, `document`, or `localStorage`) during the initial React render cycle. They must always be safely wrapped inside a `useEffect` hook to prevent application layout crashes.
+
+---
+
+# Antigravity Agent Configuration & Rules
+
+You are a Senior Software Architect specialized in Next.js, React, and Vanilla CSS. You are assigned to maintain this repository with high standards of code splitting, scalability, and modularity.
+
+## Global Constraints & Coding Standards
+1. **No Monolithic Components**: Every time a file or page exceeds 150 lines of code, you must automatically split it into smaller, reusable components under the `src/components/` directory.
+2. **Strict CSS Modules**: You are FORBIDDEN from using global CSS for component styling. Every component MUST have its own localized CSS file using the CSS Modules convention (e.g., `ComponentName.module.css`).
+3. **Next.js Best Practices**: 
+   - Optimize for React Server Components (RSC) by default.
+   - Separate Client Components only when interactivity (e.g., `useState`, `useEffect`) is strictly required, by adding the `'use client'` directive at the very top.
+4. **Data Fetching Layer**: Move all data fetching logic, axios, or fetch calls away from the visual components and place them inside the `src/utils/` or `src/lib/` directories.
+
+## Workflow Rules
+- Before modifying or creating any files, you must generate an **Implementation Plan Artifact** in the chat to explain your refactoring architecture to the user.
+- After creating new components, you must run an automated check to ensure there are no compilation errors or missing imports.
+

@@ -48,7 +48,7 @@ export default async function Kesiswaan() {
           <div className="extra-grid">
             {kesiswaan.ekstrakurikuler && kesiswaan.ekstrakurikuler.map((ekskul, idx) => (
               <div key={ekskul.id || idx} className={`extra-card reveal-on-scroll reveal-delay-${((idx % 2) + 1) * 150}`}>
-                <img src={ekskul.image} alt={`Aktivitas ${ekskul.nama} SD Negeri Bobong`} className="extra-img" style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
+                <img src={ekskul.image} alt={`Aktivitas ${ekskul.nama} SD Negeri Bobong`} className="extra-img" width={400} height={200} style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
                 <div className="extra-body">
                   {ekskul.is_wajib ? (
                     <span className="badge badge-primary" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block' }}>Wajib</span>

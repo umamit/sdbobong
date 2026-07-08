@@ -6,6 +6,7 @@ import { prisma } from '../../lib/prisma';
 import { ppdbSchema } from '../../lib/validators';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 
 function getAcademicYear(dateStr) {
   if (dateStr && /^\d{4}/.test(dateStr)) {
@@ -129,7 +130,7 @@ export async function submitPpdbAction(formData) {
 
     const waktu_daftar = new Date().toISOString().replace('T', ' ').split('.')[0];
     const status = "Diterima Sistem";
-    const newId = `ppdb-${Math.floor(Date.now() / 1000)}`;
+    const newId = `ppdb-${crypto.randomUUID()}`;
     const tahun_ajaran = getAcademicYear(waktu_daftar);
 
     const newRecord = {

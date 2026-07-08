@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { updateSession } from './lib/supabase/middleware';
 import { verifyAdminToken, verifyTeacherToken } from './lib/auth';
 
-export async function middleware(request) {
+export async function proxy(request) {
   const path = request.nextUrl.pathname;
 
   // Clone request headers to inject pathname for server components

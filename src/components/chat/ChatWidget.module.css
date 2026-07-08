@@ -1,0 +1,647 @@
+/* ==========================================================================
+   Aim AI Virtual Assistant Styles (Premium Glassmorphism - CSS Module)
+   ========================================================================== */
+
+/* Menyembunyikan Asisten AI di Halaman Admin */
+:global(.is-admin) .aimAiContainer {
+    display: none !important;
+}
+
+.aimAiContainer {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    font-family: var(--font-body);
+}
+
+/* 1. Tombol Aktivasi Melayang (Floating AI Trigger Button) */
+.aimAiTrigger {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007AFF, #5856D6);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    padding: 0;
+}
+
+.aimAiTrigger:hover {
+    transform: scale(1.08) rotate(3deg);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.45);
+    background: linear-gradient(135deg, #0056B3, #4A48B8);
+}
+
+.aimAiTrigger:active {
+    transform: scale(0.95);
+}
+
+.aimAiTrigger .aiIcon {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.3s ease;
+}
+
+.aimAiTrigger.active .aiIcon {
+    transform: rotate(90deg);
+}
+
+/* Animasi Heartbeat untuk Tombol AI */
+@keyframes aiHeartbeat {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0.6), 0 4px 15px rgba(11, 60, 93, 0.35);
+    }
+    14% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 12px rgba(11, 60, 93, 0), 0 6px 20px rgba(11, 60, 93, 0.45);
+    }
+    28% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0), 0 4px 15px rgba(11, 60, 93, 0.35);
+    }
+    42% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 12px rgba(11, 60, 93, 0), 0 6px 20px rgba(11, 60, 93, 0.45);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0), 0 4px 15px rgba(11, 60, 93, 0.35);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(11, 60, 93, 0), 0 4px 15px rgba(11, 60, 93, 0.35);
+    }
+}
+
+.aimAiTrigger:not(.active) {
+    animation: aiHeartbeat 2.5s infinite ease-in-out;
+}
+
+/* Dot Notifikasi Penarik Minat */
+.aiBadgeDot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #EF4444;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+@keyframes badgePulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+.aiBadgePulse {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #EF4444;
+    animation: badgePulse 1.8s infinite ease-in-out;
+}
+
+/* 2. Jendela Chat Virtual (Chat Window) */
+.aimAiWindow {
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    width: 380px;
+    height: 530px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgba(60, 60, 67, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 10000;
+}
+
+:global([data-theme='dark']) .aimAiWindow {
+    background: rgba(28, 28, 30, 0.8) !important;
+    border-color: rgba(235, 235, 245, 0.1) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.aimAiWindow.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Header Jendela Chat */
+.aiHeader {
+    background: rgba(255, 255, 255, 0.6);
+    color: #1c1c1e;
+    padding: 0.9rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+}
+
+:global([data-theme='dark']) .aiHeader {
+    background: rgba(28, 28, 30, 0.6) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(235, 235, 245, 0.08) !important;
+}
+
+:global([data-theme='dark']) .aiTitleDetails h4 {
+    color: #ffffff !important;
+}
+
+:global([data-theme='dark']) .aiSubtitle {
+    color: rgba(235, 235, 245, 0.6) !important;
+}
+
+.aiHeaderProfile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.aiAvatarContainer {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.aiAvatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding: 2px;
+    object-fit: contain;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.aiOnlineIndicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 11px;
+    height: 11px;
+    background-color: #10B981;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: indicatorBlink 2s infinite ease-in-out;
+}
+
+@keyframes indicatorBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+.aiTitleDetails h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+    color: #1c1c1e;
+}
+
+.aiSubtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+    display: block;
+}
+
+.aiCloseBtn {
+    background: none;
+    border: none;
+    color: rgba(60, 60, 67, 0.6);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.aiCloseBtn:hover {
+    background-color: rgba(60, 60, 67, 0.08);
+    color: #1c1c1e;
+}
+
+:global([data-theme='dark']) .aiCloseBtn {
+    color: rgba(235, 235, 245, 0.6) !important;
+}
+
+:global([data-theme='dark']) .aiCloseBtn:hover {
+    background-color: rgba(235, 235, 245, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.aiCloseBtn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Area Percakapan */
+.aiMessagesArea {
+    flex-grow: 1;
+    padding: 1.25rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: rgba(249, 250, 251, 0.4);
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar untuk Chat Area */
+.aiMessagesArea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.aiMessagesArea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.aiMessagesArea::-webkit-scrollbar-thumb {
+    background: rgba(11, 60, 93, 0.15);
+    border-radius: 3px;
+}
+
+.aiMessagesArea::-webkit-scrollbar-thumb:hover {
+    background: rgba(11, 60, 93, 0.3);
+}
+
+/* Bubble Chat */
+.aiMessageBubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    max-width: 85%;
+    animation: bubbleAppear 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes bubbleAppear {
+    0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.aiMessageBubble.assistant {
+    align-self: flex-start;
+}
+
+.aiMessageBubble.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.aiMessageAvatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    padding: 1px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+
+.aiMessageContent {
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.aiMessageBubble.assistant .aiMessageContent {
+    background: #E9E9EB; /* Apple HIG standard incoming bubble */
+    color: #000000;
+    border-radius: 18px;
+    border: none;
+    box-shadow: none;
+}
+
+:global([data-theme='dark']) .aiMessageBubble.assistant .aiMessageContent {
+    background: #3A3A3C !important; /* Apple HIG Dark Mode incoming bubble */
+    color: #FFFFFF !important;
+}
+
+.aiMessageBubble.user .aiMessageContent {
+    background: #007AFF; /* Apple HIG standard outgoing bubble */
+    color: #ffffff;
+    border-radius: 18px;
+    box-shadow: none;
+}
+
+:global([data-theme='dark']) .aiMessageBubble.user .aiMessageContent {
+    background: #0A84FF !important;
+    color: #ffffff !important;
+}
+
+.aiMessageContent p {
+    margin-bottom: 0.5rem;
+}
+
+.aiMessageContent p:last-child {
+    margin-bottom: 0;
+}
+
+/* Typing Indicator (Animasi 3 Titik) */
+.typingIndicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.75rem 1.15rem;
+    min-height: 38px;
+}
+
+.typingIndicator span {
+    width: 7px;
+    height: 7px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.3;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typingIndicator span:nth-child(1) { animation-delay: 0s; }
+.typingIndicator span:nth-child(2) { animation-delay: 0.2s; }
+.typingIndicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+    40% { transform: scale(1.15); opacity: 1; }
+}
+
+/* 3. Saran Pertanyaan Cepat (Quick Prompts) */
+.aiQuickPrompts {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    background-color: rgba(243, 244, 246, 0.4);
+    border-top: 1px solid rgba(229, 231, 235, 0.5);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    flex-shrink: 0;
+}
+
+.aiQuickPrompts::-webkit-scrollbar {
+    height: 4px;
+}
+
+.aiQuickPrompts::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.aiQuickPrompts::-webkit-scrollbar-thumb {
+    background: rgba(11, 60, 93, 0.1);
+    border-radius: 2px;
+}
+
+.aiPromptBtn {
+    white-space: nowrap;
+    background: #ffffff;
+    color: var(--primary);
+    border: 1px solid rgba(11, 60, 93, 0.15);
+    padding: 0.4rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.aiPromptBtn:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #ffffff;
+    border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(11, 60, 93, 0.15);
+}
+
+.aiPromptBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 4. Form Input Teks (Input Form) */
+.aiInputForm {
+    padding: 0.85rem 1.15rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(60, 60, 67, 0.08);
+    flex-shrink: 0;
+}
+
+:global([data-theme='dark']) .aiInputForm {
+    background-color: rgba(28, 28, 30, 0.6) !important;
+    border-top: 1px solid rgba(235, 235, 245, 0.08) !important;
+}
+
+.aiChatInput {
+    flex-grow: 1;
+    border: 1px solid rgba(60, 60, 67, 0.12);
+    background-color: rgba(233, 233, 235, 0.5);
+    border-radius: 20px; /* Apple pill input */
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+:global([data-theme='dark']) .aiChatInput {
+    border-color: rgba(235, 235, 245, 0.1) !important;
+    background-color: rgba(44, 44, 46, 0.5) !important;
+    color: #ffffff !important;
+}
+
+.aiChatInput:focus {
+    border-color: var(--primary);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+:global([data-theme='dark']) .aiChatInput:focus {
+    background-color: #1c1c1e !important;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25) !important;
+}
+
+.aiChatInput:disabled {
+    background-color: rgba(18, 165, 184, 0.05);
+    color: #7E8F9F;
+    cursor: not-allowed;
+}
+
+.aiSendBtn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(11, 60, 93, 0.15);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.aiSendBtn:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(11, 60, 93, 0.25);
+}
+
+.aiSendBtn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.aiSendBtn:disabled {
+    background-color: rgba(18, 165, 184, 0.05);
+    color: #7E8F9F;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.aiSendBtn svg {
+    width: 16px;
+    height: 18px;
+    transform: translate(1px, 0);
+    fill: currentColor;
+}
+
+/* Responsivitas Mobile */
+@media (max-width: 480px) {
+    .aimAiContainer {
+        bottom: 25px;
+        right: 15px;
+    }
+
+    .aimAiWindow {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        border: none;
+        z-index: 10000;
+        transform: translateY(100%);
+    }
+
+    .aimAiWindow.open {
+        transform: translateY(0);
+    }
+
+    .aiHeader {
+        border-radius: 0;
+        padding: 1rem;
+    }
+
+    .aiMessagesArea {
+        padding: 1rem;
+    }
+
+    .aiInputForm {
+        padding: 0.75rem 1rem;
+        padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+    }
+}
+
+/* Voice AI Styles */
+.aiMicBtn {
+    position: relative;
+}
+
+.aiMicBtn.recording svg {
+    animation: micShake 0.5s ease infinite alternate;
+}
+
+.aiMicPulse {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 50%;
+    border: 2px solid var(--formal-red, #FF3B30);
+    animation: micPulsate 1.5s infinite ease-out;
+    pointer-events: none;
+}
+
+@keyframes micPulsate {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes micShake {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+.aiVoiceEqualizer {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    width: 14px;
+    height: 12px;
+    margin-right: 4px;
+}
+
+.aiVoiceEqualizer span {
+    width: 2px;
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 999px;
+    animation: equalizerBounce 0.8s infinite ease-in-out alternate;
+    transform-origin: bottom;
+}
+
+.aiVoiceEqualizer span:nth-child(1) { animation-delay: 0.1s; }
+.aiVoiceEqualizer span:nth-child(2) { animation-delay: 0.3s; }
+.aiVoiceEqualizer span:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes equalizerBounce {
+    0% { transform: scaleY(0.3); }
+    100% { transform: scaleY(1.1); }
+}
+
+.aiSoundBtn:hover {
+    transform: scale(1.1);
+    opacity: 1 !important;
+}
