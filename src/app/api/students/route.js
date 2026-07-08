@@ -4,7 +4,7 @@ import { loadStudents, saveStudents, supabase, isSupabaseEnabled } from '../../.
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
-import { handleApiDelete } from '../../../lib/api-helper';
+import { handleApiDelete, sensitiveJson } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -13,7 +13,7 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const studentsList = await loadStudents();
-    return NextResponse.json(studentsList);
+    return sensitiveJson(studentsList);
   } catch (e) {
     return NextResponse.json({ error: "Gagal memuat data siswa: " + e.message }, { status: 500 });
   }

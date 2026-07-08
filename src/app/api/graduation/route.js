@@ -4,7 +4,7 @@ import { loadGraduation, saveGraduation, isSupabaseEnabled, supabase } from '../
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
-import { handleApiDelete } from '../../../lib/api-helper';
+import { handleApiDelete, sensitiveJson } from '../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -31,7 +31,7 @@ export async function GET(request) {
         return NextResponse.json({ error: "Siswa dengan NISN atau Nomor Peserta tersebut tidak ditemukan." }, { status: 404 });
       }
 
-      return NextResponse.json(student);
+      return sensitiveJson(student);
     }
 
     // Otherwise, check if admin and return the full list
@@ -39,7 +39,7 @@ export async function GET(request) {
       return NextResponse.json({ error: "Unauthorized. Pencarian kelulusan memerlukan parameter NISN atau Nomor Peserta." }, { status: 401 });
     }
 
-    return NextResponse.json(gradList);
+    return sensitiveJson(gradList);
   } catch (e) {
     return NextResponse.json({ error: "Gagal memproses data kelulusan: " + e.message }, { status: 500 });
   }

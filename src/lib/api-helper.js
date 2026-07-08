@@ -57,3 +57,13 @@ export async function handleApiDelete({
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }
 }
+
+/**
+ * Creates a JSON response with strict headers to prevent proxy and CDN caching of sensitive data.
+ */
+export function sensitiveJson(data, status = 200) {
+  const response = NextResponse.json(data, { status });
+  response.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  return response;
+}
+

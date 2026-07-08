@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { checkAuth } from '../../../../lib/auth';
 import { loadAuditLogs } from '../../../../lib/audit';
+import { sensitiveJson } from '../../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -50,11 +51,12 @@ export async function GET(request) {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
           'Content-Disposition': `attachment; filename=jurnal_audit_sdn_bobong_${new Date().toISOString().split('T')[0]}.csv`,
+          'Cache-Control': 'private, no-cache, no-store, must-revalidate'
         }
       });
     }
 
-    return NextResponse.json({ auditLogs });
+    return sensitiveJson({ auditLogs });
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

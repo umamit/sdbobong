@@ -4,7 +4,7 @@ import { loadMessages, saveMessages, isSupabaseEnabled, supabase } from '../../.
 import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
-import { handleApiDelete } from '../../../lib/api-helper';
+import { handleApiDelete, sensitiveJson } from '../../../lib/api-helper';
 import { messageSchema, parseBody } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
@@ -18,10 +18,10 @@ export async function GET() {
     const allMessages = await loadMessages();
     
     if (isAdmin) {
-      return NextResponse.json(allMessages);
+      return sensitiveJson(allMessages);
     } else {
       const approvedGuestbook = allMessages.filter(m => m.type === 'guestbook' && m.status === 'approved');
-      return NextResponse.json(approvedGuestbook);
+      return sensitiveJson(approvedGuestbook);
     }
   } catch (e) {
     return NextResponse.json({ error: "Gagal memuat pesan: " + e.message }, { status: 500 });

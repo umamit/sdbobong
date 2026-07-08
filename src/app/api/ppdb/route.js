@@ -9,6 +9,7 @@ import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import { revalidatePath } from 'next/cache';
 import { ppdbSchema, ppdbStatusSchema, parseBody } from '../../../lib/validators';
+import { sensitiveJson } from '../../../lib/api-helper';
 import fs from 'fs';
 import path from 'path';
 
@@ -179,12 +180,13 @@ export async function GET(request) {
       return new NextResponse(csvContent, {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename=ppdb_sdn_bobong_${dateStr}.csv`
+          'Content-Disposition': `attachment; filename=ppdb_sdn_bobong_${dateStr}.csv`,
+          'Cache-Control': 'private, no-cache, no-store, must-revalidate'
         }
       });
     }
 
-    return NextResponse.json(records);
+    return sensitiveJson(records);
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
   }

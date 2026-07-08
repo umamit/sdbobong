@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { loadStudents, saveStudents } from '../../../../lib/database';
 import { verifyAdminToken, verifyTeacherToken } from '../../../../lib/auth';
 import { createAuditLog } from '../../../../lib/audit';
+import { sensitiveJson } from '../../../../lib/api-helper';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -29,7 +30,7 @@ export async function GET(request) {
     }
 
     // Return only public non-sensitive data and grades
-    return NextResponse.json({
+    return sensitiveJson({
       success: true,
       student: {
         id: student.id,
