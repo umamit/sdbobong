@@ -2,6 +2,7 @@ import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/databas
 import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 import TeachersSectionClient from './TeachersSectionClient';
 import Image from 'next/image';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -12,6 +13,7 @@ export const metadata = {
 };
 
 export default async function Profil() {
+  noStore(); // Prevent server and CDN caching of teacher data
   const [teachers, achievements, config] = await Promise.all([
     loadTeachers(),
     loadAchievements(),

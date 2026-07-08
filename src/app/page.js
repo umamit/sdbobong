@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
-import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Disable compile-time cache to fetch fresh content
 
 export default async function Home() {
+  noStore(); // Force dynamic fetching and bypass any cached render
   const [allNews, config, teachers] = await Promise.all([
     loadNews(),
     loadWebConfig(),
