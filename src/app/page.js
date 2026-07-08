@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
+import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
 import { unstable_noStore as noStore } from 'next/cache';
 
