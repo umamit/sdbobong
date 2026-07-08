@@ -55,6 +55,11 @@ You are an expert fullstack Next.js AI engineer operating within Antigravity IDE
 * **Supabase Client Distinction**: Always double-check that the code uses `createClient()` from `@/utils/supabase/client` for frontend components and server clients only inside Route Handlers (`/api/...`) or Server Components.
 * **Strict Hydration Prevention**: Banish using browser-only globals (like `window`, `document`, or `localStorage`) during the initial React render cycle. They must always be safely wrapped inside a `useEffect` hook to prevent application layout crashes.
 
+## 6a. Serverless Local-Fallback & Data Privacy Safeguards
+* **Temporary Directory `/tmp` usage**: Since the production Vercel filesystem is read-only, ensure all local database updates (`news.json`, `website_config.json`, etc.) read and write exclusively to the dynamic `DATA_DIR` mapped to `/tmp` in serverless environments.
+* **Dual Execution Mode**: Any new operational database query or mutation must implement both **Supabase Mode** (Prisma queries) and **Local Fallback Mode** (writing to local JSON files under `DATA_DIR` and local folder `public/images/uploads`) to prevent crashes when `force_local_cache` is toggled.
+* **Public Data Anonymization**: Never display full student names or clear physical addresses on open public grids. Always wrap names with `anonymizeName()` and addresses with `cleanAddress()` from `src/lib/db/core.js` to ensure student privacy compliance.
+
 ---
 
 # Antigravity Agent Configuration & Rules
