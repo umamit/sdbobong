@@ -91,7 +91,7 @@ export default async function Footer() {
       <div className={styles.footerBottom}>
         <div className={`container ${styles.footerBottomFlex}`}>
           <div className={styles.developerNote}>
-            Lead Developer
+            STA 0+0000
           </div>
           <p className={styles.copyrightNote}>
             &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Admin</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <Link href="/guru/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login Guru</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.4.8</span>
