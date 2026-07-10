@@ -48,7 +48,7 @@ const P5_PROJECTS = [
   }
 ];
 
-export default function AcademicPortal({ initialCalendar = [], initialP5Projects = [] }) {
+export default function AcademicPortal({ initialCalendar = [], initialP5Projects = [], initialJadwalKBM = [] }) {
   const [activeTab, setActiveTab] = useState('calendar');
   const [selectedEvent, setSelectedRoom] = useState(null);
   const [countdowns, setCountdowns] = useState({});
@@ -149,7 +149,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         <button 
           onClick={() => setActiveTab('calendar')}
           style={{
-            flex: '1 1 180px',
+            flex: '1 1 140px',
             padding: '10px 16px',
             borderRadius: 'var(--radius-full)',
             border: 'none',
@@ -162,12 +162,12 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             color: activeTab === 'calendar' ? 'white' : 'var(--text-muted)'
           }}
         >
-          📅 Kalender Akademik Dinamis
+          📅 Kalender Akademik
         </button>
         <button 
           onClick={() => setActiveTab('p5')}
           style={{
-            flex: '1 1 180px',
+            flex: '1 1 140px',
             padding: '10px 16px',
             borderRadius: 'var(--radius-full)',
             border: 'none',
@@ -180,12 +180,30 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             color: activeTab === 'p5' ? 'white' : 'var(--text-muted)'
           }}
         >
-          🌱 Portal Proyek P5 Sekolah
+          🌱 Portal Proyek P5
+        </button>
+        <button 
+          onClick={() => setActiveTab('kbm')}
+          style={{
+            flex: '1 1 140px',
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-full)',
+            border: 'none',
+            fontWeight: 700,
+            fontFamily: 'var(--font-heading)',
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+            transition: 'all 0.25s ease',
+            backgroundColor: activeTab === 'kbm' ? 'var(--primary)' : 'transparent',
+            color: activeTab === 'kbm' ? 'white' : 'var(--text-muted)'
+          }}
+        >
+          📖 Jadwal KBM Harian
         </button>
         <button 
           onClick={() => setActiveTab('grades')}
           style={{
-            flex: '1 1 180px',
+            flex: '1 1 140px',
             padding: '10px 16px',
             borderRadius: 'var(--radius-full)',
             border: 'none',
@@ -198,7 +216,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             color: activeTab === 'grades' ? 'white' : 'var(--text-muted)'
           }}
         >
-          📊 Portal Rapor Siswa
+          📊 Rapor Siswa
         </button>
       </div>
 
@@ -305,7 +323,74 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         </div>
       )}
 
-      {/* TAB CONTENT 2: P5 SHOWCASE PORTAL */}
+      {/* TAB CONTENT 2: JADWAL KBM HARIAN */}
+      {activeTab === 'kbm' && (
+        <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+            Rincian waktu belajar harian untuk masing-masing fase kelas di SD Negeri Bobong berjalan efektif.
+          </p>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+            gap: 'var(--space-md)' 
+          }}>
+            {(initialJadwalKBM && initialJadwalKBM.length > 0 ? initialJadwalKBM : []).map((kbm, idx) => (
+              <div 
+                key={kbm.id || idx}
+                style={{
+                  backgroundColor: 'white',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: 'var(--space-md)',
+                  boxShadow: 'var(--shadow-sm)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  transition: 'transform 0.25s, box-shadow 0.25s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.5rem' }}>🏫</span>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--primary-dark)', fontFamily: 'var(--font-heading)' }}>
+                    {kbm.kelas}
+                  </h3>
+                </div>
+
+                <div style={{ 
+                  backgroundColor: 'var(--bg-main)', 
+                  padding: '12px', 
+                  borderRadius: 'var(--radius-md)', 
+                  fontSize: '0.875rem', 
+                  color: 'var(--text-color)', 
+                  lineHeight: 1.6,
+                  whiteSpace: 'pre-line',
+                  border: '1px solid var(--border-color)',
+                  fontWeight: 500
+                }}>
+                  {kbm.hari}
+                </div>
+
+                {kbm.keterangan && (
+                  <p style={{ margin: 0, fontSize: '0.825rem', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.4 }}>
+                    📌 {kbm.keterangan}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB CONTENT 3: P5 SHOWCASE PORTAL */}
       {activeTab === 'p5' && (
         <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>

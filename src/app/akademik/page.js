@@ -12,16 +12,24 @@ export const metadata = {
 export default async function Akademik() {
   const config = await loadWebConfig();
 
-  const akademik = config.stats?.page_contents?.akademik || {
-    banner_title: "Informasi Akademik",
-    banner_text: "Panduan kurikulum, kalender pendidikan berjalan, serta tata tertib kedisiplinan siswa.",
-    kurikulum_badge: "Metode Pembelajaran",
-    kurikulum_title: "Penerapan Kurikulum Merdeka",
-    kurikulum_p1: "SD Negeri Bobong telah mengimplementasikan Kurikulum Merdeka secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.",
-    kurikulum_p2: "Salah satu pilar utama kurikulum ini adalah Projek Penguatan Profil Pelajar Pancasila (P5). Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.",
-    kurikulum_image: "/images/kurikulum_merdeka.svg",
-    kurikulum_tags: ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
-    calendar: [
+  const defaultJadwalKBM = [
+    { id: "kbm-1", kelas: "Kelas I & II (Fase A)", hari: "Senin - Kamis: 07.15 - 11.45 WIT\nJumat: 07.15 - 10.30 WIT\nSabtu: 07.15 - 11.00 WIT", keterangan: "Jam Belajar Lebih Singkat, Istirahat Pukul 09.15 - 09.45 WIT" },
+    { id: "kbm-2", kelas: "Kelas III & IV (Fase B)", hari: "Senin - Kamis: 07.15 - 12.15 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 11.30 WIT", keterangan: "KBM Utama, Istirahat Pukul 09.30 - 10.00 WIT" },
+    { id: "kbm-3", kelas: "Kelas V & VI (Fase C)", hari: "Senin - Kamis: 07.15 - 12.50 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 11.30 WIT", keterangan: "Materi Esensial & Projek P5, Istirahat Pukul 09.30 - 10.00 WIT" }
+  ];
+
+  const akademikData = config.stats?.page_contents?.akademik || {};
+  const akademik = {
+    ...akademikData,
+    banner_title: akademikData.banner_title || "Informasi Akademik",
+    banner_text: akademikData.banner_text || "Panduan kurikulum, kalender pendidikan berjalan, serta tata tertib kedisiplinan siswa.",
+    kurikulum_badge: akademikData.kurikulum_badge || "Metode Pembelajaran",
+    kurikulum_title: akademikData.kurikulum_title || "Penerapan Kurikulum Merdeka",
+    kurikulum_p1: akademikData.kurikulum_p1 || "SD Negeri Bobong telah mengimplementasikan Kurikulum Merdeka secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.",
+    kurikulum_p2: akademikData.kurikulum_p2 || "Salah satu pilar utama kurikulum ini adalah Projek Penguatan Profil Pelajar Pancasila (P5). Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.",
+    kurikulum_image: akademikData.kurikulum_image || "/images/kurikulum_merdeka.svg",
+    kurikulum_tags: akademikData.kurikulum_tags || ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
+    calendar: akademikData.calendar || [
       { id: "juli", month: "Juli 2025", desc: "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", dates: "14 - 16 Juli 2025" },
       { id: "agustus", month: "Agustus 2025", desc: "Peringatan HUT RI ke-80 & Lomba Kemerdekaan Antar Kelas", dates: "17 Agustus 2025" },
       { id: "september", month: "September 2025", desc: "Asesmen Nasional Berbasis Komputer (ANBK)", dates: "Pekan ke-3 September" },
@@ -29,18 +37,19 @@ export default async function Akademik() {
       { id: "maret", month: "Maret 2026", desc: "Libur Khusus Awal Puasa Ramadan 1447 H", dates: "Menyesuaikan Keputusan Menteri" },
       { id: "juni", month: "Juni 2026", desc: "Ujian Akhir Semester Genap & Pembagian Rapor Kenaikan Kelas", dates: "08 - 20 Juni 2026" }
     ],
-    tata_tertib: [
+    tata_tertib: akademikData.tata_tertib || [
       "Kehadiran: Siswa wajib hadir di sekolah paling lambat pukul 07.15 WIT sebelum bel masuk berbunyi.",
       "Atribut: Siswa harus mengenakan seragam lengkap dengan badge nama, logo lokasi kabupaten, dan ikat pinggang hitam sekolah.",
       "Kebersihan: Siswa dilarang membuang sampah sembarangan and diwajibkan berpartisipasi aktif dalam regu piket kelas masing-masing.",
       "Perizinan: Apabila siswa berhalangan hadir karena sakit atau keperluan keluarga, orang tua wajib mengirimkan surat izin tertulis atau menghubungi guru kelas via WA."
     ],
-    seragam: [
+    seragam: akademikData.seragam || [
       { days: "Senin - Selasa", type: "Nasional Merah Putih", details: "Dasi, Topi Upacara, Sepatu Hitam Kaos Kaki Putih" },
       { days: "Rabu - Kamis", type: "Batik Khas Taliabu / Lokal", details: "Bawahan Merah, Sepatu Hitam Kaos Kaki Putih" },
       { days: "Jumat", type: "Busana Muslim Sekolah / Olahraga", details: "Pakaian Olahraga hanya dipakai saat jam praktek PJOK" },
       { days: "Sabtu", type: "Pramuka Lengkap", details: "Hasduk/Setangan Leher, Baret/Topi Pramuka, Sepatu Hitam Kaos Kaki Hitam" }
-    ]
+    ],
+    jadwal_kbm: akademikData.jadwal_kbm || defaultJadwalKBM
   };
 
   return (
@@ -81,11 +90,15 @@ export default async function Akademik() {
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Portal Kemitraan Orang Tua</span>
-            <h2>Kalender Belajar & Projek P5</h2>
+            <h2>Kalender Belajar, KBM, & Projek P5</h2>
           </div>
 
           <div className="reveal-on-scroll">
-            <AcademicPortal initialCalendar={akademik.calendar} initialP5Projects={akademik.p5_projects || []} />
+            <AcademicPortal 
+              initialCalendar={akademik.calendar} 
+              initialP5Projects={akademik.p5_projects || []} 
+              initialJadwalKBM={akademik.jadwal_kbm || []}
+            />
           </div>
         </div>
       </section>

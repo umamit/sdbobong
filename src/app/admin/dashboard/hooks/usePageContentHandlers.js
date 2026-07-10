@@ -89,6 +89,22 @@ export default function usePageContentHandlers({
     handleFieldChange('akademik', 'seragam', (pageContents.akademik?.seragam || []).filter((_, i) => i !== index));
   };
 
+  // --- Jadwal KBM ---
+  const handleAddJadwalKbm = () => {
+    const updated = [...(pageContents.akademik?.jadwal_kbm || []), { id: 'kbm_' + Date.now(), kelas: '', hari: '', keterangan: '' }];
+    handleFieldChange('akademik', 'jadwal_kbm', updated);
+  };
+
+  const handleUpdateJadwalKbm = (index, key, val) => {
+    const updated = [...(pageContents.akademik?.jadwal_kbm || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('akademik', 'jadwal_kbm', updated);
+  };
+
+  const handleRemoveJadwalKbm = (index) => {
+    handleFieldChange('akademik', 'jadwal_kbm', (pageContents.akademik?.jadwal_kbm || []).filter((_, i) => i !== index));
+  };
+
   // --- Ekstrakurikuler ---
   const handleAddEkskul = () => {
     const updated = [...(pageContents.kesiswaan?.ekstrakurikuler || []), { id: 'ekskul_' + Date.now(), nama: '', deskripsi: '', jadwal: '', is_wajib: false, image: '/images/ekskul_pramuka.svg' }];
@@ -256,6 +272,7 @@ export default function usePageContentHandlers({
     handleFieldChange,
     handleP5FileChange, handleAddP5Project, handleUpdateP5Project, handleRemoveP5Project,
     handleAddSeragam, handleUpdateSeragam, handleRemoveSeragam,
+    handleAddJadwalKbm, handleUpdateJadwalKbm, handleRemoveJadwalKbm,
     handleAddEkskul, handleUpdateEkskul, handleRemoveEkskul, handleEkskulFileChange,
     handleAddKesiswaanPrestasi, handleUpdateKesiswaanPrestasi, handleRemoveKesiswaanPrestasi,
     handleAddKarya, handleUpdateKarya, handleRemoveKarya,

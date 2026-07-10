@@ -1,11 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { submitMessageAction } from '../actions/messages';
 
 export default function BukuTamuClient({ initialApprovedMessages }) {
   const [activeTab, setActiveTab] = useState('buku-tamu'); // 'buku-tamu' or 'saran'
   
+  // CAPTCHA State
+  const [captchaChallenge, setCaptchaChallenge] = useState({ numA: 0, numB: 0, answer: 0 });
+  const [gtAnswer, setGtAnswer] = useState('');
+  const [srAnswer, setSrAnswer] = useState('');
+
+  const generateCaptcha = () => {
+    const a = Math.floor(Math.random() * 9) + 1;
+    const b = Math.floor(Math.random() * 9) + 1;
+    setCaptchaChallenge({ numA: a, numB: b, answer: a + b });
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
   // Guest Book State
   const [gtName, setGtName] = useState('');
   const [gtRole, setGtRole] = useState('Alumni');
@@ -26,6 +41,13 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
     e.preventDefault();
     setGtStatus({ type: 'loading', text: 'Mengirim pesan Anda...' });
 
+    if (parseInt(gtAnswer, 10) !== captchaChallenge.answer) {
+      setGtStatus({ type: 'error', text: 'Jawaban verifikasi keamanan (CAPTCHA) salah! Silakan coba lagi.' });
+      generateCaptcha();
+      setGtAnswer('');
+      return;
+    }
+
     try {
       const res = await submitMessageAction({
         name: gtName,
@@ -44,14 +66,25 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
       setGtName('');
       setGtMessage('');
       setGtWebsiteUrl('');
+      setGtAnswer('');
+      generateCaptcha();
     } catch (err) {
       setGtStatus({ type: 'error', text: err.message });
+      generateCaptcha();
+      setGtAnswer('');
     }
   };
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
     setSrStatus({ type: 'loading', text: 'Mengirim saran Anda...' });
+
+    if (parseInt(srAnswer, 10) !== captchaChallenge.answer) {
+      setSrStatus({ type: 'error', text: 'Jawaban verifikasi keamanan (CAPTCHA) salah! Silakan coba lagi.' });
+      generateCaptcha();
+      setSrAnswer('');
+      return;
+    }
 
     try {
       const res = await submitMessageAction({
@@ -71,8 +104,12 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
       setSrName('');
       setSrMessage('');
       setSrWebsiteUrl('');
+      setSrAnswer('');
+      generateCaptcha();
     } catch (err) {
       setSrStatus({ type: 'error', text: err.message });
+      generateCaptcha();
+      setSrAnswer('');
     }
   };
 
@@ -186,6 +223,20 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                     style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }}
                   ></textarea>
                 </div>
+                
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', fontSize: '0.9rem', marginBottom: '4px' }}>
+                    Verifikasi Keamanan: Berapakah {captchaChallenge.numA} + {captchaChallenge.numB}?
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={gtAnswer}
+                    onChange={(e) => setGtAnswer(e.target.value)}
+                    placeholder="Ketik jawaban angka..."
+                    style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none' }}
+                  />
+                </div>
 
                 <button
                   type="submit"
@@ -273,6 +324,20 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                     placeholder="Sampaikan masukan, usulan fasilitas, kurikulum, atau kritik membangun Anda..."
                     style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }}
                   ></textarea>
+                </div>
+                
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', fontSize: '0.9rem', marginBottom: '4px' }}>
+                    Verifikasi Keamanan: Berapakah {captchaChallenge.numA} + {captchaChallenge.numB}?
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={srAnswer}
+                    onChange={(e) => setSrAnswer(e.target.value)}
+                    placeholder="Ketik jawaban angka..."
+                    style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none' }}
+                  />
                 </div>
 
                 <button

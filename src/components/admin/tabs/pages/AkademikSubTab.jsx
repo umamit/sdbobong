@@ -15,7 +15,10 @@ export default function AkademikSubTab(props) {
     handleRemoveP5Project,
     handleAddSeragam,
     handleUpdateSeragam,
-    handleRemoveSeragam
+    handleRemoveSeragam,
+    handleAddJadwalKbm,
+    handleUpdateJadwalKbm,
+    handleRemoveJadwalKbm
   } = props;
 
   return (
@@ -360,6 +363,78 @@ export default function AkademikSubTab(props) {
                         placeholder="Tulis setiap tata tertib dalam baris baru..."
                         style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: '1.5' }}
                       ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: 'var(--space-md)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ margin: 0 }}>Jadwal Kegiatan Belajar Mengajar (KBM) Harian</h3>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Kelola rincian waktu belajar harian per tingkat kelas / kelompok kelas.</p>
+                      </div>
+                      <button type="button" onClick={handleAddJadwalKbm} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        ➕ Tambah Jadwal KBM
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+                      {(pageContents.akademik?.jadwal_kbm || []).map((kbm, idx) => (
+                        <div key={kbm.id || idx} style={{ backgroundColor: '#f8fafc', padding: 'var(--space-md)', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '0.9rem' }}>📖 Jadwal #{idx + 1}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveJadwalKbm(idx)}
+                              className="btn-action-delete"
+                              style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
+                            >
+                              ✕ Hapus Jadwal
+                            </button>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-sm)' }}>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Tingkat / Kelompok Kelas</label>
+                              <input
+                                type="text"
+                                placeholder="Contoh: Kelas I & II (Fase A)"
+                                className="form-control"
+                                value={kbm.kelas || ''}
+                                onChange={(e) => handleUpdateJadwalKbm(idx, 'kelas', e.target.value)}
+                                style={{ width: '100%' }}
+                              />
+                            </div>
+                            <div className="form-group" style={{ marginBottom: 0 }}>
+                              <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Hari & Jam Belajar (Baris Baru untuk Hari Baru)</label>
+                              <textarea
+                                placeholder="Contoh: Senin - Kamis: 07.15 - 11.45 WIT&#10;Jumat: 07.15 - 10.30 WIT"
+                                className="form-control"
+                                value={kbm.hari || ''}
+                                onChange={(e) => handleUpdateJadwalKbm(idx, 'hari', e.target.value)}
+                                rows="2"
+                                style={{ width: '100%', resize: 'vertical', fontFamily: 'inherit' }}
+                              ></textarea>
+                            </div>
+                          </div>
+
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ display: 'block', marginBottom: '2px', fontWeight: 600, fontSize: '0.8rem' }}>Keterangan Tambahan</label>
+                            <input
+                              type="text"
+                              placeholder="Contoh: Jam Belajar Lebih Singkat, Istirahat Pukul 09.15 - 09.45 WIT"
+                              className="form-control"
+                              value={kbm.keterangan || ''}
+                              onChange={(e) => handleUpdateJadwalKbm(idx, 'keterangan', e.target.value)}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      {(pageContents.akademik?.jadwal_kbm || []).length === 0 && (
+                        <p style={{ textAlign: 'center', fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px dashed #e2e8f0', margin: 0 }}>
+                          Belum ada jadwal KBM kustom. Klik "Tambah Jadwal KBM" untuk membuat jadwal baru.
+                        </p>
+                      )}
                     </div>
                   </div>
 

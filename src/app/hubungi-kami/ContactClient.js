@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ContactClient({ initialFaqs, contacts = {} }) {
   const schoolEmail = contacts.email_sekolah || "admin@sdnegeribobong.sch.id";
@@ -8,6 +8,20 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
   const operatorName = contacts.nama_operator || "Operator Humas";
   // FAQ accordion state: stores the ID of the currently expanded item, or null
   const [expandedFaq, setExpandedFaq] = useState(null);
+
+  // CAPTCHA State
+  const [captchaChallenge, setCaptchaChallenge] = useState({ numA: 0, numB: 0, answer: 0 });
+  const [userAnswer, setUserAnswer] = useState('');
+
+  const generateCaptcha = () => {
+    const a = Math.floor(Math.random() * 9) + 1;
+    const b = Math.floor(Math.random() * 9) + 1;
+    setCaptchaChallenge({ numA: a, numB: b, answer: a + b });
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
 
   // Form State
   const [name, setName] = useState('');
@@ -29,6 +43,13 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
     e.preventDefault();
     setFormStatus({ type: 'loading', text: 'Mengirim pesan Anda...' });
 
+    if (parseInt(userAnswer, 10) !== captchaChallenge.answer) {
+      setFormStatus({ type: 'error', text: 'Jawaban verifikasi keamanan (CAPTCHA) salah! Silakan coba lagi.' });
+      generateCaptcha();
+      setUserAnswer('');
+      return;
+    }
+
     // Simulate sending an email/message to school public relation
     setTimeout(() => {
       setFormStatus({
@@ -40,6 +61,8 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
       setPhone('');
       setSubject('');
       setMessage('');
+      setUserAnswer('');
+      generateCaptcha();
     }, 1500);
   };
 
@@ -189,6 +212,20 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
                 placeholder="Ketik rincian pesan atau pertanyaan Anda di sini..."
                 style={{ width: '100%', padding: '8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }}
               ></textarea>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontWeight: '600', fontSize: '0.85rem', marginBottom: '2px' }}>
+                Verifikasi Keamanan: Berapakah {captchaChallenge.numA} + {captchaChallenge.numB}?
+              </label>
+              <input
+                type="number"
+                required
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                placeholder="Ketik jawaban angka..."
+                style={{ width: '100%', padding: '8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', outline: 'none' }}
+              />
             </div>
 
             <button

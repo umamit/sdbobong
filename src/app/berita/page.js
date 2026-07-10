@@ -1,6 +1,6 @@
 import { loadNews, loadWebConfig } from '../../lib/database';
 import Link from 'next/link';
-import NewsCard from '../../components/NewsCard';
+import BeritaSearchClient from './BeritaSearchClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -31,17 +31,7 @@ export default async function Berita() {
             <h2>Kabar & Artikel Sekolah</h2>
           </div>
 
-          <div className="grid-2" style={{ marginBottom: 'var(--space-lg)' }}>
-            {newsList.length > 0 ? (
-              newsList.map((news) => (
-                <NewsCard key={news.id} news={news} />
-              ))
-            ) : (
-              <p style={{ gridColumn: 'span 2', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic', padding: 'var(--space-md)' }}>
-                Belum ada berita kegiatan yang diunggah.
-              </p>
-            )}
-          </div>
+          <BeritaSearchClient newsList={newsList} />
         </div>
       </section>
 
