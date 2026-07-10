@@ -118,6 +118,7 @@ export default async function Home() {
               muted
               defaultMuted
               playsInline
+              poster="/images/hero_school.svg"
               style={{
                 position: 'absolute',
                 top: 0,
@@ -125,6 +126,7 @@ export default async function Home() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                pointerEvents: 'none',
                 zIndex: 1,
               }}
             >
@@ -139,17 +141,38 @@ export default async function Home() {
                     if (v) {
                       v.muted = true;
                       v.defaultMuted = true;
-                      v.play().catch(function(err) {
-                        console.log("Autoplay blocked, registering fallback interaction listeners", err);
-                        var playVideo = function() {
-                          v.play().then(function() {
-                            document.removeEventListener("click", playVideo);
-                            document.removeEventListener("touchstart", playVideo);
-                          });
-                        };
-                        document.addEventListener("click", playVideo);
-                        document.addEventListener("touchstart", playVideo);
-                      });
+                      
+                      // Diagnostic console logging
+                      v.addEventListener("play", function() { console.log("▶️ Video background starts playing successfully!"); });
+                      v.addEventListener("pause", function() { console.log("⏸️ Video background paused."); });
+                      v.addEventListener("waiting", function() { console.log("⏳ Video background is buffering/waiting..."); });
+                      v.addEventListener("stalled", function() { console.warn("⚠️ Video background loading has stalled."); });
+                      v.addEventListener("error", function(e) { console.error("❌ Video background load error:", v.error); });
+                      
+                      var attemptPlay = function() {
+                        v.play().then(function() {
+                          console.log("✅ Video background autoplay call succeeded!");
+                        }).catch(function(err) {
+                          console.log("⚠️ Autoplay blocked by browser policy, listening for user interactions...", err);
+                          var playVideo = function() {
+                            v.play().then(function() {
+                              console.log("✅ Video background started on user interaction!");
+                              document.removeEventListener("click", playVideo);
+                              document.removeEventListener("touchstart", playVideo);
+                            });
+                          };
+                          document.addEventListener("click", playVideo);
+                          document.addEventListener("touchstart", playVideo);
+                        });
+                      };
+                      
+                      if (v.readyState >= 1) {
+                        attemptPlay();
+                      } else {
+                        v.addEventListener("loadedmetadata", attemptPlay);
+                        // Fallback trigger after 1 second if event doesn't fire
+                        setTimeout(attemptPlay, 1000);
+                      }
                     }
                   })();
                 `
