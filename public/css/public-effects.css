@@ -528,3 +528,51 @@ header {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     text-transform: uppercase;
 }
+
+/* ==========================================================================
+   ULTRA-PREMIUM HAPTIC & SHIMMER SKELETON EFFECTS
+   ========================================================================== */
+
+/* Apple HIG Haptic Press Effect for interactive elements */
+.btn:active, 
+.nav-btn:active, 
+.login-tab-btn:active,
+.card:active, 
+.prestasi-card:active, 
+.karya-card:active,
+.stepper-step:active {
+    transform: scale(0.97) translateY(0) !important;
+    transition: transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Shimmer Skeleton Loader */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.shimmer-skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.05) 25%, 
+        rgba(255, 255, 255, 0.12) 50%, 
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite linear;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    width: 100%;
+}
+
+[data-theme='light'] .shimmer-skeleton {
+    background: linear-gradient(90deg, 
+        rgba(15, 23, 42, 0.04) 25%, 
+        rgba(15, 23, 42, 0.09) 50%, 
+        rgba(15, 23, 42, 0.04) 75%
+    );
+    background-size: 200% 100%;
+}

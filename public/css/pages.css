@@ -532,11 +532,11 @@
     overflow: hidden;
     perspective: 1000px;
     transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, border-color 0.5s ease;
 }
 
 .prestasi-card:hover {
-    transform: translateY(-10px) rotateX(6deg) rotateY(-3deg);
+    transform: translateY(-10px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     box-shadow: 0 20px 38px rgba(0, 0, 0, 0.06), 0 15px 12px rgba(0, 0, 0, 0.04);
 }
 
@@ -614,11 +614,11 @@
     overflow: hidden;
     perspective: 1000px;
     transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease, border-color 0.5s ease;
 }
 
 .karya-card:hover {
-    transform: translateY(-10px) rotateX(6deg) rotateY(-3deg);
+    transform: translateY(-10px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     box-shadow: 0 20px 38px rgba(0, 0, 0, 0.06), 0 15px 12px rgba(0, 0, 0, 0.04);
     border-color: var(--primary-light);
 }

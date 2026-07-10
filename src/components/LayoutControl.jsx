@@ -149,6 +149,37 @@ export default function LayoutControl() {
       });
     }, 1200);
 
+    // 5. Ultra Premium 3D Card Tilt Interaction
+    const handleGlobalMouseMove = (e) => {
+      const card = e.target.closest('.card, .stepper-step, .prestasi-card, .karya-card');
+      if (!card) return;
+      
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      
+      // Calculate rotation angles (max 8 degrees for clean professional premium look)
+      const angleX = -((y - yc) / yc) * 8;
+      const angleY = ((x - xc) / xc) * 8;
+      
+      card.style.setProperty('--rx', `${angleX}deg`);
+      card.style.setProperty('--ry', `${angleY}deg`);
+    };
+
+    const handleGlobalMouseLeave = () => {
+      const cards = document.querySelectorAll('.card, .stepper-step, .prestasi-card, .karya-card');
+      cards.forEach(c => {
+        c.style.setProperty('--rx', '0deg');
+        c.style.setProperty('--ry', '0deg');
+      });
+    };
+
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mouseleave', handleGlobalMouseLeave);
+    window.addEventListener('scroll', handleGlobalMouseLeave);
+
     return () => {
       clearInterval(intervalId);
       if (mutationObserver) {
@@ -156,6 +187,9 @@ export default function LayoutControl() {
       }
       intersectionObserver.disconnect();
       clearTimeout(fallbackId);
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseleave', handleGlobalMouseLeave);
+      window.removeEventListener('scroll', handleGlobalMouseLeave);
     };
   }, [pathname]);
 

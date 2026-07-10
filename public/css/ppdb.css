@@ -103,11 +103,11 @@
     overflow: hidden;
     perspective: 1000px;
     transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .stepper-step:hover {
-    transform: translateY(-8px) rotateX(4deg) rotateY(-2deg);
+    transform: translateY(-8px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     border-color: var(--primary);
     background-color: var(--bg-card);
     box-shadow: 0 18px 32px rgba(0, 0, 0, 0.05), 0 12px 10px rgba(0, 0, 0, 0.03);
