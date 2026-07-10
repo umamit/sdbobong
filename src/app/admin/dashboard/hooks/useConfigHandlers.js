@@ -129,13 +129,30 @@ export default function useConfigHandlers({
         const duration = await new Promise((resolve) => {
           const video = document.createElement('video');
           video.preload = 'metadata';
-          video.onloadedmetadata = () => { window.URL.revokeObjectURL(video.src); resolve(video.duration); };
-          video.onerror = () => resolve(-1);
+          video.playsInline = true;
+          video.muted = true;
+          video.onloadedmetadata = () => { 
+            window.URL.revokeObjectURL(video.src); 
+            resolve(video.duration); 
+          };
+          video.onerror = () => {
+            window.URL.revokeObjectURL(video.src);
+            resolve(-1);
+          };
           video.src = window.URL.createObjectURL(file);
+          video.load();
         });
-        if (duration === -1) { showToast('danger', 'Format video tidak terbaca atau rusak.'); return; }
-        if (duration > 10.5) { showToast('danger', `Durasi video ${duration.toFixed(1)}s melebihi batas 10 detik!`); return; }
-        if (file.size > 3 * 1024 * 1024) showToast('warning', 'Ukuran video cukup besar (>3MB). Disarankan mengompresi terlebih dahulu.');
+        
+        if (duration === -1) {
+          showToast('warning', 'Sistem tidak dapat membaca durasi video di browser ini. Unggah tetap dilanjutkan, pastikan durasi video Anda di bawah 10 detik.');
+        } else if (duration > 10.5) {
+          showToast('danger', `Durasi video ${duration.toFixed(1)}s melebihi batas maksimal 10 detik!`);
+          return;
+        }
+        
+        if (file.size > 3 * 1024 * 1024) {
+          showToast('warning', 'Ukuran video cukup besar (>3MB). Disarankan mengompresi terlebih dahulu.');
+        }
       }
 
       let uploadFile = file;
