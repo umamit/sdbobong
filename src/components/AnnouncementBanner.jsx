@@ -36,9 +36,14 @@ export default function AnnouncementBanner({ initialAnnouncements = [], initialS
 
   if (!announcements || announcements.length === 0) return null;
 
+  // Calculate dynamic duration to keep velocity constant
+  // Assuming a baseline of 300 characters takes 'speed' seconds.
+  const totalChars = announcements.join('   ').length;
+  const dynamicDuration = Math.max(20, Math.round(totalChars * (speed / 300)));
+
   return (
     <div className={`${styles.announcementBanner} no-print public-layout-announcement`}>
-      <div className={styles.marqueeContent} style={{ '--marquee-duration': `${speed}s` }}>
+      <div className={styles.marqueeContent} style={{ '--marquee-duration': `${dynamicDuration}s` }}>
         {announcements.map((ann, idx) => (
           <span key={idx}>{ann}</span>
         ))}
