@@ -110,6 +110,8 @@ export default async function Home() {
         {isVideoBg ? (
           <>
             <video
+              key={config.stats.hero_background}
+              src={config.stats.hero_background}
               autoPlay
               loop
               muted
@@ -124,10 +126,6 @@ export default async function Home() {
                 zIndex: 1,
               }}
             >
-              <source src={config.stats.hero_background} type="video/mp4" />
-              <source src={config.stats.hero_background} type="video/webm" />
-              <source src={config.stats.hero_background} type="video/ogg" />
-              <source src={config.stats.hero_background} type="video/quicktime" />
               Your browser does not support the video tag.
             </video>
             {/* Dark overlay specifically for the video to ensure high readability of text */}
