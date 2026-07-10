@@ -292,7 +292,7 @@ export default async function Home() {
       </section>
 
       {/* PPDB Interactive Stepper Section — Positioned under Welcome Section for optimized visual hierarchy */}
-      <section className="container" style={{ marginBottom: 'var(--space-lg)' }}>
+      <section className="container" style={{ marginTop: 'var(--space-lg)', marginBottom: 'var(--space-lg)' }}>
         <div className="stepper-section reveal-on-scroll">
           <div className="stepper-header">
             <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
