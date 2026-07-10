@@ -78,7 +78,8 @@ export default function Header() {
         { href: '/kontak', label: 'Hubungi Kami' },
         { href: '/kontak/buku-tamu', label: 'Buku Tamu' }
       ]
-    }
+    },
+    { href: '/login', label: 'Login' }
   ];
 
   return (
