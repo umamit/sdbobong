@@ -2,9 +2,9 @@
     "marquee_announcements": [
         "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 20 Juni-04 Juli 2026, jangan lupa persiapkan berkasmu😘",
         "📅 INFO: Pertemua Guru dan Orang Tua murid serta Komite Sekolah berhasil dilaksanakan kemarin",
-        "💡Libur Telah Tiba!, manfaatkan AIM AI pada sudut kanan bawah layar gadget anda, untuk bertanya"
+        "💡MPLS SD Negeri Bobong dimulai pada 13 - 17 Juli 2026"
     ],
-    "marquee_speed": 120,
+    "marquee_speed": 40,
     "stats": {
         "siswa_aktif": 340,
         "guru_staf": 23,
@@ -15,11 +15,11 @@
         "gudang": 1,
         "toilet": 2,
         "cuci_tangan": 4,
-        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158871860_20260611_130741.jpg",
+        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1783683832514_Video_background_hero_section_202607102024.mp4",
         "allow_copy": false,
         "maintenance_mode": false,
-        "marquee_speed": 120,
-        "visitor_count": 134,
+        "marquee_speed": 40,
+        "visitor_count": 196,
         "_downloads_fallback": [],
         "_faqs_fallback": [
             {
@@ -115,10 +115,10 @@
                 "hero_title": "Selamat Datang di Website Resmi SD Negeri Bobong",
                 "hero_text": "\"Cerdas, Berkarakter, dan Berbudaya.\" Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.",
                 "welcome_badge": "Sambutan Kepala Sekolah",
-                "welcome_title": "Mendidik dengan Hati dan Budaya Taliabu",
-                "welcome_quote": "\"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya.\"",
-                "welcome_p1": "Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
-                "welcome_p2": "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman."
+                "welcome_title": "Mendidik dengan Hati, Membangun Generasi Berprestasi",
+                "welcome_quote": "\"Pendidikan bukan hanya tentang memberi ilmu, tetapi juga membentuk karakter, menumbuhkan potensi, dan mempersiapkan generasi yang siap menghadapi masa depan tanpa melupakan nilai-nilai budaya.\"",
+                "welcome_p1": "Assalamu'alaikum Warahmatullahi Wabarakatuh,\nSalam sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
+                "welcome_p2": "Website ini kami hadirkan sebagai sarana informasi, komunikasi, dan kolaborasi antara sekolah, peserta didik, orang tua, dan masyarakat. Kami berkomitmen memberikan layanan pendidikan yang berkualitas, menciptakan lingkungan belajar yang aman dan menyenangkan, serta membentuk peserta didik yang berkarakter, berprestasi, dan cinta budaya lokal.\nSemoga website ini dapat menjadi sumber informasi yang bermanfaat dan mempererat kerja sama dalam memajukan pendidikan di SD Negeri Bobong.\nTerima kasih atas kepercayaan dan dukungan kepada sekolah kami.\nWassalamu'alaikum Warahmatullahi Wabarakatuh."
             },
             "profil": {
                 "banner_title": "Profil Sekolah",
@@ -146,7 +146,48 @@
             },
             "akademik": {
                 "banner_title": "Akademik",
-                "banner_text": "Informasi kurikulum, jadwal, dan program akademik SD Negeri Bobong."
+                "banner_text": "Informasi kurikulum, jadwal, dan program akademik SD Negeri Bobong.",
+                "seragam": [
+                    {
+                        "days": "Senin",
+                        "type": "Seragam Merah-Putih",
+                        "details": "Topi, dasi, ikat pinggang, jilbab bagi muslim perempuan"
+                    },
+                    {
+                        "days": "Selasa",
+                        "type": "Seragam Merah-Putih",
+                        "details": "Topi, dasi, ikat pinggang, jilbab bagi muslim perempuan"
+                    },
+                    {
+                        "days": "Rabu",
+                        "type": "Seragam Batik",
+                        "details": "Topi, dasi, ikat pinggang, jilbab bagi muslim perempuan"
+                    },
+                    {
+                        "days": "Kamis",
+                        "type": "Seragam Pramuka",
+                        "details": "Atribut Pramuka"
+                    },
+                    {
+                        "days": "Jum'at",
+                        "type": "Busana Muslim",
+                        "details": "Menyesuaikan."
+                    },
+                    {
+                        "days": "Sabtu",
+                        "type": "Seragam Olahraga",
+                        "details": "Menyesuaikan."
+                    }
+                ],
+                "calendar": [
+                    {
+                        "id": "cal_1783680390967",
+                        "desc": "MPLS",
+                        "dates": "13 - 17 Juli",
+                        "month": "Juli 2025"
+                    }
+                ],
+                "kurikulum_image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1783680285626_Kurikulum_Merdeka.jpg"
             },
             "kesiswaan": {
                 "banner_title": "Kesiswaan",
@@ -212,15 +253,15 @@
         "achievements_seeded": true
     },
     "ppdb_contacts": {
-        "nama_humas": "",
-        "wa_humas": "",
-        "jabatan_humas": "",
+        "nama_humas": "Syareefah",
+        "wa_humas": "6281340123496",
+        "jabatan_humas": "Wali Kelas",
         "wa_floating": "6282292111638",
         "nama_operator": "Suharmin, S.Pd",
         "wa_operator": "6285399487844",
         "jabatan_operator": "Operator/Guru Kelas 3C",
         "email_sekolah": "admin@sdnegeribobong.sch.id",
-        "nip_humas": "",
+        "nip_humas": "19951010 202203 2 012",
         "nip_operator": "majapahit101"
     },
     "downloads": [],

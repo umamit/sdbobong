@@ -1,16 +1,17 @@
 [
     {
-        "id": "teacher-1780558122",
-        "name": "Abdul Kadir, S.Pd.I.,Gr.,M.Pd",
-        "role": "Kepala Sekolah",
-        "details": "Penata Tk. I/ IIId",
+        "id": "teacher-7",
+        "name": "Husnita Usman, M.Pd.",
+        "role": "Plt. Kepala Sekolah",
+        "details": "Pendidik Bidang Studi",
         "status": "PNS",
-        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780724329996_657981390_959461009921879_4015034750790030114_n.jpg",
-        "subject": "",
-        "education": "S2",
-        "motto": "",
-        "bio": "",
-        "nip": "198707082015031002"
+        "image": "/images/teacher_7.jpg",
+        "subject": "Bahasa Inggris",
+        "education": "S2 Menejemen Pendidikan",
+        "motto": "Belajar Seru. Lancar Bicara",
+        "bio": "Ibra Global English",
+        "password": "230900",
+        "nip": "199610272019032006"
     },
     {
         "id": "teacher-1780566348",
@@ -23,6 +24,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": ""
     },
     {
@@ -36,6 +38,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19800404 200904 2 005"
     },
     {
@@ -49,6 +52,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "198800815 201101 2 009"
     },
     {
@@ -62,6 +66,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19711103 2006042004"
     },
     {
@@ -75,6 +80,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19951001 202521 2017"
     },
     {
@@ -88,6 +94,7 @@
         "education": "S1",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19951202 202521 2010"
     },
     {
@@ -101,6 +108,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19850309 201001 2 009"
     },
     {
@@ -114,6 +122,7 @@
         "education": "S1",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19900710 202001 2 015"
     },
     {
@@ -127,6 +136,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19970507 202521 2 015"
     },
     {
@@ -154,6 +164,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19770818 202321 2000"
     },
     {
@@ -167,6 +178,7 @@
         "education": "S1",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "101502"
     },
     {
@@ -180,6 +192,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19880501 202521 1027"
     },
     {
@@ -193,6 +206,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "198509162009032002"
     },
     {
@@ -206,6 +220,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19910820 201409 2 001"
     },
     {
@@ -219,21 +234,22 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "101504"
     },
     {
-        "id": "teacher-7",
-        "name": "Husnita Usman, M.Pd.",
-        "role": "Guru Bahasa Inggris",
-        "details": "Pendidik Bidang Studi",
+        "id": "teacher-1780558122",
+        "name": "Abdul Kadir, S.Pd.I.,Gr.,M.Pd",
+        "role": "Guru Agama",
+        "details": "Penata Tk. I/ IIId",
         "status": "PNS",
-        "image": "/images/teacher_7.jpg",
-        "subject": "Bahasa Inggris",
-        "education": "S2 Menejemen Pendidikan",
-        "motto": "Belajar Seru. Lancar Bicara",
-        "bio": "Ibra Global English",
-        "password": "230900",
-        "nip": "199610272019032006"
+        "image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780724329996_657981390_959461009921879_4015034750790030114_n.jpg",
+        "subject": "",
+        "education": "S2",
+        "motto": "",
+        "bio": "",
+        "password": "",
+        "nip": "198707082015031002"
     },
     {
         "id": "teacher-1781191794",
@@ -246,6 +262,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "101505"
     },
     {
@@ -259,6 +276,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "101503"
     },
     {
@@ -272,6 +290,7 @@
         "education": "",
         "motto": "",
         "bio": "",
+        "password": "",
         "nip": "19800404 200904 2 005"
     }
 ]
