@@ -576,3 +576,26 @@ header {
     );
     background-size: 200% 100%;
 }
+
+/* Directional Slide-in Reveal (Left & Right Split) */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px) scale(0.95);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.in-view {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(50px) scale(0.95);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.in-view {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
