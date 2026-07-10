@@ -110,11 +110,13 @@ export default async function Home() {
         {isVideoBg ? (
           <>
             <video
+              id="hero-video"
               key={config.stats.hero_background}
               src={config.stats.hero_background}
               autoPlay
               loop
               muted
+              defaultMuted
               playsInline
               style={{
                 position: 'absolute',
@@ -128,6 +130,31 @@ export default async function Home() {
             >
               Your browser does not support the video tag.
             </video>
+            {/* Inline script to force video play and handle browser autoplay policy restrictions */}
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  (function() {
+                    var v = document.getElementById("hero-video");
+                    if (v) {
+                      v.muted = true;
+                      v.defaultMuted = true;
+                      v.play().catch(function(err) {
+                        console.log("Autoplay blocked, registering fallback interaction listeners", err);
+                        var playVideo = function() {
+                          v.play().then(function() {
+                            document.removeEventListener("click", playVideo);
+                            document.removeEventListener("touchstart", playVideo);
+                          });
+                        };
+                        document.addEventListener("click", playVideo);
+                        document.addEventListener("touchstart", playVideo);
+                      });
+                    }
+                  })();
+                `
+              }}
+            />
             {/* Dark overlay specifically for the video to ensure high readability of text */}
             <div
               style={{
@@ -137,7 +164,7 @@ export default async function Home() {
                 width: '100%',
                 height: '100%',
                 background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.82) 0%, rgba(9, 34, 53, 0.87) 100%)',
-                zIndex: 1,
+                zIndex: 2,
               }}
             />
           </>
