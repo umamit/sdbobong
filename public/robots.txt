@@ -17,6 +17,7 @@ Disallow: /guru
 Disallow: /guru/
 Disallow: /api/
 Disallow: /ppdb-online/sukses
+Disallow: /ppdb/daftar/sukses
 Disallow: /_next/
 
 # ── Bot AI Scraper (Blokir Training Data) ────────────────────────────────
