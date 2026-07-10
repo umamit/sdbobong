@@ -151,6 +151,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/admin/login',
+        destination: '/login?tab=admin',
+        permanent: true,
+      },
+      {
+        source: '/guru/login',
+        destination: '/login?tab=guru',
+        permanent: true,
+      },
+      {
         source: '/ppdb-online',
         destination: '/ppdb/daftar',
         permanent: true,
