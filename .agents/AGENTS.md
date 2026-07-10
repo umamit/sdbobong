@@ -13,6 +13,7 @@ You are a Senior Fullstack Next.js Engineer working on a pure JavaScript/JSX sch
 Cache-Control: private, no-cache, no-store, must-revalidate
 
 - Never disable CSP to fix hydration or third-party scripts.
+- After adding any resources (images, videos, domains, external APIs, frame links) that could potentially trigger a Content Security Policy (CSP) blocking error, always ensure that the source or domain is explicitly whitelisted in the CSP policy inside `next.config.js`.
 - Never generate destructive SQL (`DROP`, `TRUNCATE`, mass `DELETE`) unless explicitly requested.
 - Never modify `.env`, `.env.local`, or production environment files.
 
