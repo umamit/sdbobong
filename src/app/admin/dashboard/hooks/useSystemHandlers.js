@@ -12,6 +12,14 @@ export default function useSystemHandlers({
   setTeachers,
   achievements,
   setAchievements,
+  records,
+  setRecords,
+  students,
+  setStudents,
+  graduation,
+  setGraduation,
+  messages,
+  setMessages,
   initialAuditLogs = [],
   initialStorageInfo,
   fetch,
@@ -347,7 +355,11 @@ export default function useSystemHandlers({
         config: config,
         newsList: newsList,
         teachers: teachers,
-        achievements: achievements
+        achievements: achievements,
+        ppdbList: records || [],
+        students: students || [],
+        graduation: graduation || [],
+        messages: messages || []
       };
       const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(backupData, null, 2))}`;
       const downloadAnchor = document.createElement('a');
@@ -357,7 +369,7 @@ export default function useSystemHandlers({
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      showToast('success', 'Berkas cadangan konfigurasi (JSON) berhasil diunduh!');
+      showToast('success', 'Berkas cadangan konfigurasi & kesiswaan (JSON) berhasil diunduh!');
     } catch (err) {
       showToast('danger', 'Gagal melakukan ekspor: ' + err.message);
     }
@@ -384,13 +396,17 @@ export default function useSystemHandlers({
             config: backupData.config,
             newsList: backupData.newsList || null,
             teachers: backupData.teachers || null,
-            achievements: backupData.achievements || null
+            achievements: backupData.achievements || null,
+            ppdbList: backupData.ppdbList || null,
+            students: backupData.students || null,
+            graduation: backupData.graduation || null,
+            messages: backupData.messages || null
           })
         });
 
         const data = await res.json();
         if (res.ok) {
-          showToast('success', 'Konfigurasi website berhasil dipulihkan dari berkas cadangan!');
+          showToast('success', 'Konfigurasi & data kesiswaan berhasil dipulihkan dari berkas cadangan!');
           setConfig(data.config);
           if (data.config?.stats?.page_contents) {
             setPageContents(data.config.stats.page_contents);
@@ -413,6 +429,31 @@ export default function useSystemHandlers({
           } else if (backupData.achievements) {
             setAchievements(backupData.achievements);
           }
+
+          if (data.ppdbList) {
+            setRecords(data.ppdbList);
+          } else if (backupData.ppdbList) {
+            setRecords(backupData.ppdbList);
+          }
+
+          if (data.students) {
+            setStudents(data.students);
+          } else if (backupData.students) {
+            setStudents(backupData.students);
+          }
+
+          if (data.graduation) {
+            setGraduation(data.graduation);
+          } else if (backupData.graduation) {
+            setGraduation(backupData.graduation);
+          }
+
+          if (data.messages) {
+            setMessages(data.messages);
+          } else if (backupData.messages) {
+            setMessages(backupData.messages);
+          }
+
           router.refresh();
         } else {
           showToast('danger', data.error || 'Gagal memulihkan dari berkas cadangan.');

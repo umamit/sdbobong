@@ -82,6 +82,7 @@ export {
   syncLocalToSupabase,
   loadLocalStatuses,
   getAvailableSupabaseColumns,
+  savePendaftaran,
 } from './db/sync.js';
 
 // Storage usage

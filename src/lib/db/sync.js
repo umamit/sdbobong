@@ -152,3 +152,92 @@ export async function syncLocalToSupabase() {
     catch (e) { console.error("Error saving merged records locally:", e); }
   } catch (e) { console.error("Error during Supabase sync check:", e.message || e); }
 }
+
+export async function savePendaftaran(records) {
+  let localSaved = false;
+  try {
+    fs.writeFileSync(PENDAFTARAN_JSON, JSON.stringify(records, null, 4), 'utf-8');
+    localSaved = true;
+  } catch (e) {
+    console.error("Error saving pendaftaran locally:", e);
+  }
+
+  if (!supabase || !isSupabaseEnabled()) return localSaved;
+
+  try {
+    const availableCols = await getAvailableSupabaseColumns();
+    for (const localR of records) {
+      const nik = String(localR.nik || localR.nik_siswa || "").trim();
+      if (!nik) continue;
+
+      const fullMap = {
+        nama_lengkap: localR.nama_lengkap || "",
+        nik_siswa: nik,
+        tempat_lahir: localR.tempat_lahir || "",
+        tanggal_lahir: localR.tanggal_lahir || "",
+        jenis_kelamin: localR.jenis_kelamin || "",
+        nama_ibu_kandung: localR.nama_ibu || localR.nama_ibu_kandung || "",
+        alamat_domisili: localR.alamat || localR.alamat_domisili || "",
+        nomor_hp_orangtua: localR.no_hp || localR.nomor_hp_orangtua || "",
+        jalur_ppdb: localR.jalur_ppdb || "Zonasi",
+        waktu_daftar: localR.waktu_daftar || new Date().toISOString().replace('T',' ').split('.')[0],
+        status: localR.status || "Diterima Sistem",
+        tahun_ajaran: localR.tahun_ajaran || "2026/2027",
+        nama_panggilan: localR.nama_panggilan || "",
+        agama: localR.agama || "",
+        anak_ke: localR.anak_ke ? parseInt(localR.anak_ke, 10) : null,
+        dari_bersaudara: localR.dari_bersaudara ? parseInt(localR.dari_bersaudara, 10) : null,
+        nama_ayah: localR.nama_ayah || "",
+        pekerjaan_ayah: localR.pekerjaan_ayah || "",
+        no_hp_ayah: localR.no_hp_ayah || "",
+        pekerjaan_ibu: localR.pekerjaan_ibu || "",
+        no_hp_ibu: localR.no_hp_ibu || "",
+        nama_wali: localR.nama_wali || "",
+        pekerjaan_wali: localR.pekerjaan_wali || "",
+        berkas_kk: localR.berkas_kk || "",
+        berkas_akta: localR.berkas_akta || "",
+        berkas_ktp: localR.berkas_ktp || "",
+        berkas_sptjm: localR.berkas_sptjm || "",
+        berkas_kip: localR.berkas_kip || "",
+        berkas_ijazah: localR.berkas_ijazah || ""
+      };
+
+      const supabaseData = {};
+      for (const [col, val] of Object.entries(fullMap)) {
+        if (availableCols.includes(col)) supabaseData[col] = val;
+      }
+
+      const missingCols = Object.keys(fullMap).filter(c => !availableCols.includes(c));
+      if (missingCols.length > 0) {
+        const extraData = {};
+        for (const col of missingCols) {
+          extraData[col] = fullMap[col];
+        }
+        supabaseData.alamat_domisili = packBerkasIntoAlamat(localR.alamat || localR.alamat_domisili || "", extraData);
+      }
+
+      await prisma.pPDB.upsert({
+        where: { nik_siswa: nik },
+        update: supabaseData,
+        create: supabaseData
+      });
+    }
+
+    // Purge records from database that are not present in restored backup
+    const localNiks = new Set(records.map(r => String(r.nik || r.nik_siswa || "").trim()).filter(Boolean));
+    const dbPPDB = await prisma.pPDB.findMany({ select: { nik_siswa: true } });
+    if (dbPPDB) {
+      for (const row of dbPPDB) {
+        if (!localNiks.has(row.nik_siswa)) {
+          await prisma.pPDB.delete({ where: { nik_siswa: row.nik_siswa } });
+        }
+      }
+    }
+
+    return true;
+  } catch (e) {
+    console.error("Prisma savePendaftaran failed:", e.message || e);
+    return localSaved;
+  }
+}
+

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements } from '../../../lib/database';
+import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements, savePendaftaran, saveStudents, saveGraduation, saveMessages } from '../../../lib/database';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 
@@ -444,10 +444,14 @@ export async function POST(request) {
       if (restoredConfig.ppdb_contacts) config.ppdb_contacts = restoredConfig.ppdb_contacts;
       if (typeof restoredConfig.force_local_cache !== 'undefined') config.force_local_cache = restoredConfig.force_local_cache;
 
-      // Restore other collections (newsList, teachers, achievements) if provided in backup
+      // Restore other collections (newsList, teachers, achievements, ppdbList, students, graduation, messages) if provided in backup
       const newsList = parsedJsonBody?.newsList;
       const teachers = parsedJsonBody?.teachers;
       const achievements = parsedJsonBody?.achievements;
+      const ppdbList = parsedJsonBody?.ppdbList;
+      const students = parsedJsonBody?.students;
+      const graduation = parsedJsonBody?.graduation;
+      const messages = parsedJsonBody?.messages;
 
       if (Array.isArray(newsList)) {
         const savedNewsResult = await saveNews(newsList);
@@ -465,6 +469,30 @@ export async function POST(request) {
         const savedAchievementsResult = await saveAchievements(achievements);
         if (!savedAchievementsResult) {
           return NextResponse.json({ error: 'Gagal memulihkan data prestasi ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(ppdbList)) {
+        const savedPpdbResult = await savePendaftaran(ppdbList);
+        if (!savedPpdbResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data PPDB ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(students)) {
+        const savedStudentsResult = await saveStudents(students);
+        if (!savedStudentsResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data siswa ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(graduation)) {
+        const savedGraduationResult = await saveGraduation(graduation);
+        if (!savedGraduationResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data kelulusan ke database.' }, { status: 500 });
+        }
+      }
+      if (Array.isArray(messages)) {
+        const savedMessagesResult = await saveMessages(messages);
+        if (!savedMessagesResult) {
+          return NextResponse.json({ error: 'Gagal memulihkan data buku tamu ke database.' }, { status: 500 });
         }
       }
     } else {
@@ -522,7 +550,11 @@ export async function POST(request) {
       config,
       newsList: Array.isArray(parsedJsonBody?.newsList) ? parsedJsonBody.newsList : undefined,
       teachers: Array.isArray(parsedJsonBody?.teachers) ? parsedJsonBody.teachers : undefined,
-      achievements: Array.isArray(parsedJsonBody?.achievements) ? parsedJsonBody.achievements : undefined
+      achievements: Array.isArray(parsedJsonBody?.achievements) ? parsedJsonBody.achievements : undefined,
+      ppdbList: Array.isArray(parsedJsonBody?.ppdbList) ? parsedJsonBody.ppdbList : undefined,
+      students: Array.isArray(parsedJsonBody?.students) ? parsedJsonBody.students : undefined,
+      graduation: Array.isArray(parsedJsonBody?.graduation) ? parsedJsonBody.graduation : undefined,
+      messages: Array.isArray(parsedJsonBody?.messages) ? parsedJsonBody.messages : undefined
     });
 
     response.cookies.set('maintenance_mode', (config.stats?.maintenance_mode === true) ? 'true' : 'false', {
