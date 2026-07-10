@@ -156,6 +156,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/ppdb-online/sukses',
+        destination: '/ppdb/daftar/sukses',
+        permanent: true,
+      },
+      {
         source: '/formulir-ppdb',
         destination: '/ppdb/cetak',
         permanent: true,
@@ -187,6 +192,10 @@ const nextConfig = {
       {
         source: '/ppdb/daftar',
         destination: '/ppdb-online',
+      },
+      {
+        source: '/ppdb/daftar/sukses',
+        destination: '/ppdb-online/sukses',
       },
       {
         source: '/ppdb/cetak',

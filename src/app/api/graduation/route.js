@@ -97,6 +97,7 @@ export async function POST(request) {
       await createAuditLog('CREATE_GRADUATE', `Menambahkan peserta kelulusan baru: "${name}" (NISN: ${nisn})`, request);
       try {
         revalidatePath('/kelulusan');
+        revalidatePath('/akademik/kelulusan');
       } catch (cacheErr) {}
       return NextResponse.json({ success: true, student: newStudent });
     } else {
@@ -156,6 +157,7 @@ export async function PUT(request) {
       await createAuditLog('UPDATE_GRADUATE', `Memperbarui data kelulusan siswa: "${name.trim().toUpperCase()}" (NISN: ${nisn.trim()})`, request);
       try {
         revalidatePath('/kelulusan');
+        revalidatePath('/akademik/kelulusan');
       } catch (cacheErr) {}
       return NextResponse.json({ success: true, student: gradList[index] });
     } else {
@@ -184,7 +186,7 @@ export async function DELETE(request) {
       prismaModel: prisma.graduation,
       auditAction: 'DELETE_GRADUATE',
       getItemName: (g) => `${g.name}${g.nisn ? ` (NISN: ${g.nisn})` : ''}`,
-      revalidatePaths: ['/kelulusan']
+      revalidatePaths: ['/kelulusan', '/akademik/kelulusan']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });

@@ -263,10 +263,10 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
             <p style={{ marginBottom: 'var(--space-md)' }}>Pilih salah satu metode pendaftaran yang paling mudah bagi Anda di bawah ini:</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', justifyContent: 'center', alignItems: 'center' }}>
-              <Link href="/ppdb-online" className="btn btn-secondary btn-block" style={{ maxWidth: '400px', fontSize: '1.05rem', textDecoration: 'none', display: 'inline-block' }}>
+              <Link href="/ppdb/daftar" className="btn btn-secondary btn-block" style={{ maxWidth: '400px', fontSize: '1.05rem', textDecoration: 'none', display: 'inline-block' }}>
                 📝 Isi Formulir PPDB Online
               </Link>
-              <Link href="/formulir-ppdb" target="_blank" className="btn btn-outline btn-block" style={{ maxWidth: '400px', textDecoration: 'none', display: 'inline-block' }}>
+              <Link href="/ppdb/cetak" target="_blank" className="btn btn-outline btn-block" style={{ maxWidth: '400px', textDecoration: 'none', display: 'inline-block' }}>
                 📥 Cetak / Unduh Formulir Offline
               </Link>
               <a 

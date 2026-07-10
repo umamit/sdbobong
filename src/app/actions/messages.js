@@ -48,6 +48,7 @@ export async function submitMessageAction(formData) {
     if (saved) {
       try {
         revalidatePath('/buku-tamu');
+        revalidatePath('/kontak/buku-tamu');
       } catch (cacheErr) {
         console.error("Cache revalidation error in server action:", cacheErr);
       }

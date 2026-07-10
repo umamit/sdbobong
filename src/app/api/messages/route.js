@@ -57,6 +57,7 @@ export async function POST(request) {
     if (saved) {
       try {
         revalidatePath('/buku-tamu');
+        revalidatePath('/kontak/buku-tamu');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in messages POST:", cacheErr);
       }
@@ -103,6 +104,7 @@ export async function PUT(request) {
       await createAuditLog('MODERATE_MESSAGE', `Mengubah status moderasi pesan (${labelStatus}) dari "${targetMsg.name}"`, request);
       try {
         revalidatePath('/buku-tamu');
+        revalidatePath('/kontak/buku-tamu');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in messages PUT:", cacheErr);
       }
@@ -133,7 +135,7 @@ export async function DELETE(request) {
       prismaModel: prisma.message,
       auditAction: 'DELETE_MESSAGE',
       getItemName: (m) => `pesan ${m.type === 'guestbook' ? 'Buku Tamu' : 'Saran'} dari "${m.name}" (ID: ${m.id})`,
-      revalidatePaths: ['/buku-tamu']
+      revalidatePaths: ['/buku-tamu', '/kontak/buku-tamu']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
