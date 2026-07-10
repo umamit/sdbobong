@@ -357,7 +357,7 @@ export default async function Home() {
           </div>
 
           <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>🏫</span> Sarana, Prasarana &amp; Sanitasi
+            <img src="/images/animated/school.png" alt="Sekolah" width={24} height={24} style={{ display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain' }} /> Sarana, Prasarana &amp; Sanitasi
           </div>
           <div className="stats-grid sarpras-grid">
             <div className="stat-item reveal-on-scroll reveal-delay-100">
