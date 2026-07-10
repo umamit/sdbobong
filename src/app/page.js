@@ -243,50 +243,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* PPDB Interactive Stepper Section */}
-      <section className="container">
-        <div className="stepper-section reveal-on-scroll">
-          <div className="stepper-header">
-            <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
-            <p>Ikuti panduan urutan langkah berikut untuk mendaftarkan putra-putri Anda dengan mudah</p>
-          </div>
-          <div className="stepper-grid">
-            {/* Step 1 */}
-            <Link href="/ppdb" className="stepper-step">
-              <div className="stepper-step-number">1</div>
-              <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
-              <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
-            </Link>
-
-            {/* Step 2 */}
-            <Link href="/ppdb-online" className="stepper-step">
-              <div className="stepper-step-number">2</div>
-              <h3 className="stepper-step-title">Isi Formulir Online</h3>
-              <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
-            </Link>
-
-            {/* Step 3 */}
-            <Link href="/formulir-ppdb" className="stepper-step">
-              <div className="stepper-step-number">3</div>
-              <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
-              <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
-            </Link>
-
-            {/* Step 4 */}
-            <a 
-              href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="stepper-step"
-            >
-              <div className="stepper-step-number">4</div>
-              <h3 className="stepper-step-title">Konfirmasi Operator</h3>
-              <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
       <section className="section-padding welcome-section">
         <div className="container welcome-layout">
           <div className="welcome-img-container reveal-on-scroll" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
@@ -331,6 +287,50 @@ export default async function Home() {
               </div>
             )}
             <Link href="/profil" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)' }}>Baca Selengkapnya Tentang Kami</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* PPDB Interactive Stepper Section — Positioned under Welcome Section for optimized visual hierarchy */}
+      <section className="container" style={{ marginBottom: 'var(--space-lg)' }}>
+        <div className="stepper-section reveal-on-scroll">
+          <div className="stepper-header">
+            <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
+            <p>Ikuti panduan urutan langkah berikut untuk mendaftarkan putra-putri Anda dengan mudah</p>
+          </div>
+          <div className="stepper-grid">
+            {/* Step 1 */}
+            <Link href="/ppdb" className="stepper-step">
+              <div className="stepper-step-number">1</div>
+              <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
+              <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
+            </Link>
+
+            {/* Step 2 */}
+            <Link href="/ppdb-online" className="stepper-step">
+              <div className="stepper-step-number">2</div>
+              <h3 className="stepper-step-title">Isi Formulir Online</h3>
+              <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
+            </Link>
+
+            {/* Step 3 */}
+            <Link href="/formulir-ppdb" className="stepper-step">
+              <div className="stepper-step-number">3</div>
+              <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
+              <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
+            </Link>
+
+            {/* Step 4 */}
+            <a 
+              href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
+              target="_blank" 
+              rel="noreferrer" 
+              className="stepper-step"
+            >
+              <div className="stepper-step-number">4</div>
+              <h3 className="stepper-step-title">Konfirmasi Operator</h3>
+              <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
+            </a>
           </div>
         </div>
       </section>
