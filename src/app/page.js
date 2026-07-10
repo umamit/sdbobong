@@ -118,6 +118,7 @@ export default async function Home() {
               muted
               defaultMuted
               playsInline
+              preload="auto"
               poster="/images/hero_school.svg"
               style={{
                 position: 'absolute',
@@ -166,13 +167,10 @@ export default async function Home() {
                         });
                       };
                       
-                      if (v.readyState >= 1) {
-                        attemptPlay();
-                      } else {
-                        v.addEventListener("loadedmetadata", attemptPlay);
-                        // Fallback trigger after 1 second if event doesn't fire
-                        setTimeout(attemptPlay, 1000);
-                      }
+                      // Execute immediately and attach events to eliminate any delay
+                      attemptPlay();
+                      v.addEventListener("loadedmetadata", attemptPlay);
+                      v.addEventListener("canplay", attemptPlay);
                     }
                   })();
                 `
