@@ -216,9 +216,9 @@
 
     .navLink {
         display: block;
-        padding: 0.875rem 1.25rem;
+        padding: 0.875rem 1.5rem;
         background-color: var(--bg-main);
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-full); /* Full Capsule / Pill */
         margin-bottom: 0.5rem;
         font-weight: 600;
     }
@@ -270,7 +270,7 @@
 
     .navLink {
         padding: 0.5rem 1rem;
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-full); /* Full Capsule / Pill */
         position: relative;
         display: inline-flex;
         align-items: center;
