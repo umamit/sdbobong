@@ -217,6 +217,58 @@ export default async function Profil() {
         </div>
       </section>
 
+      {/* Prestasi Guru & Institusi */}
+      {achievements && achievements.length > 0 && (
+        <section className="section-padding" style={{ backgroundColor: 'var(--bg-card)', borderTop: '1px solid var(--border-color)' }}>
+          <div className="container">
+            <div className="section-header">
+              <span className="section-subtitle">Penghargaan & Sertifikasi</span>
+              <h2>Prestasi Guru &amp; Institusi Sekolah</h2>
+            </div>
+            <p className="text-center" style={{ maxWidth: '620px', margin: '0 auto var(--space-md) auto', color: 'var(--text-muted)' }}>
+              Pencapaian, penghargaan, dan sertifikasi yang diraih oleh dewan guru serta institusi SD Negeri Bobong.
+            </p>
+            <div className="grid-3">
+              {achievements.map((item, idx) => {
+                const levelUpper = (item.level || '').toUpperCase();
+                const isNasional = levelUpper.includes('NASIONAL');
+                const isProvinsi = levelUpper.includes('PROVINSI');
+                const isKabupaten = levelUpper.includes('KABUPATEN');
+                const badgeBg = isNasional ? '#FFF8E6' : isProvinsi ? '#F0FDF4' : isKabupaten ? '#EEF2FF' : 'var(--accent-bg)';
+                const badgeColor = isNasional ? 'var(--secondary-dark)' : isProvinsi ? '#166534' : isKabupaten ? 'var(--primary-dark)' : 'var(--accent)';
+                const icon = isNasional ? '🏆' : isProvinsi ? '🥈' : isKabupaten ? '🏅' : '⭐';
+                return (
+                  <div
+                    key={item.id || idx}
+                    className="reveal-on-scroll"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--border-color)',
+                      boxShadow: 'var(--shadow-sm)',
+                      padding: 'var(--space-md)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '1.75rem' }}>{icon}</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: badgeColor, backgroundColor: badgeBg, padding: '3px 10px', borderRadius: '20px' }}>
+                        {item.year}
+                      </span>
+                    </div>
+                    <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', margin: '0.5rem 0 0.2rem 0', lineHeight: 1.4 }}>{item.title}</h3>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 700, color: badgeColor, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{item.level}</div>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.55', margin: 0 }}>{item.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Interactive Bagan Organisasi & PTK Grid with Detail Modals */}
       <TeachersSectionClient teachers={teachers} />
     </>

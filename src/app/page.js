@@ -307,14 +307,14 @@ export default async function Home() {
             </Link>
 
             {/* Step 2 */}
-            <Link href="/ppdb-online" className="stepper-step">
+            <Link href="/ppdb/daftar" className="stepper-step">
               <div className="stepper-step-number">2</div>
               <h3 className="stepper-step-title">Isi Formulir Online</h3>
               <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
             </Link>
 
             {/* Step 3 */}
-            <Link href="/formulir-ppdb" className="stepper-step">
+            <Link href="/ppdb/cetak" className="stepper-step">
               <div className="stepper-step-number">3</div>
               <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
               <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>

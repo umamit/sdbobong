@@ -44,9 +44,9 @@ export default async function RootLayout({ children }) {
 
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
-  const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+  const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai'];
   const isBypassPath = bypassPaths.includes(pathname);
-  const isPrintableForm = pathname === '/formulir-ppdb';
+  const isPrintableForm = pathname === '/formulir-ppdb' || pathname === '/ppdb/cetak';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
 
 
@@ -410,7 +410,7 @@ export default async function RootLayout({ children }) {
 
           // Anti-cloning protection script for public pages (exempting admin and printable pages)
           if (${config.stats?.allow_copy === true ? 'false' : 'true'}) {
-            const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+            const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai'];
             
             // 1. Prevent Right-Click
             document.addEventListener('contextmenu', function(e) {

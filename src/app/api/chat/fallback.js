@@ -41,7 +41,7 @@ Saat ini saya sedang berjalan dalam **Mode Demo / Pemeliharaan Sistem** oleh Adm
 🎒 **Informasi Penerimaan Peserta Didik Baru (PPDB):**
 * **Batas Usia:** ${syaratUsia}
 * **Biaya:** Gratis! Rp 0 tanpa dipungut biaya apa pun.
-* **Pendaftaran Online:** Anda bisa langsung mengklik menu **"Pendaftaran"** di navigasi atas atau kunjungi halaman \`/ppdb-online\`.
+* **Pendaftaran Online:** Anda bisa langsung mengklik menu **"PPDB"** di navigasi atas dan pilih **Formulir Online**, atau kunjungi halaman \`/ppdb/daftar\`.
 * **Pendaftaran Offline:** Datang langsung ke sekolah menemui panitia PPDB pada hari kerja (Senin-Sabtu pukul 08.00-12.00 WIT).
 * **Pendaftaran Offline:** Formulir pendaftaran offline juga dapat diunduh di halaman Unduh berkas di website ini.
 

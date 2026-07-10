@@ -50,26 +50,33 @@ export default function Header() {
     {
       label: 'Akademik',
       dropdown: [
-        { href: '/akademik', label: 'Akademik' },
-        { href: '/nilai', label: 'Rapor Siswa' },
-        { href: '/kesiswaan', label: 'Kesiswaan' },
-        { href: '/kelulusan', label: 'Kelulusan' }
+        { href: '/akademik', label: 'Informasi Akademik' },
+        { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
+        { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
+        { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' }
+      ]
+    },
+    {
+      label: 'PPDB',
+      dropdown: [
+        { href: '/ppdb', label: 'Alur & Persyaratan' },
+        { href: '/ppdb/daftar', label: 'Formulir Online' },
+        { href: '/ppdb/cetak', label: 'Unduh Formulir (Offline)' }
       ]
     },
     {
       label: 'Informasi',
       dropdown: [
-        { href: '/berita', label: 'Berita Sekolah' },
-        { href: '/galeri', label: 'Galeri Foto & Video' },
+        { href: '/berita', label: 'Berita & Kegiatan' },
+        { href: '/galeri', label: 'Galeri Sekolah' },
         { href: '/unduh', label: 'Pusat Unduhan' }
       ]
     },
-    { href: '/ppdb', label: 'PPDB' },
     {
-      label: 'Hubungi Kami',
+      label: 'Kontak',
       dropdown: [
-        { href: '/hubungi-kami', label: 'Hubungi Kami' },
-        { href: '/buku-tamu', label: 'Buku Tamu' }
+        { href: '/kontak', label: 'Hubungi Kami' },
+        { href: '/kontak/buku-tamu', label: 'Buku Tamu' }
       ]
     }
   ];

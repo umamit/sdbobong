@@ -47,7 +47,7 @@ export default function LayoutControl() {
     }
 
     // 1. Admin & Guru & Bypass Class Control
-    const bypassPaths = ['/formulir-ppdb', '/ppdb-online/sukses', '/nilai'];
+    const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai'];
     const isBypass = pathname && bypassPaths.includes(pathname);
     
     if (isBypass) {

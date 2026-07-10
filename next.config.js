@@ -150,6 +150,64 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/ppdb-online',
+        destination: '/ppdb/daftar',
+        permanent: true,
+      },
+      {
+        source: '/formulir-ppdb',
+        destination: '/ppdb/cetak',
+        permanent: true,
+      },
+      {
+        source: '/nilai',
+        destination: '/akademik/nilai',
+        permanent: true,
+      },
+      {
+        source: '/kelulusan',
+        destination: '/akademik/kelulusan',
+        permanent: true,
+      },
+      {
+        source: '/hubungi-kami',
+        destination: '/kontak',
+        permanent: true,
+      },
+      {
+        source: '/buku-tamu',
+        destination: '/kontak/buku-tamu',
+        permanent: true,
+      }
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/ppdb/daftar',
+        destination: '/ppdb-online',
+      },
+      {
+        source: '/ppdb/cetak',
+        destination: '/formulir-ppdb',
+      },
+      {
+        source: '/akademik/nilai',
+        destination: '/nilai',
+      },
+      {
+        source: '/akademik/kelulusan',
+        destination: '/kelulusan',
+      },
+      {
+        source: '/kontak',
+        destination: '/hubungi-kami',
+      },
+      {
+        source: '/kontak/buku-tamu',
+        destination: '/buku-tamu',
+      }
     ]
   },
 }

@@ -38,12 +38,13 @@ export default async function Footer() {
             <li><Link href="/">Beranda</Link></li>
             <li><Link href="/profil">Profil Sekolah</Link></li>
             <li><Link href="/akademik">Informasi Akademik</Link></li>
-            <li><Link href="/nilai">Portal Cek Rapor</Link></li>
+            <li><Link href="/akademik/nilai">Portal Cek Rapor</Link></li>
             <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
-            <li><Link href="/ppdb">Portal Info PPDB</Link></li>
-            <li><Link href="/ppdb-online">Formulir PPDB Online</Link></li>
-            <li><Link href="/formulir-ppdb">Formulir PPDB Offline</Link></li>
+            <li><Link href="/ppdb">Informasi PPDB</Link></li>
+            <li><Link href="/ppdb/daftar">Formulir PPDB Online</Link></li>
+            <li><Link href="/ppdb/cetak">Formulir PPDB Offline</Link></li>
             <li><Link href="/berita">Berita Sekolah</Link></li>
+            <li><Link href="/kontak">Hubungi Kami</Link></li>
           </ul>
         </div>
         

@@ -385,7 +385,7 @@ Hari ini adalah: ${currentDateText}
 Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu informasi atau agenda kegiatan di masa depan masih berlaku atau sudah lewat/usang/lampau. Jangan pernah menginformasikan agenda yang sudah lewat seolah-olah akan terjadi di masa depan.
 
 === ATURAN PPDB ONLINE & OFFLINE ===
-- Pendaftaran PPDB Online dapat diakses langsung oleh wali murid melalui tombol "Pendaftaran" di menu atas, atau menuju ke link \`/ppdb-online\` di website ini.
+- Pendaftaran PPDB Online dapat diakses langsung oleh wali murid melalui menu **PPDB → Formulir Online** di navigasi atas, atau menuju ke link \`/ppdb/daftar\` di website ini.
 - Pendaftaran PPDB Offline dapat dilakukan dengan datang langsung ke sekolah menemui panitia PPDB pada jam kerja (Senin - Sabtu pukul 08:00 - 12:00 WIT). Formulir pendaftaran offline juga dapat diunduh di halaman Unduh berkas di website ini.
 - Biaya Pendaftaran: Rp 0 (Gratis! Sama sekali tidak dipungut biaya apa pun).
 
