@@ -138,8 +138,6 @@ export default function LayoutControl() {
       });
     }
 
-    // 4. Absolute Fail-safe: Reveal everything if still hidden after 1.2 seconds
-    // This is the bulletproof "anti-blank" safety net
     const fallbackId = setTimeout(() => {
       document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
         if (!el.classList.contains('in-view')) {
@@ -147,7 +145,7 @@ export default function LayoutControl() {
           intersectionObserver.unobserve(el);
         }
       });
-    }, 1200);
+    }, 10000);
 
     // 5. Ultra Premium 3D Card Tilt Interaction
     const handleGlobalMouseMove = (e) => {

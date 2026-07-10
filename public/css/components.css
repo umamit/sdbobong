@@ -533,6 +533,26 @@
     .reveal-delay-300 { transition-delay: 300ms !important; }
     .reveal-delay-400 { transition-delay: 400ms !important; }
     .reveal-delay-500 { transition-delay: 500ms !important; }
+
+    /* Directional Slide-in Reveal (Left & Right Split) */
+    .reveal-left {
+        opacity: 0 !important;
+        transform: translateX(-60px) scale(0.94) !important;
+        transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .reveal-left.in-view {
+        opacity: 1 !important;
+        transform: translateX(0) scale(1) !important;
+    }
+    .reveal-right {
+        opacity: 0 !important;
+        transform: translateX(60px) scale(0.94) !important;
+        transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .reveal-right.in-view {
+        opacity: 1 !important;
+        transform: translateX(0) scale(1) !important;
+    }
 }
 
 /* ==========================================================================
