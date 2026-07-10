@@ -530,12 +530,38 @@
     box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
 }
 
 .prestasi-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-10px) rotateX(6deg) rotateY(-3deg);
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.06), 0 15px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Glossy Shine Effect */
+.prestasi-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.prestasi-card:hover::after {
+    left: 150%;
 }
 
 .prestasi-medal-bg {
@@ -548,11 +574,11 @@
     font-size: 2.25rem;
     margin: 0 auto var(--space-sm) auto;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .prestasi-card:hover .prestasi-medal-bg {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.1) rotate(5deg) translateZ(20px);
 }
 
 .prestasi-ribbon {
@@ -584,24 +610,52 @@
     padding: var(--space-md);
     text-align: center;
     box-shadow: var(--shadow-sm);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.5s ease;
 }
 
 .karya-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-10px) rotateX(6deg) rotateY(-3deg);
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.06), 0 15px 12px rgba(0, 0, 0, 0.04);
     border-color: var(--primary-light);
+}
+
+/* Glossy Shine Effect */
+.karya-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.karya-card:hover::after {
+    left: 150%;
 }
 
 .karya-icon {
     font-size: 3.25rem;
     margin-bottom: var(--space-xs);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: inline-block;
 }
 
 .karya-card:hover .karya-icon {
-    transform: scale(1.18) rotate(-8deg);
+    transform: scale(1.18) rotate(-8deg) translateZ(20px);
 }
 
 /* Screen Size Enhancements (Tablet & Desktop) */
