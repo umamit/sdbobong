@@ -93,8 +93,8 @@ export default async function Kesiswaan() {
                   <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
                     <span>{pres.rank}</span>
                   </div>
-                  <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor }}>
-                    {pres.icon || '🏆'}
+                  <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img src="/images/animated/trophy.png" alt="Prestasi" width={32} height={32} style={{ objectFit: 'contain' }} />
                   </div>
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '0.35rem', color: 'var(--primary-dark)' }}>{pres.title}</h3>
                   <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>{pres.level}</p>
@@ -115,14 +115,25 @@ export default async function Kesiswaan() {
           </div>
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
           <div className="grid-3">
-            {kesiswaan.karya && kesiswaan.karya.map((item, idx) => (
-              <div key={idx} className={`karya-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`}>
-                <div className="karya-icon">{item.icon || '🎨'}</div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
-                <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
-              </div>
-            ))}
+            {kesiswaan.karya && kesiswaan.karya.map((item, idx) => {
+              const karyaIcon = item.icon === '🎨' ? '/images/animated/art.png' :
+                                item.icon === '🪵' ? '/images/animated/crafts.png' :
+                                item.icon === '📝' ? '/images/animated/poetry.png' : null;
+              return (
+                <div key={idx} className={`karya-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`}>
+                  <div className="karya-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
+                    {karyaIcon ? (
+                      <img src={karyaIcon} alt={item.title} width={44} height={44} style={{ objectFit: 'contain' }} />
+                    ) : (
+                      item.icon
+                    )}
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
+                  <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

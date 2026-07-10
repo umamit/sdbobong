@@ -301,21 +301,27 @@ export default async function Home() {
           <div className="stepper-grid">
             {/* Step 1 */}
             <Link href="/ppdb" className="stepper-step">
-              <div className="stepper-step-number">1</div>
+              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(18, 165, 184, 0.08)', border: '2px solid rgba(18, 165, 184, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/information.png" alt="Informasi" width={28} height={28} style={{ objectFit: 'contain' }} />
+              </div>
               <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
               <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
             </Link>
 
             {/* Step 2 */}
             <Link href="/ppdb/daftar" className="stepper-step">
-              <div className="stepper-step-number">2</div>
+              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/form.png" alt="Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
+              </div>
               <h3 className="stepper-step-title">Isi Formulir Online</h3>
               <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
             </Link>
 
             {/* Step 3 */}
             <Link href="/ppdb/cetak" className="stepper-step">
-              <div className="stepper-step-number">3</div>
+              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '2px solid rgba(245, 158, 11, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/download.png" alt="Unduh" width={28} height={28} style={{ objectFit: 'contain' }} />
+              </div>
               <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
               <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
             </Link>
@@ -327,7 +333,9 @@ export default async function Home() {
               rel="noreferrer" 
               className="stepper-step"
             >
-              <div className="stepper-step-number">4</div>
+              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', border: '2px solid rgba(34, 197, 94, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/chat.png" alt="Hubungi Operator" width={28} height={28} style={{ objectFit: 'contain' }} />
+              </div>
               <h3 className="stepper-step-title">Konfirmasi Operator</h3>
               <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
             </a>

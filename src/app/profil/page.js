@@ -115,56 +115,72 @@ export default async function Profil() {
           <div className="dapodik-bento-grid reveal-on-scroll">
             {/* Card 1: Nama Resmi */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">🏫</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/school.png" alt="Nama Resmi" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Nama Resmi Sekolah</span>
               <span className="dapodik-bento-value">{profil.nama_resmi || "SD Negeri Bobong"}</span>
             </div>
 
             {/* Card 2: NPSN */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">🔑</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/key.png" alt="NPSN" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">NPSN</span>
               <span className="dapodik-bento-value" style={{ fontWeight: 'bold' }}>{profil.npsn || "60200589"}</span>
             </div>
 
             {/* Card 3: Status Sekolah */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">🏛️</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/government.png" alt="Status" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Status Sekolah</span>
               <span className="dapodik-bento-value">{profil.status_sekolah || "Negeri"}</span>
             </div>
 
             {/* Card 4: SK Pendirian */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">📅</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/calendar.png" alt="SK Pendirian" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">SK Pendirian</span>
               <span className="dapodik-bento-value">{profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)"}</span>
             </div>
 
             {/* Card 5: Akreditasi */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">🛡️</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/shield.png" alt="Akreditasi" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Akreditasi</span>
               <span className="dapodik-bento-value">{profil.akreditasi || "B (Baik)"}</span>
             </div>
 
             {/* Card 6: Kurikulum */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">📖</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/books.png" alt="Kurikulum" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Kurikulum</span>
               <span className="dapodik-bento-value">{profil.kurikulum_operasional || "Kurikulum Merdeka"}</span>
             </div>
 
             {/* Card 7: Alamat Lengkap (Spans 2 columns) */}
             <div className="dapodik-bento-card span-2">
-              <div className="dapodik-bento-icon">📍</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/map.png" alt="Alamat" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Alamat Lengkap</span>
               <span className="dapodik-bento-value">{profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}</span>
             </div>
 
             {/* Card 8: Status Lahan */}
             <div className="dapodik-bento-card">
-              <div className="dapodik-bento-icon">🌳</div>
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src="/images/animated/land.png" alt="Lahan" width={32} height={32} style={{ objectFit: 'contain' }} />
+              </div>
               <span className="dapodik-bento-label">Status Lahan</span>
               <span className="dapodik-bento-value">{profil.kepemilikan_lahan || "Pemerintah Daerah"}</span>
             </div>
@@ -253,7 +269,7 @@ export default async function Profil() {
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '1.75rem' }}>{icon}</span>
+                      <img src="/images/animated/trophy.png" alt="Penghargaan" width={32} height={32} style={{ objectFit: 'contain' }} />
                       <span style={{ fontSize: '0.75rem', fontWeight: 700, color: badgeColor, backgroundColor: badgeBg, padding: '3px 10px', borderRadius: '20px' }}>
                         {item.year}
                       </span>
