@@ -44,7 +44,7 @@ export default async function RootLayout({ children }) {
 
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
-  const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai'];
+  const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai', '/akademik/kalender', '/kalender'];
   const isBypassPath = bypassPaths.includes(pathname);
   const isPrintableForm = pathname === '/formulir-ppdb' || pathname === '/ppdb/cetak';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');

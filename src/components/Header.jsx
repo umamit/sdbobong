@@ -51,6 +51,7 @@ export default function Header() {
       label: 'Akademik',
       dropdown: [
         { href: '/akademik', label: 'Informasi Akademik' },
+        { href: '/akademik/kalender', label: 'Kalender Pendidikan' },
         { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
         { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
         { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' }
