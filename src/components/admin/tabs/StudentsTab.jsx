@@ -133,7 +133,20 @@ export default function StudentsTab() {
                       value={studentClassFilter}
                       onChange={(e) => setStudentClassFilter(e.target.value)}
                       className="form-control"
-                      style={{ width: '100%', height: '40px' }}
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        borderRadius: '9999px',
+                        padding: '0 2.5rem 0 1.25rem',
+                        appearance: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: 'right 1rem center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '1.25rem',
+                        cursor: 'pointer'
+                      }}
                     >
                       <option value="Semua">Semua Kelas</option>
                       {['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D', '6A', '6B', '6C', '6D'].map(cls => (
@@ -148,7 +161,20 @@ export default function StudentsTab() {
                       value={studentGenderFilter}
                       onChange={(e) => setStudentGenderFilter(e.target.value)}
                       className="form-control"
-                      style={{ width: '100%', height: '40px' }}
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        borderRadius: '9999px',
+                        padding: '0 2.5rem 0 1.25rem',
+                        appearance: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: 'right 1rem center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '1.25rem',
+                        cursor: 'pointer'
+                      }}
                     >
                       <option value="Semua">Semua Gender</option>
                       <option value="Laki-laki">Laki-laki</option>
@@ -162,7 +188,20 @@ export default function StudentsTab() {
                       value={studentStatusFilter}
                       onChange={(e) => setStudentStatusFilter(e.target.value)}
                       className="form-control"
-                      style={{ width: '100%', height: '40px' }}
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        borderRadius: '9999px',
+                        padding: '0 2.5rem 0 1.25rem',
+                        appearance: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`,
+                        backgroundPosition: 'right 1rem center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '1.25rem',
+                        cursor: 'pointer'
+                      }}
                     >
                       <option value="Semua">Semua Status</option>
                       <option value="Aktif">Aktif</option>
