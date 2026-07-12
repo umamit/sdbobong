@@ -617,6 +617,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             maxHeight: '90vh',
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'hidden',
             border: '2px solid white',
             position: 'relative',
             animation: 'scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
