@@ -191,7 +191,18 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
 
 ---
 
+# 11. Kejelasan Terminologi UI
+
+- Hindari penggunaan nama fitur yang mirip atau tumpang tindih untuk mencegah kebingungan pengguna (terutama pada tampilan mobile).
+- Pisahkan istilah secara tegas:
+  - Gunakan **"Agenda Akademik"** untuk kegiatan/acara bulanan yang dinamis (dikelola oleh admin).
+  - Gunakan **"Kalender Pendidikan"** untuk jadwal tahunan terstruktur (berbentuk tabel grid/gambar statis).
+- Selalu gunakan kata kerja aksi yang jelas pada tombol pemicu tindakan (contoh: "Lihat Rundown & Panduan" daripada hanya "Detail").
+
+---
+
 # Golden Rule
+
 
 
 Minimal changes.
