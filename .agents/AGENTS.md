@@ -169,7 +169,30 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
 
 ---
 
+# 10. Modal & Overlay
+
+- Setiap modal, popup, dialog, atau overlay **wajib** di-render ke `document.body`
+  menggunakan `React.createPortal` dari `react-dom`.
+- Selalu tambahkan state `mounted` untuk mencegah error SSR
+  (`document is not defined` di server):
+
+  ```jsx
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  // Render
+  {condition && mounted && createPortal(<ModalJSX />, document.body)}
+  ```
+
+- Backdrop wajib menggunakan `position: 'fixed'` + `inset: 0`
+  agar menutupi seluruh viewport browser (efek lightbox).
+- Jangan gunakan `position: absolute` atau render modal di dalam
+  parent yang memiliki CSS `transform`, `filter`, atau `will-change`.
+
+---
+
 # Golden Rule
+
 
 Minimal changes.
 Maximum security.
