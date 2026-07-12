@@ -164,14 +164,14 @@ export default function AkademikSubTab(props) {
                       userSelect: 'none',
                       pointerEvents: 'none'
                     }}>
-                      📅
+                      📋
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
                       <h3 style={{ color: 'var(--primary-dark)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        📅 Kalender Akademik Terpusat
+                        📋 Agenda Akademik Terpusat
                       </h3>
                       <p style={{ fontSize: '0.9rem', color: '#1e3a8a', lineHeight: '1.6', margin: 0, maxWidth: '90%' }}>
-                        Untuk menghindari duplikasi dan memudahkan pengelolaan data, pengisian Kalender Akademik kini telah <strong>disatukan secara terpusat</strong> dengan agenda kegiatan sekolah.
+                        Untuk menghindari duplikasi dan memudahkan pengelolaan data, pengisian Agenda Akademik kini telah <strong>disatukan secara terpusat</strong> dengan agenda kegiatan sekolah.
                       </p>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)', marginTop: 'var(--space-xs)', alignItems: 'center' }}>
                         <button 
@@ -188,7 +188,7 @@ export default function AkademikSubTab(props) {
                             boxShadow: '0 4px 12px rgba(37, 99, 235, 0.2)'
                           }}
                         >
-                          📅 Kelola Kalender & Agenda Sekarang
+                          📋 Kelola Agenda Akademik Sekarang
                         </button>
                         <span style={{ fontSize: '0.8rem', color: '#475569', fontWeight: '500' }}>
                           (Membuka tab <strong>Agenda Sekolah</strong> di sidebar kiri)

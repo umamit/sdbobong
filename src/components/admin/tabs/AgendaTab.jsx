@@ -22,14 +22,14 @@ export default function AgendaTab() {
             <div className="admin-table">
               <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ margin: 0 }}>Daftar Agenda Kegiatan & Kalender Akademik</h3>
+                  <h3 style={{ margin: 0 }}>Daftar Agenda Akademik Sekolah</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola jadwal kegiatan sekolah, libur nasional, dan agenda penting lainnya.</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
                     setEditingEvent(null);
-                    setEventMonth('Juli 2025');
+                    setEventMonth('Juli 2026');
                     setEventDates('');
                     setEventDesc('');
                     setAgendaModalOpen(true);

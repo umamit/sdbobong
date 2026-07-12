@@ -515,7 +515,7 @@ export default function KalenderPendidikan() {
           {/* MAIN CALENDAR GRID */}
           <div style={{ marginBottom: '3rem' }}>
             <h3 className="no-print" style={{ color: 'var(--primary-dark)', borderLeft: '4px solid var(--primary)', paddingLeft: '10px', marginBottom: '1.5rem' }}>
-              Peta Kalender Akademik ({semester === 'ganjil' ? 'Semester Ganjil' : 'Semester Genap'})
+              Peta Kalender Pendidikan ({semester === 'ganjil' ? 'Semester Ganjil' : 'Semester Genap'})
             </h3>
             <div className="month-grid-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
               {monthsConfig.map(m => renderMonthGrid(m.year, m.monthIndex, m.label))}
