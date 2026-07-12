@@ -602,9 +602,10 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
           WebkitBackdropFilter: 'blur(10px)',
           zIndex: 9999,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
-          padding: 'var(--space-sm)',
+          padding: '16px var(--space-sm)',
+          overflowY: 'auto',
           animation: 'fadeIn 0.2s ease-out'
         }} onClick={() => setSelectedRoom(null)}>
           <div style={{
@@ -613,10 +614,13 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             boxShadow: 'var(--shadow-lg)',
             width: '100%',
             maxWidth: '550px',
-            overflow: 'hidden',
+            maxHeight: '90vh',
+            display: 'flex',
+            flexDirection: 'column',
             border: '2px solid white',
             position: 'relative',
-            animation: 'scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)'
+            animation: 'scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            margin: 'auto'
           }} onClick={(e) => e.stopPropagation()}>
             
             {/* Header */}
@@ -661,7 +665,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             </div>
 
             {/* Body */}
-            <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '15px', overflowY: 'auto', flex: '1 1 auto' }}>
               
               {/* Target Date and countdown */}
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px', backgroundColor: 'var(--bg-main)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
@@ -758,7 +762,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             </div>
 
             {/* Footer */}
-            <div style={{ padding: '12px var(--space-md)', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', backgroundColor: '#F9FAFB' }}>
+            <div style={{ padding: '12px var(--space-md)', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', backgroundColor: '#F9FAFB', flexShrink: 0 }}>
               <button 
                 className="btn btn-primary" 
                 onClick={() => setSelectedRoom(null)}
