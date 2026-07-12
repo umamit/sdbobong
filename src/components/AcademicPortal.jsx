@@ -129,23 +129,43 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
   const [activeMplsDay, setActiveMplsDay] = useState(0);
   const [countdowns, setCountdowns] = useState({});
 
-  // Parse custom month mappings to approximate target dates for countdown
+  // Build countdown from initialCalendar: extract first date from `dates` field or derive from `month`
   useEffect(() => {
-    const datesMap = {
-      juli: "2026-07-13",
-      agustus: "2026-08-17",
-      september: "2026-09-14",
-      desember: "2026-12-07",
-      maret: "2027-03-08",
-      juni: "2027-06-07"
+    const MONTH_MAP = {
+      'januari': '01', 'februari': '02', 'maret': '03', 'april': '04',
+      'mei': '05', 'juni': '06', 'juli': '07', 'agustus': '08',
+      'september': '09', 'oktober': '10', 'november': '11', 'desember': '12'
     };
+
+    // Build a map of { eventId: ISO date string } from initialCalendar
+    const datesMap = {};
+    initialCalendar.forEach(evt => {
+      if (!evt.id) return;
+      // Try to extract "DD" from dates field like "13 - 17 Juli 2026" or "13 Juli 2026"
+      const datesStr = (evt.dates || '').toLowerCase();
+      const monthStr = (evt.month || '').toLowerCase();
+      // Extract year from dates or month field
+      const yearMatch = (datesStr + ' ' + monthStr).match(/\b(20\d{2})\b/);
+      const year = yearMatch ? yearMatch[1] : null;
+      // Extract month number from dates or month field
+      let monthNum = null;
+      for (const [name, num] of Object.entries(MONTH_MAP)) {
+        if (datesStr.includes(name) || monthStr.includes(name)) { monthNum = num; break; }
+      }
+      // Extract first day number from dates field
+      const dayMatch = datesStr.match(/\b(\d{1,2})\b/);
+      const day = dayMatch ? dayMatch[1].padStart(2, '0') : '01';
+      if (year && monthNum) {
+        datesMap[evt.id] = `${year}-${monthNum}-${day}`;
+      }
+    });
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const updated = {};
 
       Object.entries(datesMap).forEach(([id, dateStr]) => {
-        const target = new Date(dateStr + "T07:15:00").getTime();
+        const target = new Date(dateStr + 'T07:15:00').getTime();
         const diff = target - now;
 
         if (diff > 0) {
@@ -153,7 +173,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           updated[id] = `${days} Hari ${hours} Jam`;
         } else {
-          updated[id] = "Sedang/Sudah Terlaksana";
+          updated[id] = 'Sedang/Sudah Terlaksana';
         }
       });
 
@@ -161,7 +181,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [initialCalendar]);
 
   const handleEventClick = (row) => {
     setSelectedRoom(row);

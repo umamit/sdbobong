@@ -30,12 +30,12 @@ export default async function Akademik() {
     kurikulum_image: akademikData.kurikulum_image || "/images/kurikulum_merdeka.svg",
     kurikulum_tags: akademikData.kurikulum_tags || ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
     calendar: akademikData.calendar || [
-      { id: "juli", month: "Juli 2025", desc: "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", dates: "14 - 16 Juli 2025" },
-      { id: "agustus", month: "Agustus 2025", desc: "Peringatan HUT RI ke-80 & Lomba Kemerdekaan Antar Kelas", dates: "17 Agustus 2025" },
-      { id: "september", month: "September 2025", desc: "Asesmen Nasional Berbasis Komputer (ANBK)", dates: "Pekan ke-3 September" },
-      { id: "desember", month: "Desember 2025", desc: "Asesmen Sumatif Semester Ganjil & Pembagian Rapor", dates: "15 - 20 Desember 2025" },
-      { id: "maret", month: "Maret 2026", desc: "Libur Khusus Awal Puasa Ramadan 1447 H", dates: "Menyesuaikan Keputusan Menteri" },
-      { id: "juni", month: "Juni 2026", desc: "Ujian Akhir Semester Genap & Pembagian Rapor Kenaikan Kelas", dates: "08 - 20 Juni 2026" }
+      { id: "juli", month: "Juli 2026", desc: "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", dates: "13 - 17 Juli 2026" },
+      { id: "agustus", month: "Agustus 2026", desc: "Peringatan HUT RI ke-81 & Upacara Bendera", dates: "17 Agustus 2026" },
+      { id: "september", month: "September 2026", desc: "Asesmen Tengah Semester (ATS) Ganjil", dates: "Pekan ke-3 September 2026" },
+      { id: "desember", month: "Desember 2026", desc: "Asesmen Akhir Semester Ganjil & Pembagian Rapor", dates: "07 - 19 Desember 2026" },
+      { id: "maret", month: "Maret 2027", desc: "Try Out Asesmen Sekolah & Libur Ramadan 1448 H", dates: "08 - 13 Maret 2027" },
+      { id: "juni", month: "Juni 2027", desc: "Asesmen Akhir Tahun & Pembagian Rapor Kenaikan Kelas", dates: "07 - 19 Juni 2027" }
     ],
     tata_tertib: akademikData.tata_tertib || [
       "Kehadiran: Siswa wajib hadir di sekolah paling lambat pukul 07.15 WIT sebelum bel masuk berbunyi.",
