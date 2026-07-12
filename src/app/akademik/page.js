@@ -13,9 +13,8 @@ export default async function Akademik() {
   const config = await loadWebConfig();
 
   const defaultJadwalKBM = [
-    { id: "kbm-1", kelas: "Kelas I & II (Fase A)", hari: "Senin - Kamis: 07.15 - 11.45 WIT\nJumat: 07.15 - 10.30 WIT\nSabtu: 07.15 - 11.00 WIT", keterangan: "Jam Belajar Lebih Singkat, Istirahat Pukul 09.15 - 09.45 WIT" },
-    { id: "kbm-2", kelas: "Kelas III & IV (Fase B)", hari: "Senin - Kamis: 07.15 - 12.15 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 11.30 WIT", keterangan: "KBM Utama, Istirahat Pukul 09.30 - 10.00 WIT" },
-    { id: "kbm-3", kelas: "Kelas V & VI (Fase C)", hari: "Senin - Kamis: 07.15 - 12.50 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 11.30 WIT", keterangan: "Materi Esensial & Projek P5, Istirahat Pukul 09.30 - 10.00 WIT" }
+    { id: "kbm-1", kelas: "Kelas I, II, & III (Shift Pagi)", hari: "Senin - Kamis: 07.15 - 12.45 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 12.45 WIT", keterangan: "Pembelajaran Pagi (Hari Jumat & Sabtu semua kelas masuk pagi)" },
+    { id: "kbm-2", kelas: "Kelas IV, V, & VI (Shift Siang)", hari: "Senin - Kamis: 12.45 - 16.15 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 12.45 WIT", keterangan: "Pembelajaran Siang (Hari Jumat & Sabtu semua kelas masuk pagi)" }
   ];
 
   const akademikData = config.stats?.page_contents?.akademik || {};
