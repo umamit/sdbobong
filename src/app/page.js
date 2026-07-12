@@ -255,10 +255,14 @@ export default async function Home() {
                 loading="lazy"
               />
             ) : (
-              <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>
-                <span style={{ fontSize: '3rem' }}>👤</span>
-                <div style={{ fontWeight: 700, fontSize: '1.2rem' }}>Tidak Ada</div>
-                <div style={{ fontSize: '0.9rem', color: '#c53030' }}>Foto Kepala Sekolah</div>
+              <div style={{ backgroundColor: '#f8fafc', color: 'var(--text-muted)', border: '2px dashed var(--border-color)', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" style={{ width: '32px', height: '32px' }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-main)' }}>Belum Ada Foto</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Kepala Sekolah</div>
               </div>
             )}
           </div>
