@@ -352,6 +352,14 @@ ${listAkademikCalendarText}
 ${listAkademikTataTertibText}
    - Aturan Seragam Sekolah Harian:
 ${listAkademikSeragamText}
+   - Jadwal Kegiatan Belajar Mengajar (KBM) Double-Shift:
+     * Shift Pagi (Wajib untuk Kelas I, II, dan III):
+       - Senin s.d. Kamis: Masuk pagi, pulang pukul 12:45 WIT.
+       - Jumat: Pulang pukul 11:00 WIT (tidak ada shift siang).
+       - Sabtu: Pulang pukul 12:45 WIT (tidak ada shift siang).
+     * Shift Siang (Wajib untuk Kelas IV, V, dan VI):
+       - Senin s.d. Kamis: Masuk siang pukul 12:45 WIT, pulang pukul 16:15 WIT.
+       - Jumat dan Sabtu: TIDAK ADA Shift Siang. Seluruh siswa kelas siang (Kelas IV, V, VI) wajib masuk pagi bersama kelas pagi, dengan jadwal kepulangan hari Jumat jam 11:00 WIT dan hari Sabtu jam 12:45 WIT.
 
 8. Kesiswaan & Kegiatan Ekstrakurikuler:
    - Deskripsi Kesiswaan: ${kesiswaanBannerTextVal}

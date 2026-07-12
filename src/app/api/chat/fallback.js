@@ -193,6 +193,24 @@ Belum ada berita kegiatan terbaru yang diunggah saat ini. Silakan kunjungi menu 
     }
   }
 
+  if (q.includes("kbm") || q.includes("jam") || q.includes("shift") || q.includes("sift") || q.includes("masuk") || q.includes("pulang") || q.includes("jadwal belajar") || q.includes("sekolah jam")) {
+    return `${welcomeMessage}
+    
+📖 **Jadwal Kegiatan Belajar Mengajar (KBM) - Double Shift:**
+Karena jumlah ruang kelas terbatas, SD Negeri Bobong membagi jadwal sekolah menjadi dua shift belajar:
+
+🌅 **Shift Pagi (Kelas I, II, & III):**
+* **Senin - Kamis:** Masuk pagi, pulang pukul 12.45 WIT.
+* **Jumat:** Pulang pukul 11.00 WIT.
+* **Sabtu:** Pulang pukul 12.45 WIT.
+
+☀️ **Shift Siang (Kelas IV, V, & VI):**
+* **Senin - Kamis:** Masuk siang pukul 12.45 WIT, pulang pukul 16.15 WIT.
+* **Jumat & Sabtu:** **TIDAK ADA Shift Siang.** Semua siswa (termasuk Kelas IV, V, & VI) masuk pagi bersama. Hari Jumat pulang pukul 11.00 WIT dan hari Sabtu pulang pukul 12.45 WIT.
+
+Ada yang ingin Anda tanyakan lagi mengenai jadwal KBM di sekolah? 😊`;
+  }
+
   // Jawaban Default jika kata kunci tidak cocok
   return `${welcomeMessage}
   
@@ -205,8 +223,9 @@ Saya dapat memberikan informasi instan mengenai hal-hal berikut:
 6. 🏃 **Ekstrakurikuler / Ekskul** (ketik: *ekskul*, *pramuka*)
 7. 🏆 **Prestasi Siswa** (ketik: *prestasi*, *juara*)
 8. 🏫 **Fasilitas & Ruang Kelas** (ketik: *fasilitas*, *kelas*, *lapangan*)
-9. 💰 **Biaya Pendaftaran** (ketik: *biaya*, *bayar*)
-10. 📰 **Berita & Pengumuman Terbaru** (ketik: *berita*, *pengumuman*, *kabar*)
+9. 📖 **Jadwal KBM & Shift Belajar** (ketik: *kbm*, *shift*, *masuk*, *pulang*)
+10. 💰 **Biaya Pendaftaran** (ketik: *biaya*, *bayar*)
+11. 📰 **Berita & Pengumuman Terbaru** (ketik: *berita*, *pengumuman*, *kabar*)
 
 Silakan ketik pertanyaan Anda atau klik tombol saran pertanyaan di bawah ini untuk memulai! 😊`;
 }
