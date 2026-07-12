@@ -132,12 +132,12 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
   // Parse custom month mappings to approximate target dates for countdown
   useEffect(() => {
     const datesMap = {
-      juli: "2025-07-14",
-      agustus: "2025-08-17",
-      september: "2025-09-15",
-      desember: "2025-12-15",
-      maret: "2026-03-01",
-      juni: "2026-06-08"
+      juli: "2026-07-13",
+      agustus: "2026-08-17",
+      september: "2026-09-14",
+      desember: "2026-12-07",
+      maret: "2027-03-08",
+      juni: "2027-06-07"
     };
 
     const timer = setInterval(() => {
