@@ -434,14 +434,13 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
               return (
                 <div 
                   key={proj.id}
+                  className="p5-grid-card"
                   style={{
                     backgroundColor: 'white',
                     border: '1px solid var(--border-color)',
                     borderRadius: 'var(--radius-lg)',
                     overflow: 'hidden',
                     boxShadow: 'var(--shadow-md)',
-                    display: 'grid',
-                    gridTemplateColumns: 'minmax(200px, 1fr) 2fr',
                   }}
                 >
                   {/* Image panel */}
@@ -710,6 +709,15 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         @keyframes tabFadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        .p5-grid-card {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+        @media (min-width: 640px) {
+          .p5-grid-card {
+            grid-template-columns: minmax(200px, 1fr) 2fr;
+          }
         }
       `}</style>
     </div>

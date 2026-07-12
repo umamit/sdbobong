@@ -108,7 +108,7 @@ export default function InteractiveFacilityMap() {
         </div>
       </div>
 
-      <div className="grid-2" style={{ gridTemplateColumns: 'minmax(320px, 1.4fr) minmax(280px, 0.6fr)', gap: 'var(--space-md)' }}>
+      <div className="grid-2 facility-grid" style={{ gap: 'var(--space-md)' }}>
         {/* Left Side: SVG Campus Site Map (Aligned with Google Maps Satellite View) */}
         <div style={{ 
           backgroundColor: '#E8ECE9', // Soft grassy green background border
@@ -344,6 +344,15 @@ export default function InteractiveFacilityMap() {
         @keyframes scaleUp {
           from { transform: scale(0.95); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
+        }
+        .facility-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+          .facility-grid {
+            grid-template-columns: minmax(320px, 1.4fr) minmax(280px, 0.6fr);
+          }
         }
       `}</style>
     </div>
