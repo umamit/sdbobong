@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import GradesClient from '../app/nilai/GradesClient';
 
 const P5_PROJECTS = [
@@ -128,6 +129,9 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
   const [selectedEvent, setSelectedRoom] = useState(null);
   const [activeMplsDay, setActiveMplsDay] = useState(0);
   const [countdowns, setCountdowns] = useState({});
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Build countdown from initialCalendar: extract first date from `dates` field or derive from `month`
   useEffect(() => {
@@ -592,8 +596,8 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
         </div>
       )}
 
-      {/* EVENT MODAL POPUP */}
-      {selectedEvent && (
+      {/* EVENT MODAL POPUP — rendered via portal to document.body for full-viewport coverage */}
+      {selectedEvent && mounted && createPortal(
         <div style={{
           position: 'fixed',
           inset: 0,
@@ -775,7 +779,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
 
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Animation Styles */}
       <style jsx>{`
