@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import GradesClient from '../app/nilai/GradesClient';
+import CalendarEventCard from './CalendarEventCard';
 
 const P5_PROJECTS = [
   {
@@ -333,94 +334,17 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
             gap: 'var(--space-sm)' 
           }}>
-            {initialCalendar && initialCalendar.map((row) => {
-              const isCurrent = row.id === currentMonth;
-              const hasCountdown = countdowns[row.id] && !countdowns[row.id].includes("Sedang");
-
-              return (
-                <div 
-                  key={row.id}
-                  onClick={() => handleEventClick(row)}
-                  style={{
-                    backgroundColor: 'white',
-                    border: isCurrent ? '2px solid var(--secondary)' : '1px solid var(--border-color)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: 'var(--space-md)',
-                    boxShadow: isCurrent ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = isCurrent ? 'var(--shadow-lg)' : 'var(--shadow-sm)';
-                  }}
-                >
-                  {isCurrent && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '12px',
-                      right: '12px',
-                      backgroundColor: 'var(--secondary)',
-                      color: 'var(--primary-dark)',
-                      fontSize: '0.7rem',
-                      fontWeight: 800,
-                      padding: '2px 8px',
-                      borderRadius: 'var(--radius-full)',
-                      textTransform: 'uppercase'
-                    }}>
-                      Bulan Ini
-                    </span>
-                  )}
-
-                  <span style={{ 
-                    fontFamily: 'var(--font-heading)', 
-                    fontWeight: 800, 
-                    fontSize: '1.2rem', 
-                    color: 'var(--primary-dark)' 
-                  }}>
-                    {row.month}
-                  </span>
-
-                  <p style={{ 
-                    fontSize: '0.9rem', 
-                    color: 'var(--text-main)', 
-                    margin: 0,
-                    fontWeight: 500,
-                    lineHeight: 1.5,
-                    minHeight: '44px'
-                  }}>
-                    {row.desc}
-                  </p>
-
-                  <div style={{ 
-                    borderTop: '1px solid var(--border-color)', 
-                    paddingTop: '8px',
-                    marginTop: 'auto',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    fontSize: '0.8rem'
-                  }}>
-                    <span style={{ color: 'var(--text-muted)', fontWeight: 600 }}>📅 {row.dates}</span>
-                    {hasCountdown && (
-                      <span style={{ color: 'var(--accent)', fontWeight: 700, backgroundColor: 'var(--accent-bg)', padding: '2px 6px', borderRadius: '4px' }}>
-                        ⏳ {countdowns[row.id].split(' ')[0]} Hari Lagi
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {initialCalendar && initialCalendar.map((row) => (
+              <CalendarEventCard
+                key={row.id}
+                row={row}
+                isCurrent={row.id === currentMonth}
+                countdown={countdowns[row.id]}
+                onClick={() => handleEventClick(row)}
+              />
+            ))}
           </div>
+
         </div>
       )}
 
