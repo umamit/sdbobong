@@ -264,7 +264,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
             color: activeTab === 'calendar' ? 'white' : 'var(--text-muted)'
           }}
         >
-          📅 Kalender Akademik
+          📋 Agenda Akademik
         </button>
         <button 
           onClick={() => setActiveTab('p5')}
