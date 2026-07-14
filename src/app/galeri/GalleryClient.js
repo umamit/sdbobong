@@ -382,6 +382,8 @@ export default function GalleryClient({ initialGallery }) {
                       <img
                         src={thumbUrl}
                         alt={item.title}
+                        width="320"
+                        height="180"
                         style={{ width: '100%', height: '120px', objectFit: 'cover', display: 'block', opacity: '0.8', transition: 'all 0.5s ease' }}
                         loading="lazy"
                         className="gallery-thumbnail-img"
@@ -445,6 +447,8 @@ export default function GalleryClient({ initialGallery }) {
                     <img
                       src={isDrive ? getCleanGoogleDriveUrl(item.url, 'image') : item.url}
                       alt={item.title}
+                      width="400"
+                      height="300"
                       loading="lazy"
                       className="gallery-thumbnail-img"
                       onError={(e) => {

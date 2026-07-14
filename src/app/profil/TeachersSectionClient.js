@@ -310,6 +310,8 @@ export default function TeachersSectionClient({ teachers }) {
                       src={teacher.image} 
                       alt={`Foto ${teacher.name}`} 
                       className="teacher-img" 
+                      width="240"
+                      height="240"
                       loading="lazy"
                       decoding="async"
                     />
@@ -427,7 +429,11 @@ export default function TeachersSectionClient({ teachers }) {
                 <img 
                   src={selectedTeacher.image || '/images/teacher_1.png'} 
                   alt={selectedTeacher.name} 
+                  width="100"
+                  height="100"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div style={{ flex: 1, minWidth: '200px' }}>
