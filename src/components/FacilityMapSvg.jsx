@@ -127,7 +127,7 @@ export default function FacilityMapSvg(props) {
             {/* AREA GEDUNG BARAT: 3 BANGUNAN ATAP BIRU                  */}
             {/* ======================================================== */}
             
-            {/* --- GEDUNG BARAT ATAS (Kelas 6 & Kelas 5) --- */}
+            {/* --- GEDUNG BARAT LAUT: BLOK KIRI (Kelas 6 & Kelas 3) --- */}
             <g filter="url(#shadow-premium)">
               {/* 1. Kelas 6 (l2_kelas_6) */}
               <g 
@@ -152,56 +152,7 @@ export default function FacilityMapSvg(props) {
                 {hoveredRoom === 'l2_kelas_6' && <rect x="42" y="57" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
               </g>
 
-              {/* 2. Kelas 5 (l2_kelas_5) */}
-              <g 
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleRoomClick('l2_kelas_5')}
-                onMouseEnter={() => setHoveredRoom('l2_kelas_5')}
-                onMouseLeave={() => setHoveredRoom(null)}
-              >
-                <polygon 
-                  points="40,110 95,110 95,165 40,165" 
-                  fill={hoveredRoom === 'l2_kelas_5' ? '#60A5FA' : '#3B82F6'} 
-                  style={{ transition: 'all 0.2s' }}
-                />
-                <polygon 
-                  points="95,110 150,110 150,165 95,165" 
-                  fill={hoveredRoom === 'l2_kelas_5' ? '#3B82F6' : '#1D4ED8'} 
-                  style={{ transition: 'all 0.2s' }}
-                />
-                <line x1="95" y1="110" x2="95" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
-                
-                <text x="95" y="140" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎨 KELAS 5</text>
-                {hoveredRoom === 'l2_kelas_5' && <rect x="42" y="112" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
-              </g>
-            </g>
-
-            {/* --- GEDUNG BARAT TENGAH (Kelas 4 & Kelas 3) --- */}
-            <g filter="url(#shadow-premium)">
-              {/* 3. Kelas 4 (l2_kelas_4) */}
-              <g 
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleRoomClick('l2_kelas_4')}
-                onMouseEnter={() => setHoveredRoom('l2_kelas_4')}
-                onMouseLeave={() => setHoveredRoom(null)}
-              >
-                <polygon 
-                  points="40,195 95,195 95,250 40,250" 
-                  fill={hoveredRoom === 'l2_kelas_4' ? '#60A5FA' : '#3B82F6'} 
-                  style={{ transition: 'all 0.2s' }}
-                />
-                <polygon 
-                  points="95,195 150,195 150,250 95,250" 
-                  fill={hoveredRoom === 'l2_kelas_4' ? '#3B82F6' : '#1D4ED8'} 
-                  style={{ transition: 'all 0.2s' }}
-                />
-                <line x1="95" y1="195" x2="95" y2="250" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
-                
-                <text x="95" y="225" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📐 KELAS 4</text>
-                {hoveredRoom === 'l2_kelas_4' && <rect x="42" y="197" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
-              </g>
-
-              {/* 4. Kelas 3 (l2_kelas_3) */}
+              {/* 2. Kelas 3 (l2_kelas_3) */}
               <g 
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleRoomClick('l2_kelas_3')}
@@ -209,25 +160,48 @@ export default function FacilityMapSvg(props) {
                 onMouseLeave={() => setHoveredRoom(null)}
               >
                 <polygon 
-                  points="40,250 95,250 95,305 40,305" 
+                  points="40,110 95,110 95,165 40,165" 
                   fill={hoveredRoom === 'l2_kelas_3' ? '#60A5FA' : '#3B82F6'} 
                   style={{ transition: 'all 0.2s' }}
                 />
                 <polygon 
-                  points="95,250 150,250 150,305 95,305" 
+                  points="95,110 150,110 150,165 95,165" 
                   fill={hoveredRoom === 'l2_kelas_3' ? '#3B82F6' : '#1D4ED8'} 
                   style={{ transition: 'all 0.2s' }}
                 />
-                <line x1="95" y1="250" x2="95" y2="305" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                <line x1="95" y1="110" x2="95" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
-                <text x="95" y="280" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📖 KELAS 3</text>
-                {hoveredRoom === 'l2_kelas_3' && <rect x="42" y="252" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+                <text x="95" y="140" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📖 KELAS 3</text>
+                {hoveredRoom === 'l2_kelas_3' && <rect x="42" y="112" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
               </g>
             </g>
 
-            {/* --- GEDUNG BARAT BAWAH (Kelas 2 & Kelas 1) --- */}
+            {/* --- GEDUNG BARAT LAUT: BLOK KIRI TENGAH (Kelas 5 & Kelas 2) --- */}
             <g filter="url(#shadow-premium)">
-              {/* 5. Kelas 2 (l1_kelas_2) */}
+              {/* 3. Kelas 5 (l2_kelas_5) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_5')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_5')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="40,195 95,195 95,250 40,250" 
+                  fill={hoveredRoom === 'l2_kelas_5' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="95,195 150,195 150,250 95,250" 
+                  fill={hoveredRoom === 'l2_kelas_5' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="95" y1="195" x2="95" y2="250" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="95" y="225" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎨 KELAS 5</text>
+                {hoveredRoom === 'l2_kelas_5' && <rect x="42" y="197" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+
+              {/* 4. Kelas 2 (l1_kelas_2) */}
               <g 
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleRoomClick('l1_kelas_2')}
@@ -235,19 +209,45 @@ export default function FacilityMapSvg(props) {
                 onMouseLeave={() => setHoveredRoom(null)}
               >
                 <polygon 
-                  points="40,335 95,335 95,390 40,390" 
+                  points="40,250 95,250 95,305 40,305" 
                   fill={hoveredRoom === 'l1_kelas_2' ? '#60A5FA' : '#3B82F6'} 
                   style={{ transition: 'all 0.2s' }}
                 />
                 <polygon 
-                  points="95,335 150,335 150,390 95,390" 
+                  points="95,250 150,250 150,305 95,305" 
                   fill={hoveredRoom === 'l1_kelas_2' ? '#3B82F6' : '#1D4ED8'} 
                   style={{ transition: 'all 0.2s' }}
                 />
-                <line x1="95" y1="335" x2="95" y2="390" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                <line x1="95" y1="250" x2="95" y2="305" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
-                <text x="95" y="365" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 2</text>
-                {hoveredRoom === 'l1_kelas_2' && <rect x="42" y="337" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+                <text x="95" y="280" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 2</text>
+                {hoveredRoom === 'l1_kelas_2' && <rect x="42" y="252" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* --- GEDUNG BARAT LAUT: BLOK KANAN (Kelas 4 & Kelas 1) --- */}
+            <g filter="url(#shadow-premium)">
+              {/* 5. Kelas 4 (l2_kelas_4) */}
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('l2_kelas_4')}
+                onMouseEnter={() => setHoveredRoom('l2_kelas_4')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                <polygon 
+                  points="175,55 230,55 230,110 175,110" 
+                  fill={hoveredRoom === 'l2_kelas_4' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="230,55 285,55 285,110 230,110" 
+                  fill={hoveredRoom === 'l2_kelas_4' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <line x1="230" y1="55" x2="230" y2="110" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                <text x="230" y="85" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">📐 KELAS 4</text>
+                {hoveredRoom === 'l2_kelas_4' && <rect x="177" y="57" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
               </g>
 
               {/* 6. Kelas 1 (l1_kelas_1) */}
@@ -258,19 +258,64 @@ export default function FacilityMapSvg(props) {
                 onMouseLeave={() => setHoveredRoom(null)}
               >
                 <polygon 
-                  points="40,390 95,390 95,445 40,445" 
+                  points="175,110 230,110 230,165 175,165" 
                   fill={hoveredRoom === 'l1_kelas_1' ? '#60A5FA' : '#3B82F6'} 
                   style={{ transition: 'all 0.2s' }}
                 />
                 <polygon 
-                  points="95,390 150,390 150,445 95,445" 
+                  points="230,110 285,110 285,165 230,165" 
                   fill={hoveredRoom === 'l1_kelas_1' ? '#3B82F6' : '#1D4ED8'} 
                   style={{ transition: 'all 0.2s' }}
                 />
-                <line x1="95" y1="390" x2="95" y2="445" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                <line x1="230" y1="110" x2="230" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
-                <text x="95" y="420" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎒 KELAS 1</text>
-                {hoveredRoom === 'l1_kelas_1' && <rect x="42" y="392" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+                <text x="230" y="140" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#FFFFFF" textAnchor="middle">🎒 KELAS 1</text>
+                {hoveredRoom === 'l1_kelas_1' && <rect x="177" y="112" width="106" height="51" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+              </g>
+            </g>
+
+            {/* --- GEDUNG BARAT DAYA: GEDUNG TK (Taman Kanak-Kanak) --- */}
+            <g filter="url(#shadow-premium)">
+              <g 
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleRoomClick('bangunan_tk')}
+                onMouseEnter={() => setHoveredRoom('bangunan_tk')}
+                onMouseLeave={() => setHoveredRoom(null)}
+              >
+                {/* L-Shaped Building Left Vertical Section */}
+                <polygon 
+                  points="40,335 67.5,335 67.5,445 40,445" 
+                  fill={hoveredRoom === 'bangunan_tk' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="67.5,335 95,335 95,445 67.5,445" 
+                  fill={hoveredRoom === 'bangunan_tk' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                
+                {/* L-Shaped Building Right Horizontal Section */}
+                <polygon 
+                  points="95,390 122.5,390 122.5,445 95,445" 
+                  fill={hoveredRoom === 'bangunan_tk' ? '#60A5FA' : '#3B82F6'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                <polygon 
+                  points="122.5,390 150,390 150,445 122.5,445" 
+                  fill={hoveredRoom === 'bangunan_tk' ? '#3B82F6' : '#1D4ED8'} 
+                  style={{ transition: 'all 0.2s' }}
+                />
+                
+                {/* Ridges / Roof Lines */}
+                <line x1="67.5" y1="335" x2="67.5" y2="445" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                <line x1="95" y1="417.5" x2="150" y2="417.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
+                
+                {/* Labels */}
+                <text x="95" y="375" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🧸 GEDUNG TK</text>
+                <text x="95" y="392" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Taman Kanak-Kanak)</text>
+                
+                {/* Glow Rect overlay on hover */}
+                {hoveredRoom === 'bangunan_tk' && <rect x="42" y="337" width="106" height="106" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
               </g>
             </g>
 

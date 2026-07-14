@@ -2,10 +2,10 @@ export const FACILITIES_DATA = {
   // GEDUNG BARAT (PAVILIUN KIRI - ATAP BIRU)
   l1_kelas_1: {
     title: "Ruang Kelas 1",
-    desc: "Ruang kelas belajar bagi siswa Kelas 1, terletak di Gedung Barat Paviliun Bawah. Dirancang dengan sirkulasi udara optimal, tinggi meja kursi ramah anak, serta pojok literasi dasar bergambar guna merangsang kecintaan belajar sejak dini.",
+    desc: "Ruang kelas belajar bagi siswa Kelas 1, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, dirancang dengan pojok literasi dasar bergambar guna merangsang kecintaan belajar sejak dini.",
     stats: {
       kapasitas: "28 Siswa",
-      lokasi: "Gedung Barat, Paviliun Bawah (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
       kondisi: "Sangat Layak (Bersih & Terawat)",
       fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku Bergambar", "Alat Peraga Edukatif Dasar (APE)", "Kipas Angin Dinding"]
     },
@@ -15,10 +15,10 @@ export const FACILITIES_DATA = {
   },
   l1_kelas_2: {
     title: "Ruang Kelas 2",
-    desc: "Ruang kelas belajar khusus siswa Kelas 2, terletak di Gedung Barat Paviliun Bawah. Dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas untuk mendorong rasa percaya diri dan antusiasme belajar harian.",
+    desc: "Ruang kelas belajar khusus siswa Kelas 2, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat, Paviliun Bawah (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
       kondisi: "Sangat Baik",
       fasilitas: ["Papan Tulis Whiteboard", "Pojok Literasi Tematik", "Mading Karya Seni Murid", "Almari Penyimpanan Buku Paket", "Sirkulasi Udara Alami"]
     },
@@ -28,10 +28,10 @@ export const FACILITIES_DATA = {
   },
   l2_kelas_3: {
     title: "Ruang Kelas 3",
-    desc: "Ruang kelas belajar siswa Kelas 3 yang terletak di Gedung Barat Paviliun Tengah. Memberikan suasana belajar yang sejuk dan rindang dengan pemandangan hijau langsung mengarah ke lapangan utama.",
+    desc: "Ruang kelas belajar siswa Kelas 3 yang terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, memberikan suasana belajar yang sejuk dan rindang langsung mengarah ke lapangan utama.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat, Paviliun Tengah (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
       kondisi: "Sangat Kondusif",
       fasilitas: ["Papan Tulis Whiteboard", "Peta Nusantara & Dunia Dinding", "Rak Penyimpanan Tas Murid", "Meja Belajar Solid Wood", "Kipas Angin Angin Silang"]
     },
@@ -41,10 +41,10 @@ export const FACILITIES_DATA = {
   },
   l2_kelas_4: {
     title: "Ruang Kelas 4",
-    desc: "Ruang kelas belajar bagi siswa Kelas 4, terletak di Gedung Barat Paviliun Tengah. Dirancang untuk mendukung pembelajaran interaktif kelompok kecil melalui tata letak meja diskusi melingkar yang dinamis.",
+    desc: "Ruang kelas belajar bagi siswa Kelas 4, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang, dirancang untuk mendukung pembelajaran interaktif kelompok kecil.",
     stats: {
       kapasitas: "32 Siswa",
-      lokasi: "Gedung Barat, Paviliun Tengah (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
       kondisi: "Sangat Baik (Terang & Bersih)",
       fasilitas: ["Whiteboard", "Pojok Baca Buku Pelajaran", "Media Peraga Matematika & IPA", "Mading Kelas Aktif", "Kipas Angin Dinding"]
     },
@@ -54,10 +54,10 @@ export const FACILITIES_DATA = {
   },
   l2_kelas_5: {
     title: "Ruang Kelas 5",
-    desc: "Ruang belajar siswa Kelas 5 di Gedung Barat Paviliun Atas. Ruangan ini memiliki sirkulasi cahaya matahari pagi yang melimpah, mendukung semangat fokus belajar siswa tingkat lanjut.",
+    desc: "Ruang belajar siswa Kelas 5 di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang, ruangan ini memiliki sirkulasi cahaya matahari pagi yang melimpah.",
     stats: {
       kapasitas: "32 Siswa",
-      lokasi: "Gedung Barat, Paviliun Atas (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
       kondisi: "Sangat Baik & Teduh",
       fasilitas: ["Papan Tulis Magnetik", "Almari Buku Referensi Murid", "Satu Set Alat Musik Suling & Pianika", "Display Portofolio Karya Seni", "Ventilasi Silang Optimal"]
     },
@@ -67,10 +67,10 @@ export const FACILITIES_DATA = {
   },
   l2_kelas_6: {
     title: "Ruang Kelas 6",
-    desc: "Ruang kelas siswa Kelas 6 sebagai sarana persiapan pematangan mental menuju jenjang SMP, terletak di Gedung Barat Paviliun Atas. Suasana diatur lebih tenang dan terfokus, lengkap dengan grafik target kelulusan serta bank soal latihan.",
+    desc: "Ruang kelas siswa Kelas 6 sebagai sarana persiapan pematangan mental menuju jenjang SMP, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat, Paviliun Atas (Lantai Dasar)",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
       kondisi: "Kondusif & Tenang",
       fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Alat Peraga Bangun Ruang Matematika", "Mading Informasi Pendaftaran SMP", "Loker Arsip Soal Latihan"]
     },
@@ -200,5 +200,18 @@ export const FACILITIES_DATA = {
     icon: "⛺",
     color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+  },
+  bangunan_tk: {
+    title: "Gedung TK (Taman Kanak-Kanak)",
+    desc: "Bangunan pendidikan anak usia dini yang terletak di sisi barat daya (kiri bawah) kompleks sekolah. Merupakan area khusus belajar dan bermain ramah anak bagi siswa TK sebelum memasuki jenjang sekolah dasar.",
+    stats: {
+      kapasitas: "Menyesuaikan",
+      lokasi: "Sektor Barat Daya Kompleks (Kiri Bawah)",
+      kondisi: "Aktif & Sangat Baik",
+      fasilitas: ["Ruang Kelas Ceria", "Area Bermain Outdoor", "Alat Peraga Edukatif (APE)", "Perosotan & Ayunan Anak"]
+    },
+    icon: "🧸",
+    color: "#3B82F6",
+    image: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=800&auto=format&fit=crop"
   }
-};;
+};
