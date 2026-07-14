@@ -243,19 +243,24 @@ export default async function Home() {
 
       <section className="section-padding welcome-section">
         <div className="container welcome-layout">
-          <div className="welcome-img-container reveal-on-scroll" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderRadius: 'var(--radius-lg)', height: '100%', minHeight: '320px', width: '100%' }}>
+          <div className="welcome-apple-card reveal-on-scroll">
             {kepalaSekolah ? (
-              <Image 
-                src={kepalaSekolah.image} 
-                alt={`Foto ${kepalaSekolah.name}`} 
-                className="welcome-img" 
-                width={400}
-                height={500}
-                style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '320px' }}
-                loading="lazy"
-              />
+              <>
+                <Image 
+                  src={kepalaSekolah.image} 
+                  alt={`Foto ${kepalaSekolah.name}`} 
+                  className="welcome-img" 
+                  width={300}
+                  height={380}
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  loading="lazy"
+                />
+                <div className="welcome-apple-badge">
+                  Kepala Sekolah
+                </div>
+              </>
             ) : (
-              <div style={{ backgroundColor: '#f8fafc', color: 'var(--text-muted)', border: '2px dashed var(--border-color)', width: '100%', height: '100%', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '20px', borderRadius: 'var(--radius-lg)' }}>
+              <div style={{ backgroundColor: '#f8fafc', color: 'var(--text-muted)', border: '2px dashed var(--border-color)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '20px', borderRadius: '20px' }}>
                 <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" style={{ width: '32px', height: '32px' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
