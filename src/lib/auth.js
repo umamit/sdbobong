@@ -2,11 +2,9 @@ import { SignJWT, jwtVerify } from 'jose';
 
 // Secure private session key loading with environment variables
 const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY || 
-                           process.env.FLASK_SECRET_KEY || 
                            'sdn-bobong-session-secret-key-2026-secure-hmac';
 
-if (process.env.NODE_ENV === 'production' && 
-    (!process.env.SESSION_SECRET_KEY && !process.env.FLASK_SECRET_KEY)) {
+if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET_KEY) {
   console.warn("WARNING: Using default hardcoded SESSION_SECRET_KEY in production! Please configure SESSION_SECRET_KEY env variable.");
 }
 
