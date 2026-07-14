@@ -496,7 +496,9 @@ export default function FacilityMapSvg(props) {
               </text>
               <rect 
                 x="390" y="458" width="80" height="15" rx="3" 
-                fill="transparent" 
+                fill="#000000"
+                fillOpacity="0"
+                pointerEvents="all"
                 style={{ cursor: 'pointer' }} 
                 onClick={() => setSouthFloor(southFloor === 1 ? 2 : 1)} 
               />
