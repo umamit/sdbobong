@@ -27,7 +27,7 @@ Cache-Control: private, no-cache, no-store, must-revalidate
 - Keep database access server-side.
 - Never modify:
   - layout.js
-  - middleware.js
+  - proxy.js (Next.js 16 middleware)
   - next.config.js
   - package.json
 
@@ -198,6 +198,13 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
   - Gunakan **"Agenda Akademik"** untuk kegiatan/acara bulanan yang dinamis (dikelola oleh admin).
   - Gunakan **"Kalender Pendidikan"** untuk jadwal tahunan terstruktur (berbentuk tabel grid/gambar statis).
 - Selalu gunakan kata kerja aksi yang jelas pada tombol pemicu tindakan (contoh: "Lihat Rundown & Panduan" daripada hanya "Detail").
+
+---
+
+# 12. Next.js 16 Middleware (Proxy)
+
+- Proyek ini menggunakan Next.js 16 di mana konvensi `middleware.js` telah digantikan oleh `src/proxy.js` dengan fungsi `export async function proxy(request)`.
+- Jangan pernah mengubah nama berkas `src/proxy.js` kembali menjadi `middleware.js`. File `proxy.js` adalah mekanisme middleware yang aktif di lingkungan proyek ini.
 
 ---
 
