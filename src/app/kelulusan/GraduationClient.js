@@ -209,7 +209,7 @@ export default function GraduationClient() {
 
               {/* Letter Opener */}
               <p style={{ color: '#333', lineHeight: '1.6', marginBottom: 'var(--space-sm)' }}>
-                Kepala Sekolah SD Negeri Bobong, berdasarkan kriteria kelulusan dan hasil rapat dewan pendidik tentang penentuan kelulusan siswa kelas VI Tahun Ajaran 2025/2026 tanggal 15 Juni 2026, menetapkan bahwa:
+                Kepala Sekolah, SD Negeri Bobong, berdasarkan kriteria kelulusan dan hasil rapat dewan pendidik tentang penentuan kelulusan siswa kelas VI Tahun Ajaran 2025/2026 tanggal 15 Juni 2026, menetapkan bahwa:
               </p>
 
               {/* Student Details Box */}
@@ -274,7 +274,7 @@ export default function GraduationClient() {
                 <div />
                 <div style={{ textAlign: 'center', fontSize: '0.95rem', color: '#111' }}>
                   <p style={{ margin: '0' }}>Bobong, 15 Juni 2026</p>
-                  <p style={{ margin: '0 0 60px' }}><strong>Kepala Sekolah SDN Bobong,</strong></p>
+                  <p style={{ margin: '0 0 60px' }}><strong>Kepala Sekolah, SD Negeri Bobong,</strong></p>
                   <p style={{ margin: '0', textDecoration: 'underline' }}><strong>KASMUDIN, S.Pd.SD</strong></p>
                   <p style={{ margin: '0', fontSize: '0.85rem', color: '#444' }}>NIP. 19780112 200801 1 015</p>
                 </div>

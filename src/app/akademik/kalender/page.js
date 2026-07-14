@@ -592,7 +592,7 @@ export default function KalenderPendidikan() {
           <div className="print-only" style={{ display: 'none', marginTop: '40px', justifyContent: 'flex-end' }}>
             <div style={{ textAlign: 'center', width: '250px' }}>
               <p style={{ margin: '0 0 2px 0' }}>Bobong, 13 Juli 2026</p>
-              <p style={{ margin: '0 0 50px 0', fontWeight: 600 }}>Plt. Kepala Sekolah SDN Bobong</p>
+              <p style={{ margin: '0 0 50px 0', fontWeight: 600 }}>Plt. Kepala Sekolah, SD Negeri Bobong</p>
               <p style={{ margin: '0 0 2px 0', fontWeight: 700, textDecoration: 'underline' }}>HUSNITA USMAN, S.Pd., M.Pd</p>
               <p style={{ margin: 0, color: '#475569', fontSize: '10px' }}>NIP. 19961027 201903 2 006</p>
             </div>
