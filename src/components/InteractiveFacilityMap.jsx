@@ -133,6 +133,7 @@ export default function InteractiveFacilityMap() {
             handleRoomClick={handleRoomClick}
             selectedRoom={selectedRoom}
             southFloor={southFloor}
+            setSouthFloor={setSouthFloor}
           />
         </div>
 

@@ -8,7 +8,8 @@ export default function FacilityMapSvg(props) {
     setHoveredRoom,
     handleRoomClick,
     selectedRoom,
-    southFloor
+    southFloor,
+    setSouthFloor
   } = props;
 
   return (
