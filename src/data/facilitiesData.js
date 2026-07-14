@@ -1,24 +1,24 @@
 export const FACILITIES_DATA = {
   // GEDUNG BARAT (PAVILIUN KIRI - ATAP BIRU)
-  l1_kelas_1: {
-    title: "Ruang Kelas 1",
-    desc: "Ruang kelas belajar bagi siswa Kelas 1, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, dirancang dengan pojok literasi dasar bergambar guna merangsang kecintaan belajar sejak dini.",
+  kelas_1_4: {
+    title: "Ruang Kelas 1 & 4 (Gedung Barat Laut)",
+    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 1, dan siang hari digunakan untuk pembelajaran Kelas 4. Ruangan dirancang dengan sirkulasi udara optimal dan alat peraga edukatif interaktif.",
     stats: {
-      kapasitas: "28 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
-      kondisi: "Sangat Layak (Bersih & Terawat)",
-      fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku Bergambar", "Alat Peraga Edukatif Dasar (APE)", "Kipas Angin Dinding"]
+      kapasitas: "30 Siswa per Shift",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
+      kondisi: "Sangat Baik & Terawat",
+      fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Kipas Angin Dinding"]
     },
     icon: "🎒",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
   },
-  l1_kelas_2: {
-    title: "Ruang Kelas 2",
-    desc: "Ruang kelas belajar khusus siswa Kelas 2, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas.",
+  kelas_2_5: {
+    title: "Ruang Kelas 2 & 5 (Gedung Barat Laut)",
+    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 2, dan siang hari digunakan untuk pembelajaran Kelas 5. Dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas.",
     stats: {
-      kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
+      kapasitas: "32 Siswa per Shift",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
       kondisi: "Sangat Baik",
       fasilitas: ["Papan Tulis Whiteboard", "Pojok Literasi Tematik", "Mading Karya Seni Murid", "Almari Penyimpanan Buku Paket", "Sirkulasi Udara Alami"]
     },
@@ -26,57 +26,18 @@ export const FACILITIES_DATA = {
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
   },
-  l2_kelas_3: {
-    title: "Ruang Kelas 3",
-    desc: "Ruang kelas belajar siswa Kelas 3 yang terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar pagi, memberikan suasana belajar yang sejuk dan rindang langsung mengarah ke lapangan utama.",
+  kelas_3_6: {
+    title: "Ruang Kelas 3 & 6 (Gedung Barat Laut)",
+    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 3, dan siang hari digunakan untuk pembelajaran Kelas 6 (persiapan ujian kelulusan). Memberikan suasana belajar yang sangat kondusif.",
     stats: {
-      kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Pagi)",
+      kapasitas: "30 Siswa per Shift",
+      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
       kondisi: "Sangat Kondusif",
-      fasilitas: ["Papan Tulis Whiteboard", "Peta Nusantara & Dunia Dinding", "Rak Penyimpanan Tas Murid", "Meja Belajar Solid Wood", "Kipas Angin Angin Silang"]
+      fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Peta Nusantara & Dunia Dinding", "Loker Arsip Soal Latihan", "Meja Belajar Solid Wood"]
     },
     icon: "📖",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
-  },
-  l2_kelas_4: {
-    title: "Ruang Kelas 4",
-    desc: "Ruang kelas belajar bagi siswa Kelas 4, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang, dirancang untuk mendukung pembelajaran interaktif kelompok kecil.",
-    stats: {
-      kapasitas: "32 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
-      kondisi: "Sangat Baik (Terang & Bersih)",
-      fasilitas: ["Whiteboard", "Pojok Baca Buku Pelajaran", "Media Peraga Matematika & IPA", "Mading Kelas Aktif", "Kipas Angin Dinding"]
-    },
-    icon: "📐",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop"
-  },
-  l2_kelas_5: {
-    title: "Ruang Kelas 5",
-    desc: "Ruang belajar siswa Kelas 5 di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang, ruangan ini memiliki sirkulasi cahaya matahari pagi yang melimpah.",
-    stats: {
-      kapasitas: "32 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
-      kondisi: "Sangat Baik & Teduh",
-      fasilitas: ["Papan Tulis Magnetik", "Almari Buku Referensi Murid", "Satu Set Alat Musik Suling & Pianika", "Display Portofolio Karya Seni", "Ventilasi Silang Optimal"]
-    },
-    icon: "🎨",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop"
-  },
-  l2_kelas_6: {
-    title: "Ruang Kelas 6",
-    desc: "Ruang kelas siswa Kelas 6 sebagai sarana persiapan pematangan mental menuju jenjang SMP, terletak di Gedung Barat Laut (Klaster Utara). Menggunakan ruang kelas fisik secara bersama dengan pembagian shift belajar siang.",
-    stats: {
-      kapasitas: "30 Siswa",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar - Shift Siang)",
-      kondisi: "Kondusif & Tenang",
-      fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Alat Peraga Bangun Ruang Matematika", "Mading Informasi Pendaftaran SMP", "Loker Arsip Soal Latihan"]
-    },
-    icon: "🎓",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=800&auto=format&fit=crop"
   },
 
   // GEDUNG SELATAN (UTAMA / BAWAH - ATAP MERAH - 2 LANTAI)
