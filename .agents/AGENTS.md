@@ -208,6 +208,14 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
 
 ---
 
+# 13. Aturan Pembaruan Versi (Versioning)
+
+- Setiap kali melakukan pembaruan fitur mayor atau perbaikan sistem yang signifikan (seperti perubahan tata letak peta baru, perbaikan bug kritis, atau desain ulang visual):
+  - Wajib menaikkan (*bump*) nomor versi website di dalam berkas [package.json](file:///Users/husnitausman/Documents/antigravity/modest-raman/package.json).
+  - Wajib menyelaraskan nomor versi tersebut di dalam tampilan footer halaman pada berkas [Footer.jsx](file:///Users/husnitausman/Documents/antigravity/modest-raman/src/components/Footer.jsx) (misalnya menaikkan dari `v2.5.0` ke `v2.5.1` atau `v2.6.0` sesuai skala perubahan).
+
+---
+
 # Golden Rule
 
 
