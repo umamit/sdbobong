@@ -129,8 +129,11 @@ export default async function Home() {
                 objectFit: 'cover',
                 pointerEvents: 'none',
                 zIndex: 1,
+                transform: 'translate3d(0, 0, 0)', // Safari GPU rendering fix
               }}
             >
+              <source src={config.stats.hero_background} type="video/mp4" />
+              <source src={config.stats.hero_background} type="video/webm" />
               Your browser does not support the video tag.
             </video>
             {/* Inline script to force video play and handle browser autoplay policy restrictions */}
@@ -184,7 +187,7 @@ export default async function Home() {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.82) 0%, rgba(9, 34, 53, 0.87) 100%)',
+                background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.55) 0%, rgba(9, 34, 53, 0.65) 100%)',
                 zIndex: 2,
               }}
             />
