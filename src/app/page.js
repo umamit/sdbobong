@@ -119,7 +119,7 @@ export default async function Home() {
               muted
               defaultMuted
               playsInline
-              preload="auto"
+              preload="none"
               poster="/images/hero_school.svg"
               style={{
                 position: 'absolute',
@@ -130,6 +130,8 @@ export default async function Home() {
                 objectFit: 'cover',
                 pointerEvents: 'none',
                 zIndex: 1,
+                opacity: 0,
+                transition: 'opacity 0.6s ease-in-out',
               }}
             >
               Your browser does not support the video tag.
@@ -141,9 +143,24 @@ export default async function Home() {
                   (function() {
                     var v = document.getElementById("hero-video");
                     if (v) {
+                      // Prevent video download on mobile screens to save bandwidth and improve LCP
+                      if (window.innerWidth <= 768) {
+                        v.removeAttribute('src');
+                        try { v.load(); } catch(e) {}
+                        v.style.opacity = '1';
+                        console.log("📱 Mobile device detected: video download aborted, showing fallback poster.");
+                        return;
+                      }
+
                       v.muted = true;
                       v.defaultMuted = true;
                       
+                      // Fade in video once it actually starts playing
+                      v.addEventListener("playing", function() {
+                        v.style.opacity = '1';
+                        console.log("▶️ Video background is now playing and visible.");
+                      });
+
                       // Diagnostic console logging
                       v.addEventListener("play", function() { console.log("▶️ Video background starts playing successfully!"); });
                       v.addEventListener("pause", function() { console.log("⏸️ Video background paused."); });
