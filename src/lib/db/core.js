@@ -60,10 +60,27 @@ export const MESSAGES_JSON       = path.join(DATA_DIR, 'messages.json');
 export const GRADUATION_JSON     = path.join(DATA_DIR, 'graduation.json');
 export const STUDENTS_JSON       = path.join(DATA_DIR, 'students.json');
 
-// --- Shared cache for config ---
-let cachedConfig = null;
-export function getCachedConfig() { return cachedConfig; }
-export function setCachedConfig(cfg) { cachedConfig = cfg; }
+// --- Shared TTL-based in-memory cache for config ---
+// Prevents repeated Prisma/Supabase calls on every SSR request.
+const CONFIG_TTL_MS = 60_000; // 60 seconds
+let _configCache = { data: null, expiresAt: 0 };
+
+export function getCachedConfig() { return _configCache.data; }
+
+export function setCachedConfig(cfg) {
+  _configCache = { data: cfg, expiresAt: Date.now() + CONFIG_TTL_MS };
+}
+
+/** Returns cached config only if it's still fresh, null otherwise. */
+export function getFreshCachedConfig() {
+  if (_configCache.data && Date.now() < _configCache.expiresAt) return _configCache.data;
+  return null;
+}
+
+/** Immediately invalidates the cache (e.g. after admin saves new config). */
+export function invalidateConfigCache() {
+  _configCache = { data: null, expiresAt: 0 };
+}
 
 export function isSupabaseEnabled() {
   if (!supabase) return false;

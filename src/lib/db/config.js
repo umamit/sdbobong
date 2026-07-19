@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, setCachedConfig, WEBSITE_CONFIG_JSON } from './core.js';
+import { isSupabaseEnabled, setCachedConfig, getFreshCachedConfig, invalidateConfigCache, WEBSITE_CONFIG_JSON } from './core.js';
 import { mergeWithDefaults } from './config.defaults.js';
 import { prisma } from '../prisma.js';
 
@@ -38,6 +38,11 @@ export async function markTableSeeded(tableName) {
 }
 
 export async function loadWebConfig() {
+  // Return immediately if a fresh in-memory cache is available (< 60s old).
+  // This is the primary mechanism to avoid repeated Supabase round-trips on every SSR request.
+  const fresh = getFreshCachedConfig();
+  if (fresh) return fresh;
+
   let localConfig = {
     marquee_announcements: [
       "📢 PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka! Silakan daftar online pada portal PPDB.",
@@ -124,6 +129,8 @@ export async function loadWebConfig() {
 }
 
 export async function saveWebConfig(config) {
+  // Invalidate TTL cache immediately so the next request fetches fresh data from DB.
+  invalidateConfigCache();
   setCachedConfig(config);
   if (!config.stats) config.stats = {};
   config.stats.marquee_speed = config.marquee_speed || 40;
