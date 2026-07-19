@@ -113,13 +113,13 @@ export default async function Home() {
             <video
               id="hero-video"
               key={config.stats.hero_background}
-              data-src={config.stats.hero_background}
+              src={config.stats.hero_background}
               autoPlay
               loop
               muted
               defaultMuted
               playsInline
-              preload="none"
+              preload="auto"
               poster="/images/hero_school.svg"
               style={{
                 position: 'absolute',
@@ -130,8 +130,6 @@ export default async function Home() {
                 objectFit: 'cover',
                 pointerEvents: 'none',
                 zIndex: 1,
-                opacity: 0,
-                transition: 'opacity 0.6s ease-in-out',
               }}
             >
               Your browser does not support the video tag.
@@ -143,25 +141,9 @@ export default async function Home() {
                   (function() {
                     var v = document.getElementById("hero-video");
                     if (v) {
-                      // Prevent video download on mobile screens to save bandwidth and improve LCP
-                      if (window.innerWidth <= 768) {
-                        v.removeAttribute('src');
-                        v.removeAttribute('data-src');
-                        try { v.load(); } catch(e) {}
-                        v.style.opacity = '1';
-                        console.log("📱 Mobile device detected: video download aborted, showing fallback poster.");
-                        return;
-                      }
-
                       v.muted = true;
                       v.defaultMuted = true;
                       
-                      // Fade in video once it actually starts playing
-                      v.addEventListener("playing", function() {
-                        v.style.opacity = '1';
-                        console.log("▶️ Video background is now playing and visible.");
-                      });
-
                       // Diagnostic console logging
                       v.addEventListener("play", function() { console.log("▶️ Video background starts playing successfully!"); });
                       v.addEventListener("pause", function() { console.log("⏸️ Video background paused."); });
@@ -185,27 +167,9 @@ export default async function Home() {
                           document.addEventListener("touchstart", playVideo);
                         });
                       };
-
-                      // DEFERRED INJECTION: Wait for window load event to ensure main page is loaded instantly
-                      var initVideo = function() {
-                        var videoSrc = v.getAttribute('data-src');
-                        if (videoSrc) {
-                          v.src = videoSrc;
-                          try { v.load(); } catch(e) {}
-                          attemptPlay();
-                        }
-                      };
-
-                      if (document.readyState === 'complete') {
-                        // If page is already loaded, initialize after a tiny safety timeout
-                        setTimeout(initVideo, 500);
-                      } else {
-                        // Otherwise wait until window load completes
-                        window.addEventListener('load', function() {
-                          setTimeout(initVideo, 300);
-                        });
-                      }
                       
+                      // Execute immediately and attach events to eliminate any delay
+                      attemptPlay();
                       v.addEventListener("loadedmetadata", attemptPlay);
                       v.addEventListener("canplay", attemptPlay);
                     }
