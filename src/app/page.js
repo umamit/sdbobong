@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
-import HeroCanvasBackground from '../components/HeroCanvasBackground';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
@@ -228,7 +227,6 @@ export default async function Home() {
             </div>
           )
         )}
-        <HeroCanvasBackground />
         <div className="container hero-content">
           <span className="hero-subtitle">{beranda.hero_subtitle}</span>
           <h1 className="hero-title">{beranda.hero_title}</h1>
