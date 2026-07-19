@@ -84,7 +84,7 @@ export function invalidateConfigCache() {
 
 export function isSupabaseEnabled() {
   if (!supabase) return false;
-  if (cachedConfig && cachedConfig.force_local_cache === true) return false;
+  if (_configCache.data && _configCache.data.force_local_cache === true) return false;
   try {
     if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
       const config = JSON.parse(fs.readFileSync(WEBSITE_CONFIG_JSON, 'utf-8'));
