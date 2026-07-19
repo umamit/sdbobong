@@ -113,7 +113,7 @@ export default async function Home() {
             <video
               id="hero-video"
               key={config.stats.hero_background}
-              src={config.stats.hero_background}
+              data-src={config.stats.hero_background}
               autoPlay
               loop
               muted
@@ -146,6 +146,7 @@ export default async function Home() {
                       // Prevent video download on mobile screens to save bandwidth and improve LCP
                       if (window.innerWidth <= 768) {
                         v.removeAttribute('src');
+                        v.removeAttribute('data-src');
                         try { v.load(); } catch(e) {}
                         v.style.opacity = '1';
                         console.log("📱 Mobile device detected: video download aborted, showing fallback poster.");
@@ -184,9 +185,27 @@ export default async function Home() {
                           document.addEventListener("touchstart", playVideo);
                         });
                       };
+
+                      // DEFERRED INJECTION: Wait for window load event to ensure main page is loaded instantly
+                      var initVideo = function() {
+                        var videoSrc = v.getAttribute('data-src');
+                        if (videoSrc) {
+                          v.src = videoSrc;
+                          try { v.load(); } catch(e) {}
+                          attemptPlay();
+                        }
+                      };
+
+                      if (document.readyState === 'complete') {
+                        // If page is already loaded, initialize after a tiny safety timeout
+                        setTimeout(initVideo, 500);
+                      } else {
+                        // Otherwise wait until window load completes
+                        window.addEventListener('load', function() {
+                          setTimeout(initVideo, 300);
+                        });
+                      }
                       
-                      // Execute immediately and attach events to eliminate any delay
-                      attemptPlay();
                       v.addEventListener("loadedmetadata", attemptPlay);
                       v.addEventListener("canplay", attemptPlay);
                     }
