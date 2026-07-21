@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Helper function to extract YouTube Video ID from any format
 function getYoutubeId(url) {
@@ -288,23 +289,30 @@ export default function GalleryClient({ initialGallery }) {
 
       {/* Masonry-style Pinterest Grid */}
       {displayedItems.length > 0 ? (
-        <div className="gallery-masonry-grid animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-          {displayedItems.map((item) => {
-            const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
-            const isFb = isFacebookUrl(item.url);
-            const isDrive = isGoogleDriveUrl(item.url);
-            const thumbUrl = ytId 
-              ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
-              : isDrive && item.type === 'image'
-                ? getCleanGoogleDriveUrl(item.url, 'image')
-                : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
+        <motion.div className="gallery-masonry-grid" layout>
+          <AnimatePresence mode="popLayout">
+            {displayedItems.map((item) => {
+              const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
+              const isFb = isFacebookUrl(item.url);
+              const isDrive = isGoogleDriveUrl(item.url);
+              const thumbUrl = ytId 
+                ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` 
+                : isDrive && item.type === 'image'
+                  ? getCleanGoogleDriveUrl(item.url, 'image')
+                  : (item.thumbnail || item.url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800");
 
-            return (
-              <div
-                key={item.id}
-                onClick={() => setActiveImage(item)}
-                className="gallery-masonry-item"
-              >
+              return (
+                <motion.div
+                  key={item.id}
+                  onClick={() => setActiveImage(item)}
+                  className="gallery-masonry-item"
+                  layout
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.88 }}
+                  whileHover={{ y: -6, scale: 1.01 }}
+                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                >
                 {/* Category Badge overlay */}
                 <div 
                   className="gallery-category-badge"
@@ -472,10 +480,11 @@ export default function GalleryClient({ initialGallery }) {
                     {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+          </AnimatePresence>
+        </motion.div>
       ) : (
         <div className="card-custom animate-fadeIn" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
           <p style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>Tidak ada media ditemukan 🔍</p>
@@ -510,24 +519,29 @@ export default function GalleryClient({ initialGallery }) {
       )}
 
       {/* Lightbox Overlay */}
-      {activeItem && (
-        <div
-          className="lightbox active glassmorphic-lightbox"
-          id="gallery-lightbox"
-          onClick={(e) => {
-            if (e.target.id === 'gallery-lightbox') setActiveImage(null);
-          }}
-          style={{
-            position: 'fixed',
-            top: 0, left: 0, width: '100%', height: '100%',
-            zIndex: 9999,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 'var(--space-md)'
-          }}
-        >
+      <AnimatePresence>
+        {activeItem && (
+          <motion.div
+            className="lightbox active glassmorphic-lightbox"
+            id="gallery-lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={(e) => {
+              if (e.target.id === 'gallery-lightbox') setActiveImage(null);
+            }}
+            style={{
+              position: 'fixed',
+              top: 0, left: 0, width: '100%', height: '100%',
+              zIndex: 9999,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 'var(--space-md)'
+            }}
+          >
           {/* Close Button */}
           <button
             onClick={() => setActiveImage(null)}
@@ -644,8 +658,9 @@ export default function GalleryClient({ initialGallery }) {
               {activeItem.date ? new Date(activeItem.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
             </p>
           </div>
-        </div>
+        </motion.div>
       )}
-    </div>
-  );
+    </AnimatePresence>
+  </div>
+);
 }

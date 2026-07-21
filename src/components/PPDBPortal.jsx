@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -125,14 +126,28 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
 
           <div className="grid-2">
             {/* Usia */}
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '2px solid var(--secondary)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.35 }}
+              style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '2px solid var(--secondary)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+            >
               <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-xs)' }}>👶</div>
               <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>Batas Usia Anak</h3>
               <p style={{ fontSize: '0.95rem', marginBottom: 0 }}>{syarat_usia}</p>
-            </div>
+            </motion.div>
 
             {/* Dokumen */}
-            <div style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.35, delay: 0.1 }}
+              style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}
+            >
               <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
                 Dokumen yang Harus Disiapkan
@@ -142,7 +157,7 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
                   <li key={idx}>{berkas}</li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>

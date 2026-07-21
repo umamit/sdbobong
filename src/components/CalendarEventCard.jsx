@@ -1,12 +1,19 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 /** Kartu agenda kalender yang bisa diklik — menampilkan CTA agar pengguna smartphone tahu ada detail di dalamnya */
 export default function CalendarEventCard({ row, isCurrent, countdown, onClick }) {
   const hasCountdown = countdown && !countdown.includes('Sedang');
 
   return (
-    <div
+    <motion.div
       onClick={onClick}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-30px' }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.35 }}
       style={{
         backgroundColor: 'white',
         border: isCurrent ? '2px solid var(--secondary)' : '1px solid var(--border-color)',
@@ -14,20 +21,11 @@ export default function CalendarEventCard({ row, isCurrent, countdown, onClick }
         padding: 'var(--space-md)',
         boxShadow: isCurrent ? 'var(--shadow-lg)' : 'var(--shadow-sm)',
         cursor: 'pointer',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         gap: '10px'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = isCurrent ? 'var(--shadow-lg)' : 'var(--shadow-sm)';
       }}
     >
       {/* Badge bulan ini */}
@@ -93,6 +91,6 @@ export default function CalendarEventCard({ row, isCurrent, countdown, onClick }
         Lihat Rundown &amp; Panduan
         <span style={{ fontSize: '1rem' }}>→</span>
       </div>
-    </div>
+    </motion.div>
   );
 }

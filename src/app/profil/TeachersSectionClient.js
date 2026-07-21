@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TeachersSectionClient({ teachers }) {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
@@ -223,10 +224,15 @@ export default function TeachersSectionClient({ teachers }) {
                   boxSizing: 'border-box'
                 }}>
                   {dewanGuruList.map((guru) => (
-                    <div 
+                    <motion.div 
                       key={guru.id} 
                       onClick={() => setSelectedTeacher(guru)}
                       className="clickable-card"
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
                       style={{ 
                         backgroundColor: 'white', 
                         border: '1px solid var(--border-color)', 
@@ -274,7 +280,7 @@ export default function TeachersSectionClient({ teachers }) {
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 600 }}>
                         {guru.role}
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               ) : (
@@ -345,74 +351,82 @@ export default function TeachersSectionClient({ teachers }) {
       </section>
 
       {/* ================= BIOGRAPHY MODAL (GLASSMORPHIC) ================= */}
-      {selectedTeacher && (
-        <div 
-          className="modal-fade-in"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'rgba(15, 23, 42, 0.6)',
-            backdropFilter: 'blur(12px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 99999,
-            padding: '1rem',
-            boxSizing: 'border-box'
-          }}
-          onClick={() => setSelectedTeacher(null)}
-        >
-          <div 
-            className="modal-scale-up"
+      <AnimatePresence>
+        {selectedTeacher && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="modal-fade-in"
             style={{
-              background: 'rgba(255, 255, 255, 0.85)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.4)',
-              borderRadius: '24px',
-              padding: '2rem',
-              width: '100%',
-              maxWidth: '650px',
-              maxHeight: '85vh',
-              overflowY: 'auto',
-              boxShadow: '0 30px 60px -15px rgba(15, 23, 42, 0.3)',
-              position: 'relative',
-              textAlign: 'left',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(15, 23, 42, 0.6)',
+              backdropFilter: 'blur(12px)',
               display: 'flex',
-              flexDirection: 'column',
-              gap: '1.5rem',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 99999,
+              padding: '1rem',
               boxSizing: 'border-box'
             }}
-            onClick={(e) => e.stopPropagation()}
+            onClick={() => setSelectedTeacher(null)}
           >
-            {/* Close Circular Button */}
-            <button
-              onClick={() => setSelectedTeacher(null)}
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                position: 'absolute',
-                top: '1rem',
-                right: '1rem',
-                backgroundColor: 'rgba(15, 23, 42, 0.08)',
-                border: 'none',
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.85)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.4)',
+                borderRadius: '24px',
+                padding: '2rem',
+                width: '100%',
+                maxWidth: '650px',
+                maxHeight: '85vh',
+                overflowY: 'auto',
+                boxShadow: '0 30px 60px -15px rgba(15, 23, 42, 0.3)',
+                position: 'relative',
+                textAlign: 'left',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: '#334155',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                transition: 'background-color 0.2s ease'
+                flexDirection: 'column',
+                gap: '1.5rem',
+                boxSizing: 'border-box'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.15)'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.08)'}
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕
-            </button>
+              {/* Close Circular Button */}
+              <button
+                onClick={() => setSelectedTeacher(null)}
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  backgroundColor: 'rgba(15, 23, 42, 0.08)',
+                  border: 'none',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#334155',
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  transition: 'background-color 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.15)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.08)'}
+              >
+                ✕
+              </button>
 
             {/* Profile Header Grid */}
             <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', borderBottom: '1px solid rgba(15, 23, 42, 0.08)', paddingBottom: '1.5rem', flexWrap: 'wrap' }}>
@@ -502,9 +516,10 @@ export default function TeachersSectionClient({ teachers }) {
               </div>
 
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+    </AnimatePresence>
     </>
   );
 }

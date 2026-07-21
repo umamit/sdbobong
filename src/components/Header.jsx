@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -143,25 +144,35 @@ export default function Header() {
                         <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                     </button>
-                    <ul className={`${styles.dropdownMenu} ${isThisDropdownOpen ? styles.show : ''}`}>
-                      {link.dropdown.map((subLink) => {
-                        const isChildActive = pathname === subLink.href;
-                        return (
-                          <li key={subLink.href} className="dropdown-item">
-                            <Link
-                              href={subLink.href}
-                              className={`${styles.dropdownLink} ${isChildActive ? styles.active : ''}`}
-                              onClick={() => {
-                                setActiveDropdown(null);
-                                setIsOpen(false);
-                              }}
-                            >
-                              {subLink.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    <AnimatePresence>
+                      {isThisDropdownOpen && (
+                        <motion.ul
+                          className={`${styles.dropdownMenu} ${styles.show}`}
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {link.dropdown.map((subLink) => {
+                            const isChildActive = pathname === subLink.href;
+                            return (
+                              <li key={subLink.href} className="dropdown-item">
+                                <Link
+                                  href={subLink.href}
+                                  className={`${styles.dropdownLink} ${isChildActive ? styles.active : ''}`}
+                                  onClick={() => {
+                                    setActiveDropdown(null);
+                                    setIsOpen(false);
+                                  }}
+                                >
+                                  {subLink.label}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
                   </li>
                 );
               }

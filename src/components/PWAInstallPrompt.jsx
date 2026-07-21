@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PWAInstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
@@ -89,34 +90,36 @@ export default function PWAInstallPrompt() {
     localStorage.setItem('pwa_prompt_dismissed_time', Date.now().toString());
   };
 
-  if (!showPrompt) return null;
-
   return (
     <>
-      {/* Floating Bottom Install Prompt */}
-      <div 
-        className="pwa-prompt-container no-print" 
-        style={{
-          position: 'fixed',
-          bottom: '24px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '90%',
-          maxWidth: '450px',
-          backgroundColor: '#ffffff',
-          borderRadius: '18px',
-          boxShadow: '0 15px 35px -5px rgba(11, 60, 93, 0.25), 0 8px 15px -8px rgba(11, 60, 93, 0.15)',
-          border: '1px solid rgba(11, 60, 93, 0.08)',
-          borderLeft: '6px solid var(--formal-blue, #0B3C5D)',
-          padding: '16px',
-          zIndex: 999999,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-          animation: 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-          boxSizing: 'border-box'
-        }}
-      >
+      <AnimatePresence>
+        {showPrompt && (
+          <motion.div
+            key="pwa-prompt"
+            className="pwa-prompt-container no-print"
+            initial={{ opacity: 0, y: 50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 50, x: '-50%' }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '50%',
+              width: '90%',
+              maxWidth: '450px',
+              backgroundColor: '#ffffff',
+              borderRadius: '18px',
+              boxShadow: '0 15px 35px -5px rgba(11, 60, 93, 0.25), 0 8px 15px -8px rgba(11, 60, 93, 0.15)',
+              border: '1px solid rgba(11, 60, 93, 0.08)',
+              borderLeft: '6px solid var(--formal-blue, #0B3C5D)',
+              padding: '16px',
+              zIndex: 999999,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              boxSizing: 'border-box'
+            }}
+          >
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           {/* Logo / App Icon */}
           <div style={{
@@ -202,7 +205,9 @@ export default function PWAInstallPrompt() {
             {isIos ? 'Cara Pasang' : 'Pasang Sekarang'}
           </button>
         </div>
-      </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
 
       {/* iOS Installation Instructions Modal Guide */}
       {showIosGuide && (

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { submitMessageAction } from '../actions/messages';
 
 export default function BukuTamuClient({ initialApprovedMessages }) {
@@ -369,17 +370,18 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
           {initialApprovedMessages.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', maxHeight: '600px', overflowY: 'auto', paddingRight: '4px' }} className="custom-scrollbar">
               {initialApprovedMessages.map((msg) => (
-                <div
+                <motion.div
                   key={msg.id}
                   className="card-custom"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ duration: 0.3 }}
                   style={{
                     padding: 'var(--space-md)',
                     background: 'white',
                     borderLeft: `4px solid ${getRoleBadgeColor(msg.role)}`,
-                    transition: 'transform 0.2s',
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.01)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xs)' }}>
                     <div>
@@ -404,10 +406,10 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                     </span>
                   </div>
                   
-                  <p style={{ margin: '0', fontSize: '0.95rem', color: '#555', fontStyle: 'italic', lineHeight: '1.5' }}>
+                  <p style={{ margin: '0', fontSize: '0.9rem', color: 'var(--text-color)', lineHeight: '1.5' }}>
                     "{msg.message}"
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           ) : (
