@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || '';
@@ -98,6 +99,8 @@ export function isSupabaseEnabled() {
 
 /**
  * Uploads a file either to Supabase Storage (if enabled) or falls back to local storage.
+ * Images (JPG/PNG) are automatically converted to WebP (quality 85) before upload.
+ * SVG, GIF, and video files are uploaded as-is without conversion.
  * Note: When using Supabase Storage, the following buckets MUST be created and set to public read:
  * - 'teachers' (for teacher avatars, facilities, hero bg, gallery)
  * - 'news' (for news photos)
@@ -107,16 +110,40 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
   if (!fileObj || typeof fileObj === 'string' || !fileObj.name) return "NO_FILE";
   const extension = fileObj.name.split('.').pop().toLowerCase();
   if (!allowedExts.includes(extension)) return "INVALID_TYPE";
-  const secureName = fileObj.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-  const uniqueFilename = `${Date.now()}_${secureName}`;
+
   let buffer;
   try {
     buffer = Buffer.from(await fileObj.arrayBuffer());
   } catch (e) { console.error("Failed to read file buffer:", e); return "ERROR"; }
 
+  // Convert JPG/PNG to WebP for smaller file size (quality 85, visually indistinguishable).
+  // SVG, GIF, and video files are passed through unchanged.
+  const CONVERTIBLE_EXTS = ['jpg', 'jpeg', 'png'];
+  const isConvertible = CONVERTIBLE_EXTS.includes(extension);
+  let finalBuffer = buffer;
+  let finalExtension = extension;
+  let finalMimeType = fileObj.type;
+
+  if (isConvertible) {
+    try {
+      finalBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
+      finalExtension = 'webp';
+      finalMimeType = 'image/webp';
+    } catch (e) {
+      console.error('WebP conversion failed, uploading original:', e.message);
+      // Fallback: upload original if conversion fails
+      finalBuffer = buffer;
+      finalExtension = extension;
+      finalMimeType = fileObj.type;
+    }
+  }
+
+  const baseName = fileObj.name.replace(/[^a-zA-Z0-9.-]/g, '_').replace(/\.[^.]+$/, '');
+  const uniqueFilename = `${Date.now()}_${baseName}.${finalExtension}`;
+
   if (isSupabaseEnabled()) {
     try {
-      const { error } = await supabase.storage.from(bucketName).upload(uniqueFilename, buffer, { contentType: fileObj.type, upsert: true });
+      const { error } = await supabase.storage.from(bucketName).upload(uniqueFilename, finalBuffer, { contentType: finalMimeType, upsert: true });
       if (error) throw error;
       const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(uniqueFilename);
       return publicUrlData.publicUrl;
@@ -125,7 +152,7 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
   try {
     const uploadDir = path.join(process.cwd(), 'public', 'images', 'uploads');
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    fs.writeFileSync(path.join(uploadDir, uniqueFilename), buffer);
+    fs.writeFileSync(path.join(uploadDir, uniqueFilename), finalBuffer);
     return `/images/uploads/${uniqueFilename}`;
   } catch (e) { console.error("Local file save failed:", e); return "ERROR"; }
 }
