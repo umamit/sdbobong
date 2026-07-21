@@ -40,7 +40,6 @@ export default async function RootLayout({ children }) {
   const schoolNpsn = profil.npsn || "60200589";
 
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
-  const floatingPhone = (contacts.wa_floating || contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
 
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';

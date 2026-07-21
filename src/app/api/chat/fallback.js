@@ -64,9 +64,7 @@ Ada yang ingin Anda tanyakan lagi mengenai PPDB sekolah kami? 😊`;
 📞 **Kontak Resmi Panitia PPDB & Sekolah:**
 * **Humas Sekolah:** ${schoolData.namaHumas} ${humasContactText}
 * **Operator Sekolah:** ${schoolData.namaOperator} ${operatorContactText}
-* **Email Resmi:** ${schoolData.emailSekolah}
-
-💡 *Tips:* Anda juga dapat langsung mengklik **Tombol WhatsApp Melayang berwarna hijau** di pojok kanan bawah layar Anda untuk terhubung langsung dengan operator kami secara instan!`;
+* **Email Resmi:** ${schoolData.emailSekolah}`;
   }
 
   if (q.includes("alamat") || q.includes("lokasi") || q.includes("peta") || q.includes("di mana") || q.includes("dimana")) {

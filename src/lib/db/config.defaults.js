@@ -108,7 +108,6 @@ export const DEFAULT_CONFIG = {
     nama_humas: 'Belum diset admin',
     wa_humas: '',
     jabatan_humas: '',
-    wa_floating: '',
     nama_operator: 'Belum diset admin',
     wa_operator: '',
     jabatan_operator: '',

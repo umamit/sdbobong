@@ -282,19 +282,7 @@ export default function PpdbSubTab(props) {
                       <input type="hidden" name="jabatan_operator" value={config?.ppdb_contacts?.jabatan_operator || ''} />
                       <input type="hidden" name="nip_operator" value={config?.ppdb_contacts?.nip_operator || ''} />
 
-                      <div className="grid-2" style={{ gap: 'var(--space-md)', marginBottom: 'var(--space-md)' }}>
-                        <div className="form-group">
-                          <label htmlFor="wa_floating" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>No. WhatsApp Tombol Melayang (Format: 628xxx)</label>
-                          <input
-                            type="text"
-                            id="wa_floating"
-                            name="wa_floating"
-                            className="form-control"
-                            defaultValue={config?.ppdb_contacts?.wa_floating || ''}
-                            style={{ width: '100%' }}
-                            placeholder="Contoh: 6281234567890"
-                          />
-                        </div>
+                      <div style={{ marginBottom: 'var(--space-md)' }}>
                         <div className="form-group">
                           <label htmlFor="email_sekolah" style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.85rem' }}>Email Resmi Sekolah (Footer & Kontak)</label>
                           <input

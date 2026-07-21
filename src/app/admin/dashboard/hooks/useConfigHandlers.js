@@ -196,7 +196,7 @@ export default function useConfigHandlers({
     const nama_operator = form.nama_operator.value.trim();
     const wa_operator = form.wa_operator.value.trim();
     const jabatan_operator = form.jabatan_operator.value.trim();
-    const wa_floating = form.wa_floating.value.trim();
+    const wa_floating = form.wa_floating ? form.wa_floating.value.trim() : '';
     const email_sekolah = form.email_sekolah.value.trim();
 
     const matchedHumas = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(nama_humas));
@@ -206,19 +206,17 @@ export default function useConfigHandlers({
 
     const clean_wa_humas = wa_humas.replace(/[^0-9]/g, '');
     const clean_wa_operator = wa_operator.replace(/[^0-9]/g, '');
-    const clean_wa_floating = wa_floating.replace(/[^0-9]/g, '');
 
     if (clean_wa_humas && !clean_wa_humas.startsWith('62')) { showToast('danger', 'Format No. WA Humas salah. Gunakan kode negara (contoh: 628xxxx).'); return; }
     if (clean_wa_operator && !clean_wa_operator.startsWith('62')) { showToast('danger', 'Format No. WA Operator salah. Gunakan kode negara.'); return; }
-    if (clean_wa_floating && !clean_wa_floating.startsWith('62')) { showToast('danger', 'Format No. WA Tombol Melayang salah. Gunakan kode negara.'); return; }
 
     try {
-      const payload = { action_type: 'contacts', nama_humas, wa_humas: clean_wa_humas, jabatan_humas, nip_humas, nama_operator, wa_operator: clean_wa_operator, jabatan_operator, nip_operator, wa_floating: clean_wa_floating, email_sekolah };
+      const payload = { action_type: 'contacts', nama_humas, wa_humas: clean_wa_humas, jabatan_humas, nip_humas, nama_operator, wa_operator: clean_wa_operator, jabatan_operator, nip_operator, email_sekolah };
       const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', 'Kontak PPDB & Tombol Melayang berhasil disimpan.');
-        setConfig(prev => ({ ...prev, ppdb_contacts: { nama_humas, wa_humas: clean_wa_humas, jabatan_humas, nip_humas, nama_operator, wa_operator: clean_wa_operator, jabatan_operator, nip_operator, wa_floating: clean_wa_floating, email_sekolah } }));
+        showToast('success', 'Kontak PPDB Sekolah berhasil disimpan.');
+        setConfig(prev => ({ ...prev, ppdb_contacts: { nama_humas, wa_humas: clean_wa_humas, jabatan_humas, nip_humas, nama_operator, wa_operator: clean_wa_operator, jabatan_operator, nip_operator, email_sekolah } }));
         router.refresh();
       } else {
         showToast('danger', data.error || 'Gagal menyimpan kontak PPDB.');

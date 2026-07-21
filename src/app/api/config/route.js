@@ -173,7 +173,6 @@ export async function POST(request) {
         wa_operator: wa_operator || '',
         jabatan_operator: jabatan_operator || '',
         nip_operator: nip_operator || '',
-        wa_floating: wa_floating || '',
         email_sekolah: email_sekolah || ''
       };
     } else if (actionType === 'hero_bg') {
