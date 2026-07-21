@@ -318,7 +318,7 @@ ${sambutanText}
    - Humas Sekolah: ${namaHumas} (Hubungi WhatsApp: +${waHumas})
    - Operator Sekolah: ${namaOperator} (Hubungi WhatsApp: +${waOperator})
    - Email Resmi Sekolah: ${emailSekolah}
-   - Jika ingin menghubungi via WhatsApp, beri tahu mereka bahwa tombol WhatsApp melayang di sudut kanan bawah siap membantu menyambungkan langsung.
+   - Jika ingin menghubungi via WhatsApp, berikan nomor WhatsApp Humas atau Operator sekolah resmi di atas.
 
 5. Sarana & Prasarana (Fasilitas):
    - Ruang Belajar: ${profil.ruang_belajar_desc || "9 Ruang Kelas belajar yang bersih, kondusif, dan nyaman untuk proses KBM."}

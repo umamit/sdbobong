@@ -266,9 +266,9 @@ export default function PpdbSubTab(props) {
                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
                     border: '1px solid var(--border-color)',
                   }}>
-                    <h3>Kelola Kontak Umum & Tombol WhatsApp Melayang</h3>
+                    <h3>Kelola Email Resmi Sekolah</h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                      Tentukan nomor WhatsApp tujuan untuk tombol melayang hijau dan alamat email resmi sekolah yang tampil di footer halaman publik.
+                      Tentukan alamat email resmi sekolah yang tampil di footer halaman publik dan respons AI.
                     </p>
 
                     <form onSubmit={handleContactsUpdate} key={config?.ppdb_contacts ? JSON.stringify(config?.ppdb_contacts) : 'empty'}>
@@ -298,7 +298,7 @@ export default function PpdbSubTab(props) {
                         </div>
                       </div>
 
-                      <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Kontak Umum & Tombol Melayang</button>
+                      <button type="submit" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem' }}>💾 Simpan Email Resmi</button>
                     </form>
                   </div>
                 </div>
