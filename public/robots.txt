@@ -1,26 +1,23 @@
 # =========================================================================
-# PENTING BAGI DEVELOPER / ADMIN:
-# Jika ada penambahan rute halaman publik baru di masa mendatang, pastikan:
-# 1. Halaman tersebut diizinkan (Allow) secara default di bawah.
-# 2. Jika rute bersifat internal / admin, tambahkan baris 'Disallow'.
-# 3. Tambahkan rute publik baru ke 'src/app/sitemap.js' agar selalu sinkron.
+# SD NEGERI BOBONG - ROBOTS.TXT
 # =========================================================================
 
 # ── Semua Bot Pengindeks Umum ─────────────────────────────────────────────
 User-agent: *
 Allow: /
 
-# Larang akses ke halaman admin & internal
+# Larang akses ke halaman admin, guru, login, dan API internal
 Disallow: /admin
 Disallow: /admin/
 Disallow: /guru
 Disallow: /guru/
+Disallow: /login
 Disallow: /api/
 Disallow: /ppdb-online/sukses
 Disallow: /ppdb/daftar/sukses
 Disallow: /_next/
 
-# ── Bot AI Scraper (Blokir Training Data) ────────────────────────────────
+# ── Bot AI Scraper (Blokir Scraping Data yang Tidak Diizinkan) ───────────
 User-agent: GPTBot
 Disallow: /
 
@@ -69,5 +66,5 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-# ── Sitemap ───────────────────────────────────────────────────────────────
+# ── Sitemap Resmi ─────────────────────────────────────────────────────────
 Sitemap: https://sdnegeribobong.sch.id/sitemap.xml
