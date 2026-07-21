@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'SD Negeri Bobong - Cerdas, Berkarakter, dan Berbudaya',
+  title: 'SD Negeri Bobong - Berakhlak Mulia, Cerdas, dan Berbudaya',
   description: 'Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.',
   icons: {
     icon: [

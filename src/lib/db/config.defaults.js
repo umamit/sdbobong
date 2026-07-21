@@ -22,7 +22,7 @@ export const DEFAULT_PAGE_CONTENTS = {
   beranda: {
     hero_subtitle: 'Membangun Masa Depan di Jantung Taliabu',
     hero_title: 'Selamat Datang di Website Resmi SD Negeri Bobong',
-    hero_text: '"Cerdas, Berkarakter, dan Berbudaya." Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.',
+    hero_text: '"Berakhlak Mulia, Cerdas, dan Berbudaya." Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.',
     welcome_badge: 'Sambutan Kepala Sekolah',
     welcome_title: 'Mendidik dengan Hati dan Budaya Taliabu',
     welcome_quote: '"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya."',
