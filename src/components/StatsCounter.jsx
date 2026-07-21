@@ -8,9 +8,9 @@ import { motion } from 'framer-motion';
  * Triggers count-up animation when element enters viewport
  * @param {number} target - Final value to count up to
  * @param {string} suffix - Optional suffix (e.g. "+", "%", "th")
- * @param {number} duration - Animation duration in ms (default 1800)
+ * @param {number} duration - Animation duration in ms (default 2500)
  */
-function AnimatedCounter({ target, suffix = '', duration = 1800 }) {
+function AnimatedCounter({ target, suffix = '', duration = 2500 }) {
   const [count, setCount] = useState(0);
   const [started, setStarted] = useState(false);
   const ref = useRef(null);
@@ -129,18 +129,18 @@ export default function StatsCounter({ stats = {} }) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
+        staggerChildren: 0.22,
       },
     },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    hidden: { opacity: 0, y: 35, scale: 0.94 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] },
+      transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
