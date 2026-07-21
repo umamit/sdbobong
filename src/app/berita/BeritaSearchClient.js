@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import NewsCard from '../../components/NewsCard';
 
 const ITEMS_PER_PAGE = 6;
@@ -186,13 +187,28 @@ export default function BeritaSearchClient({ newsList = [] }) {
         </p>
       </div>
 
-      {/* News Grid */}
+      {/* News Grid with Framer Motion AnimatePresence */}
       {paginatedNews.length > 0 ? (
-        <div className="grid-2" style={{ marginBottom: 'var(--space-lg)' }}>
-          {paginatedNews.map((news) => (
-            <NewsCard key={news.id} news={news} />
-          ))}
-        </div>
+        <motion.div
+          className="grid-2"
+          style={{ marginBottom: 'var(--space-lg)' }}
+          layout
+        >
+          <AnimatePresence mode="popLayout">
+            {paginatedNews.map((news) => (
+              <motion.div
+                key={news.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
+                <NewsCard news={news} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       ) : (
         <div
           style={{

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export default function NewsCard({ news, className = '' }) {
   const images = news.images && news.images.length > 0 ? news.images : [news.image || '/images/news_hari_guru.svg'];
@@ -145,7 +146,16 @@ export default function NewsCard({ news, className = '' }) {
   const isLong = plainText.length > 300;
 
   return (
-    <article id={`news-${news.id}`} className={`news-card card ${className}`} style={{ display: 'flex', flexDirection: 'column' }}>
+    <motion.article
+      id={`news-${news.id}`}
+      className={`news-card card ${className}`}
+      style={{ display: 'flex', flexDirection: 'column' }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+    >
       {/* Slider Visual Container */}
       <div 
         className="card-img-container"
@@ -459,6 +469,6 @@ export default function NewsCard({ news, className = '' }) {
           </div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

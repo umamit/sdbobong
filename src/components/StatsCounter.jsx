@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
 /**
  * AnimatedCounter - Apple HIG animated number counter
@@ -123,13 +124,41 @@ export default function StatsCounter({ stats = {} }) {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] },
+    },
+  };
+
   return (
-    <div className="stats-counter-grid">
+    <motion.div
+      className="stats-counter-grid"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+    >
       {metrics.map((m) => (
-        <div
+        <motion.div
           key={m.label}
-          className="stats-counter-card reveal-on-scroll"
-          style={{ '--card-accent': m.color, transitionDelay: `${m.delay}ms` }}
+          className="stats-counter-card"
+          variants={cardVariants}
+          whileHover={{ y: -6, scale: 1.02 }}
+          style={{ '--card-accent': m.color }}
         >
           <div className="stats-counter-icon-wrap" aria-hidden="true">
             {m.icon}
@@ -138,7 +167,7 @@ export default function StatsCounter({ stats = {} }) {
             <AnimatedCounter target={m.value} suffix={m.suffix} />
           </div>
           <div className="stats-counter-label">{m.label}</div>
-        </div>
+        </motion.div>
       ))}
 
       <style>{`
@@ -218,6 +247,6 @@ export default function StatsCounter({ stats = {} }) {
           text-transform: uppercase;
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 }

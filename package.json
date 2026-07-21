@@ -1,6 +1,6 @@
 {
   "name": "sdn-bobong-nextjs",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "private": true,
   "scripts": {
     "prebuild": "node scripts/check-print-safety.mjs && node scripts/check-file-lengths.mjs && prisma generate",
@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.110.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "framer-motion": "^12.42.2",
     "jose": "^6.2.3",
     "next": "^16.2.10",
     "pg": "^8.22.0",
