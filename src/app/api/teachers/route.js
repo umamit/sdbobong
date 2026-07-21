@@ -5,6 +5,7 @@ import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import { handleApiDelete } from '../../../lib/api-helper';
+import { isForbiddenName } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -56,6 +57,10 @@ export async function POST(request) {
 
     if (!name || !role || !status) {
       return NextResponse.json({ error: "Kolom Nama, Jabatan, dan Status wajib diisi!" }, { status: 400 });
+    }
+
+    if (isForbiddenName(name)) {
+      return NextResponse.json({ error: "Forbidden name" }, { status: 400 });
     }
 
     const teachersList = await loadTeachers();
@@ -146,6 +151,10 @@ export async function PUT(request) {
     const formData = await request.formData();
     const id = formData.get('id')?.toString().trim();
     const name = formData.get('name')?.toString().trim();
+
+    if (isForbiddenName(name)) {
+      return NextResponse.json({ error: "Forbidden name" }, { status: 400 });
+    }
     const role = formData.get('role')?.toString().trim();
     const details = formData.get('details')?.toString().trim() || "";
     const status = formData.get('status')?.toString().trim();

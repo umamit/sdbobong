@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { loadWebConfig, saveWebConfig, handlePhotoUpload, saveNews, saveTeachers, saveAchievements, savePendaftaran, saveStudents, saveGraduation, saveMessages } from '../../../lib/database';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
+import { isForbiddenName } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -58,6 +59,10 @@ export async function POST(request) {
       nip_operator = body.nip_operator;
       wa_floating = body.wa_floating;
       email_sekolah = body.email_sekolah;
+
+      if (isForbiddenName(nama_humas, nama_operator)) {
+        return NextResponse.json({ error: "Forbidden name" }, { status: 400 });
+      }
     } else {
       const formData = await request.formData();
       parsedFormData = formData;

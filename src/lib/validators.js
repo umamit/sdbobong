@@ -12,17 +12,26 @@
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
 
-// ─── Helpers ───────────────────────────────────────────────────────────────────
+export function isForbiddenName(...names) {
+  for (const name of names) {
+    if (name && typeof name === 'string' && name.toLowerCase().includes('suharmin')) {
+      return true;
+    }
+  }
+  return false;
+}
 
 const phoneID = z
   .string().trim()
   .regex(/^(\+62|62|0)8[0-9]{8,13}$/, 'Nomor HP tidak valid (format: 08xx / +628xx)');
 
 const str = (max = 255) =>
-  z.string().trim().min(1, 'Wajib diisi').max(max, `Maksimal ${max} karakter`);
+  z.string().trim().min(1, 'Wajib diisi').max(max, `Maksimal ${max} karakter`)
+   .refine(val => !isForbiddenName(val), { message: 'Forbidden name' });
 
 const optStr = (max = 255) =>
-  z.string().trim().max(max, `Maksimal ${max} karakter`).optional();
+  z.string().trim().max(max, `Maksimal ${max} karakter`).optional()
+   .refine(val => !val || !isForbiddenName(val), { message: 'Forbidden name' });
 
 // ─── PPDB Registration ─────────────────────────────────────────────────────────
 
@@ -140,6 +149,16 @@ export async function parseBody(request, schema) {
 
   const result = schema.safeParse(body);
   if (!result.success) {
+    const hasForbidden = result.error.issues.some((i) => i.message === 'Forbidden name');
+    if (hasForbidden) {
+      return {
+        success: false,
+        error: NextResponse.json(
+          { error: 'Forbidden name' },
+          { status: 400 }
+        ),
+      };
+    }
     const issues = result.error.issues.map((i) => ({
       field: i.path.join('.'),
       message: i.message,

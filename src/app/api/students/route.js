@@ -5,6 +5,7 @@ import { prisma } from '../../../lib/prisma';
 import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import { handleApiDelete, sensitiveJson } from '../../../lib/api-helper';
+import { isForbiddenName } from '../../../lib/validators';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -41,6 +42,10 @@ export async function POST(request) {
 
     if (!nisn || !name || !studentClass || !gender) {
       return NextResponse.json({ error: "Kolom NISN, Nama Lengkap, Kelas, dan Jenis Kelamin wajib diisi!" }, { status: 400 });
+    }
+
+    if (isForbiddenName(name, parent_name)) {
+      return NextResponse.json({ error: "Forbidden name" }, { status: 400 });
     }
 
     if (!/^\d{10}$/.test(nisn)) {

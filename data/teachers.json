@@ -140,20 +140,6 @@
         "nip": "19970507 202521 2 015"
     },
     {
-        "id": "teacher-1780716389",
-        "name": "Suharmin, S.Pd",
-        "role": "Operator/Guru Kelas 3C",
-        "details": "Guru Kelas Bawah",
-        "status": "PPPK PW",
-        "image": "/images/teacher_1.png",
-        "subject": "Guru Kelas 3C",
-        "education": "S1",
-        "motto": "",
-        "bio": "",
-        "password": "majapahit101",
-        "nip": "101501"
-    },
-    {
         "id": "teacher-1781190881",
         "name": "SUKMA ANI, S.Pd., Gr",
         "role": "Guru Kelas 3B",
