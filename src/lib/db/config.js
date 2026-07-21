@@ -51,10 +51,10 @@ export async function loadWebConfig() {
     ],
     stats: { siswa_aktif: 205, guru_staf: 14, ruang_kelas: 9, akreditasi: "B" },
     ppdb_contacts: {
-      nama_humas: "Ibu Husnita Usman, M.Pd.", wa_humas: "6281234567890",
-      jabatan_humas: "Pendidik Bidang Studi / Humas Sekolah",
-      nama_operator: "Bapak Kasmudin", wa_operator: "6281234567890",
-      jabatan_operator: "Operator Sekolah SD Negeri Bobong",
+      nama_humas: "Belum diset admin", wa_humas: "",
+      jabatan_humas: "",
+      nama_operator: "Belum diset admin", wa_operator: "",
+      jabatan_operator: "",
       email_sekolah: "admin@sdnegeribobong.sch.id"
     },
     downloads: [
