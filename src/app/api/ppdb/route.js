@@ -11,6 +11,7 @@ import { revalidatePath } from 'next/cache';
 import { ppdbSchema, ppdbStatusSchema, parseBody } from '../../../lib/validators';
 import { sensitiveJson } from '../../../lib/api-helper';
 import { escapeCSV, getAcademicYear, sendWhatsAppNotification } from './helper';
+import { rateLimit, getClientIp } from '../../../lib/rate-limit';
 import fs from 'fs';
 import path from 'path';
 
@@ -484,6 +485,15 @@ export async function DELETE(request) {
 
 
 export async function POST(request) {
+  // Rate limit: max 5 submissions per 10 minutes per IP to prevent bot spam
+  const ip = getClientIp(request);
+  const rl = rateLimit(`ppdb:${ip}`, {
+    limit: 5,
+    windowMs: 10 * 60 * 1000,
+    message: 'Terlalu banyak permintaan pendaftaran. Silakan tunggu 10 menit sebelum mencoba lagi.',
+  });
+  if (!rl.allowed) return rl.response;
+
   try {
     const parsed = await parseBody(request, ppdbSchema);
     if (!parsed.success) return parsed.error;

@@ -6,6 +6,7 @@ import { checkAuth } from '../../../lib/auth';
 import { createAuditLog } from '../../../lib/audit';
 import { handleApiDelete, sensitiveJson } from '../../../lib/api-helper';
 import { messageSchema, parseBody } from '../../../lib/validators';
+import { rateLimit, getClientIp } from '../../../lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -30,6 +31,15 @@ export async function GET() {
 
 // POST: Accepts new Guest Book or Feedback submission
 export async function POST(request) {
+  // Rate limit: max 3 submissions per 5 minutes per IP
+  const ip = getClientIp(request);
+  const rl = rateLimit(`messages:${ip}`, {
+    limit: 3,
+    windowMs: 5 * 60 * 1000,
+    message: 'Terlalu banyak pesan dikirim. Silakan tunggu 5 menit sebelum mencoba lagi.',
+  });
+  if (!rl.allowed) return rl.response;
+
   try {
     const parsed = await parseBody(request, messageSchema);
     if (!parsed.success) return parsed.error;
