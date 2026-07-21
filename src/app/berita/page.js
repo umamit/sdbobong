@@ -27,7 +27,7 @@ export default async function Berita() {
       <section className="section-padding">
         <div className="container">
           <div className="section-header">
-            <span className="section-subtitle">Warta Taliabu</span>
+            <span className="section-subtitle">Kabar SD Negeri Bobong</span>
             <h2>Kabar & Artikel Sekolah</h2>
           </div>
 
