@@ -4,7 +4,8 @@ export default function useGraduationHandlers({
   initialGraduation,
   fetch,
   showToast,
-  router
+  router,
+  confirmDialog
 }) {
   const [graduation, setGraduation] = useState(initialGraduation);
   const [gradSearch, setGradSearch] = useState('');
@@ -68,7 +69,11 @@ export default function useGraduationHandlers({
   };
 
   const handleDeleteGraduation = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data kelulusan siswa ini secara permanen?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Data Kelulusan', message: 'Apakah Anda yakin ingin menghapus data kelulusan siswa ini secara permanen?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus data kelulusan siswa ini secara permanen?');
+
+    if (!isConfirmed) return;
     try {
       const res = await fetch(`/api/graduation?id=${id}`, {
         method: 'DELETE'

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import AppleConfirmModal from '../../../components/ui/AppleConfirmModal';
 import EditGradesModal from './EditGradesModal';
 
 export default function GuruDashboardClient({ initialTeacher, initialStudents }) {
@@ -28,6 +29,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
   
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
   // Show Toast Helper
   const showToast = (type, message) => {
@@ -36,8 +38,12 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
   };
 
   // Logout Handler
-  const handleLogout = async () => {
-    if (!confirm('Apakah Anda yakin ingin keluar dari portal guru?')) return;
+  const handleLogoutClick = () => {
+    setShowConfirmLogout(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    setShowConfirmLogout(false);
     try {
       const res = await fetch('/api/auth/guru', { method: 'DELETE' });
       if (res.ok) {
@@ -49,7 +55,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
         showToast('danger', 'Gagal memproses logout.');
       }
     } catch (err) {
-      showToast('danger', 'Terjadi kesalahan logout: ' + err.message);
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
     }
   };
 
@@ -203,7 +209,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
             <span className="profile-name">{initialTeacher.name}</span>
             <span className="profile-nip">NIP: {initialTeacher.nip || '-'}</span>
           </div>
-          <button className="btn-guru-logout" onClick={handleLogout} title="Keluar dari sistem">
+          <button className="btn-guru-logout" onClick={handleLogoutClick} title="Keluar dari sistem">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
@@ -383,6 +389,17 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
       />
 
       {/* Styled JSX blocks to avoid Tailwind dependency and give rich/premium aesthetics */}
+      {/* Apple Confirm Modal for Logout */}
+      <AppleConfirmModal
+        isOpen={showConfirmLogout}
+        title="Logout Portal Guru"
+        message="Apakah Anda yakin ingin keluar dari portal guru?"
+        confirmText="Logout"
+        cancelText="Batal"
+        type="warning"
+        onConfirm={handleLogoutConfirm}
+        onCancel={() => setShowConfirmLogout(false)}
+      />
     </div>
   );
 }

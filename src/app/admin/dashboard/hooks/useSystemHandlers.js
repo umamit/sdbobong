@@ -26,7 +26,9 @@ export default function useSystemHandlers({
   showToast,
   setIsProcessing,
   setProcessingMessage,
-  router
+  router,
+  confirmDialog,
+  alertDialog
 }) {
   // Global States
   const [activeTab, setActiveTab] = useState('overview');
@@ -75,7 +77,11 @@ export default function useSystemHandlers({
       const now = Date.now();
       if (now >= Number(expiry)) {
         clearInterval(sessionCheckInterval);
-        alert('Sesi login Anda telah habis (1 jam). Anda akan otomatis di-logout demi keamanan.');
+        if (alertDialog) {
+          await alertDialog({ title: 'Sesi Login Berakhir', message: 'Sesi login Anda telah habis (1 jam). Anda akan otomatis di-logout demi keamanan.', type: 'warning' });
+        } else {
+          alert('Sesi login Anda telah habis (1 jam). Anda akan otomatis di-logout demi keamanan.');
+        }
         try {
           const res = await fetch('/api/auth', { method: 'DELETE' });
           if (res.ok) {
@@ -126,7 +132,11 @@ export default function useSystemHandlers({
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    if (!confirm('Apakah Anda yakin ingin logout?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Logout Admin', message: 'Apakah Anda yakin ingin keluar dari Dashboard Admin?', confirmText: 'Logout', cancelText: 'Batal', type: 'warning' })
+      : confirm('Apakah Anda yakin ingin logout?');
+
+    if (!isConfirmed) return;
     try {
       const res = await fetch('/api/auth', { method: 'DELETE' });
       if (res.ok) {

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 // Import client-side helpers
 import { clientSupabase } from './hooks/helpers';
+import AppleConfirmModal from '../../../components/ui/AppleConfirmModal';
 
 // Import custom hooks
 import useConfigHandlers from './hooks/useConfigHandlers';
@@ -60,6 +61,51 @@ export function AdminDashboardProvider({
     setTimeout(() => {
       setToast(null);
     }, 5000);
+  };
+
+  // Apple HIG Confirm & Alert Dialog Promise Helper
+  const [dialogState, setDialogState] = useState(null);
+
+  const confirmDialog = ({ title = 'Konfirmasi Aksi', message = 'Apakah Anda yakin ingin melanjutkan?', confirmText = 'Lanjutkan', cancelText = 'Batal', type = 'danger' } = {}) => {
+    return new Promise((resolve) => {
+      setDialogState({
+        isOpen: true,
+        title,
+        message,
+        confirmText,
+        cancelText,
+        type,
+        onConfirm: () => {
+          setDialogState(null);
+          resolve(true);
+        },
+        onCancel: () => {
+          setDialogState(null);
+          resolve(false);
+        },
+      });
+    });
+  };
+
+  const alertDialog = ({ title = 'Pemberitahuan', message = '', confirmText = 'Mengerti', type = 'warning' } = {}) => {
+    return new Promise((resolve) => {
+      setDialogState({
+        isOpen: true,
+        title,
+        message,
+        confirmText,
+        cancelText: null,
+        type,
+        onConfirm: () => {
+          setDialogState(null);
+          resolve(true);
+        },
+        onCancel: () => {
+          setDialogState(null);
+          resolve(true);
+        },
+      });
+    });
   };
 
   // Intercept all write/mutation fetch requests to show premium loading overlay
@@ -143,7 +189,9 @@ export function AdminDashboardProvider({
     showToast,
     setIsProcessing,
     setProcessingMessage,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 3. News Handlers Hook
@@ -153,7 +201,9 @@ export function AdminDashboardProvider({
     showToast,
     setIsProcessing,
     setProcessingMessage,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 4. Gallery Handlers Hook
@@ -164,7 +214,9 @@ export function AdminDashboardProvider({
     showToast,
     setIsProcessing,
     setProcessingMessage,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 5. Achievement Handlers Hook
@@ -172,7 +224,9 @@ export function AdminDashboardProvider({
     initialAchievements,
     fetch: customFetch,
     showToast,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 6. PPDB Handlers Hook
@@ -180,7 +234,9 @@ export function AdminDashboardProvider({
     initialRecords,
     fetch: customFetch,
     showToast,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 7. Student Handlers Hook
@@ -188,7 +244,9 @@ export function AdminDashboardProvider({
     initialStudents,
     fetch: customFetch,
     showToast,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 8. Graduation Handlers Hook
@@ -196,7 +254,9 @@ export function AdminDashboardProvider({
     initialGraduation,
     fetch: customFetch,
     showToast,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 9. Event (Agenda) Handlers Hook
@@ -204,7 +264,9 @@ export function AdminDashboardProvider({
     pageContents,
     setPageContents,
     handlePageContentsSave: configStuff.handlePageContentsSave,
-    showToast
+    showToast,
+    confirmDialog,
+    alertDialog
   });
 
   // 10. Content Utility Handlers Hook (Downloads, FAQ, Messages)
@@ -214,7 +276,9 @@ export function AdminDashboardProvider({
     initialMessages,
     fetch: customFetch,
     showToast,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // 11. System Handlers Hook (Audit logs, password, backups, session, active tab)
@@ -243,7 +307,9 @@ export function AdminDashboardProvider({
     showToast,
     setIsProcessing,
     setProcessingMessage,
-    router
+    router,
+    confirmDialog,
+    alertDialog
   });
 
   // Computed derived states for PPDB contact NIP alignment
@@ -360,6 +426,8 @@ export function AdminDashboardProvider({
   };
 
   const value = {
+    confirmDialog,
+    alertDialog,
     // Global properties
     router,
     isProcessing,
@@ -420,6 +488,18 @@ export function AdminDashboardProvider({
   return (
     <AdminDashboardContext.Provider value={value}>
       {children}
+      {dialogState && (
+        <AppleConfirmModal
+          isOpen={dialogState.isOpen}
+          title={dialogState.title}
+          message={dialogState.message}
+          confirmText={dialogState.confirmText}
+          cancelText={dialogState.cancelText}
+          type={dialogState.type}
+          onConfirm={dialogState.onConfirm}
+          onCancel={dialogState.onCancel}
+        />
+      )}
     </AdminDashboardContext.Provider>
   );
 }

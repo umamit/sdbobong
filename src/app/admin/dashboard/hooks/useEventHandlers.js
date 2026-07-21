@@ -4,7 +4,8 @@ export default function useEventHandlers({
   pageContents,
   setPageContents,
   handlePageContentsSave,
-  showToast
+  showToast,
+  confirmDialog
 }) {
   const [agendaSearch, setAgendaSearch] = useState('');
   const [agendaModalOpen, setAgendaModalOpen] = useState(false);
@@ -54,7 +55,11 @@ export default function useEventHandlers({
   };
 
   const handleDeleteAgendaEvent = async (eventId) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus agenda kegiatan ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Agenda Kegiatan', message: 'Apakah Anda yakin ingin menghapus agenda kegiatan ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus agenda kegiatan ini?');
+
+    if (!isConfirmed) return;
 
     const currentCalendar = pageContents.akademik?.calendar || [];
     const updatedCalendar = currentCalendar.filter(evt => evt.id !== eventId);

@@ -7,7 +7,8 @@ export default function useGalleryHandlers({
   showToast,
   setIsProcessing,
   setProcessingMessage,
-  router
+  router,
+  confirmDialog
 }) {
   const [galleryModalOpen, setGalleryModalOpen] = useState(false);
   const [editingGalleryItem, setEditingGalleryItem] = useState(null);
@@ -122,7 +123,11 @@ export default function useGalleryHandlers({
   };
 
   const handleDeleteGalleryItem = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus item galeri ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Foto/Video Galeri', message: 'Apakah Anda yakin ingin menghapus item galeri ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus item galeri ini?');
+
+    if (!isConfirmed) return;
     const list = config.gallery || [];
     const updatedList = list.filter(item => item.id !== id);
 

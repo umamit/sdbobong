@@ -4,7 +4,8 @@ export default function useStudentHandlers({
   initialStudents,
   fetch,
   showToast,
-  router
+  router,
+  confirmDialog
 }) {
   const [students, setStudents] = useState(initialStudents);
   const [studentSearch, setStudentSearch] = useState('');
@@ -113,7 +114,11 @@ export default function useStudentHandlers({
   };
 
   const handleDeleteStudent = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data siswa ini secara permanen?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Data Siswa', message: 'Apakah Anda yakin ingin menghapus data siswa ini secara permanen?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus data siswa ini secara permanen?');
+
+    if (!isConfirmed) return;
     try {
       const res = await fetch(`/api/students?id=${id}`, {
         method: 'DELETE'

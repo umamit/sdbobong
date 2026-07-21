@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import AppleConfirmModal from '../../../../../components/ui/AppleConfirmModal';
 
 export default function EditTeacherClient({ teacher }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function EditTeacherClient({ teacher }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [dialogState, setDialogState] = useState(null);
 
   // Initial select binding
   useEffect(() => {
@@ -65,14 +67,14 @@ export default function EditTeacherClient({ teacher }) {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 1024 * 1024) {
-        alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        setDialogState({ title: 'Ukuran Foto Terlalu Besar', message: 'Ukuran file foto terlalu besar! Maksimal ukuran file adalah 1MB.', type: 'warning' });
         e.target.value = '';
         return;
       }
       const extension = file.name.split('.').pop().toLowerCase();
       const allowed = ['png', 'jpg', 'jpeg'];
       if (!allowed.includes(extension)) {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        setDialogState({ title: 'Jenis Berkas Tidak Valid', message: 'Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.', type: 'warning' });
         e.target.value = '';
         return;
       }
@@ -397,6 +399,17 @@ export default function EditTeacherClient({ teacher }) {
           </form>
         </div>
       </div>
+      {dialogState && (
+        <AppleConfirmModal
+          isOpen={true}
+          title={dialogState.title}
+          message={dialogState.message}
+          confirmText="Mengerti"
+          cancelText={null}
+          type={dialogState.type || 'warning'}
+          onConfirm={() => setDialogState(null)}
+        />
+      )}
     </div>
   );
 }

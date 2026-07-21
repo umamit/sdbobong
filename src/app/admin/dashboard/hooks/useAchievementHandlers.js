@@ -4,7 +4,8 @@ export default function useAchievementHandlers({
   initialAchievements,
   fetch,
   showToast,
-  router
+  router,
+  confirmDialog
 }) {
   const [achievements, setAchievements] = useState(initialAchievements || []);
   const [editingAchievementId, setEditingAchievementId] = useState(null);
@@ -82,7 +83,11 @@ export default function useAchievementHandlers({
   };
 
   const handleAchievementDelete = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data prestasi ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Prestasi Siswa', message: 'Apakah Anda yakin ingin menghapus data prestasi ini secara permanen?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus data prestasi ini?');
+
+    if (!isConfirmed) return;
 
     try {
       const response = await fetch(`/api/achievements?id=${id}`, {

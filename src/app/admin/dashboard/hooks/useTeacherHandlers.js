@@ -10,7 +10,9 @@ export default function useTeacherHandlers({
   showToast,
   setIsProcessing,
   setProcessingMessage,
-  router
+  router,
+  confirmDialog,
+  alertDialog
 }) {
   const [addTeacherModalOpen, setAddTeacherModalOpen] = useState(false);
   const [editTeacherModalOpen, setEditTeacherModalOpen] = useState(false);
@@ -102,7 +104,11 @@ export default function useTeacherHandlers({
   };
 
   const handleTeacherDelete = async (teacherId) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus data guru ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Data Guru', message: 'Apakah Anda yakin ingin menghapus data guru ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus data guru ini?');
+
+    if (!isConfirmed) return;
     try {
       const targetTeacher = teachers.find(t => t.id === teacherId);
       const res = await fetch(`/api/teachers?id=${teacherId}`, {
@@ -186,14 +192,22 @@ export default function useTeacherHandlers({
     const file = e.target.files[0];
     if (file) {
       if (file.size > 1024 * 1024) {
-        alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        if (alertDialog) {
+          alertDialog({ title: 'Ukuran Foto Terlalu Besar', message: 'Ukuran file foto terlalu besar! Maksimal ukuran file adalah 1MB.', type: 'warning' });
+        } else {
+          alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        }
         e.target.value = '';
         return;
       }
       const extension = file.name.split('.').pop().toLowerCase();
       const allowed = ['png', 'jpg', 'jpeg'];
       if (!allowed.includes(extension)) {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        if (alertDialog) {
+          alertDialog({ title: 'Jenis Berkas Tidak Valid', message: 'Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.', type: 'warning' });
+        } else {
+          alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        }
         e.target.value = '';
         return;
       }
@@ -266,14 +280,22 @@ export default function useTeacherHandlers({
     const file = e.target.files[0];
     if (file) {
       if (file.size > 1024 * 1024) {
-        alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        if (alertDialog) {
+          alertDialog({ title: 'Ukuran Foto Terlalu Besar', message: 'Ukuran file foto terlalu besar! Maksimal ukuran file adalah 1MB.', type: 'warning' });
+        } else {
+          alert('Ukuran file terlalu besar! Maksimal ukuran file adalah 1MB.');
+        }
         e.target.value = '';
         return;
       }
       const extension = file.name.split('.').pop().toLowerCase();
       const allowed = ['png', 'jpg', 'jpeg'];
       if (!allowed.includes(extension)) {
-        alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        if (alertDialog) {
+          alertDialog({ title: 'Jenis Berkas Tidak Valid', message: 'Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.', type: 'warning' });
+        } else {
+          alert('Jenis file tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.');
+        }
         e.target.value = '';
         return;
       }

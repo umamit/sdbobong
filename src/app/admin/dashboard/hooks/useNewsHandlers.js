@@ -7,7 +7,9 @@ export default function useNewsHandlers({
   showToast,
   setIsProcessing,
   setProcessingMessage,
-  router
+  router,
+  confirmDialog,
+  alertDialog
 }) {
   const [newsList, setNewsList] = useState(initialNewsList);
   const [editingNews, setEditingNews] = useState(null);
@@ -147,7 +149,11 @@ export default function useNewsHandlers({
   };
 
   const handleNewsDelete = async (newsId) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus artikel berita ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Artikel Berita', message: 'Apakah Anda yakin ingin menghapus artikel berita ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus artikel berita ini?');
+
+    if (!isConfirmed) return;
     try {
       const res = await fetch(`/api/news?id=${newsId}`, {
         method: 'DELETE'
@@ -175,12 +181,20 @@ export default function useNewsHandlers({
 
     for (const file of files) {
       if (file.size > 1.5 * 1024 * 1024) {
-        alert(`Berkas "${file.name}" terlalu besar! Maksimal ukuran berkas adalah 1.5MB.`);
+        if (alertDialog) {
+          alertDialog({ title: 'Ukuran Berkas Terlalu Besar', message: `Berkas "${file.name}" terlalu besar! Maksimal ukuran berkas adalah 1.5MB.`, type: 'warning' });
+        } else {
+          alert(`Berkas "${file.name}" terlalu besar! Maksimal ukuran berkas adalah 1.5MB.`);
+        }
         continue;
       }
       const extension = file.name.split('.').pop().toLowerCase();
       if (!allowed.includes(extension)) {
-        alert(`Jenis file untuk "${file.name}" tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.`);
+        if (alertDialog) {
+          alertDialog({ title: 'Jenis Berkas Tidak Valid', message: `Jenis file untuk "${file.name}" tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.`, type: 'warning' });
+        } else {
+          alert(`Jenis file untuk "${file.name}" tidak valid! Hanya berkas PNG (.png), JPG (.jpg), dan JPEG (.jpeg) yang diperbolehkan.`);
+        }
         continue;
       }
       validFiles.push(file);

@@ -6,7 +6,8 @@ export default function useContentUtilityHandlers({
   initialMessages = [],
   fetch,
   showToast,
-  router
+  router,
+  confirmDialog
 }) {
   // Downloads States
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
@@ -71,7 +72,10 @@ export default function useContentUtilityHandlers({
   };
 
   const handleDeleteDownload = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus berkas unduhan ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Berkas Unduhan', message: 'Apakah Anda yakin ingin menghapus berkas unduhan ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus berkas unduhan ini?');
+    if (!isConfirmed) return;
     const list = config.downloads || [];
     const updatedList = list.filter(item => item.id !== id);
 
@@ -133,7 +137,10 @@ export default function useContentUtilityHandlers({
   };
 
   const handleDeleteFaq = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus FAQ ini?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Pertanyaan FAQ', message: 'Apakah Anda yakin ingin menghapus FAQ ini?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus FAQ ini?');
+    if (!isConfirmed) return;
     const list = config.faqs || [];
     const updatedList = list.filter(item => item.id !== id);
 
@@ -177,7 +184,10 @@ export default function useContentUtilityHandlers({
   };
 
   const handleDeleteMessage = async (id) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus pesan ini secara permanen?')) return;
+    const isConfirmed = confirmDialog
+      ? await confirmDialog({ title: 'Hapus Pesan Publik', message: 'Apakah Anda yakin ingin menghapus pesan ini secara permanen?', type: 'danger' })
+      : confirm('Apakah Anda yakin ingin menghapus pesan ini secara permanen?');
+    if (!isConfirmed) return;
     try {
       const res = await fetch(`/api/messages?id=${id}`, {
         method: 'DELETE'
