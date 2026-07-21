@@ -18,32 +18,10 @@ export default function LayoutControl() {
         return '';
       };
 
-      const checkMaintenance = async () => {
-        const isMaintenanceCookie = getCookie('maintenance_mode') === 'true';
-        if (isMaintenanceCookie) {
-          window.location.reload();
-          return;
-        }
-
-        // Fallback check from public GET endpoint (no-store to bypass browser cache)
-        try {
-          const res = await fetch(`/api/config?t=${Date.now()}`, {
-            cache: 'no-store',
-            headers: { 'Cache-Control': 'no-cache, no-store' }
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.maintenance_mode) {
-              document.cookie = "maintenance_mode=true; path=/; max-age=31536000; SameSite=Lax";
-              window.location.reload();
-            }
-          }
-        } catch (e) {
-          console.error("Gagal memeriksa status pemeliharaan:", e);
-        }
-      };
-
-      checkMaintenance();
+      const isMaintenanceCookie = getCookie('maintenance_mode') === 'true';
+      if (isMaintenanceCookie) {
+        window.location.reload();
+      }
     }
 
     // 1. Admin & Guru & Bypass Class Control
