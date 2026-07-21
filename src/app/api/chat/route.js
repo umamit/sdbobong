@@ -23,10 +23,10 @@ export async function POST(req) {
   let alamat = "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
   let skPendirian = "04 Oktober 1971 (SK: 420/04/10/1971)";
   let kepemilikanLahan = "Pemerintah Daerah Kabupaten Pulau Taliabu";
-  let namaHumas = "Ibu Husnita Usman, M.Pd.";
-  let waHumas = "6281234567890";
-  let namaOperator = "Bapak Kasmudin";
-  let waOperator = "6281234567890";
+  let namaHumas = "Belum diset admin";
+  let waHumas = "Belum diset admin";
+  let namaOperator = "Belum diset admin";
+  let waOperator = "Belum diset admin";
   let emailSekolah = "admin@sdnegeribobong.sch.id";
 
 
@@ -123,7 +123,7 @@ export async function POST(req) {
     // 3. Format Data untuk Pengetahuan AI
     const listGuruText = teachersList && teachersList.length > 0
       ? teachersList.map(t => `- ${t.name} (${t.role || 'Tenaga Pendidik'})`).join('\n')
-      : "- Ibu Husnita Usman, M.Pd. (Humas / Guru)\n- Bapak Kasmudin (Operator Sekolah)";
+      : "- Data dewan guru terdaftar di database sekolah";
 
     const listPrestasiText = achievementsList && achievementsList.length > 0
       ? achievementsList.map(a => `- ${a.title} (Kategori: ${a.category || 'Prestasi'}): ${a.description || ''}`).join('\n')
