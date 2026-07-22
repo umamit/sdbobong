@@ -328,7 +328,7 @@ export default async function Home() {
             <FramerRevealItem>
               <Link href="/buku-tamu" className="stepper-step" style={{ display: 'block', height: '100%' }}>
                 <div className="stepper-step-number" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img src="/images/animated/edit.png" alt="Isi Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
+                  <img src="/images/animated/form.png" alt="Isi Buku Tamu" width={28} height={28} style={{ objectFit: 'contain' }} />
                 </div>
                 <h3 className="stepper-step-title">Isi Buku Tamu</h3>
                 <p className="stepper-step-desc">Silakan isi buku tamu digital terlebih dahulu untuk mencatatkan kunjungan Anda.</p>
@@ -339,7 +339,7 @@ export default async function Home() {
             <FramerRevealItem>
               <div className="stepper-step">
                 <div className="stepper-step-number" style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '2px solid rgba(245, 158, 11, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img src="/images/animated/verified.png" alt="Verifikasi" width={28} height={28} style={{ objectFit: 'contain' }} />
+                  <img src="/images/animated/download.png" alt="Daftar Ulang" width={28} height={28} style={{ objectFit: 'contain' }} />
                 </div>
                 <h3 className="stepper-step-title">Pengumuman &amp; Daftar Ulang</h3>
                 <p className="stepper-step-desc">Pantau pengumuman kelulusan PPDB dan lakukan lapor diri secara langsung ke sekolah.</p>
