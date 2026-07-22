@@ -1,6 +1,7 @@
 import { loadWebConfig } from '../../lib/database';
 import AcademicPortal from '../../components/AcademicPortal';
 import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../../components/FramerReveal';
+import DisciplinePoints from '../../components/DisciplinePoints';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -164,6 +165,9 @@ export default async function Akademik() {
           </FramerRevealContainer>
         </div>
       </section>
+
+      {/* Sistem Poin Pelanggaran & Pembinaan Siswa */}
+      <DisciplinePoints />
     </>
   );
 }

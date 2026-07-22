@@ -1,6 +1,6 @@
 {
   "name": "sdn-bobong-nextjs",
-  "version": "2.14.1",
+  "version": "2.15.0",
   "private": true,
   "scripts": {
     "prebuild": "node scripts/check-print-safety.mjs && node scripts/check-file-lengths.mjs && prisma generate",
