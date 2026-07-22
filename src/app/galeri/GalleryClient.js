@@ -84,6 +84,30 @@ function getCleanGoogleDriveUrl(url, type) {
   return `https://drive.google.com/uc?export=view&id=${fileId}`;
 }
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 15, scale: 0.95 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 90,
+      damping: 14
+    }
+  }
+};
+
 export default function GalleryClient({ initialGallery }) {
   const [activeItem, setActiveImage] = useState(null);
   const [selectedType, setSelectedType] = useState('Semua');
@@ -289,7 +313,14 @@ export default function GalleryClient({ initialGallery }) {
 
       {/* Masonry-style Pinterest Grid */}
       {displayedItems.length > 0 ? (
-        <motion.div className="gallery-masonry-grid" layout>
+        <motion.div 
+          className="gallery-masonry-grid" 
+          variants={gridVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.02 }}
+          layout
+        >
           <AnimatePresence mode="popLayout">
             {displayedItems.map((item) => {
               const ytId = item.type === 'video' ? getYoutubeId(item.url) : null;
@@ -307,8 +338,7 @@ export default function GalleryClient({ initialGallery }) {
                   onClick={() => setActiveImage(item)}
                   className="gallery-masonry-item"
                   layout
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  variants={cardVariants}
                   exit={{ opacity: 0, scale: 0.88 }}
                   whileHover={{ y: -6, scale: 1.01 }}
                   transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}

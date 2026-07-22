@@ -1,6 +1,7 @@
 import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
 import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 import TeachersSectionClient from './TeachersSectionClient';
+import { FramerRevealContainer, FramerRevealItem } from '../../components/FramerReveal';
 import Image from 'next/image';
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -112,79 +113,79 @@ export default async function Profil() {
             <span className="section-subtitle">Data Pokok Pendidikan</span>
             <h2>Profil Administrasi &amp; Legalitas</h2>
           </div>
-          <div className="dapodik-bento-grid reveal-on-scroll">
+          <FramerRevealContainer className="dapodik-bento-grid">
             {/* Card 1: Nama Resmi */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/school.png" alt="Nama Resmi" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Nama Resmi Sekolah</span>
               <span className="dapodik-bento-value">{profil.nama_resmi || "SD Negeri Bobong"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 2: NPSN */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/key.png" alt="NPSN" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">NPSN</span>
               <span className="dapodik-bento-value" style={{ fontWeight: 'bold' }}>{profil.npsn || "60200589"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 3: Status Sekolah */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/government.png" alt="Status" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Status Sekolah</span>
               <span className="dapodik-bento-value">{profil.status_sekolah || "Negeri"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 4: SK Pendirian */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/calendar.png" alt="SK Pendirian" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">SK Pendirian</span>
               <span className="dapodik-bento-value">{profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 5: Akreditasi */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/shield.png" alt="Akreditasi" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Akreditasi</span>
               <span className="dapodik-bento-value">{profil.akreditasi || "B (Baik)"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 6: Kurikulum */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/books.png" alt="Kurikulum" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Kurikulum</span>
               <span className="dapodik-bento-value">{profil.kurikulum_operasional || "Kurikulum Merdeka"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 7: Alamat Lengkap (Spans 2 columns) */}
-            <div className="dapodik-bento-card span-2">
+            <FramerRevealItem className="dapodik-bento-card span-2">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/map.png" alt="Alamat" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Alamat Lengkap</span>
               <span className="dapodik-bento-value">{profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}</span>
-            </div>
+            </FramerRevealItem>
 
             {/* Card 8: Status Lahan */}
-            <div className="dapodik-bento-card">
+            <FramerRevealItem className="dapodik-bento-card">
               <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="/images/animated/land.png" alt="Lahan" width={32} height={32} style={{ objectFit: 'contain' }} />
               </div>
               <span className="dapodik-bento-label">Status Lahan</span>
               <span className="dapodik-bento-value">{profil.kepemilikan_lahan || "Pemerintah Daerah"}</span>
-            </div>
-          </div>
+            </FramerRevealItem>
+          </FramerRevealContainer>
         </div>
       </section>
 
@@ -244,7 +245,7 @@ export default async function Profil() {
             <p className="text-center" style={{ maxWidth: '620px', margin: '0 auto var(--space-md) auto', color: 'var(--text-muted)' }}>
               Pencapaian, penghargaan, dan sertifikasi yang diraih oleh dewan guru serta institusi SD Negeri Bobong.
             </p>
-            <div className="grid-3">
+            <FramerRevealContainer className="grid-3">
               {achievements.map((item, idx) => {
                 const levelUpper = (item.level || '').toUpperCase();
                 const isNasional = levelUpper.includes('NASIONAL');
@@ -254,9 +255,8 @@ export default async function Profil() {
                 const badgeColor = isNasional ? 'var(--secondary-dark)' : isProvinsi ? '#166534' : isKabupaten ? 'var(--primary-dark)' : 'var(--accent)';
                 const icon = isNasional ? '🏆' : isProvinsi ? '🥈' : isKabupaten ? '🏅' : '⭐';
                 return (
-                  <div
+                  <FramerRevealItem
                     key={item.id || idx}
-                    className="reveal-on-scroll"
                     style={{
                       backgroundColor: '#ffffff',
                       borderRadius: 'var(--radius-md)',
@@ -277,10 +277,10 @@ export default async function Profil() {
                     <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', margin: '0.5rem 0 0.2rem 0', lineHeight: 1.4 }}>{item.title}</h3>
                     <div style={{ fontSize: '0.78rem', fontWeight: 700, color: badgeColor, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{item.level}</div>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.55', margin: 0 }}>{item.description}</p>
-                  </div>
+                  </FramerRevealItem>
                 );
               })}
-            </div>
+            </FramerRevealContainer>
           </div>
         </section>
       )}

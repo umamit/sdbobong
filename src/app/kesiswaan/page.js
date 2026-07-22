@@ -1,4 +1,5 @@
 import { loadWebConfig } from '../../lib/database';
+import { FramerRevealContainer, FramerRevealItem } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -45,26 +46,28 @@ export default async function Kesiswaan() {
             <h2>Program Ekstrakurikuler</h2>
           </div>
 
-          <div className="extra-grid">
+          <FramerRevealContainer className="extra-grid">
             {kesiswaan.ekstrakurikuler && kesiswaan.ekstrakurikuler.map((ekskul, idx) => (
-              <div key={ekskul.id || idx} className={`extra-card reveal-on-scroll reveal-delay-${((idx % 2) + 1) * 150}`}>
-                <img src={ekskul.image} alt={`Aktivitas ${ekskul.nama} SD Negeri Bobong`} className="extra-img" width={400} height={200} style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
-                <div className="extra-body">
-                  {ekskul.is_wajib ? (
-                    <span className="badge badge-primary" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block' }}>Wajib</span>
-                  ) : (
-                    <span className="badge badge-accent" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block', color: 'var(--accent)', backgroundColor: 'var(--accent-bg)' }}>Pilihan</span>
-                  )}
-                  <h3 style={{ marginBottom: '0.5rem' }}>{ekskul.nama}</h3>
-                  <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 'var(--space-xs)' }}>{ekskul.deskripsi}</p>
-                  <div className="extra-schedule">
-                    <svg className="icon-svg" viewBox="0 0 24 24" width="16" height="16"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm.5-13H11v6l5.25 3.15l.75-1.23l-4.5-2.67z"/></svg>
-                    {ekskul.jadwal}
+              <FramerRevealItem key={ekskul.id || idx}>
+                <div className="extra-card" style={{ height: '100%' }}>
+                  <img src={ekskul.image} alt={`Aktivitas ${ekskul.nama} SD Negeri Bobong`} className="extra-img" width={400} height={200} style={{ objectFit: 'cover' }} loading="lazy" decoding="async" />
+                  <div className="extra-body">
+                    {ekskul.is_wajib ? (
+                      <span className="badge badge-primary" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block' }}>Wajib</span>
+                    ) : (
+                      <span className="badge badge-accent" style={{ marginBottom: 'var(--space-xs)', display: 'inline-block', color: 'var(--accent)', backgroundColor: 'var(--accent-bg)' }}>Pilihan</span>
+                    )}
+                    <h3 style={{ marginBottom: '0.5rem' }}>{ekskul.nama}</h3>
+                    <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 'var(--space-xs)' }}>{ekskul.deskripsi}</p>
+                    <div className="extra-schedule">
+                      <svg className="icon-svg" viewBox="0 0 24 24" width="16" height="16"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm.5-13H11v6l5.25 3.15l.75-1.23l-4.5-2.67z"/></svg>
+                      {ekskul.jadwal}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </FramerRevealItem>
             ))}
-          </div>
+          </FramerRevealContainer>
         </div>
       </section>
 
@@ -78,7 +81,7 @@ export default async function Kesiswaan() {
 
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Kebanggaan sekolah atas dedikasi dan kerja keras para murid yang berhasil mengukir prestasi gemilang.</p>
 
-          <div className="grid-3">
+          <FramerRevealContainer className="grid-3">
             {kesiswaan.prestasi && kesiswaan.prestasi.map((pres, idx) => {
               const isFirst = pres.rank === '1st';
               const isSecond = pres.rank === '2nd';
@@ -89,20 +92,22 @@ export default async function Kesiswaan() {
               const borderCol = isFirst ? 'var(--secondary)' : 'var(--border-color)';
               
               return (
-                <div key={idx} className={`prestasi-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`} style={{ border: `2px solid ${borderCol}` }}>
-                  <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
-                    <span>{pres.rank}</span>
+                <FramerRevealItem key={idx}>
+                  <div className="prestasi-card" style={{ border: `2px solid ${borderCol}`, height: '100%' }}>
+                    <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
+                      <span>{pres.rank}</span>
+                    </div>
+                    <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src="/images/animated/trophy.png" alt="Prestasi" width={32} height={32} style={{ objectFit: 'contain' }} />
+                    </div>
+                    <h3 style={{ fontSize: '1.2rem', marginBottom: '0.35rem', color: 'var(--primary-dark)' }}>{pres.title}</h3>
+                    <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>{pres.level}</p>
+                    <p className="text-justify" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 0 }}>{pres.desc}</p>
                   </div>
-                  <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src="/images/animated/trophy.png" alt="Prestasi" width={32} height={32} style={{ objectFit: 'contain' }} />
-                  </div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '0.35rem', color: 'var(--primary-dark)' }}>{pres.title}</h3>
-                  <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>{pres.level}</p>
-                  <p className="text-justify" style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 0 }}>{pres.desc}</p>
-                </div>
+                </FramerRevealItem>
               );
             })}
-          </div>
+          </FramerRevealContainer>
         </div>
       </section>
 
@@ -114,27 +119,29 @@ export default async function Kesiswaan() {
             <h2>Pojok Karya Siswa</h2>
           </div>
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
-          <div className="grid-3">
+          <FramerRevealContainer className="grid-3">
             {kesiswaan.karya && kesiswaan.karya.map((item, idx) => {
               const karyaIcon = item.icon === '🎨' ? '/images/animated/art.png' :
                                 item.icon === '🪵' ? '/images/animated/crafts.png' :
                                 item.icon === '📝' ? '/images/animated/poetry.png' : null;
               return (
-                <div key={idx} className={`karya-card reveal-on-scroll reveal-delay-${((idx % 3) + 1) * 100}`}>
-                  <div className="karya-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
-                    {karyaIcon ? (
-                      <img src={karyaIcon} alt={item.title} width={44} height={44} style={{ objectFit: 'contain' }} />
-                    ) : (
-                      item.icon
-                    )}
+                <FramerRevealItem key={idx}>
+                  <div className="karya-card" style={{ height: '100%' }}>
+                    <div className="karya-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }}>
+                      {karyaIcon ? (
+                        <img src={karyaIcon} alt={item.title} width={44} height={44} style={{ objectFit: 'contain' }} />
+                      ) : (
+                        item.icon
+                      )}
+                    </div>
+                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
+                    <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
                   </div>
-                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.5px' }}>{item.category}</p>
-                  <p className="text-justify" style={{ fontSize: '0.9rem', marginBottom: 0, color: 'var(--text-muted)', lineHeight: 1.6 }}>{item.desc}</p>
-                </div>
+                </FramerRevealItem>
               );
             })}
-          </div>
+          </FramerRevealContainer>
         </div>
       </section>
     </>

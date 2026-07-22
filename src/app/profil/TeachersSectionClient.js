@@ -3,6 +3,30 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 15, scale: 0.95 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 90,
+      damping: 14
+    }
+  }
+};
+
 export default function TeachersSectionClient({ teachers }) {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
 
@@ -210,27 +234,31 @@ export default function TeachersSectionClient({ teachers }) {
 
               {/* Grid of Teachers under Dewan Guru */}
               {dewanGuruList.length > 0 ? (
-                <div style={{ 
-                  display: 'flex', 
-                  flexWrap: 'wrap', 
-                  gap: '15px', 
-                  justifyContent: 'center', 
-                  maxWidth: '850px', 
-                  width: '100%',
-                  padding: '15px',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px dashed #cbd5e1',
-                  boxSizing: 'border-box'
-                }}>
+                <motion.div 
+                  variants={gridVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.05 }}
+                  style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '15px', 
+                    justifyContent: 'center', 
+                    maxWidth: '850px', 
+                    width: '100%',
+                    padding: '15px',
+                    backgroundColor: '#f8fafc',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px dashed #cbd5e1',
+                    boxSizing: 'border-box'
+                  }}
+                >
                   {dewanGuruList.map((guru) => (
                     <motion.div 
                       key={guru.id} 
                       onClick={() => setSelectedTeacher(guru)}
                       className="clickable-card"
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
+                      variants={cardVariants}
                       whileHover={{ y: -5, scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                       style={{ 
@@ -260,13 +288,13 @@ export default function TeachersSectionClient({ teachers }) {
                         justifyContent: 'center'
                       }}>
                         <img 
-                          src={guru.image || '/images/teacher_1.png'} 
-                          alt={guru.name} 
-                          width="120"
-                          height="120"
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                          loading="lazy"
-                          decoding="async"
+                           src={guru.image || '/images/teacher_1.png'} 
+                           alt={guru.name} 
+                           width="120"
+                           height="120"
+                           style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                           loading="lazy"
+                           decoding="async"
                         />
                       </div>
                       <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.2, minHeight: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -282,7 +310,7 @@ export default function TeachersSectionClient({ teachers }) {
                       </div>
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
               ) : (
                 <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-sm)' }}>
                   <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: '#e53e3e' }}>Tidak Ada</div>

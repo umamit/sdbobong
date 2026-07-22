@@ -6,6 +6,30 @@ import NewsCard from '../../components/NewsCard';
 
 const ITEMS_PER_PAGE = 6;
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 90,
+      damping: 14
+    }
+  }
+};
+
 export default function BeritaSearchClient({ newsList = [] }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
@@ -192,6 +216,10 @@ export default function BeritaSearchClient({ newsList = [] }) {
         <motion.div
           className="grid-2"
           style={{ marginBottom: 'var(--space-lg)' }}
+          variants={gridVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.05 }}
           layout
         >
           <AnimatePresence mode="popLayout">
@@ -199,8 +227,7 @@ export default function BeritaSearchClient({ newsList = [] }) {
               <motion.div
                 key={news.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                variants={cardVariants}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >

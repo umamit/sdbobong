@@ -84,8 +84,8 @@ export default async function Akademik() {
         </div>
       </section>
 
-      {/* Kalender Pendidikan & Portal P5 */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
+      {/* Kalender Pendidikan & Jadwal KBM */}
+      <section className="section-padding" id="kalender">
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Portal Kemitraan Orang Tua</span>
@@ -110,9 +110,9 @@ export default async function Akademik() {
             <h2>Tata Tertib & Seragam Siswa</h2>
           </div>
 
-          <div className="grid-2">
+          <FramerRevealContainer className="grid-2">
             {/* Tata Tertib */}
-            <div className="reveal-on-scroll reveal-delay-100" style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+            <FramerRevealItem style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
               <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
                 Ketentuan Kedisiplinan
@@ -122,10 +122,10 @@ export default async function Akademik() {
                   <li key={idx}>{item}</li>
                 ))}
               </ul>
-            </div>
+            </FramerRevealItem>
 
             {/* Panduan Seragam */}
-            <div className="reveal-on-scroll reveal-delay-300" style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+            <FramerRevealItem style={{ background: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
               <h3 style={{ marginBottom: 'var(--space-sm)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Jadwal Penggunaan Seragam
@@ -141,18 +141,26 @@ export default async function Akademik() {
                     </tr>
                   </thead>
                   <tbody>
-                    {akademik.seragam && akademik.seragam.map((item, idx) => (
-                      <tr key={idx}>
-                        <td><strong>{item.days}</strong></td>
-                        <td>{item.type}</td>
-                        <td>{item.details}</td>
-                      </tr>
-                    ))}
+                    <tr>
+                      <td><strong>Senin - Selasa</strong></td>
+                      <td>Seragam Nasional (Merah Putih)</td>
+                      <td>Dasi, Topi Upacara, Sabuk, kaos kaki putih &amp; sepatu hitam polos.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Rabu - Kamis</strong></td>
+                      <td>Baju Batik Khas Daerah / Sekolah</td>
+                      <td>Bawahan Merah, kaos kaki putih &amp; sepatu hitam bebas rapi.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Jumat</strong></td>
+                      <td>Seragam Pramuka Lengkap / Seragam Olahraga</td>
+                      <td>Atribut Hasduk, tanda regu, baret/boni. Khusus KBM Penjas memakai kaos olahraga sekolah.</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
+            </FramerRevealItem>
+          </FramerRevealContainer>
         </div>
       </section>
     </>
