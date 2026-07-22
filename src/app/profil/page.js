@@ -1,7 +1,7 @@
 import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
 import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 import TeachersSectionClient from './TeachersSectionClient';
-import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../../components/FramerReveal';
 import Image from 'next/image';
 import { unstable_noStore as noStore } from 'next/cache';
 
