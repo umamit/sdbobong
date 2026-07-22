@@ -41,10 +41,10 @@ export default async function Home() {
     hero_title: "Selamat Datang di Website Resmi SD Negeri Bobong",
     hero_text: "\"Berakhlak Mulia, Cerdas, dan Berbudaya.\" Kami berkomitmen menyelenggarakan pendidikan dasar yang inklusif, adaptif, dan berlandaskan kearifan lokal di Kabupaten Pulau Taliabu.",
     welcome_badge: "Sambutan Kepala Sekolah",
-    welcome_title: "Mendidik dengan Hati dan Budaya Taliabu",
-    welcome_quote: "\"Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak agar siap bersaing tanpa melupakan akar budaya leluhurnya.\"",
-    welcome_p1: "Assalamualaikum Wr. Wb., Salam Sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
-    welcome_p2: "Sebagai sekolah yang berada di pusat ibukota Kabupaten Pulau Taliabu, kami berkomitmen untuk terus berinovasi dalam mengimplementasikan kurikulum nasional yang relevan dengan perkembangan zaman. Kehadiran website ini diharapkan mampu menjembatani kebutuhan informasi orang tua, guru, dinas terkait, serta masyarakat luas dengan cepat dan efisien."
+    welcome_title: "Mendidik dengan Hati, Membentuk Generasi Berakhlak Mulia, Cerdas, dan Berbudaya",
+    welcome_quote: "\"Pendidikan utama adalah menanamkan akhlak mulia dan ketakwaan, diiringi pengembangan kecerdasan berpikir serta pelestarian nilai budaya agar generasi siap bersaing di era global.\"",
+    welcome_p1: "Assalamu'alaikum Warahmatullahi Wabarakatuh,\nSalam sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
+    welcome_p2: "Sebagai sekolah dasar rujukan di ibukota Kabupaten Pulau Taliabu, kami berkomitmen mewujudkan layanan pendidikan yang berkualitas dengan mengutamakan pembentukan karakter siswa yang berakhlak mulia, cerdas dalam berpikir, serta luhur dalam menjaga nilai budaya bangsa. Kehadiran website ini diharapkan mampu mempererat kolaborasi antara sekolah, orang tua, dan masyarakat luas demi kemajuan belajar anak."
   };
 
   const isVideoBg = config.stats?.hero_background && (
