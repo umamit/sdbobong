@@ -238,12 +238,16 @@ export default async function Home() {
           <span className="hero-subtitle">{beranda.hero_subtitle}</span>
           <h1 className="hero-title"><FramerWordReveal text={beranda.hero_title} /></h1>
           <p className="hero-text">{beranda.hero_text}</p>
-          <div className="hero-actions">
-            <Link href="/buku-tamu" className="btn btn-secondary">
-              <svg className="icon-svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-              Isi Buku Tamu
-            </Link>
-            <Link href="/profil" className="btn btn-outline" style={{ color: 'white', borderColor: 'white' }}>Pelajari Profil Kami</Link>
+          <div className="hero-actions" style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <FramerReveal direction="left" delay={0.3}>
+              <Link href="/buku-tamu" className="btn btn-secondary">
+                <svg className="icon-svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                Isi Buku Tamu
+              </Link>
+            </FramerReveal>
+            <FramerReveal direction="right" delay={0.45}>
+              <Link href="/profil" className="btn btn-outline" style={{ color: 'white', borderColor: 'white' }}>Pelajari Profil Kami</Link>
+            </FramerReveal>
           </div>
         </div>
       </section>
