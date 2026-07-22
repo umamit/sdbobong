@@ -86,13 +86,13 @@ export default async function Profil() {
       <section className="section-padding">
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
-            <div className="reveal-on-scroll">
+            <FramerReveal direction="left">
               <span className="welcome-badge">{profil.sejarah_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{profil.sejarah_title}</h2>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p1}</p>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2}</p>
-            </div>
-            <div className="reveal-on-scroll reveal-delay-200" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
+            </FramerReveal>
+            <FramerReveal direction="right" delay={0.15} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
               <Image 
                 src={profil.sejarah_image} 
                 alt="Gedung SD Negeri Bobong" 
@@ -101,7 +101,7 @@ export default async function Profil() {
                 style={{ width: '100%', height: '320px', objectFit: 'cover' }} 
                 loading="lazy" 
               />
-            </div>
+            </FramerReveal>
           </div>
         </div>
       </section>
@@ -196,9 +196,9 @@ export default async function Profil() {
             <span className="section-subtitle">Sarana & Prasarana</span>
             <h2>Eksplorasi Denah & Fasilitas Sekolah</h2>
           </div>
-          <div className="reveal-on-scroll">
+          <FramerReveal direction="up">
             <InteractiveFacilityMap />
-          </div>
+          </FramerReveal>
         </div>
       </section>
 
@@ -210,7 +210,7 @@ export default async function Profil() {
             <h2>Visi & Misi Sekolah</h2>
           </div>
           <div className="visimisi-layout">
-            <div className="visimisi-box reveal-on-scroll reveal-delay-100">
+            <FramerReveal direction="left" className="visimisi-box">
               <div className="visimisi-header">
                 <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                 <h3>Visi Sekolah</h3>
@@ -218,8 +218,8 @@ export default async function Profil() {
               <p style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', fontWeight: 500, lineHeight: 1.7, fontStyle: 'italic' }}>
                 {profil.visi}
               </p>
-            </div>
-            <div className="visimisi-box reveal-on-scroll reveal-delay-300">
+            </FramerReveal>
+            <FramerReveal direction="right" delay={0.15} className="visimisi-box">
               <div className="visimisi-header">
                 <svg className="icon-svg" viewBox="0 0 24 24" width="28" height="28"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
                 <h3>Misi Sekolah</h3>
@@ -229,7 +229,7 @@ export default async function Profil() {
                   <li key={idx}>{item}</li>
                 ))}
               </ul>
-            </div>
+            </FramerReveal>
           </div>
         </div>
       </section>

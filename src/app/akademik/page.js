@@ -1,6 +1,6 @@
 import { loadWebConfig } from '../../lib/database';
 import AcademicPortal from '../../components/AcademicPortal';
-import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -66,10 +66,10 @@ export default async function Akademik() {
       <section className="section-padding">
         <div className="container">
           <div className="grid-2" style={{ alignItems: 'center' }}>
-            <div className="reveal-on-scroll reveal-delay-200" style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
+            <FramerReveal direction="right" delay={0.15} style={{ order: 2, borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
               <img src={akademik.kurikulum_image} alt="Aktivitas Kurikulum Merdeka" width={600} height={300} style={{ width: '100%', height: 'auto', maxHeight: '300px', objectFit: 'contain', display: 'block' }} fetchPriority="high" decoding="async" />
-            </div>
-            <div className="reveal-on-scroll" style={{ order: 1 }}>
+            </FramerReveal>
+            <FramerReveal direction="left" style={{ order: 1 }}>
               <span className="welcome-badge">{akademik.kurikulum_badge}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{akademik.kurikulum_title}</h2>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p1}</p>
@@ -80,7 +80,7 @@ export default async function Akademik() {
                   <span key={idx} className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>{tag}</span>
                 ))}
               </div>
-            </div>
+            </FramerReveal>
           </div>
         </div>
       </section>
@@ -93,13 +93,13 @@ export default async function Akademik() {
             <h2>Kalender Belajar, KBM, & Projek P5</h2>
           </div>
 
-          <div className="reveal-on-scroll">
+          <FramerReveal direction="up">
             <AcademicPortal 
               initialCalendar={akademik.calendar} 
               initialP5Projects={akademik.p5_projects || []} 
               initialJadwalKBM={akademik.jadwal_kbm || []}
             />
-          </div>
+          </FramerReveal>
         </div>
       </section>
 

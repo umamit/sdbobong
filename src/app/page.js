@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
-import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../components/FramerReveal';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
@@ -250,7 +250,7 @@ export default async function Home() {
 
       <section className="section-padding welcome-section">
         <div className="container welcome-layout">
-          <div className="welcome-apple-card reveal-on-scroll">
+          <FramerReveal direction="left" className="welcome-apple-card">
             {kepalaSekolah ? (
               <>
                 <Image 
@@ -277,8 +277,8 @@ export default async function Home() {
                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Kepala Sekolah</div>
               </div>
             )}
-          </div>
-          <div className="welcome-info reveal-on-scroll reveal-delay-200">
+          </FramerReveal>
+          <FramerReveal direction="right" delay={0.15} className="welcome-info">
             <span className="welcome-badge">{beranda.welcome_badge}</span>
             <h2>{beranda.welcome_title}</h2>
             <div className="welcome-quote" style={{ maxWidth: '75ch' }}>
@@ -301,13 +301,13 @@ export default async function Home() {
               </div>
             )}
             <Link href="/profil" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)' }}>Baca Selengkapnya Tentang Kami</Link>
-          </div>
+          </FramerReveal>
         </div>
       </section>
 
       {/* PPDB Interactive Stepper Section — Positioned under Welcome Section for optimized visual hierarchy */}
       <section className="container" style={{ marginTop: 'var(--space-lg)', marginBottom: 'var(--space-lg)' }}>
-        <div className="stepper-section reveal-on-scroll">
+        <FramerReveal direction="up" className="stepper-section">
           <div className="stepper-header">
             <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
             <p>Ikuti panduan urutan langkah berikut untuk mendaftarkan putra-putri Anda dengan mudah</p>
@@ -319,39 +319,39 @@ export default async function Home() {
                 <div className="stepper-step-number" style={{ backgroundColor: 'rgba(18, 165, 184, 0.08)', border: '2px solid rgba(18, 165, 184, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <img src="/images/animated/information.png" alt="Informasi" width={28} height={28} style={{ objectFit: 'contain' }} />
                 </div>
-                <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
-                <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
+                <h3 className="stepper-step-title">Pahami Syarat &amp; Alur</h3>
+                <p className="stepper-step-desc">Baca persyaratan umur, berkas administrasi, dan sistem zonasi pada halaman PPDB.</p>
               </Link>
             </FramerRevealItem>
 
             {/* Step 2 */}
             <FramerRevealItem>
-              <Link href="/ppdb/daftar" className="stepper-step" style={{ display: 'block', height: '100%' }}>
+              <Link href="/buku-tamu" className="stepper-step" style={{ display: 'block', height: '100%' }}>
                 <div className="stepper-step-number" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img src="/images/animated/form.png" alt="Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
+                  <img src="/images/animated/edit.png" alt="Isi Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
                 </div>
-                <h3 className="stepper-step-title">Isi Formulir Online</h3>
-                <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
+                <h3 className="stepper-step-title">Isi Buku Tamu</h3>
+                <p className="stepper-step-desc">Silakan isi buku tamu digital terlebih dahulu untuk mencatatkan kunjungan Anda.</p>
               </Link>
             </FramerRevealItem>
 
             {/* Step 3 */}
             <FramerRevealItem>
-              <Link href="/ppdb/cetak" className="stepper-step" style={{ display: 'block', height: '100%' }}>
+              <div className="stepper-step">
                 <div className="stepper-step-number" style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '2px solid rgba(245, 158, 11, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <img src="/images/animated/download.png" alt="Unduh" width={28} height={28} style={{ objectFit: 'contain' }} />
+                  <img src="/images/animated/verified.png" alt="Verifikasi" width={28} height={28} style={{ objectFit: 'contain' }} />
                 </div>
-                <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
-                <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
-              </Link>
+                <h3 className="stepper-step-title">Pengumuman &amp; Daftar Ulang</h3>
+                <p className="stepper-step-desc">Pantau pengumuman kelulusan PPDB dan lakukan lapor diri secara langsung ke sekolah.</p>
+              </div>
             </FramerRevealItem>
 
             {/* Step 4 */}
             <FramerRevealItem>
               <a 
-                href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
+                href={`https://wa.me/${operatorPhone}`} 
                 target="_blank" 
-                rel="noreferrer" 
+                rel="noopener noreferrer" 
                 className="stepper-step"
                 style={{ display: 'block', height: '100%' }}
               >
@@ -363,16 +363,16 @@ export default async function Home() {
               </a>
             </FramerRevealItem>
           </FramerRevealContainer>
-        </div>
+        </FramerReveal>
       </section>
 
       {/* Stats Counter — Animated Apple HIG */}
       <section className="section-padding stats-section">
         <div className="container">
-          <div className="stats-header reveal-on-scroll" style={{ textAlign: 'center', marginBottom: 'var(--space-md)', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <FramerReveal direction="up" className="stats-header" style={{ textAlign: 'center', marginBottom: 'var(--space-md)', maxWidth: '700px', marginLeft: 'auto', marginRight: 'auto' }}>
             <h2 className="stats-main-title" style={{ color: '#ffffff', fontSize: 'clamp(1.5rem, 4vw, 2.25rem)', fontWeight: 800, marginBottom: 'var(--space-xs)' }}>Statistik &amp; Fasilitas Sekolah</h2>
             <p className="stats-main-subtitle" style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.95rem', lineHeight: '1.6' }}>SD Negeri Bobong berkomitmen untuk selalu menyajikan informasi transparan serta menyediakan fasilitas sarana prasarana yang mendukung proses belajar mengajar secara optimal.</p>
-          </div>
+          </FramerReveal>
 
           {/* Animated Stats Counter Component */}
           <div style={{ marginBottom: 'var(--space-md)' }}>

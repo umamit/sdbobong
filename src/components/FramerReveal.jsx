@@ -107,3 +107,44 @@ export function FramerWordReveal({ text, className, style, delay = 0 }) {
     </motion.span>
   );
 }
+
+export function FramerReveal({ children, direction = "up", delay = 0, className, style, id }) {
+  const directions = {
+    up: { y: 35, x: 0 },
+    down: { y: -35, x: 0 },
+    left: { x: -35, y: 0 },
+    right: { x: 35, y: 0 }
+  };
+  
+  const variants = {
+    hidden: { 
+      opacity: 0, 
+      ...directions[direction]
+    },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 15,
+        delay: delay
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      id={id}
+      className={className}
+      style={style}
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
