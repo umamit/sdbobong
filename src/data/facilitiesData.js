@@ -163,16 +163,16 @@ export const FACILITIES_DATA = {
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   },
   bangunan_tk: {
-    title: "Gedung TK (Taman Kanak-Kanak)",
-    desc: "Bangunan pendidikan anak usia dini yang terletak di sisi barat daya (kiri bawah) kompleks sekolah. Merupakan area khusus belajar dan bermain ramah anak bagi siswa TK sebelum memasuki jenjang sekolah dasar.",
+    title: "Gedung Serba Guna (GSG)",
+    desc: "Gedung serba guna yang terletak di sisi barat daya (kiri bawah) kompleks sekolah. Berfungsi sebagai pusat kegiatan seni, olahraga indoor, rapat komite sekolah, pertemuan wali murid, serta ruang serba guna penunjang KBM.",
     stats: {
-      kapasitas: "Menyesuaikan",
+      kapasitas: "100 - 150 Orang",
       lokasi: "Sektor Barat Daya Kompleks (Kiri Bawah)",
-      kondisi: "Aktif & Sangat Baik",
-      fasilitas: ["Ruang Kelas Ceria", "Area Bermain Outdoor", "Alat Peraga Edukatif (APE)", "Perosotan & Ayunan Anak"]
+      kondisi: "Sangat Baik & Multifungsi",
+      fasilitas: ["Area Hall Luas", "Satu Set Sound System", "Panggung Kegiatan Sekolah", "Kursi Lipat Rapat", "Peralatan Olahraga Indoor"]
     },
-    icon: "🧸",
+    icon: "🏛️",
     color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop"
   }
 };

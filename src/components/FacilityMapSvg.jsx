@@ -261,8 +261,8 @@ export default function FacilityMapSvg(props) {
                 <line x1="95" y1="417.5" x2="150" y2="417.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
                 {/* Labels */}
-                <text x="95" y="375" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🧸 GEDUNG TK</text>
-                <text x="95" y="392" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Taman Kanak-Kanak)</text>
+                <text x="95" y="375" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10.5" fill="#FFFFFF" textAnchor="middle">🏛️ GEDUNG SERBA GUNA</text>
+                <text x="95" y="392" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Gedung Serba Guna)</text>
                 
                 {/* Glow Rect overlay on hover */}
                 {hoveredRoom === 'bangunan_tk' && <rect x="42" y="337" width="106" height="106" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
