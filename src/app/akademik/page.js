@@ -1,5 +1,6 @@
 import { loadWebConfig } from '../../lib/database';
 import AcademicPortal from '../../components/AcademicPortal';
+import { FramerRevealContainer, FramerRevealItem } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
