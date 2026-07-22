@@ -223,7 +223,7 @@ export default function BeritaSearchClient({ newsList = [] }) {
           layout
         >
           <AnimatePresence mode="popLayout">
-            {paginatedNews.map((news) => (
+            {paginatedNews.map((news, idx) => (
               <motion.div
                 key={news.id}
                 layout
@@ -231,7 +231,7 @@ export default function BeritaSearchClient({ newsList = [] }) {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
               >
-                <NewsCard news={news} />
+                <NewsCard news={news} priority={idx === 0} />
               </motion.div>
             ))}
           </AnimatePresence>

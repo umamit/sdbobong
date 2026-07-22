@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, TEACHERS_JSON } from './core.js';
+import { isSupabaseEnabled, TEACHERS_JSON, getFreshCachedTeachers, setCachedTeachers, invalidateTeachersCache } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -31,13 +31,20 @@ export function sortTeachersList(teachersList) {
 }
 
 export async function loadTeachers(includePassword = false) {
+  const cleanList = (list) => includePassword ? list : list.map(({ password, ...rest }) => rest);
+  const fresh = getFreshCachedTeachers();
+  if (fresh) return cleanList(fresh);
+
   let localTeachers = [];
   if (fs.existsSync(TEACHERS_JSON)) {
     try { localTeachers = JSON.parse(fs.readFileSync(TEACHERS_JSON, 'utf-8')); }
     catch (e) { console.error("Error loading local teachers:", e); }
   }
-  const cleanList = (list) => includePassword ? list : list.map(({ password, ...rest }) => rest);
-  if (!isSupabaseEnabled()) return cleanList(sortTeachersList(localTeachers));
+  if (!isSupabaseEnabled()) {
+    const sorted = sortTeachersList(localTeachers);
+    setCachedTeachers(sorted);
+    return cleanList(sorted);
+  }
 
   try {
     const supabaseTeachers = await prisma.teacher.findMany();
@@ -53,6 +60,7 @@ export async function loadTeachers(includePassword = false) {
         });
       }
       await markTableSeeded("teachers");
+      setCachedTeachers(sortedLocal);
       return cleanList(sortedLocal);
     }
     if (supabaseTeachers && supabaseTeachers.length > 0 && !teachersSeeded) await markTableSeeded("teachers");
@@ -70,10 +78,13 @@ export async function loadTeachers(includePassword = false) {
       });
       const sortedList = sortTeachersList(teachersList);
       try { fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8'); } catch (e) {}
+      setCachedTeachers(sortedList);
       return cleanList(sortedList);
     }
   } catch (e) { console.error("Error loading teachers from Supabase via Prisma:", e.message || e); }
-  return cleanList(sortTeachersList(localTeachers));
+  const sorted = sortTeachersList(localTeachers);
+  setCachedTeachers(sorted);
+  return cleanList(sorted);
 }
 
 export async function saveTeachers(teachersList) {
@@ -106,8 +117,10 @@ export async function saveTeachers(teachersList) {
           }
         }
       }
+      invalidateTeachersCache();
       return true;
     } catch (e) { console.error("Error saving teachers to Supabase via Prisma:", e.message || e); return localSaved; }
   }
+  invalidateTeachersCache();
   return localSaved;
 }

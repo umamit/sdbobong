@@ -102,6 +102,9 @@ export default async function Home() {
       {config.stats?.hero_background && !isVideoBg && (
         <link rel="preload" as="image" href={config.stats.hero_background} fetchPriority="high" />
       )}
+      {isVideoBg && (
+        <link rel="preload" as="image" href="/images/hero_school.svg" fetchPriority="high" />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }}
@@ -441,6 +444,7 @@ export default async function Home() {
                   <NewsCard 
                     news={news} 
                     className=""
+                    priority={index === 0}
                   />
                 </FramerRevealItem>
               ))

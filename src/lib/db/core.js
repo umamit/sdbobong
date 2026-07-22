@@ -83,6 +83,40 @@ export function invalidateConfigCache() {
   _configCache = { data: null, expiresAt: 0 };
 }
 
+// --- Shared TTL-based in-memory cache for news ---
+const NEWS_TTL_MS = 60_000; // 60 seconds
+let _newsCache = { data: null, expiresAt: 0 };
+
+export function getFreshCachedNews() {
+  if (_newsCache.data && Date.now() < _newsCache.expiresAt) return _newsCache.data;
+  return null;
+}
+
+export function setCachedNews(news) {
+  _newsCache = { data: news, expiresAt: Date.now() + NEWS_TTL_MS };
+}
+
+export function invalidateNewsCache() {
+  _newsCache = { data: null, expiresAt: 0 };
+}
+
+// --- Shared TTL-based in-memory cache for teachers ---
+const TEACHERS_TTL_MS = 60_000; // 60 seconds
+let _teachersCache = { data: null, expiresAt: 0 };
+
+export function getFreshCachedTeachers() {
+  if (_teachersCache.data && Date.now() < _teachersCache.expiresAt) return _teachersCache.data;
+  return null;
+}
+
+export function setCachedTeachers(teachers) {
+  _teachersCache = { data: teachers, expiresAt: Date.now() + TEACHERS_TTL_MS };
+}
+
+export function invalidateTeachersCache() {
+  _teachersCache = { data: null, expiresAt: 0 };
+}
+
 export function isSupabaseEnabled() {
   if (!supabase) return false;
   if (_configCache.data && _configCache.data.force_local_cache === true) return false;

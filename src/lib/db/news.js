@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent } from './core.js';
+import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -31,12 +31,18 @@ function getNewsSortKey(item) {
 }
 
 export async function loadNews() {
+  const fresh = getFreshCachedNews();
+  if (fresh) return fresh;
+
   let localNews = [];
   if (fs.existsSync(NEWS_JSON)) {
     try { localNews = JSON.parse(fs.readFileSync(NEWS_JSON, 'utf-8')).map(n => ({ ...n, images: n.images || (n.image ? [n.image] : []) })); }
     catch (e) { console.error("Error loading local news:", e); }
   }
-  if (!isSupabaseEnabled()) return localNews;
+  if (!isSupabaseEnabled()) {
+    setCachedNews(localNews);
+    return localNews;
+  }
   try {
     const supabaseNews = await prisma.news.findMany();
     const newsSeeded = await isTableSeeded("news");
@@ -55,6 +61,7 @@ export async function loadNews() {
         });
       }
       await markTableSeeded("news");
+      setCachedNews(localNews);
       return localNews;
     }
     if (supabaseNews && supabaseNews.length > 0 && !newsSeeded) await markTableSeeded("news");
@@ -67,9 +74,11 @@ export async function loadNews() {
       });
       newsList.sort((a, b) => getNewsSortKey(b) - getNewsSortKey(a));
       try { fs.writeFileSync(NEWS_JSON, JSON.stringify(newsList, null, 4), 'utf-8'); } catch (e) {}
+      setCachedNews(newsList);
       return newsList;
     }
   } catch (e) { console.error("Error loading news from Supabase via Prisma:", e.message || e); }
+  setCachedNews(localNews);
   return localNews;
 }
 
@@ -112,8 +121,10 @@ export async function saveNews(newsList) {
           }
         }
       }
+      invalidateNewsCache();
       return true;
     } catch (e) { console.error("Error saving news to Supabase via Prisma:", e.message || e); return localSaved; }
   }
+  invalidateNewsCache();
   return localSaved;
 }

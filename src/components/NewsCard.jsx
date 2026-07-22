@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export default function NewsCard({ news, className = '' }) {
+export default function NewsCard({ news, className = '', priority = false }) {
   const images = news.images && news.images.length > 0 ? news.images : [news.image || '/images/news_hari_guru.svg'];
   const [activeIndex, setActiveIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -194,7 +194,8 @@ export default function NewsCard({ news, className = '' }) {
               alt={`${news.title} - ${index + 1}`}
               className="card-img-slider"
               style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', userSelect: 'none' }}
-              loading="lazy"
+              loading={priority && index === activeIndex ? "eager" : "lazy"}
+              fetchPriority={priority && index === activeIndex ? "high" : "auto"}
               decoding="async"
             />
           </div>
