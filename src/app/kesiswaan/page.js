@@ -1,5 +1,5 @@
 import { loadWebConfig } from '../../lib/database';
-import { FramerRevealContainer, FramerRevealItem } from '../../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -33,7 +33,7 @@ export default async function Kesiswaan() {
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>{kesiswaan.banner_title}</h1>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}><FramerWordReveal text={kesiswaan.banner_title} /></h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>{kesiswaan.banner_text}</p>
         </div>
       </section>

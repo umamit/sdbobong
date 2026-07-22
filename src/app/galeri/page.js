@@ -1,5 +1,6 @@
 import { loadWebConfig } from '../../lib/database';
 import GalleryClient from './GalleryClient';
+import { FramerWordReveal } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,7 +19,7 @@ export default async function GaleriPage() {
       {/* Page Header */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Galeri Sekolah</h1>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}><FramerWordReveal text="Galeri Sekolah" /></h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>
             Dokumentasi foto dan video berbagai aktivitas akademis, kesiswaan, dan prestasi unggulan di SD Negeri Bobong.
           </p>

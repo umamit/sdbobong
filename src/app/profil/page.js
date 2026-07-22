@@ -1,7 +1,7 @@
 import { loadTeachers, loadAchievements, loadWebConfig } from '../../lib/database';
 import InteractiveFacilityMap from '../../components/InteractiveFacilityMap';
 import TeachersSectionClient from './TeachersSectionClient';
-import { FramerRevealContainer, FramerRevealItem } from '../../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../../components/FramerReveal';
 import Image from 'next/image';
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -77,7 +77,7 @@ export default async function Profil() {
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>{profil.banner_title}</h1>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}><FramerWordReveal text={profil.banner_title} /></h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>{profil.banner_text}</p>
         </div>
       </section>

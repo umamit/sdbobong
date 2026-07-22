@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
-import { FramerRevealContainer, FramerRevealItem } from '../components/FramerReveal';
+import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../components/FramerReveal';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
@@ -236,7 +236,7 @@ export default async function Home() {
         )}
         <div className="container hero-content">
           <span className="hero-subtitle">{beranda.hero_subtitle}</span>
-          <h1 className="hero-title">{beranda.hero_title}</h1>
+          <h1 className="hero-title"><FramerWordReveal text={beranda.hero_title} /></h1>
           <p className="hero-text">{beranda.hero_text}</p>
           <div className="hero-actions">
             <Link href="/buku-tamu" className="btn btn-secondary">
@@ -282,7 +282,7 @@ export default async function Home() {
             <span className="welcome-badge">{beranda.welcome_badge}</span>
             <h2>{beranda.welcome_title}</h2>
             <div className="welcome-quote" style={{ maxWidth: '75ch' }}>
-              {beranda.welcome_quote}
+              <FramerWordReveal text={beranda.welcome_quote} delay={0.2} />
             </div>
             <p className="text-justify" style={{ maxWidth: '75ch' }}>{beranda.welcome_p1}</p>
             <p className="text-justify" style={{ maxWidth: '75ch' }}>{beranda.welcome_p2}</p>

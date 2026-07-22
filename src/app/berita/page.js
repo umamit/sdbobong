@@ -1,6 +1,7 @@
 import { loadNews, loadWebConfig } from '../../lib/database';
 import Link from 'next/link';
 import BeritaSearchClient from './BeritaSearchClient';
+import { FramerWordReveal } from '../../components/FramerReveal';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Fresh load
@@ -18,7 +19,7 @@ export default async function Berita() {
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Berita Sekolah</h1>
+          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}><FramerWordReveal text="Berita Sekolah" /></h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>Kabar terkini dan dokumentasi aktivitas harian keluarga besar SD Negeri Bobong.</p>
         </div>
       </section>
