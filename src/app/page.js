@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
+import { FramerRevealContainer, FramerRevealItem } from '../components/FramerReveal';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
@@ -308,48 +309,57 @@ export default async function Home() {
             <h2>4 Langkah Mudah Pendaftaran Siswa Baru (PPDB)</h2>
             <p>Ikuti panduan urutan langkah berikut untuk mendaftarkan putra-putri Anda dengan mudah</p>
           </div>
-          <div className="stepper-grid">
+          <FramerRevealContainer className="stepper-grid">
             {/* Step 1 */}
-            <Link href="/ppdb" className="stepper-step">
-              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(18, 165, 184, 0.08)', border: '2px solid rgba(18, 165, 184, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/images/animated/information.png" alt="Informasi" width={28} height={28} style={{ objectFit: 'contain' }} />
-              </div>
-              <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
-              <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
-            </Link>
+            <FramerRevealItem>
+              <Link href="/ppdb" className="stepper-step" style={{ display: 'block', height: '100%' }}>
+                <div className="stepper-step-number" style={{ backgroundColor: 'rgba(18, 165, 184, 0.08)', border: '2px solid rgba(18, 165, 184, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img src="/images/animated/information.png" alt="Informasi" width={28} height={28} style={{ objectFit: 'contain' }} />
+                </div>
+                <h3 className="stepper-step-title">Pelajari Info &amp; Syarat</h3>
+                <p className="stepper-step-desc">Baca alur, jadwal, persyaratan dokumen, dan daya tampung kuota sekolah.</p>
+              </Link>
+            </FramerRevealItem>
 
             {/* Step 2 */}
-            <Link href="/ppdb/daftar" className="stepper-step">
-              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/images/animated/form.png" alt="Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
-              </div>
-              <h3 className="stepper-step-title">Isi Formulir Online</h3>
-              <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
-            </Link>
+            <FramerRevealItem>
+              <Link href="/ppdb/daftar" className="stepper-step" style={{ display: 'block', height: '100%' }}>
+                <div className="stepper-step-number" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img src="/images/animated/form.png" alt="Formulir" width={28} height={28} style={{ objectFit: 'contain' }} />
+                </div>
+                <h3 className="stepper-step-title">Isi Formulir Online</h3>
+                <p className="stepper-step-desc">Isi formulir pendaftaran daring secara lengkap, cepat, dan aman dari rumah.</p>
+              </Link>
+            </FramerRevealItem>
 
             {/* Step 3 */}
-            <Link href="/ppdb/cetak" className="stepper-step">
-              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '2px solid rgba(245, 158, 11, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/images/animated/download.png" alt="Unduh" width={28} height={28} style={{ objectFit: 'contain' }} />
-              </div>
-              <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
-              <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
-            </Link>
+            <FramerRevealItem>
+              <Link href="/ppdb/cetak" className="stepper-step" style={{ display: 'block', height: '100%' }}>
+                <div className="stepper-step-number" style={{ backgroundColor: 'rgba(245, 158, 11, 0.08)', border: '2px solid rgba(245, 158, 11, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img src="/images/animated/download.png" alt="Unduh" width={28} height={28} style={{ objectFit: 'contain' }} />
+                </div>
+                <h3 className="stepper-step-title">Unduh Berkas Cetak</h3>
+                <p className="stepper-step-desc">Unduh format berkas fisik untuk pendaftaran offline atau bukti fisik cetak.</p>
+              </Link>
+            </FramerRevealItem>
 
             {/* Step 4 */}
-            <a 
-              href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="stepper-step"
-            >
-              <div className="stepper-step-number" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', border: '2px solid rgba(34, 197, 94, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/images/animated/chat.png" alt="Hubungi Operator" width={28} height={28} style={{ objectFit: 'contain' }} />
-              </div>
-              <h3 className="stepper-step-title">Konfirmasi Operator</h3>
-              <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
-            </a>
-          </div>
+            <FramerRevealItem>
+              <a 
+                href={`https://wa.me/${operatorPhone}?text=Halo%20Operator%20PPDB%20SDN%20Bobong,%20saya%20ingin%20konfirmasi/tanya%20tentang%20pendaftaran...`} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="stepper-step"
+                style={{ display: 'block', height: '100%' }}
+              >
+                <div className="stepper-step-number" style={{ backgroundColor: 'rgba(34, 197, 94, 0.08)', border: '2px solid rgba(34, 197, 94, 0.15)', boxShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img src="/images/animated/chat.png" alt="Hubungi Operator" width={28} height={28} style={{ objectFit: 'contain' }} />
+                </div>
+                <h3 className="stepper-step-title">Konfirmasi Operator</h3>
+                <p className="stepper-step-desc">Hubungi WhatsApp panitia PPDB untuk verifikasi berkas dan bantuan pendaftaran.</p>
+              </a>
+            </FramerRevealItem>
+          </FramerRevealContainer>
         </div>
       </section>
 
@@ -369,50 +379,50 @@ export default async function Home() {
           <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <img src="/images/animated/school.png" alt="Sekolah" width={24} height={24} style={{ display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain' }} /> Sarana, Prasarana &amp; Sanitasi
           </div>
-          <div className="stats-grid sarpras-grid">
-            <div className="stat-item reveal-on-scroll reveal-left reveal-delay-100">
+          <FramerRevealContainer className="stats-grid sarpras-grid">
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
               </div>
               <div className="stat-number">{stats.rombel}</div>
               <div className="stat-label">Rombongan Belajar</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-left reveal-delay-200">
+            </FramerRevealItem>
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               </div>
               <div className="stat-number">{stats.ruang_kelas}</div>
               <div className="stat-label">Ruang Kelas</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-left reveal-delay-300">
+            </FramerRevealItem>
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v8M8 12h8" /></svg>
               </div>
               <div className="stat-number">{stats.uks}</div>
               <div className="stat-label">Unit Kesehatan (UKS)</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-right reveal-delay-400">
+            </FramerRevealItem>
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
               </div>
               <div className="stat-number">{stats.gudang}</div>
               <div className="stat-label">Gudang Sekolah</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-right reveal-delay-500">
+            </FramerRevealItem>
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M9 22V12h6v10M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M12 10a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z" /></svg>
               </div>
               <div className="stat-number">{stats.toilet}</div>
               <div className="stat-label">Kamar Mandi / WC</div>
-            </div>
-            <div className="stat-item reveal-on-scroll reveal-right reveal-delay-600">
+            </FramerRevealItem>
+            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
               <div className="stat-icon-wrapper">
                 <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" /></svg>
               </div>
               <div className="stat-number">{stats.cuci_tangan}</div>
               <div className="stat-label">Area Cuci Tangan</div>
-            </div>
-          </div>
+            </FramerRevealItem>
+          </FramerRevealContainer>
         </div>
       </section>
 
@@ -424,19 +434,20 @@ export default async function Home() {
             <h2 className="section-title">Berita & Kegiatan Terbaru</h2>
           </div>
 
-          <div className="grid-3">
+          <FramerRevealContainer className="grid-3">
             {newsList.length > 0 ? (
               newsList.map((news, index) => (
-                <NewsCard 
-                  key={news.id} 
-                  news={news} 
-                  className={`reveal-on-scroll reveal-delay-${(index + 1) * 100}`}
-                />
+                <FramerRevealItem key={news.id}>
+                  <NewsCard 
+                    news={news} 
+                    className=""
+                  />
+                </FramerRevealItem>
               ))
             ) : (
               <p style={{ gridColumn: 'span 3', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic' }}>Belum ada berita kegiatan terbaru.</p>
             )}
-          </div>
+          </FramerRevealContainer>
 
           <div className="text-center" style={{ marginTop: 'var(--space-md)' }}>
             <Link href="/berita" className="btn btn-outline">Lihat Semua Berita</Link>
