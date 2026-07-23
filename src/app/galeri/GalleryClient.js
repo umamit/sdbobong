@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { formatTanggal, formatTanggalPendek } from '../../lib/format';
 
 // Helper function to extract YouTube Video ID from any format
 function getYoutubeId(url) {
@@ -507,7 +508,7 @@ export default function GalleryClient({ initialGallery }) {
                 >
                   <p style={{ margin: '0', fontWeight: '700', fontSize: '0.85rem', color: 'var(--primary-color)', lineHeight: '1.4' }}>{item.title}</p>
                   <p style={{ margin: '4px 0 0 0', fontSize: '0.72rem', color: '#64748b', fontWeight: '500' }}>
-                    {item.date ? new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                    {formatTanggalPendek(item.date)}
                   </p>
                 </div>
               </motion.div>
@@ -685,7 +686,7 @@ export default function GalleryClient({ initialGallery }) {
             </span>
             <h3 style={{ margin: '0', fontSize: '1.1rem', fontWeight: 700 }}>{activeItem.title}</h3>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)' }}>
-              {activeItem.date ? new Date(activeItem.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
+              {formatTanggal(activeItem.date)}
             </p>
           </div>
         </motion.div>

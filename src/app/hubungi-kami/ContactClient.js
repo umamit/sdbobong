@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { generateCaptchaChallenge } from '../../lib/captcha';
 
 export default function ContactClient({ initialFaqs, contacts = {} }) {
   const schoolEmail = contacts.email_sekolah || "admin@sdnegeribobong.sch.id";
@@ -14,9 +15,7 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
   const [userAnswer, setUserAnswer] = useState('');
 
   const generateCaptcha = () => {
-    const a = Math.floor(Math.random() * 9) + 1;
-    const b = Math.floor(Math.random() * 9) + 1;
-    setCaptchaChallenge({ numA: a, numB: b, answer: a + b });
+    setCaptchaChallenge(generateCaptchaChallenge());
   };
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatTanggal } from '../../lib/format';
 
 export default function DownloadClient({ initialDownloads }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -132,7 +133,7 @@ export default function DownloadClient({ initialDownloads }) {
                 
                 {/* File Meta */}
                 <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
-                  Diupload pada: {doc.date ? new Date(doc.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}
+                  Diupload pada: {formatTanggal(doc.date)}
                 </p>
               </div>
 

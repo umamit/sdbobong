@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatTanggal } from '../../lib/format';
 
 export default function GraduationClient() {
   const [query, setQuery] = useState('');
@@ -242,7 +243,7 @@ export default function GraduationClient() {
                     <tr>
                       <td style={{ padding: '6px 0' }}><strong>TEMPAT, TGL LAHIR</strong></td>
                       <td>:</td>
-                      <td style={{ padding: '6px 0' }}>{student.birth_place}, {student.birth_date ? new Date(student.birth_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}</td>
+                      <td style={{ padding: '6px 0' }}>{student.birth_place}, {student.birth_date ? formatTanggal(student.birth_date) : ''}</td>
                     </tr>
                     <tr>
                       <td style={{ padding: '6px 0' }}><strong>NAMA ORANG TUA / WALI</strong></td>

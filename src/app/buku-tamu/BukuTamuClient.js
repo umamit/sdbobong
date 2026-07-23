@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { submitMessageAction } from '../actions/messages';
+import { generateCaptchaChallenge } from '../../lib/captcha';
+import { formatTanggalPendek } from '../../lib/format';
 
 export default function BukuTamuClient({ initialApprovedMessages }) {
   const [activeTab, setActiveTab] = useState('buku-tamu'); // 'buku-tamu' or 'saran'
@@ -13,9 +15,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
   const [srAnswer, setSrAnswer] = useState('');
 
   const generateCaptcha = () => {
-    const a = Math.floor(Math.random() * 9) + 1;
-    const b = Math.floor(Math.random() * 9) + 1;
-    setCaptchaChallenge({ numA: a, numB: b, answer: a + b });
+    setCaptchaChallenge(generateCaptchaChallenge());
   };
 
   useEffect(() => {
@@ -402,7 +402,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                       </span>
                     </div>
                     <span style={{ fontSize: '0.8rem', color: '#888' }}>
-                      {msg.date ? new Date(msg.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                      {formatTanggalPendek(msg.date)}
                     </span>
                   </div>
                   

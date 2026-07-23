@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatTanggal } from '../../lib/format';
 
 export default function GradesClient() {
   const [nisn, setNisn] = useState('');
@@ -289,7 +290,7 @@ export default function GradesClient() {
                         <tr>
                           <td style={{ padding: '4px 0' }}><strong>Tempat, Tgl Lahir</strong></td>
                           <td>:</td>
-                          <td>{student.birth_place}, {student.birth_date ? new Date(student.birth_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}</td>
+                          <td>{student.birth_place}, {student.birth_date ? formatTanggal(student.birth_date) : ''}</td>
                         </tr>
                         <tr>
                           <td style={{ padding: '4px 0' }}><strong>Status Sekolah</strong></td>
@@ -386,7 +387,7 @@ export default function GradesClient() {
                   <p style={{ margin: '0' }}>..........................................</p>
                 </div>
                 <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#111' }}>
-                  <p style={{ margin: '0' }}>Bobong, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                  <p style={{ margin: '0' }}>Bobong, {formatTanggal(new Date())}</p>
                   <p style={{ margin: '0 0 65px' }}>Wali Kelas,</p>
                   <p style={{ margin: '0', textDecoration: 'underline' }}>..........................................</p>
                   <p style={{ margin: '0', fontSize: '0.8rem', color: '#444' }}>NIP. ..........................................</p>
