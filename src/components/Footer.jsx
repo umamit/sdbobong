@@ -77,10 +77,10 @@ export default async function Footer() {
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Pemerintah Kabupaten Pulau Taliabu</span>
             </a>
-            <div className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
+            <a href="https://www.disdikkepulauantaliabu.org" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Dinas Pendidikan Taliabu</span>
-            </div>
+            </a>
             <div className={styles.affiliationItem} title="Kurikulum Merdeka - Merdeka Belajar">
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Kurikulum Merdeka</span>
