@@ -163,6 +163,7 @@
     border-radius: var(--radius-full); /* Full Capsule / Pill */
     transition: var(--transition-fast);
     text-decoration: none;
+    cursor: pointer;
 }
 
 .affiliationItem:hover {
