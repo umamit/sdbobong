@@ -88,7 +88,7 @@ export function FramerWordReveal({ text, className, style, delay = 0 }) {
 
   return (
     <motion.span
-      style={{ display: 'inline-flex', flexWrap: 'wrap', rowGap: '0.15em', columnGap: '0.25em', ...style }}
+      style={{ display: 'inline-flex', flexWrap: 'wrap', justifyContent: 'center', rowGap: '0.15em', columnGap: '0.25em', ...style }}
       className={className}
       variants={container}
       initial="hidden"

@@ -191,7 +191,9 @@ export default async function Home() {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.55) 0%, rgba(9, 34, 53, 0.65) 100%)',
+                background: 'linear-gradient(135deg, rgba(9, 34, 53, 0.72) 0%, rgba(5, 20, 32, 0.85) 100%)',
+                backdropFilter: 'blur(3px)',
+                WebkitBackdropFilter: 'blur(3px)',
                 zIndex: 2,
               }}
             />
@@ -215,7 +217,9 @@ export default async function Home() {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  background: 'linear-gradient(135deg, rgba(11, 60, 93, 0.85) 0%, rgba(9, 34, 53, 0.9) 100%)',
+                  background: 'linear-gradient(135deg, rgba(9, 34, 53, 0.75) 0%, rgba(5, 20, 32, 0.88) 100%)',
+                  backdropFilter: 'blur(3px)',
+                  WebkitBackdropFilter: 'blur(3px)',
                   zIndex: 1,
                 }}
               />
