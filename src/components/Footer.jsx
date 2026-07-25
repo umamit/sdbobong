@@ -77,10 +77,10 @@ export default async function Footer() {
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Pemerintah Kabupaten Pulau Taliabu</span>
             </a>
-            <a href="https://www.disdikkepulauantaliabu.org" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
+            <div className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Dinas Pendidikan Taliabu</span>
-            </a>
+            </div>
             <a href="https://kemendikdasmen.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Pendidikan Bermutu Untuk Semua - Kemendikdasmen RI">
               <img src="/images/badge_pendidikan_bermutu.png" alt="Pendidikan Bermutu Untuk Semua" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
               <span className={styles.affiliationText}>Pendidikan Bermutu Untuk Semua</span>
@@ -114,7 +114,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.17.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.17.1</span>
           </p>
 
 
