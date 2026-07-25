@@ -349,8 +349,9 @@ export default async function RootLayout({ children }) {
             </div>
             
             <div className="info-footer">
-              <div>
-                <img src="/images/logo_sekolah.png" className="school-logo-tiny" alt="Tiny logo" /> NPSN: {schoolNpsn} • SD Negeri Bobong
+              <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <img src="/images/logo_sekolah.png" alt="Tiny logo" style={{ width: '18px', height: '18px', borderRadius: '50%', objectFit: 'cover', display: 'inline-block', margin: 0, flexShrink: 0 }} />
+                <span>NPSN: {schoolNpsn} • SD Negeri Bobong</span>
               </div>
               <div style={{ fontSize: '0.75rem', marginTop: '4px', opacity: 0.7 }}>
                 Kembali ke <a href="/admin/login">Dashboard Admin</a>
