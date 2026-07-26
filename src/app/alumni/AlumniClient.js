@@ -164,7 +164,7 @@ export default function AlumniClient({ initialAlumni = [] }) {
               color: '#065f46', fontWeight: 600, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '8px'
             }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-              Selamat! Data alumni Anda berhasil ditambahkan ke direktori resmi SD Negeri Bobong.
+              Terima kasih! Pendaftaran alumni Anda telah diterima dan sedang menunggu verifikasi/persetujuan Administrator sekolah sebelum tampil di direktori publik.
             </div>
           )}
 

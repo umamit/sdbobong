@@ -65,7 +65,7 @@ export async function POST(request) {
         sekolah_lanjutan: sekolahTrim || null,
         pekerjaan: pekerjaanTrim || null,
         pesan_kesan: pesanTrim || null,
-        status: 'Approved',
+        status: 'Pending',
         created_at: new Date().toISOString(),
       },
     });
@@ -74,6 +74,34 @@ export async function POST(request) {
   } catch (error) {
     console.error('[alumni POST error]', error);
     return NextResponse.json({ error: 'Gagal mendaftarkan alumni' }, { status: 500 });
+  }
+}
+
+// PATCH /api/alumni?id=xxx (Ubah Status Alumni oleh Admin: Approved / Rejected)
+export async function PATCH(request) {
+  const { searchParams } = new URL(request.url);
+  const idStr = searchParams.get('id');
+
+  if (!idStr) return NextResponse.json({ error: 'ID alumni wajib diisi' }, { status: 400 });
+
+  try {
+    const id = parseInt(idStr, 10);
+    const body = await request.json();
+    const { status } = body;
+
+    if (!status || !['Approved', 'Pending', 'Rejected'].includes(status)) {
+      return NextResponse.json({ error: 'Status tidak valid' }, { status: 400 });
+    }
+
+    const updated = await prisma.alumni.update({
+      where: { id },
+      data: { status },
+    });
+
+    return NextResponse.json({ alumni: updated });
+  } catch (error) {
+    console.error('[alumni PATCH error]', error);
+    return NextResponse.json({ error: 'Gagal menyetujui status alumni' }, { status: 500 });
   }
 }
 

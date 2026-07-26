@@ -13,6 +13,7 @@ export default async function AlumniPage() {
   let initialAlumni = [];
   try {
     initialAlumni = await prisma.alumni.findMany({
+      where: { status: 'Approved' },
       orderBy: { id: 'desc' },
     });
   } catch (err) {

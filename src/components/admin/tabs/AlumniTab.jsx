@@ -155,6 +155,7 @@ export default function AlumniTab() {
                   <th style={{ padding: '10px 12px', fontWeight: 700 }}>Pendidikan Lanjutan</th>
                   <th style={{ padding: '10px 12px', fontWeight: 700 }}>Pekerjaan / Aktivitas</th>
                   <th style={{ padding: '10px 12px', fontWeight: 700 }}>Pesan &amp; Kesan</th>
+                  <th style={{ padding: '10px 12px', fontWeight: 700 }}>Status</th>
                   <th style={{ padding: '10px 12px', fontWeight: 700, textAlign: 'right' }}>Aksi</th>
                 </tr>
               </thead>
@@ -173,18 +174,53 @@ export default function AlumniTab() {
                     <td style={{ padding: '12px', color: 'var(--text-color)', verticalAlign: 'top' }}>
                       {item.pekerjaan || '-'}
                     </td>
-                    <td style={{ padding: '12px', color: 'var(--text-muted)', fontSize: '0.83rem', verticalAlign: 'top', maxWidth: '240px' }}>
+                    <td style={{ padding: '12px', color: 'var(--text-muted)', fontSize: '0.83rem', verticalAlign: 'top', maxWidth: '200px' }}>
                       {item.pesan_kesan || '-'}
                     </td>
-                    <td style={{ padding: '12px', textAlign: 'right', verticalAlign: 'top' }}>
-                      <button
-                        onClick={() => handleDelete(item.id, item.nama_lengkap)}
-                        disabled={deletingId === item.id}
-                        className="btn btn-sm btn-danger"
-                        style={{ padding: '5px 10px', fontSize: '0.78rem', borderRadius: '6px', cursor: 'pointer' }}
-                      >
-                        {deletingId === item.id ? 'Menghapus...' : 'Hapus'}
-                      </button>
+                    <td style={{ padding: '12px', verticalAlign: 'top' }}>
+                      <span style={{
+                        padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 700,
+                        background: item.status === 'Approved' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                        color: item.status === 'Approved' ? '#059669' : '#d97706',
+                        border: item.status === 'Approved' ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(245, 158, 11, 0.3)'
+                      }}>
+                        {item.status === 'Approved' ? 'Disetujui' : 'Menunggu Konfirmasi'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px', textAlign: 'right', verticalAlign: 'top', whiteSpace: 'nowrap' }}>
+                      <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                        {item.status !== 'Approved' && (
+                          <button
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(`/api/alumni?id=${item.id}`, {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ status: 'Approved' })
+                                });
+                                if (res.ok) {
+                                  showToast('success', `Alumni "${item.nama_lengkap}" berhasil disetujui!`);
+                                  setAlumniList(prev => prev.map(a => a.id === item.id ? { ...a, status: 'Approved' } : a));
+                                }
+                              } catch {
+                                showToast('error', 'Gagal menyetujui data alumni');
+                              }
+                            }}
+                            className="btn btn-sm btn-success"
+                            style={{ padding: '5px 10px', fontSize: '0.78rem', borderRadius: '6px', cursor: 'pointer', background: '#10b981', color: 'white', border: 'none' }}
+                          >
+                            Setujui
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(item.id, item.nama_lengkap)}
+                          disabled={deletingId === item.id}
+                          className="btn btn-sm btn-danger"
+                          style={{ padding: '5px 10px', fontSize: '0.78rem', borderRadius: '6px', cursor: 'pointer' }}
+                        >
+                          {deletingId === item.id ? 'Menghapus...' : 'Hapus'}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
