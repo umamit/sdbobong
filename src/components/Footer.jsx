@@ -71,7 +71,7 @@ export default async function Footer() {
       <div className={`container ${styles.footerAffiliations}`}>
         <div className={styles.affiliationsDivider}></div>
         <div className={styles.affiliationsContent}>
-          <span className={styles.affiliationsLabel}>Afiliasi &amp; Program Resmi:</span>
+          <span className={styles.affiliationsLabel}>Naungan &amp; Program Resmi:</span>
           <div className={styles.affiliationsLogos}>
             <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Pemerintah Kabupaten Pulau Taliabu">
               <img src="https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/news/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
@@ -114,7 +114,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.20.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.20.1</span>
           </p>
 
 
