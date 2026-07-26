@@ -3,21 +3,48 @@ import { prisma } from '../../../../lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-// GET /api/news/comments?news_id=xxx
+// GET /api/news/comments
+// Jika ada ?news_id=xxx -> ambil komentar berita tertentu (maks 20)
+// Jika tanpa news_id -> untuk Admin: ambil semua komentar beserta data judul beritanya
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const newsId = searchParams.get('news_id');
-  if (!newsId) return NextResponse.json({ error: 'news_id required' }, { status: 400 });
 
   try {
-    const comments = await prisma.newsComment.findMany({
-      where: { news_id: newsId },
-      orderBy: { id: 'desc' },
-      take: 20,
-    });
-    return NextResponse.json({ comments }, {
-      headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' }
-    });
+    if (newsId) {
+      const comments = await prisma.newsComment.findMany({
+        where: { news_id: newsId },
+        orderBy: { id: 'desc' },
+        take: 20,
+      });
+      return NextResponse.json({ comments }, {
+        headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' }
+      });
+    } else {
+      // Ambil seluruh komentar untuk admin dashboard
+      const comments = await prisma.newsComment.findMany({
+        orderBy: { id: 'desc' },
+      });
+
+      // Ambil data judul berita pendukung
+      const newsIds = [...new Set(comments.map(c => c.news_id))];
+      const newsArticles = await prisma.news.findMany({
+        where: { id: { in: newsIds } },
+        select: { id: true, title: true }
+      });
+
+      const newsTitleMap = {};
+      newsArticles.forEach(n => { newsTitleMap[n.id] = n.title; });
+
+      const enrichedComments = comments.map(c => ({
+        ...c,
+        news_title: newsTitleMap[c.news_id] || 'Berita Telah Dihapus / Tidak Ditemukan'
+      }));
+
+      return NextResponse.json({ comments: enrichedComments }, {
+        headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' }
+      });
+    }
   } catch (error) {
     console.error('[comments GET]', error);
     return NextResponse.json({ error: 'Gagal memuat komentar' }, { status: 500 });
@@ -53,5 +80,25 @@ export async function POST(request) {
   } catch (error) {
     console.error('[comments POST]', error);
     return NextResponse.json({ error: 'Gagal menyimpan komentar' }, { status: 500 });
+  }
+}
+
+// DELETE /api/news/comments?id=xxx (khusus admin moderasi)
+export async function DELETE(request) {
+  const { searchParams } = new URL(request.url);
+  const idStr = searchParams.get('id');
+
+  if (!idStr) return NextResponse.json({ error: 'id komentar wajib diisi' }, { status: 400 });
+
+  try {
+    const id = parseInt(idStr, 10);
+    await prisma.newsComment.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true, message: 'Komentar berhasil dihapus' });
+  } catch (error) {
+    console.error('[comments DELETE]', error);
+    return NextResponse.json({ error: 'Gagal menghapus komentar' }, { status: 500 });
   }
 }
