@@ -286,9 +286,16 @@ for root, dirs, files in os.walk('src'):
         if line_count > 800:
           long_files.append((path, line_count))
 print(f'File melebihi 800 baris: {len(long_files)}')
-for path, count in long_files:
-  print(f'- {path}: {count} baris')
+print(f'- {path}: {count} baris')
 ```
+
+---
+
+# 16. Standar Migrasi & Manajemen Supabase (Supabase CLI & Node Audit)
+
+- Saat berpindah project/akun Supabase atau menangani error `EMAXCONN`, **wajib menggunakan Supabase CLI atau pemindaian skrip Node.js otomatis** untuk verifikasi koneksi regional pooler (`aws-*-pooler.supabase.com`).
+- Pemindahan database wajib menyertakan eksekusi `npx prisma db push --accept-data-loss` via port direct (`5432`) untuk memastikan sinkronisasi skema 100% tanpa ada tabel yang tertinggal.
+- Penanganan error database pada handler API public harus menyertakan *Graceful Fallback* (`try/catch` mengembalikan `200 OK` dengan array/object kosong) agar antarmuka pengguna tidak mengalami crash (500) saat database sedang mengalami lonjakan beban.
 
 ---
 
