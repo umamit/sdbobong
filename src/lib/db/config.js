@@ -68,7 +68,7 @@ export async function loadWebConfig() {
       { id: "faq-3", question: "Bagaimana cara memeriksa hasil pengumuman kelulusan kelas 6?", answer: "Anda dapat mengunjungi halaman 'Kelulusan' di website ini dan memasukkan nomor NISN atau nomor ujian peserta untuk melihat status kelulusan secara mandiri." }
     ],
     gallery: [
-      { id: "gal-1", title: "Upacara Bendera Hari Senin", type: "image", url: "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg", date: "2026-05-24" },
+      { id: "gal-1", title: "Upacara Bendera Hari Senin", type: "image", url: "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1780580723652_corey-agopian-5y4ljzRrDFA-unsplash.jpg", date: "2026-05-24" },
       { id: "gal-2", title: "Kegiatan Belajar Mengajar Outdoor", type: "image", url: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800", date: "2026-05-18" },
       { id: "gal-3", title: "Lomba Pramuka Tingkat Kabupaten", type: "image", url: "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800", date: "2026-05-10" }
     ],

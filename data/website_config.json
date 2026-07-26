@@ -15,7 +15,7 @@
         "gudang": 1,
         "toilet": 2,
         "cuci_tangan": 4,
-        "hero_background": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1783683832514_Video_background_hero_section_202607102024.mp4",
+        "hero_background": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1783683832514_Video_background_hero_section_202607102024.mp4",
         "allow_copy": false,
         "maintenance_mode": false,
         "marquee_speed": 40,
@@ -141,7 +141,7 @@
                 "sejarah": "",
                 "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.\n\nSelama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
                 "sejarah_badge": "SEJARAH SEKOLAH",
-                "sejarah_image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1781158923764_20260611_130741.jpg",
+                "sejarah_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1781158923764_20260611_130741.jpg",
                 "sejarah_title": "Perjalanan SD Negeri Bobong"
             },
             "akademik": {
@@ -187,7 +187,7 @@
                         "month": "Juli 2025"
                     }
                 ],
-                "kurikulum_image": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1783680285626_Kurikulum_Merdeka.jpg"
+                "kurikulum_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1783680285626_Kurikulum_Merdeka.jpg"
             },
             "kesiswaan": {
                 "banner_title": "Kesiswaan",
@@ -207,7 +207,7 @@
                     {
                         "id": "gallery_1",
                         "alt": "Dzikir Bersama",
-                        "src": "https://qtqqwyicanoszwvkbzwc.supabase.co/storage/v1/object/public/teachers/1780866991205_20260605_081308.jpg"
+                        "src": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1780866991205_20260605_081308.jpg"
                     },
                     {
                         "id": "gallery_2",
