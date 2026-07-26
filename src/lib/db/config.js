@@ -72,6 +72,14 @@ export async function loadWebConfig() {
       { id: "gal-2", title: "Kegiatan Belajar Mengajar Outdoor", type: "image", url: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800", date: "2026-05-18" },
       { id: "gal-3", title: "Lomba Pramuka Tingkat Kabupaten", type: "image", url: "https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=800", date: "2026-05-10" }
     ],
+    popup_announcement: {
+      enabled: true,
+      title: "Penerimaan Peserta Didik Baru (PPDB) TA 2026/2027 Resmi Dibuka!",
+      badge: "INFO PPDB ONLINE",
+      content: "Selamat datang di SD Negeri Bobong! Pendaftaran murid baru secara online maupun offline kini telah dibuka tanpa dipungut biaya apapun (100% Gratis). Silakan klik tombol di bawah untuk mendaftar.",
+      link: "/ppdb/daftar",
+      link_label: "Daftar PPDB Online Sekarang →"
+    },
     force_local_cache: false
   };
 
