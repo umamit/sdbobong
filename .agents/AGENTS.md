@@ -224,6 +224,74 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
 
 ---
 
+# 15. Skrip Diagnostik Python (Audit & Pemindaian Kualitas)
+
+Python **dilarang keras dimasukkan ke dalam kode proyek atau repositori**. Namun, Python boleh digunakan oleh AI sebagai **alat diagnostik terminal sementara** untuk memindai kualitas kode tanpa mengubah isi proyek.
+
+Berikut adalah tiga skrip Python resmi yang telah digunakan dan wajib dijadikan acuan saat melakukan audit kualitas kode:
+
+### Skrip 1 – Pemindai Sisa Emoji Teks (`Emoji Scanner`)
+Gunakan untuk memastikan tidak ada emoji teks Unicode tersisa sesuai Rule 14.
+```python
+import os, re
+emoji_pattern = re.compile('[\U00010000-\U0010FFFF\u2600-\u27BF\u2300-\u23FF\u2B00-\u2BFF]')
+code_emojis = []
+for root, dirs, files in os.walk('src'):
+  for file in files:
+    if file.endswith(('.jsx', '.js', '.tsx', '.ts')):
+      path = os.path.join(root, file)
+      with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+        for idx, line in enumerate(f, 1):
+          matches = emoji_pattern.findall(line)
+          if matches:
+            code_emojis.append((path, idx, line.strip(), matches))
+print(f'Total emoji ditemukan: {len(code_emojis)}')
+for path, idx, line, matches in code_emojis:
+  print(f'{path}:{idx}: {matches} -> {line[:100]}')
+```
+
+### Skrip 2 – Pemindai Kode Mati (`Dead Code Scanner`)
+Gunakan untuk memastikan tidak ada blok fungsi mati atau kode yang di-comment secara tidak sengaja.
+```python
+import os
+unused_candidates = []
+for root, dirs, files in os.walk('src'):
+  for file in files:
+    if file.endswith(('.js', '.jsx')):
+      path = os.path.join(root, file)
+      with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+        content = f.read()
+        commented_lines = [
+            line for line in content.splitlines()
+            if line.strip().startswith('//')
+            and ('const ' in line or 'function ' in line or 'return ' in line)
+        ]
+        if commented_lines:
+          unused_candidates.append((path, 'Commented code lines', len(commented_lines)))
+for path, reason, count in unused_candidates:
+  print(f'{path}: {count} baris kode di-comment')
+```
+
+### Skrip 3 – Audit Panjang File (`File Length Checker`)
+Gunakan untuk memastikan seluruh file tetap di bawah batas 800 baris sesuai Rule 6.
+```python
+import os
+long_files = []
+for root, dirs, files in os.walk('src'):
+  for file in files:
+    if file.endswith(('.js', '.jsx')):
+      path = os.path.join(root, file)
+      with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+        line_count = len(f.readlines())
+        if line_count > 800:
+          long_files.append((path, line_count))
+print(f'File melebihi 800 baris: {len(long_files)}')
+for path, count in long_files:
+  print(f'- {path}: {count} baris')
+```
+
+---
+
 # Golden Rule
 
 
