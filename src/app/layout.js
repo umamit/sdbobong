@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { loadWebConfig } from '../lib/database';
 import LayoutControl from '../components/LayoutControl';
 import AnnouncementBanner from '../components/AnnouncementBanner';
+import AnnouncementModal from '../components/AnnouncementModal';
 import ChatWidget from '../components/chat/ChatWidget';
 import PWAInstallPrompt from '../components/PWAInstallPrompt';
 import WebVitals from '../components/WebVitals';
@@ -663,6 +664,9 @@ export default async function RootLayout({ children }) {
 
         {!isPrintableForm && (
           <ChatWidget />
+        )}
+        {!isPrintableForm && (
+          <AnnouncementModal />
         )}
         <PWAInstallPrompt />
         <Analytics />

@@ -288,6 +288,128 @@ export default function ContentTab() {
               </div>
 
 
+              {/* Pengaturan Pop-Up Pengumuman Penting */}
+              <div className="settings-card" style={{ gridColumn: 'span 2' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: 0 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  Banner Pop-Up Pengumuman Penting
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                  Banner ini akan otomatis muncul sebagai jendela pop-up saat pengunjung pertama kali membuka website.
+                </p>
+
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.target;
+                  const popupData = {
+                    enabled: form.popup_enabled.checked,
+                    title: form.popup_title.value,
+                    badge: form.popup_badge.value,
+                    content: form.popup_content.value,
+                    link: form.popup_link.value,
+                    link_label: form.popup_link_label.value,
+                  };
+
+                  try {
+                    const res = await fetch('/api/config', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ action_type: 'popup_announcement', popup_announcement: popupData })
+                    });
+                    if (res.ok) {
+                      showToast('success', 'Pengaturan Banner Pop-Up Pengumuman berhasil disimpan!');
+                    } else {
+                      showToast('error', 'Gagal menyimpan pengumuman pop-up');
+                    }
+                  } catch {
+                    showToast('error', 'Terjadi kesalahan sistem');
+                  }
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
+                    <input
+                      type="checkbox"
+                      id="popup_enabled"
+                      name="popup_enabled"
+                      defaultChecked={!!config?.popup_announcement?.enabled}
+                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    <label htmlFor="popup_enabled" style={{ fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer' }}>
+                      Aktifkan Pop-Up Pengumuman Ini Di Website
+                    </label>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>Judul Pengumuman *</label>
+                      <input
+                        type="text"
+                        name="popup_title"
+                        className="form-control"
+                        defaultValue={config?.popup_announcement?.title || ''}
+                        placeholder="Mis: Pendaftaran PPDB Tahun Ajaran 2026/2027 Resmi Dibuka!"
+                        required
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>Label / Badge</label>
+                      <input
+                        type="text"
+                        name="popup_badge"
+                        className="form-control"
+                        defaultValue={config?.popup_announcement?.badge || 'Pengumuman Penting'}
+                        placeholder="Mis: PENTING / PPDB / INFO DARURAT"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>Isi Pengumuman / Pesan Singkat *</label>
+                    <textarea
+                      name="popup_content"
+                      className="form-control"
+                      rows={3}
+                      defaultValue={config?.popup_announcement?.content || ''}
+                      placeholder="Tuliskan detail pengumuman yang ingin disampaikan kepada pengunjung..."
+                      required
+                      style={{ width: '100%', resize: 'vertical' }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>Tautan Tombol Aksi (Opsional)</label>
+                      <input
+                        type="text"
+                        name="popup_link"
+                        className="form-control"
+                        defaultValue={config?.popup_announcement?.link || ''}
+                        placeholder="Mis: /ppdb/daftar atau /berita"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>Teks Tombol Aksi</label>
+                      <input
+                        type="text"
+                        name="popup_link_label"
+                        className="form-control"
+                        defaultValue={config?.popup_announcement?.link_label || 'Lihat Selengkapnya →'}
+                        placeholder="Mis: Daftar Sekarang →"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.88rem', fontWeight: 700 }}>
+                    Simpan Pengaturan Pop-Up
+                  </button>
+                </form>
+              </div>
+
             </div>
           </section>
   );

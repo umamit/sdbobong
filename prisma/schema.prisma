@@ -15,6 +15,7 @@ model Config {
   downloads             Json?    // array of objects
   faqs                  Json?    // array of objects
   gallery               Json?    // array of objects
+  popup_announcement    Json?    // { enabled, title, content, badge, link, link_label }
 
   @@map("config_sdn_bobong")
 }

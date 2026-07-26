@@ -136,6 +136,16 @@ export async function POST(request) {
     } else if (actionType === 'toggle_allow_copy') {
       if (!config.stats) config.stats = {};
       config.stats.allow_copy = allow_copy === true;
+    } else if (actionType === 'popup_announcement') {
+      const popup = parsedJsonBody.popup_announcement || {};
+      config.popup_announcement = {
+        enabled: popup.enabled === true,
+        title: (popup.title || '').trim(),
+        content: (popup.content || '').trim(),
+        badge: (popup.badge || 'Pengumuman Penting').trim(),
+        link: (popup.link || '').trim(),
+        link_label: (popup.link_label || 'Lihat Selengkapnya →').trim(),
+      };
     } else if (actionType === 'wa_gateway') {
       let enabled, provider, token, url, message_template_verified, message_template_rejected;
       if (contentType.includes('application/json')) {
