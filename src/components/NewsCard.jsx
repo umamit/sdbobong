@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import NewsReactions from './NewsReactions';
+import NewsComments from './NewsComments';
 
 export default function NewsCard({ news, className = '', priority = false }) {
   const images = news.images && news.images.length > 0 ? news.images : [news.image || '/images/news_hari_guru.svg'];
@@ -479,6 +481,12 @@ export default function NewsCard({ news, className = '', priority = false }) {
             </button>
           </div>
         </div>
+
+        {/* Reaksi Orang Tua */}
+        <NewsReactions newsId={news.id} />
+
+        {/* Komentar Orang Tua */}
+        <NewsComments newsId={news.id} />
       </div>
     </motion.article>
   );

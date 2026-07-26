@@ -142,3 +142,23 @@ model PPDB {
 
   @@map("ppdb_sdn_bobong")
 }
+
+model NewsReaction {
+  id      Int    @id @default(autoincrement())
+  news_id String
+  type    String // 'suka' | 'keren' | 'haru' | 'semangat' | 'informatif'
+  count   Int    @default(0)
+
+  @@unique([news_id, type])
+  @@map("news_reactions_sdn_bobong")
+}
+
+model NewsComment {
+  id         Int    @id @default(autoincrement())
+  news_id    String
+  nama       String
+  pesan      String
+  created_at String // ISO datetime string
+
+  @@map("news_comments_sdn_bobong")
+}
