@@ -724,3 +724,48 @@
     animation: count-up-pop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Security Threat Banner */
+.security-threat-banner {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md, 12px);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.threat-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.threat-title {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+.threat-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted, #94a3b8);
+}
+.btn-threat-action {
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm, 8px);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.btn-threat-action:hover {
+    background: #dc2626;
+}
+
+
