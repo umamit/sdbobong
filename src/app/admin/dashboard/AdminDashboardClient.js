@@ -99,6 +99,10 @@ const NewsModerationTab = dynamic(() => import('../../../components/admin/tabs/N
   ssr: false, 
   loading: () => <TabLoadingSpinner /> 
 });
+const AlumniTab = dynamic(() => import('../../../components/admin/tabs/AlumniTab'), { 
+  ssr: false, 
+  loading: () => <TabLoadingSpinner /> 
+});
 
 function AdminDashboardShell() {
   const { activeTab, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab } = useAdminDashboard();
@@ -154,6 +158,7 @@ function AdminDashboardShell() {
           {activeTab === 'students' && <StudentsTab />}
           {activeTab === 'security' && <SecurityTab />}
           {activeTab === 'newsModeration' && <NewsModerationTab />}
+          {activeTab === 'alumni' && <AlumniTab />}
         </main>
       </div>
       

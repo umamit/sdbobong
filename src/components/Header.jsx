@@ -70,6 +70,7 @@ export default function Header() {
       label: 'Informasi',
       dropdown: [
         { href: '/berita', label: 'Berita & Kegiatan' },
+        { href: '/alumni', label: 'Portal Alumni' },
         { href: '/galeri', label: 'Galeri Sekolah' },
         { href: '/unduh', label: 'Pusat Unduhan' }
       ]

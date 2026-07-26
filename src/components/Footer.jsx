@@ -44,6 +44,7 @@ export default async function Footer() {
             <li><Link href="/ppdb/daftar">Formulir PPDB Online</Link></li>
             <li><Link href="/ppdb/cetak">Formulir PPDB Offline</Link></li>
             <li><Link href="/berita">Berita Sekolah</Link></li>
+            <li><Link href="/alumni">Portal Alumni</Link></li>
             <li><Link href="/kontak">Hubungi Kami</Link></li>
           </ul>
         </div>
@@ -114,7 +115,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.22.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.23.0</span>
           </p>
 
 

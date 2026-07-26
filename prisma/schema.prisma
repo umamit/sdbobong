@@ -162,3 +162,17 @@ model NewsComment {
 
   @@map("news_comments_sdn_bobong")
 }
+
+model Alumni {
+  id               Int     @id @default(autoincrement())
+  nama_lengkap     String
+  tahun_lulus      String
+  sekolah_lanjutan String?
+  pekerjaan        String?
+  pesan_kesan      String?
+  foto             String?
+  status           String  @default("Approved")
+  created_at       String
+
+  @@map("alumni_sdn_bobong")
+}

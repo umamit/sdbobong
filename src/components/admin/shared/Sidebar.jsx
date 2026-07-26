@@ -62,6 +62,14 @@ export default function Sidebar({ onClose }) {
           </a>
         </li>
         <li className="sidebar-item">
+          <a className={`sidebar-link ${activeTab === 'alumni' ? 'active' : ''}`} onClick={() => handleLinkClick('alumni')}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-5.25 6.557c0 1.035.84 1.875 1.875 1.875h7.5A1.875 1.875 0 0 0 18 15" />
+            </svg>
+            <span>Kelola Alumni</span>
+          </a>
+        </li>
+        <li className="sidebar-item">
           <a className={`sidebar-link ${activeTab === 'teachers' ? 'active' : ''}`} onClick={() => handleLinkClick('teachers')}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 12 15c2.207 0 4.208.576 5.963 1.584ZM18 3.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6 7.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm3.193 9.48a9.011 9.011 0 0 1-6.078-.02A3.356 3.356 0 0 0 3 18.228a11.94 11.94 0 0 0 10.373 5.485c.01 0 .02 0 .03-.001-.13-.761-.203-1.547-.203-2.348 0-1.923.633-3.697 1.706-5.122Z" />
