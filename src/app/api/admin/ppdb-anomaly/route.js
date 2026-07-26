@@ -34,9 +34,9 @@ export async function POST(req) {
           const ageInMonths = (julyStart - dob) / (1000 * 60 * 60 * 24 * 30.44);
           const ageYears = ageInMonths / 12;
           if (ageYears < 5.5) {
-            issues.push({ type: 'USIA_TERLALU_MUDA', label: '⚠️ Usia terlalu muda', detail: `Usia ~${Math.floor(ageYears)} tahun, di bawah syarat minimal 5,5 tahun.` });
+            issues.push({ type: 'USIA_TERLALU_MUDA', label: 'Usia terlalu muda', detail: `Usia ~${Math.floor(ageYears)} tahun, di bawah syarat minimal 5,5 tahun.` });
           } else if (ageYears > 9.5) {
-            issues.push({ type: 'USIA_TERLALU_TUA', label: '⚠️ Usia di atas batas', detail: `Usia ~${Math.floor(ageYears)} tahun, melebihi batas umum 9 tahun.` });
+            issues.push({ type: 'USIA_TERLALU_TUA', label: 'Usia di atas batas', detail: `Usia ~${Math.floor(ageYears)} tahun, melebihi batas umum 9 tahun.` });
           }
         } catch (_) { /* skip invalid date */ }
       }
@@ -44,21 +44,21 @@ export async function POST(req) {
       // --- Rule 2: NIK must be exactly 16 digits ---
       const nik = r.nik_siswa || r.nik || '';
       if (nik && !/^\d{16}$/.test(nik.trim())) {
-        issues.push({ type: 'NIK_INVALID', label: '🔴 Format NIK tidak valid', detail: `NIK "${nik}" bukan 16 digit angka.` });
+        issues.push({ type: 'NIK_INVALID', label: 'Format NIK tidak valid', detail: `NIK "${nik}" bukan 16 digit angka.` });
       }
 
       // --- Rule 3: Phone number format ---
       const hp = r.nomor_hp_orangtua || r.no_hp || '';
       if (hp && !/^(\+62|08)\d{7,13}$/.test(hp.trim().replace(/[\s-]/g, ''))) {
-        issues.push({ type: 'HP_INVALID', label: '📵 Format HP tidak valid', detail: `Nomor HP "${hp}" tidak diawali 08 atau +62.` });
+        issues.push({ type: 'HP_INVALID', label: 'Format HP tidak valid', detail: `Nomor HP "${hp}" tidak diawali 08 atau +62.` });
       }
 
       // --- Rule 4: Suspicious or garbage name ---
       const nama = (r.nama_lengkap || '').trim();
       if (nama.length < 3) {
-        issues.push({ type: 'NAMA_TERLALU_PENDEK', label: '⚠️ Nama terlalu pendek', detail: `Nama "${nama}" kurang dari 3 karakter.` });
+        issues.push({ type: 'NAMA_TERLALU_PENDEK', label: 'Nama terlalu pendek', detail: `Nama "${nama}" kurang dari 3 karakter.` });
       } else if (/^(test|asdf|xxxx|aaaa|[^a-zA-Z\s.'-]+)$/i.test(nama)) {
-        issues.push({ type: 'NAMA_MENCURIGAKAN', label: '🚩 Nama mencurigakan', detail: `Nama "${nama}" terindikasi data palsu atau uji coba.` });
+        issues.push({ type: 'NAMA_MENCURIGAKAN', label: 'Nama mencurigakan', detail: `Nama "${nama}" terindikasi data palsu atau uji coba.` });
       }
 
       if (issues.length > 0) {
@@ -84,7 +84,7 @@ export async function POST(req) {
         if (nikMap[nik]) {
           // Duplicate NIK detected
           const existing = flagged.find(f => f.id === r.id);
-          const issue = { type: 'DUPLIKAT_NIK', label: '🔴 NIK duplikat', detail: `NIK ini juga digunakan oleh pendaftar lain (${nikMap[nik]}).` };
+          const issue = { type: 'DUPLIKAT_NIK', label: 'NIK duplikat', detail: `NIK ini juga digunakan oleh pendaftar lain (${nikMap[nik]}).` };
           if (existing) {
             existing.issues.push(issue);
           } else {
@@ -98,7 +98,7 @@ export async function POST(req) {
       if (namaIbu && namaIbu.length > 3) {
         if (ibuMap[namaIbu]) {
           const existing = flagged.find(f => f.id === r.id);
-          const issue = { type: 'DUPLIKAT_NAMA_IBU', label: '⚠️ Nama ibu duplikat', detail: `Nama ibu kandung sama dengan pendaftar lain (${ibuMap[namaIbu]}).` };
+          const issue = { type: 'DUPLIKAT_NAMA_IBU', label: 'Nama ibu duplikat', detail: `Nama ibu kandung sama dengan pendaftar lain (${ibuMap[namaIbu]}).` };
           if (existing) {
             // Avoid double-adding for same record
             if (!existing.issues.find(i => i.type === 'DUPLIKAT_NAMA_IBU')) {

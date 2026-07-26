@@ -11,7 +11,7 @@ export default function useSpeechRecognition({ onResult, onRecordingChange }) {
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert('⚠️ Browser Anda tidak mendukung input suara (Speech Recognition). Silakan gunakan Google Chrome!');
+      alert('Browser Anda tidak mendukung input suara (Speech Recognition). Silakan gunakan Google Chrome!');
       return;
     }
 

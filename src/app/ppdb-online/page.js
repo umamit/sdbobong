@@ -259,7 +259,10 @@ export default function PPDBOnlineForm() {
               whiteSpace: 'pre-line',
               lineHeight: 1.7,
             }}>
-              ⚠️ {errorMsg}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>{errorMsg}</span>
+              </div>
             </div>
           )}
 
@@ -284,7 +287,8 @@ export default function PPDBOnlineForm() {
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
               <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', fontWeight: 700, borderBottom: '2px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                👤 A. DATA CALON PESERTA DIDIK
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                A. DATA CALON PESERTA DIDIK
               </h3>
 
               {/* Nama Lengkap & Nama Panggilan */}
@@ -519,7 +523,8 @@ export default function PPDBOnlineForm() {
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
             }}>
               <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', fontWeight: 700, borderBottom: '2px solid #e2e8f0', paddingBottom: '0.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                📁 D. UPLOAD BERKAS PENDUKUNG (FORMAT PDF, 150KB - 350KB)
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                D. UPLOAD BERKAS PENDUKUNG (FORMAT PDF, 150KB - 350KB)
               </h3>
               <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.25rem', lineHeight: '1.4' }}>
                 Silakan unggah dokumen hasil scan dalam format <strong>PDF</strong> dengan ukuran file <strong>disarankan 150KB - 350KB</strong> (maksimal 350KB) untuk masing-masing berkas.
@@ -626,7 +631,10 @@ export default function PPDBOnlineForm() {
                     Mengirim Formulir PPDB...
                   </span>
                 ) : (
-                  "✉️ Kirim Pendaftaran Online"
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Kirim Pendaftaran Online
+                  </span>
                 )}
               </button>
             </div>

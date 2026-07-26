@@ -190,7 +190,10 @@ export default function PPDBSukses() {
 
               {/* Informative Footer */}
               <div style={{ marginTop: '1.5rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '0.75rem', textAlign: 'left' }}>
-                <h6 style={{ margin: '0 0 4px 0', fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>⚠️ Langkah Selanjutnya:</h6>
+                <h6 style={{ margin: '0 0 4px 0', fontSize: '0.75rem', fontWeight: 700, color: '#0f172a', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>Langkah Selanjutnya:</span>
+                </h6>
                 <p style={{ margin: 0, fontSize: '0.7rem', color: '#475569', lineHeight: 1.4 }}>
                   Simpan lembar bukti pendaftaran online ini. Panitia PPDB SDN Bobong akan melakukan proses pemeriksaan kelengkapan berkas fisik pada jadwal yang ditentukan. Silakan tunggu konfirmasi melalui WhatsApp atau kunjungi portal pengumuman secara berkala.
                 </p>
@@ -229,7 +232,8 @@ export default function PPDBSukses() {
                 gap: '0.5rem',
               }}
             >
-              🖨️ Cetak / Simpan PDF
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Cetak / Simpan PDF
             </button>
             <Link 
               href="/ppdb" 

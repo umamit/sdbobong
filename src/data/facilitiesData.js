@@ -9,7 +9,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Baik & Terawat",
       fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Kipas Angin Dinding"]
     },
-    icon: "🎒",
+    icon: "bag",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
   },
@@ -22,7 +22,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Baik",
       fasilitas: ["Papan Tulis Whiteboard", "Pojok Literasi Tematik", "Mading Karya Seni Murid", "Almari Penyimpanan Buku Paket", "Sirkulasi Udara Alami"]
     },
-    icon: "🏫",
+    icon: "school",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
   },
@@ -35,7 +35,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Kondusif",
       fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Peta Nusantara & Dunia Dinding", "Loker Arsip Soal Latihan", "Meja Belajar Solid Wood"]
     },
-    icon: "📖",
+    icon: "book",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
   },
@@ -50,7 +50,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Layak & Ber-AC",
       fasilitas: ["Meja Kerja Guru & Kursi Kerja", "Printer & Scanner Bersama", "Air Conditioner (AC)", "Papan Pengumuman Kurikulum", "Wifi Sekolah"]
     },
-    icon: "💻",
+    icon: "laptop",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
   },
@@ -63,7 +63,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Baik & Ber-AC",
       fasilitas: ["Meja Kerja & Kursi Pimpinan", "Satu Set Sofa Tamu VIP", "Lemari Arsip Sertifikasi & Prestasi", "Komputer Kerja Kepala Sekolah", "Pendingin Ruangan (AC)"]
     },
-    icon: "👑",
+    icon: "crown",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=800&auto=format&fit=crop"
   },
@@ -76,7 +76,7 @@ export const FACILITIES_DATA = {
       kondisi: "Tenang, Bersih & Nyaman",
       fasilitas: ["Rak Buku Klasifikasi Kayu", "Meja Baca Kelompok", "Karpet Puzzle Lesehan", "Pendingin Udara", "Katalog Pencarian Buku Manual"]
     },
-    icon: "📚",
+    icon: "library",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
@@ -89,7 +89,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Bersih & Higienis",
       fasilitas: ["Wastafel Keramik", "Cermin Dinding", "Sabun Cuci Tangan", "Ventilasi Udara Baik", "Penerangan Terang"]
     },
-    icon: "🚻",
+    icon: "toilet",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
   },
@@ -102,7 +102,7 @@ export const FACILITIES_DATA = {
       kondisi: "Modern, Sejuk & Terawat",
       fasilitas: ["Meja Komputer Bersekat", "Akses Internet Wifi Berkecepatan Tinggi", "Proyektor LCD Presentasi", "Papan Tulis Instruksi Guru", "Kipas Angin Dinding (2 Unit)"]
     },
-    icon: "💻",
+    icon: "laptop",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=800&auto=format&fit=crop"
   },
@@ -115,7 +115,7 @@ export const FACILITIES_DATA = {
       kondisi: "Steril, Bersih, dan Tenang",
       fasilitas: ["Ranjang Pasien (2 Set)", "Timbangan & Pengukur Tinggi Badan", "Kotak Obat P3K & Obat Esensial", "Termometer & Tensi Digital", "Wastafel Cuci Tangan"]
     },
-    icon: "🩹",
+    icon: "firstaid",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
   },
@@ -130,7 +130,7 @@ export const FACILITIES_DATA = {
       kondisi: "Nyaman, Rindang & Teduh",
       fasilitas: ["Meja Kayu Bundar", "Tempat Duduk Melingkar", "Atap Rumbia Estetis", "Pojok Tempat Sampah Pilah"]
     },
-    icon: "🏡",
+    icon: "gazebo",
     color: "#10B981",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   },
@@ -143,7 +143,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Asri & Nyaman",
       fasilitas: ["Meja Belajar Kayu", "Bangku Sandar Panjang", "Atap Teduh Anti-Panas", "Dekat Taman Hijau"]
     },
-    icon: "🏡",
+    icon: "gazebo",
     color: "#10B981",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
   },
@@ -158,7 +158,7 @@ export const FACILITIES_DATA = {
       kondisi: "Lapang, Bersih & Alami",
       fasilitas: ["Tiang Bendera Utama", "Gapura Bambu Pramuka (Pionering)", "Gawang Futsal Mini", "Net Bola Voli & Bulutangkis", "Taman Pojok Hijau Sekolah"]
     },
-    icon: "⛺",
+    icon: "tent",
     color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   },
@@ -171,7 +171,7 @@ export const FACILITIES_DATA = {
       kondisi: "Sangat Baik & Multifungsi",
       fasilitas: ["Area Hall Luas", "Satu Set Sound System", "Panggung Kegiatan Sekolah", "Kursi Lipat Rapat", "Peralatan Olahraga Indoor"]
     },
-    icon: "🏛️",
+    icon: "building",
     color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop"
   }

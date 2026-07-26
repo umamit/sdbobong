@@ -226,7 +226,7 @@ export default function GalleryClient({ initialGallery }) {
         <div style={{ display: 'flex', position: 'relative', width: '100%' }}>
           <input
             type="text"
-            placeholder="🔍 Cari dokumentasi kegiatan berdasarkan judul..."
+            placeholder="Cari dokumentasi kegiatan berdasarkan judul..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -274,7 +274,7 @@ export default function GalleryClient({ initialGallery }) {
                     boxShadow: selectedCategory === cat ? '0 4px 10px rgba(11, 60, 93, 0.25)' : 'none'
                   }}
                 >
-                  {cat === 'Semua' ? '📁 Semua' : cat}
+                  {cat === 'Semua' ? 'Semua' : cat}
                 </button>
               ))}
             </div>
@@ -304,7 +304,7 @@ export default function GalleryClient({ initialGallery }) {
                     boxShadow: selectedType === type ? '0 4px 10px rgba(11, 60, 93, 0.25)' : 'none'
                   }}
                 >
-                  {type === 'image' ? '📸 Foto' : type === 'video' ? '🎥 Video' : '🌟 Semua'}
+                  {type === 'image' ? 'Foto' : type === 'video' ? 'Video' : 'Semua'}
                 </button>
               ))}
             </div>
@@ -349,7 +349,7 @@ export default function GalleryClient({ initialGallery }) {
                   className="gallery-category-badge"
                   style={getCategoryBadgeStyles(item.category)}
                 >
-                  📁 {item.category || 'umum'}
+                  {item.category || 'umum'}
                 </div>
 
                 {/* Media Thumbnail */}
@@ -383,7 +383,7 @@ export default function GalleryClient({ initialGallery }) {
                       }}>
                         f
                       </div>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🎥 LIHAT VIDEO FACEBOOK</span>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>LIHAT VIDEO FACEBOOK</span>
                     </div>
                   ) : isDrive ? (
                     <div style={{
@@ -414,7 +414,7 @@ export default function GalleryClient({ initialGallery }) {
                       }}>
                         ▲
                       </div>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🎥 VIDEO GOOGLE DRIVE</span>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>VIDEO GOOGLE DRIVE</span>
                     </div>
                   ) : (
                     <div style={{ width: '100%', position: 'relative', overflow: 'hidden', background: '#000' }}>
@@ -479,7 +479,7 @@ export default function GalleryClient({ initialGallery }) {
                     }}>
                       f
                     </div>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>🖼️ POSTINGAN FACEBOOK</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>POSTINGAN FACEBOOK</span>
                   </div>
                 ) : (
                   <div style={{ overflow: 'hidden', position: 'relative' }}>
@@ -518,7 +518,7 @@ export default function GalleryClient({ initialGallery }) {
         </motion.div>
       ) : (
         <div className="card-custom animate-fadeIn" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
-          <p style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>Tidak ada media ditemukan 🔍</p>
+          <p style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>Tidak ada media ditemukan</p>
           <p style={{ fontSize: '0.9rem', marginTop: '4px' }}>Coba ubah filter kategori, tipe format, atau kata kunci pencarian Anda.</p>
         </div>
       )}
@@ -544,7 +544,7 @@ export default function GalleryClient({ initialGallery }) {
             onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
             onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
           >
-            Muat Lebih Banyak ✨
+            Muat Lebih Banyak
           </button>
         </div>
       )}
@@ -682,7 +682,7 @@ export default function GalleryClient({ initialGallery }) {
               border: '1px solid rgba(255,255,255,0.15)',
               letterSpacing: '0.04em'
             }}>
-              📁 {activeItem.category || 'umum'}
+              {activeItem.category || 'umum'}
             </span>
             <h3 style={{ margin: '0', fontSize: '1.1rem', fontWeight: 700 }}>{activeItem.title}</h3>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)' }}>

@@ -367,7 +367,8 @@ export default function DisciplinePoints() {
             justifyContent: 'center'
           }}>
             <h4 style={{ margin: '0 0 6px 0', color: '#ffffff', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700' }}>
-              💡 Ingat!
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Ingat!
             </h4>
             <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: 'rgba(255, 255, 255, 0.9)' }}>
               Setiap kesalahan adalah kesempatan berharga bagi anak untuk belajar menjadi lebih baik. Mari bersama-sama bersinergi menjaga nama baik diri, kelas, dan sekolah kita tercinta!

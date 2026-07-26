@@ -98,9 +98,9 @@ export const DEFAULT_STATS = {
 // ===========================================================================
 export const DEFAULT_CONFIG = {
   marquee_announcements: [
-    '📢 PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka!',
-    '📅 INFO: Jadwal Pembagian Rapor Semester Genap dilaksanakan pada 20 Juni 2026.',
-    '🌟 PRESTASI: Selamat kepada Tim Pramuka SD Negeri Bobong meraih Juara Harapan 1!',
+    'PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka!',
+    'INFO: Jadwal Pembagian Rapor Semester Genap dilaksanakan pada 20 Juni 2026.',
+    'PRESTASI: Selamat kepada Tim Pramuka SD Negeri Bobong meraih Juara Harapan 1!',
   ],
   marquee_speed: 40,
   stats: DEFAULT_STATS,

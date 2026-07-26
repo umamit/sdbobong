@@ -674,8 +674,9 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
 
                   {/* Active Day Content */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ fontSize: '0.825rem', fontWeight: 700, color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '6px', borderLeft: `3px solid ${MPLS_RUNDOWN[activeMplsDay].color}` }}>
-                      🎯 Tema: {MPLS_RUNDOWN[activeMplsDay].theme}
+                    <div style={{ fontSize: '0.825rem', fontWeight: 700, color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '6px', borderLeft: `3px solid ${MPLS_RUNDOWN[activeMplsDay].color}`, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                      <span>Tema: {MPLS_RUNDOWN[activeMplsDay].theme}</span>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -706,7 +707,8 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
               {/* Parents Prep Guide */}
               <div style={{ backgroundColor: '#FEF3C7', borderLeft: '4px solid var(--secondary)', padding: '15px', borderRadius: '0 var(--radius-md) var(--radius-md) 0' }}>
                 <h4 style={{ color: 'var(--secondary-dark)', fontSize: '0.95rem', margin: '0 0 8px 0', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  💡 Panduan Persiapan Orang Tua di Rumah:
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  Panduan Persiapan Orang Tua di Rumah:
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.6 }}>
                   {getParentTips(selectedEvent.id).map((tip, idx) => (

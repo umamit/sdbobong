@@ -73,17 +73,8 @@ export default function ChatWidget() {
   });
 
   const toggleChat = () => {
-    const nextOpen = !isOpen;
-    setIsOpen(nextOpen);
-    if (!nextOpen) {
-      stopSpeaking(setActiveSpeakingIndex);
-      if (isRecording) {
-        stopRecording();
-      }
-    }
-    if (showBadge) {
-      setShowBadge(false);
-    }
+    setIsOpen(!isOpen);
+    if (showBadge) setShowBadge(false);
   };
 
   const handleSpeakToggle = (text, index) => {
@@ -95,12 +86,12 @@ export default function ChatWidget() {
   };
 
   const handleSendMessage = async (textToSend) => {
-    const text = textToSend || inputValue.trim();
-    if (!text) return;
-    if (!textToSend) setInputValue('');
-    stopSpeaking(setActiveSpeakingIndex);
-    const userMessage = { role: 'user', content: text };
+    const messageText = textToSend || inputValue.trim();
+    if (!messageText || isTyping) return;
+
+    const userMessage = { role: 'user', content: messageText };
     setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
     setIsTyping(true);
 
     const result = await sendChatMessage(messages, userMessage);
@@ -111,8 +102,8 @@ export default function ChatWidget() {
       setMessages(prev => [...prev, { 
         role: 'assistant', 
         content: isTimeout 
-          ? '⏱️ Asisten membutuhkan waktu terlalu lama untuk merespons. Silakan coba lagi dalam beberapa saat ya! 😊'
-          : '⚠️ Maaf, terjadi kendala koneksi ke server asisten. Silakan periksa kembali koneksi internet Anda atau hubungi panitia PPDB langsung di WhatsApp! 😊' 
+          ? 'Asisten membutuhkan waktu terlalu lama untuk merespons. Silakan coba lagi dalam beberapa saat.'
+          : 'Maaf, terjadi kendala koneksi ke server asisten. Silakan periksa kembali koneksi internet Anda atau hubungi panitia PPDB langsung di WhatsApp.' 
       }]);
     }
     setIsTyping(false);

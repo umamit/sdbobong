@@ -28,21 +28,21 @@ export async function GET(req) {
     let recommendations = [];
     if (month === 5 || month === 6) { // PPDB season
       recommendations = [
-        { icon: "🎒", title: "Panduan Lengkap Pendaftaran PPDB Online", description: "Tulis pengumuman syarat dokumen dan cara mendaftar PPDB Online." },
-        { icon: "🎓", title: "Keseruan Wisuda Kelulusan Kelas 6", description: "Publikasikan warta dokumentasi foto wisuda pelepasan siswa kelas 6." },
-        { icon: "📅", title: "Jadwal Pengisian Formulir Ulang", description: "Beri tahu orang tua tata cara daftar ulang siswa yang diterima." }
+        { icon: "bag", title: "Panduan Lengkap Pendaftaran PPDB Online", description: "Tulis pengumuman syarat dokumen dan cara mendaftar PPDB Online." },
+        { icon: "grad", title: "Keseruan Wisuda Kelulusan Kelas 6", description: "Publikasikan warta dokumentasi foto wisuda pelepasan siswa kelas 6." },
+        { icon: "calendar", title: "Jadwal Pengisian Formulir Ulang", description: "Beri tahu orang tua tata cara daftar ulang siswa yang diterima." }
       ];
     } else if (month === 7 || month === 8) { // Back to school / MPLS
       recommendations = [
-        { icon: "🏫", title: "Keceriaan Hari Pertama Masuk Sekolah & MPLS", description: "Dokumentasikan momen siswa menyambut tahun ajaran baru." },
-        { icon: "📚", title: "Distribusi Buku Kurikulum Merdeka Baru", description: "Infokan pembagian buku teks pelajaran untuk siswa kelas 1-6." },
-        { icon: "🤝", title: "Rapat Komite Orang Tua Murid", description: "Tulis undangan/warta pertemuan komite sekolah awal tahun." }
+        { icon: "school", title: "Keceriaan Hari Pertama Masuk Sekolah & MPLS", description: "Dokumentasikan momen siswa menyambut tahun ajaran baru." },
+        { icon: "book", title: "Distribusi Buku Kurikulum Merdeka Baru", description: "Infokan pembagian buku teks pelajaran untuk siswa kelas 1-6." },
+        { icon: "handshake", title: "Rapat Komite Orang Tua Murid", description: "Tulis undangan/warta pertemuan komite sekolah awal tahun." }
       ];
     } else { // Normal/Genap/Ganjil
       recommendations = [
-        { icon: "🏆", title: "Prestasi Membanggakan Lomba Pramuka", description: "Ceritakan pencapaian regu pramuka meraih juara tingkat daerah." },
-        { icon: "🧪", title: "Praktik IPA Seru Membuat Maket Gerhana", description: "Tampilkan aktivitas belajar siswa kelas 6 di laboratorium kelas." },
-        { icon: "🕌", title: "Kegiatan Imtak Bersama Setiap Hari Jumat", description: "Bagikan warta pembiasaan karakter keagamaan siswa di mushola." }
+        { icon: "trophy", title: "Prestasi Membanggakan Lomba Pramuka", description: "Ceritakan pencapaian regu pramuka meraih juara tingkat daerah." },
+        { icon: "science", title: "Praktik IPA Seru Membuat Maket Gerhana", description: "Tampilkan aktivitas belajar siswa kelas 6 di laboratorium kelas." },
+        { icon: "mosque", title: "Kegiatan Imtak Bersama Setiap Hari Jumat", description: "Bagikan warta pembiasaan karakter keagamaan siswa di mushola." }
       ];
     }
     return NextResponse.json({ recommendations }, { status: 200 });

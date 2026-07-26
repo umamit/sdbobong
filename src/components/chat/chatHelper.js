@@ -205,9 +205,9 @@ export async function sendChatMessage(messagesHistory, userMessage) {
 
 // QUICK_PROMPTS static list
 export const QUICK_PROMPTS = [
-  { label: '🎒 Cara Daftar PPDB?', query: 'Bagaimana cara mendaftar PPDB online maupun offline di SDN Bobong?' },
-  { label: '📞 Kontak Panitia?', query: 'Siapa kontak resmi panitia PPDB yang bisa dihubungi di WhatsApp?' },
-  { label: '📍 Alamat Sekolah?', query: 'Di mana alamat lengkap dan lokasi peta SD Negeri Bobong?' },
-  { label: '💰 Biaya Pendaftaran?', query: 'Berapa biaya pendaftaran masuk ke sekolah SD Negeri Bobong?' }
+  { label: 'Cara Daftar PPDB?', query: 'Bagaimana cara mendaftar PPDB online maupun offline di SDN Bobong?' },
+  { label: 'Kontak Panitia?', query: 'Siapa kontak resmi panitia PPDB yang bisa dihubungi di WhatsApp?' },
+  { label: 'Alamat Sekolah?', query: 'Di mana alamat lengkap dan lokasi peta SD Negeri Bobong?' },
+  { label: 'Biaya Pendaftaran?', query: 'Berapa biaya pendaftaran masuk ke sekolah SD Negeri Bobong?' }
 ];
 
