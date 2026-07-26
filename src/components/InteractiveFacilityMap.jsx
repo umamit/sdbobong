@@ -33,17 +33,18 @@ export default function InteractiveFacilityMap() {
           alignItems: 'center', 
           gap: '6px', 
           backgroundColor: 'var(--accent-bg)', 
-          color: 'var(--primary)', 
-          padding: '10px 24px', 
+          color: 'var(--primary-dark)', 
+          padding: '8px 16px', 
           borderRadius: 'var(--radius-full)', 
-          fontSize: '0.9rem', 
+          fontSize: '0.85rem', 
           fontWeight: 600, 
           margin: 0, 
           border: '1px solid var(--accent-light)',
           textAlign: 'center',
           boxShadow: 'var(--shadow-sm)'
         }}>
-          <span>👉 Arahkan kursor atau ketuk bangunan pada denah satelit di bawah ini untuk melihat detail fasilitas!</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>Arahkan kursor atau ketuk bangunan pada denah satelit di bawah ini untuk melihat detail fasilitas!</span>
         </p>
 
         {/* Dynamic Floor Switcher (Khusus untuk Gedung Selatan Atap Merah yang memiliki 2 Lantai) */}
@@ -60,7 +61,8 @@ export default function InteractiveFacilityMap() {
           gap: '8px'
         }}>
           <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            🏢 <span>Tingkat Gedung Utama (Selatan - Atap Merah 2 Lantai):</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+            <span>Tingkat Gedung Utama (Selatan - Atap Merah 2 Lantai):</span>
           </span>
           <div style={{
             display: 'flex',
@@ -163,14 +165,16 @@ export default function InteractiveFacilityMap() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '10px' }}>
                   {FACILITIES_DATA[hoveredRoom].stats.fasilitas.slice(0, 2).map((item, idx) => (
                     <span key={idx} className="badge badge-accent" style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem', fontWeight: 600 }}>
-                      ✓ {item}
+                      {item}
                     </span>
                   ))}
                 </div>
               </div>
             ) : (
               <div style={{ textAlign: 'center', color: 'var(--text-light)', padding: 'var(--space-sm) 0' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🗺️</div>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px', color: 'var(--primary)' }}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                </div>
                 <h4 style={{ color: 'var(--text-muted)', fontWeight: 700, fontSize: '1rem', marginBottom: '6px' }}>Sentuh Denah Sekolah</h4>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-light)', margin: 0, lineHeight: '1.4' }}>
                   Arahkan tetikus atau ketuk bangunan pada denah interaktif di sebelah kiri untuk meninjau fasilitas SD Negeri Bobong secara langsung.
@@ -268,7 +272,7 @@ export default function InteractiveFacilityMap() {
                 onMouseEnter={(e) => e.target.style.backgroundColor = 'white'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'}
               >
-                ✕
+                &times;
               </button>
             </div>
 

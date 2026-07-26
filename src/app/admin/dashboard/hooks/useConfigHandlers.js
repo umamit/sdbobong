@@ -88,7 +88,7 @@ export default function useConfigHandlers({
       const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action_type: 'toggle_maintenance', maintenance_mode: isMaintenance }) });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', isMaintenance ? '🛠️ Mode Pemeliharaan AKTIF.' : '✅ Mode Pemeliharaan NONAKTIF.');
+        showToast('success', isMaintenance ? 'Mode Pemeliharaan AKTIF.' : 'Mode Pemeliharaan NONAKTIF.');
         setConfig(prev => ({ ...prev, stats: { ...(prev.stats || {}), maintenance_mode: isMaintenance } }));
         router.refresh();
       } else {
@@ -105,7 +105,7 @@ export default function useConfigHandlers({
       const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action_type: 'toggle_allow_copy', allow_copy: isAllowCopy }) });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', isAllowCopy ? '🔓 Menyalin teks DIIZINKAN.' : '🔒 Menyalin teks DILARANG.');
+        showToast('success', isAllowCopy ? 'Menyalin teks DIIZINKAN.' : 'Menyalin teks DILARANG.');
         setConfig(prev => ({ ...prev, stats: { ...(prev.stats || {}), allow_copy: isAllowCopy } }));
         router.refresh();
       } else {

@@ -123,9 +123,12 @@ export default function BeritaSearchClient({ newsList = [] }) {
             <span
               style={{
                 position: 'absolute', left: '14px', top: '50%',
-                transform: 'translateY(-50%)', fontSize: '1.1rem', color: 'var(--text-muted)',
+                transform: 'translateY(-50%)', color: 'var(--text-muted)',
+                display: 'flex', alignItems: 'center'
               }}
-            >🔍</span>
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
             <input
               type="text"
               placeholder="Cari berita, pengumuman, atau artikel..."
@@ -146,9 +149,9 @@ export default function BeritaSearchClient({ newsList = [] }) {
                 style={{
                   position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer',
-                  fontSize: '1rem', color: 'var(--text-muted)', padding: '4px',
+                  fontSize: '1.2rem', color: 'var(--text-muted)', padding: '4px',
                 }}
-              >✕</button>
+              >&times;</button>
             )}
           </div>
 
@@ -162,8 +165,8 @@ export default function BeritaSearchClient({ newsList = [] }) {
               cursor: 'pointer', outline: 'none', fontWeight: 600,
             }}
           >
-            <option value="newest">⬇ Terbaru</option>
-            <option value="oldest">⬆ Terlama</option>
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
           </select>
         </div>
 
@@ -245,7 +248,9 @@ export default function BeritaSearchClient({ newsList = [] }) {
             boxShadow: 'var(--shadow-sm)',
           }}
         >
-          <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1rem' }}>📭</span>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: '#94a3b8' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+          </div>
           <h3 style={{ fontSize: '1.2rem', color: 'var(--primary-dark)', margin: '0 0 0.5rem 0' }}>
             Tidak Menemukan Berita
           </h3>

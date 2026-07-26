@@ -77,9 +77,9 @@ export default function usePpdbHandlers({
     const nik = record.nik_siswa || record.nik || '';
 
     if (record.status === 'Diterima Sistem') {
-      message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nKami menginformasikan bahwa berkas pendaftaran PPDB TA 2026/2027 di SD Negeri Bobong atas nama anak Anda telah kami terima dalam sistem dengan NIK: *${nik}*.\n\nHarap menunggu proses verifikasi berkas lebih lanjut oleh panitia sekolah. Terima kasih. 🙏\n\n-- Panitia PPDB SDN Bobong`;
+      message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nKami menginformasikan bahwa berkas pendaftaran PPDB TA 2026/2027 di SD Negeri Bobong atas nama anak Anda telah kami terima dalam sistem dengan NIK: *${nik}*.\n\nHarap menunggu proses verifikasi berkas lebih lanjut oleh panitia sekolah. Terima kasih.\n\n-- Panitia PPDB SDN Bobong`;
     } else if (record.status === 'Terverifikasi') {
-      message = `Selamat Bapak/Ibu Orang Tua dari *${studentName}*! 🎉\n\nBerkas pendaftaran PPDB TA 2026/2027 anak Anda di SD Negeri Bobong dengan NIK: *${nik}* dinyatakan *TERVERIFIKASI & MEMENUHI SYARAT*.\n\nMohon pantau pengumuman kelulusan akhir di portal PPDB kami secara berkala. Terima kasih. 😊\n\n-- Panitia PPDB SDN Bobong`;
+      message = `Selamat Bapak/Ibu Orang Tua dari *${studentName}*!\n\nBerkas pendaftaran PPDB TA 2026/2027 anak Anda di SD Negeri Bobong dengan NIK: *${nik}* dinyatakan *TERVERIFIKASI & MEMENUHI SYARAT*.\n\nMohon pantau pengumuman kelulusan akhir di portal PPDB kami secara berkala. Terima kasih.\n\n-- Panitia PPDB SDN Bobong`;
     } else if (record.status === 'Ditolak') {
       message = `Halo Bapak/Ibu Orang Tua dari *${studentName}*,\n\nKami menginformasikan bahwa berkas pendaftaran PPDB TA 2026/2027 di SD Negeri Bobong atas nama anak Anda saat ini dinyatakan *DITOLAK / BELUM MEMENUHI SYARAT*.\n\nSilakan periksa kembali kelengkapan berkas Anda atau hubungi sekretariat panitia PPDB sekolah untuk informasi lebih lanjut. Terima kasih.\n\n-- Panitia PPDB SDN Bobong`;
     } else {

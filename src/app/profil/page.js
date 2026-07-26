@@ -251,9 +251,7 @@ export default async function Profil() {
                 const isNasional = levelUpper.includes('NASIONAL');
                 const isProvinsi = levelUpper.includes('PROVINSI');
                 const isKabupaten = levelUpper.includes('KABUPATEN');
-                const badgeBg = isNasional ? '#FFF8E6' : isProvinsi ? '#F0FDF4' : isKabupaten ? '#EEF2FF' : 'var(--accent-bg)';
                 const badgeColor = isNasional ? 'var(--secondary-dark)' : isProvinsi ? '#166534' : isKabupaten ? 'var(--primary-dark)' : 'var(--accent)';
-                const icon = isNasional ? '🏆' : isProvinsi ? '🥈' : isKabupaten ? '🏅' : '⭐';
                 return (
                   <FramerRevealItem
                     key={item.id || idx}

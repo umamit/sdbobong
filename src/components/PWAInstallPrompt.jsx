@@ -259,7 +259,7 @@ export default function PWAInstallPrompt() {
                 cursor: 'pointer'
               }}
             >
-              ✕
+              &times;
             </button>
 
             <img 
@@ -309,8 +309,10 @@ export default function PWAInstallPrompt() {
                 }}>
                   1
                 </div>
-                <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 500 }}>
-                  Tekan ikon <strong>Bagikan (Share)</strong> 📤 di bilah navigasi Safari.
+                <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span>Tekan ikon <strong>Bagikan (Share)</strong></span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                  <span>di bilah navigasi Safari.</span>
                 </span>
               </div>
 
@@ -330,8 +332,9 @@ export default function PWAInstallPrompt() {
                 }}>
                   2
                 </div>
-                <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 500 }}>
-                  Gulir ke bawah dan ketuk opsi <strong>Tambahkan ke Layar Utama</strong> ➕.
+                <span style={{ fontSize: '0.8rem', color: '#334155', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <span>Gulir ke bawah dan ketuk opsi <strong>Tambahkan ke Layar Utama</strong></span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 </span>
               </div>
 

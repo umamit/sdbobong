@@ -131,7 +131,7 @@ export default function usePageContentHandlers({
 
   // --- Prestasi Kesiswaan ---
   const handleAddKesiswaanPrestasi = () => {
-    const updated = [...(pageContents.kesiswaan?.prestasi || []), { rank: '', title: '', level: '', desc: '', icon: '🏆' }];
+    const updated = [...(pageContents.kesiswaan?.prestasi || []), { rank: '', title: '', level: '', desc: '', icon: 'trophy' }];
     handleFieldChange('kesiswaan', 'prestasi', updated);
   };
 
@@ -147,7 +147,7 @@ export default function usePageContentHandlers({
 
   // --- Karya Siswa ---
   const handleAddKarya = () => {
-    const updated = [...(pageContents.kesiswaan?.karya || []), { icon: '🎨', title: '', category: '', desc: '' }];
+    const updated = [...(pageContents.kesiswaan?.karya || []), { icon: 'art', title: '', category: '', desc: '' }];
     handleFieldChange('kesiswaan', 'karya', updated);
   };
 

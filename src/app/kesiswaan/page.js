@@ -17,14 +17,14 @@ export default async function Kesiswaan() {
       { id: "ekskul_4", nama: "Seni Tari Tradisional Maluku Utara", deskripsi: "Melestarikan kebudayaan daerah melalui tari tradisional seperti Tari Lalayon dan Soya-Soya. Melatih keselarasan gerak dan estetika seni.", jadwal: "Kamis, Pukul 15.00 - 17.00 WIT", image: "/images/ekskul_senitari.svg", is_wajib: false }
     ],
     prestasi: [
-      { rank: "1st", title: "Juara 1 Lomba Pidato", level: "Tingkat Kabupaten", desc: "Diraih oleh Fahri Taliabu dalam Lomba Pidato Bahasa Indonesia Hari Guru Nasional Kabupaten Pulau Taliabu Tahun 2025.", icon: "🏆" },
-      { rank: "2nd", title: "Juara 2 Kaligrafi", level: "Tingkat Kecamatan", desc: "Diraih oleh Siti Aminah dalam Festival Lomba Seni Siswa Nasional (FLS2N) Tingkat Kecamatan Taliabu Barat Tahun 2025.", icon: "🥈" },
-      { rank: "H1", title: "Juara Harapan 1 Pramuka", level: "Tingkat Kabupaten", desc: "Diraih oleh Regu Garuda Penggalang Putra dalam Lomba Tingkat Gugus Depan Pramuka se-Kabupaten Taliabu Tahun 2024.", icon: "🏅" }
+      { rank: "1st", title: "Juara 1 Lomba Pidato", level: "Tingkat Kabupaten", desc: "Diraih oleh Fahri Taliabu dalam Lomba Pidato Bahasa Indonesia Hari Guru Nasional Kabupaten Pulau Taliabu Tahun 2025.", icon: "trophy" },
+      { rank: "2nd", title: "Juara 2 Kaligrafi", level: "Tingkat Kecamatan", desc: "Diraih oleh Siti Aminah dalam Festival Lomba Seni Siswa Nasional (FLS2N) Tingkat Kecamatan Taliabu Barat Tahun 2025.", icon: "medal" },
+      { rank: "H1", title: "Juara Harapan 1 Pramuka", level: "Tingkat Kabupaten", desc: "Diraih oleh Regu Garuda Penggalang Putra dalam Lomba Tingkat Gugus Depan Pramuka se-Kabupaten Taliabu Tahun 2024.", icon: "award" }
     ],
     karya: [
-      { icon: "🎨", title: "Lukisan Poster Laut Taliabu", category: "Tema: Cinta Lingkungan Bahari", desc: "Hasil gambar krayon siswa kelas 5 dalam rangka kampanye cinta laut pesisir Pulau Taliabu." },
-      { icon: "🪵", title: "Tempat Pensil Anyaman Bambu", category: "Proyek P5 - Kelas 4", desc: "Pemanfaatan bambu anyaman tradisional khas Maluku Utara menjadi wadah alat tulis serbaguna." },
-      { icon: "📝", title: "Kumpulan Puisi Siswa", category: "Tema: Terima Kasih Guruku", desc: "Karya tulisan puisi tangan murid kelas 3 pada peringatan HUT Persatuan Guru Republik Indonesia." }
+      { icon: "art", title: "Lukisan Poster Laut Taliabu", category: "Tema: Cinta Lingkungan Bahari", desc: "Hasil gambar krayon siswa kelas 5 dalam rangka kampanye cinta laut pesisir Pulau Taliabu." },
+      { icon: "crafts", title: "Tempat Pensil Anyaman Bambu", category: "Proyek P5 - Kelas 4", desc: "Pemanfaatan bambu anyaman tradisional khas Maluku Utara menjadi wadah alat tulis serbaguna." },
+      { icon: "poetry", title: "Kumpulan Puisi Siswa", category: "Tema: Terima Kasih Guruku", desc: "Karya tulisan puisi tangan murid kelas 3 pada peringatan HUT Persatuan Guru Republik Indonesia." }
     ]
   };
 
@@ -121,9 +121,9 @@ export default async function Kesiswaan() {
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
           <FramerRevealContainer className="grid-3">
             {kesiswaan.karya && kesiswaan.karya.map((item, idx) => {
-              const karyaIcon = item.icon === '🎨' ? '/images/animated/art.png' :
-                                item.icon === '🪵' ? '/images/animated/crafts.png' :
-                                item.icon === '📝' ? '/images/animated/poetry.png' : null;
+              const karyaIcon = item.icon === 'art' ? '/images/animated/art.png' :
+                                item.icon === 'crafts' ? '/images/animated/crafts.png' :
+                                item.icon === 'poetry' ? '/images/animated/poetry.png' : null;
               return (
                 <FramerRevealItem key={idx}>
                   <div className="karya-card" style={{ height: '100%' }}>
@@ -131,7 +131,7 @@ export default async function Kesiswaan() {
                       {karyaIcon ? (
                         <img src={karyaIcon} alt={item.title} width={44} height={44} style={{ objectFit: 'contain' }} />
                       ) : (
-                        item.icon
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                       )}
                     </div>
                     <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>{item.title}</h3>

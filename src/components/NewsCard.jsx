@@ -238,8 +238,9 @@ export default function NewsCard({ news, className = '', priority = false }) {
             </div>
 
             {/* Glassmorphic Photo Counter Badge */}
-            <div className="slider-counter" style={{ zIndex: 12 }}>
-              📸 {activeIndex + 1} / {images.length}
+            <div className="slider-counter" style={{ zIndex: 12, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>{activeIndex + 1} / {images.length}</span>
             </div>
           </>
         )}
@@ -249,9 +250,15 @@ export default function NewsCard({ news, className = '', priority = false }) {
       <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
           <div className="card-meta">
-            <span>📅 {news.date}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              {news.date}
+            </span>
             <span>•</span>
-            <span>🏷️ {news.category}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              {news.category}
+            </span>
           </div>
           <h3 className="card-title" style={{ fontSize: '1.3rem' }}>{news.title}</h3>
           
@@ -341,7 +348,10 @@ export default function NewsCard({ news, className = '', priority = false }) {
           justifyContent: 'space-between', 
           alignItems: 'center' 
         }}>
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)' }}>📢 Bagikan:</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Bagikan:
+          </span>
           <div style={{ display: 'flex', gap: '8px' }}>
             {/* WhatsApp */}
             <a 

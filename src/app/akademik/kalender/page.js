@@ -415,13 +415,14 @@ export default function KalenderPendidikan() {
             </div>
             
             <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button 
-                onClick={() => window.print()}
-                className="btn btn-primary"
-                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-              >
-                🖨️ Cetak Dokumen (A4)
-              </button>
+                <button 
+                  onClick={() => window.print()}
+                  className="btn btn-primary"
+                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  Cetak Dokumen (A4)
+                </button>
             </div>
           </div>
 
@@ -463,7 +464,7 @@ export default function KalenderPendidikan() {
                   transition: 'all 0.3s ease'
                 }}
               >
-                🍂 Semester Ganjil (2026)
+                Semester Ganjil (2026)
               </button>
               <button 
                 onClick={() => setSemester('genap')}
@@ -479,7 +480,7 @@ export default function KalenderPendidikan() {
                   transition: 'all 0.3s ease'
                 }}
               >
-                🌱 Semester Genap (2027)
+                Semester Genap (2027)
               </button>
             </div>
           </div>
@@ -579,7 +580,10 @@ export default function KalenderPendidikan() {
 
             {/* Calculations Callout Card */}
             <div style={{ backgroundColor: '#f0fdfa', borderRadius: '12px', border: '1px solid #ccfbf1', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <h5 style={{ margin: 0, color: '#0f766e', fontWeight: 700, fontSize: '0.95rem' }}>📌 Kesimpulan Alokasi Waktu Efektif:</h5>
+              <h5 style={{ margin: 0, color: '#0f766e', fontWeight: 700, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Kesimpulan Alokasi Waktu Efektif:
+              </h5>
               <p style={{ margin: 0, fontSize: '0.85rem', color: '#115e59', lineHeight: 1.5 }}>
                 Berdasarkan perhitungan di atas, terdapat total <strong>{totalMe} Pekan Efektif</strong> pada {semester === 'ganjil' ? 'Semester Ganjil' : 'Semester Genap'}. 
                 Dengan asumsi 1 pekan memuat 30 Jam Pelajaran (JP) terstruktur untuk siswa tingkat dasar, maka alokasi waktu pembelajaran tatap muka yang tersedia adalah 

@@ -97,7 +97,7 @@ export default function FacilityMapSvg(props) {
 
               {/* Lapangan Labels */}
               <text x="420" y="335" fontFamily="var(--font-heading)" fontWeight="800" fontSize="13" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle" style={{ transition: 'all 0.2s' }}>
-                ⛺ LAPANGAN UTAMA & KEMAH PRAMUKA
+                LAPANGAN UTAMA & KEMAH PRAMUKA
               </text>
               <text x="420" y="350" fontFamily="var(--font-body)" fontSize="10" fill={hoveredRoom === 'olahraga' ? '#78350F' : '#A18276'} textAnchor="middle">
                 (Area Tanah Liat / Pasir Terbuka)
@@ -120,7 +120,7 @@ export default function FacilityMapSvg(props) {
               <text x="20" y="45" fontFamily="var(--font-heading)" fontWeight="900" fontSize="8" fill="#FFFFFF" textAnchor="middle">P</text>
               
               {/* Texts */}
-              <text x="70" y="41" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">🏎️ PARKIRAN</text>
+              <text x="70" y="41" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">PARKIRAN</text>
               <text x="70" y="50" fontFamily="var(--font-body)" fontSize="7.5" fill="#475569" textAnchor="middle">Pendidik & Tamu</text>
             </g>
 
@@ -152,7 +152,7 @@ export default function FacilityMapSvg(props) {
                 <line x1="95" y1="55" x2="95" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
                 {/* Text Labels */}
-                <text x="95" y="105" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 3 & 6</text>
+                <text x="95" y="105" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 3 & 6</text>
                 <text x="95" y="122" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Pagi / Siang)</text>
                 
                 {/* Glow Rect on hover */}
@@ -184,7 +184,7 @@ export default function FacilityMapSvg(props) {
                 <line x1="95" y1="195" x2="95" y2="305" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
                 {/* Text Labels */}
-                <text x="95" y="245" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 2 & 5</text>
+                <text x="95" y="245" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 2 & 5</text>
                 <text x="95" y="262" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Pagi / Siang)</text>
                 
                 {/* Glow Rect on hover */}
@@ -216,7 +216,7 @@ export default function FacilityMapSvg(props) {
                 <line x1="230" y1="55" x2="230" y2="165" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
                 {/* Text Labels */}
-                <text x="230" y="105" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🏫 KELAS 1 & 4</text>
+                <text x="230" y="105" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 1 & 4</text>
                 <text x="230" y="122" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Pagi / Siang)</text>
                 
                 {/* Glow Rect on hover */}
@@ -261,7 +261,7 @@ export default function FacilityMapSvg(props) {
                 <line x1="95" y1="417.5" x2="150" y2="417.5" stroke="#FFFFFF" strokeWidth="2" opacity="0.7" />
                 
                 {/* Labels */}
-                <text x="95" y="375" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10.5" fill="#FFFFFF" textAnchor="middle">🏛️ GEDUNG SERBA GUNA</text>
+                <text x="95" y="375" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10.5" fill="#FFFFFF" textAnchor="middle">GEDUNG SERBA GUNA</text>
                 <text x="95" y="392" fontFamily="var(--font-body)" fontWeight="600" fontSize="7.5" fill="#E2E8F0" textAnchor="middle">(Gedung Serba Guna)</text>
                 
                 {/* Glow Rect overlay on hover */}
@@ -299,7 +299,7 @@ export default function FacilityMapSvg(props) {
                     {/* Interior wall line */}
                     <line x1="340" y1="395" x2="340" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">💻 GURU (L1)</text>
+                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">GURU (L1)</text>
                     {hoveredRoom === 'l1_kantor' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
@@ -325,7 +325,7 @@ export default function FacilityMapSvg(props) {
                     {/* Interior wall line */}
                     <line x1="470" y1="395" x2="470" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">👑 KEPSEK (L1)</text>
+                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KEPSEK (L1)</text>
                     {hoveredRoom === 'l1_kepsek' && <rect x="342" y="397" width="126" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
@@ -349,7 +349,7 @@ export default function FacilityMapSvg(props) {
                       style={{ transition: 'all 0.2s' }}
                     />
                     
-                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">📚 PERPUS (L1)</text>
+                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">PERPUS (L1)</text>
                     {hoveredRoom === 'l1_perpus' && <rect x="472" y="397" width="196" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
                 </g>
@@ -380,7 +380,7 @@ export default function FacilityMapSvg(props) {
                     {/* Interior wall line */}
                     <line x1="340" y1="395" x2="340" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🚻 TOILET (L2)</text>
+                    <text x="260" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">TOILET (L2)</text>
                     {hoveredRoom === 'l2_toilet' && <rect x="182" y="397" width="156" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
@@ -406,7 +406,7 @@ export default function FacilityMapSvg(props) {
                     {/* Interior wall line */}
                     <line x1="470" y1="395" x2="470" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
                     
-                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">💻 LAB (L2)</text>
+                    <text x="405" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">LAB (L2)</text>
                     {hoveredRoom === 'l2_lab' && <rect x="342" y="397" width="126" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
 
@@ -430,7 +430,7 @@ export default function FacilityMapSvg(props) {
                       style={{ transition: 'all 0.2s' }}
                     />
                     
-                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">🩹 UKS (L2)</text>
+                    <text x="570" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">UKS (L2)</text>
                     {hoveredRoom === 'l2_uks' && <rect x="472" y="397" width="196" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
                   </g>
                 </g>
@@ -489,7 +489,7 @@ export default function FacilityMapSvg(props) {
                   style={{ transition: 'all 0.2s' }}
                 />
                 
-                <text x="765" y="247" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">🏡 GAZEBO U</text>
+                <text x="765" y="247" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO U</text>
                 {hoveredRoom === 'gazebo_utara' && <rect x="722" y="197" width="86" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
               </g>
 
@@ -524,7 +524,7 @@ export default function FacilityMapSvg(props) {
                   style={{ transition: 'all 0.2s' }}
                 />
                 
-                <text x="765" y="337" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">🏡 GAZEBO S</text>
+                <text x="765" y="337" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO S</text>
                 {hoveredRoom === 'gazebo_selatan' && <rect x="722" y="287" width="86" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
               </g>
             </g>

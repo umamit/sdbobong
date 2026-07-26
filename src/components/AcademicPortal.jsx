@@ -8,7 +8,7 @@ import CalendarEventCard from './CalendarEventCard';
 const P5_PROJECTS = [
   {
     id: "p5-bahari",
-    title: "🌱 Gaya Hidup Berkelanjutan: \"Bahari Lestari Pulau Taliabu\"",
+    title: "Gaya Hidup Berkelanjutan: \"Bahari Lestari Pulau Taliabu\"",
     badge: "Gaya Hidup Berkelanjutan",
     desc: "Proyek berfokus pada edukasi pelestarian ekosistem pesisir Pulau Taliabu dari pencemaran sampah plastik, pemilahan sampah organik, serta pembuatan prakarya pot bunga daur ulang untuk mempercantik taman sekolah.",
     parentGuide: [
@@ -16,13 +16,13 @@ const P5_PROJECTS = [
       "Ajak anak memilah sampah plastik dan kardus bekas di rumah menjadi bahan kerajinan tangan kreatif.",
       "Diskusikan pentingnya menjaga kebersihan laut saat berwisata bersama keluarga ke Pantai Wayo."
     ],
-    skills: ["💡 Kepedulian Ekologis", "🛠️ Gotong Royong", "🎨 Kreativitas Daur Ulang"],
+    skills: ["Kepedulian Ekologis", "Gotong Royong", "Kreativitas Daur Ulang"],
     color: "#0B3C5D",
     image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: "p5-budaya",
-    title: "🎭 Kearifan Lokal: \"Anyaman Pandan & Seni Tari Taliabu\"",
+    title: "Kearifan Lokal: \"Anyaman Pandan & Seni Tari Taliabu\"",
     badge: "Kearifan Lokal",
     desc: "Mengenalkan murid sejak dini pada kekayaan seni tradisional Pulau Taliabu, mulai dari dasar-dasar menganyam serat daun pandan hingga gerakan Tari Lalyon (tari adat Maluku Utara) untuk festival sekolah.",
     parentGuide: [
@@ -30,13 +30,13 @@ const P5_PROJECTS = [
       "Ceritakan sejarah leluhur atau legenda menarik khas Pulau Taliabu sebelum anak tidur.",
       "Dukung anak tampil percaya diri dalam kegiatan pertunjukan pentas budaya sekolah."
     ],
-    skills: ["🤝 Toleransi Kebhinekaan", "🎭 Apresiasi Seni", "📜 Literasi Budaya"],
+    skills: ["Toleransi Kebhinekaan", "Apresiasi Seni", "Literasi Budaya"],
     color: "#329D9C",
     image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: "p5-wirausaha",
-    title: "💰 Kewirausahaan: \"Kantin Kreatif Olahan Sagu Taliabu\"",
+    title: "Kewirausahaan: \"Kantin Kreatif Olahan Sagu Taliabu\"",
     badge: "Kewirausahaan",
     desc: "Mengasah mental kemandirian dan kreativitas bisnis siswa melalui pembuatan olahan sagu lokal khas Taliabu yang higienis, serta mempraktikkan proses jual beli sederhana pada kegiatan Market Day sekolah.",
     parentGuide: [
@@ -44,7 +44,7 @@ const P5_PROJECTS = [
       "Latih anak menghitung kembalian uang belanja sederhana saat berbelanja di warung dekat rumah.",
       "Bantu anak mengenali nilai-nilai kejujuran, disiplin, and kerja keras dalam dunia usaha kecil."
     ],
-    skills: ["🚀 Kemandirian Financial", "🧮 Logika Berpikir", "🤝 Kolaborasi Tim"],
+    skills: ["Kemandirian Finansial", "Logika Berpikir", "Kolaborasi Tim"],
     color: "#F5A623",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop"
   }
@@ -404,7 +404,9 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '1.5rem' }}>🏫</span>
+                  <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  </span>
                   <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--primary-dark)', fontFamily: 'var(--font-heading)' }}>
                     {kbm.kelas}
                   </h3>
@@ -425,8 +427,9 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                 </div>
 
                 {kbm.keterangan && (
-                  <p style={{ margin: 0, fontSize: '0.825rem', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.4 }}>
-                    📌 {kbm.keterangan}
+                  <p style={{ margin: 0, fontSize: '0.825rem', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.4, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>{kbm.keterangan}</span>
                   </p>
                 )}
               </div>
@@ -513,7 +516,8 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                       marginTop: '4px'
                     }}>
                       <h4 style={{ color: proj.color || '#1e40af', fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        👪 Tips Dukungan Orang Tua di Rumah:
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Tips Dukungan Orang Tua di Rumah:
                       </h4>
                       <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--text-main)', lineHeight: 1.5 }}>
                         {parentGuideArray.filter(t => t && t.trim()).map((tip, idx) => (
@@ -586,20 +590,21 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
               </h3>
 
               {/* Close Button */}
-              <button 
-                onClick={() => setSelectedRoom(null)}
+              <button
+                type="button"
+                onClick={() => setSelectedEvent(null)}
                 style={{
                   position: 'absolute',
                   top: '12px',
                   right: '12px',
+                  border: 'none',
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  color: 'white',
                   width: '32px',
                   height: '32px',
                   borderRadius: '50%',
-                  border: 'none',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  color: 'white',
-                  fontSize: '1rem',
                   cursor: 'pointer',
+                  fontSize: '1.2rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -608,7 +613,7 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                 onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
               >
-                ✕
+                &times;
               </button>
             </div>
 
@@ -619,14 +624,16 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px', backgroundColor: 'var(--bg-main)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
                 <div>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', fontWeight: 600, textTransform: 'uppercase' }}>Tanggal Pelaksanaan</span>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--primary-dark)', fontWeight: 700, marginTop: '2px' }}>
-                    📅 {selectedEvent.dates}
+                  <div style={{ fontSize: '0.95rem', color: 'var(--primary-dark)', fontWeight: 700, marginTop: '2px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span>{selectedEvent.dates}</span>
                   </div>
                 </div>
                 <div>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', fontWeight: 600, textTransform: 'uppercase' }}>Hitung Mundur Acara</span>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--accent)', fontWeight: 800, marginTop: '2px' }}>
-                    ⌛ {countdowns[selectedEvent.id] || "Mempersiapkan..."}
+                  <div style={{ fontSize: '0.95rem', color: 'var(--accent)', fontWeight: 800, marginTop: '2px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>{countdowns[selectedEvent.id] || "Mempersiapkan..."}</span>
                   </div>
                 </div>
               </div>
@@ -637,7 +644,8 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                 (selectedEvent.title && selectedEvent.title.toLowerCase().includes('mpls'))) && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: '#ffffff' }}>
                   <h4 style={{ color: 'var(--primary-dark)', fontSize: '0.95rem', margin: '0 0 4px 0', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    📋 Rundown Harian MPLS:
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                    Rundown Harian MPLS:
                   </h4>
                   
                   {/* Tabs */}

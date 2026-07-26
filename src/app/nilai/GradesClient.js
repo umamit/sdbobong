@@ -168,10 +168,19 @@ export default function GradesClient() {
             disabled={loading}
             className="btn btn-primary"
             style={{
-              width: '100%'
+              width: '100%',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px'
             }}
           >
-            {loading ? 'Memeriksa Data...' : '🔍 Periksa Rapor'}
+            {loading ? 'Memeriksa Data...' : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Periksa Rapor
+              </>
+            )}
           </button>
         </form>
 
@@ -185,10 +194,14 @@ export default function GradesClient() {
               color: '#b91c1c', 
               fontSize: '0.9rem',
               border: '1px solid #ef4444',
-              textAlign: 'left'
+              textAlign: 'left',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
-            ⚠️ {error}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>{error}</span>
           </div>
         )}
       </div>
@@ -223,7 +236,8 @@ export default function GradesClient() {
                     fontSize: '0.85rem'
                   }}
                 >
-                  🖨️ Cetak Rapor Digital
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  Cetak Rapor Digital
                 </button>
               </div>
 

@@ -453,7 +453,7 @@ export default function TeachersSectionClient({ teachers }) {
                 onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.15)'}
                 onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(15, 23, 42, 0.08)'}
               >
-                ✕
+                &times;
               </button>
 
             {/* Profile Header Grid */}
@@ -507,13 +507,19 @@ export default function TeachersSectionClient({ teachers }) {
               {/* Education and Subjects */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(15, 23, 42, 0.05)' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>🎓 Pendidikan Terakhir</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    Pendidikan Terakhir
+                  </div>
                   <div style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: 600 }}>
                     {selectedTeacher.education || 'Data belum diisi'}
                   </div>
                 </div>
                 <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(15, 23, 42, 0.05)' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>📚 Mata Pelajaran / Rombel</div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    Mata Pelajaran / Rombel
+                  </div>
                   <div style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: 600 }}>
                     {selectedTeacher.subject || 'Data belum diisi'}
                   </div>
@@ -537,7 +543,10 @@ export default function TeachersSectionClient({ teachers }) {
 
               {/* Biography Text */}
               <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>📝 Biografi Singkat</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  Biografi Singkat
+                </div>
                 <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.6, margin: 0, textAlign: 'justify' }}>
                   {selectedTeacher.bio || `${selectedTeacher.name} adalah bagian dari tenaga pendidik profesional di SD Negeri Bobong yang bertugas sebagai ${selectedTeacher.role || 'Tenaga Pendidik'}. Beliau berkomitmen untuk mewujudkan visi sekolah dalam mendidik generasi yang cerdas, berkarakter mulia, dan berbudaya.`}
                 </p>

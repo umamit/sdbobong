@@ -29,7 +29,7 @@ export default async function Akademik() {
     kurikulum_p1: akademikData.kurikulum_p1 || "SD Negeri Bobong telah mengimplementasikan Kurikulum Merdeka secara bertahap untuk memberikan pengalaman belajar yang lebih fleksibel, berfokus pada materi esensial, dan mengembangkan minat bakat murid.",
     kurikulum_p2: akademikData.kurikulum_p2 || "Salah satu pilar utama kurikulum ini adalah Projek Penguatan Profil Pelajar Pancasila (P5). Di SD Negeri Bobong, proyek P5 diintegrasikan dengan pemanfaatan kearifan lokal Pulau Taliabu, seperti pengenalan kerajinan tradisional Maluku Utara dan kepedulian terhadap kebersihan lingkungan bahari.",
     kurikulum_image: akademikData.kurikulum_image || "/images/kurikulum_merdeka.svg",
-    kurikulum_tags: akademikData.kurikulum_tags || ["💡 Fokus Karakter", "🌱 Belajar Kontekstual", "🎭 Kreativitas Lokal"],
+    kurikulum_tags: akademikData.kurikulum_tags || ["Fokus Karakter", "Belajar Kontekstual", "Kreativitas Lokal"],
     calendar: akademikData.calendar || [
       { id: "juli", month: "Juli 2026", desc: "Hari Pertama Sekolah & Pengenalan Lingkungan Sekolah (MPLS)", dates: "13 - 17 Juli 2026" },
       { id: "agustus", month: "Agustus 2026", desc: "Peringatan HUT RI ke-81 & Upacara Bendera", dates: "17 Agustus 2026" },

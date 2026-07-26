@@ -47,9 +47,7 @@ export default function NotFound() {
         }
 
         .nf-illustration::after {
-          content: '🔍';
-          font-size: 5rem;
-          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+          content: '';
         }
 
         .nf-badge {
@@ -168,7 +166,9 @@ export default function NotFound() {
       `}</style>
 
       <div className="nf-root">
-        <div className="nf-illustration" aria-hidden="true" />
+        <div className="nf-illustration" aria-hidden="true" style={{ color: '#12A5B8' }}>
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
         <div className="nf-badge">SD Negeri Bobong</div>
         <div className="nf-code" aria-label="Error 404">404</div>
         <h1 className="nf-title">Halaman Tidak Ditemukan</h1>
