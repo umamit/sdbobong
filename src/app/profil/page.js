@@ -252,6 +252,7 @@ export default async function Profil() {
                 const isProvinsi = levelUpper.includes('PROVINSI');
                 const isKabupaten = levelUpper.includes('KABUPATEN');
                 const badgeColor = isNasional ? 'var(--secondary-dark)' : isProvinsi ? '#166534' : isKabupaten ? 'var(--primary-dark)' : 'var(--accent)';
+                const badgeBg = isNasional ? 'rgba(234, 179, 8, 0.15)' : isProvinsi ? 'rgba(34, 197, 94, 0.15)' : isKabupaten ? 'rgba(99, 102, 241, 0.15)' : 'rgba(100, 116, 139, 0.15)';
                 return (
                   <FramerRevealItem
                     key={item.id || idx}
