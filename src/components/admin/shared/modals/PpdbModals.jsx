@@ -52,7 +52,9 @@ export default function PpdbModals() {
             textAlign: 'center',
             position: 'relative'
           }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', color: '#ef4444' }}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
             <h3 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
               Konfirmasi Penghapusan
             </h3>
@@ -94,11 +96,16 @@ export default function PpdbModals() {
                   width: '100%', 
                   padding: '0.75rem', 
                   fontSize: '0.9rem',
-                  opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
+                  opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px'
                 }}
                 onClick={() => executeDelete('both')}
               >
-                🗑️ Hapus dari Lokal & Supabase (Semua)
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Hapus dari Lokal & Supabase (Semua)
               </button>
               
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
@@ -112,11 +119,16 @@ export default function PpdbModals() {
                     color: '#dc2626',
                     borderColor: '#fca5a5',
                     backgroundColor: '#fef2f2',
-                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
+                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
                   }}
                   onClick={() => executeDelete('local')}
                 >
-                  🖥️ Hanya Lokal
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Hanya Lokal
                 </button>
                 <button 
                   id="btn-del-supabase"
@@ -128,16 +140,22 @@ export default function PpdbModals() {
                     color: '#2563eb',
                     borderColor: '#bfdbfe',
                     backgroundColor: '#eff6ff',
-                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1
+                    opacity: (deleteIsBulk && bulkDeleteConfirmText !== 'HAPUS SEMUA') ? 0.5 : 1,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
                   }}
                   onClick={() => executeDelete('supabase')}
                 >
-                  ☁️ Hanya Supabase
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                  Hanya Supabase
                 </button>
               </div>
 
-              <div style={{ fontSize: '0.75rem', color: '#64748b', textAlign: 'left', lineHeight: '1.4', marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
-                💡 <em>Catatan: Disarankan menghapus dari "Keduanya". Jika hanya dihapus dari salah satu, data dapat tersinkronisasi kembali saat halaman disegarkan karena sinkronisasi otomatis.</em>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', textAlign: 'left', lineHeight: '1.4', marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span><em>Catatan: Disarankan menghapus dari "Keduanya". Jika hanya dihapus dari salah satu, data dapat tersinkronisasi kembali saat halaman disegarkan karena sinkronisasi otomatis.</em></span>
               </div>
 
               <button 
@@ -165,7 +183,10 @@ export default function PpdbModals() {
             
             {/* Modal Header (No Print) */}
             <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary-dark)', color: '#ffffff', borderRadius: '16px 16px 0 0' }}>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>🔍 Lembar Detail Pendaftaran Calon Siswa</h3>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Lembar Detail Pendaftaran Calon Siswa
+              </h3>
               <button 
                 type="button" 
                 onClick={() => { setIsDetailModalOpen(false); setSelectedRecord(null); }} 
@@ -173,7 +194,7 @@ export default function PpdbModals() {
                 onMouseOver={(e) => e.target.style.opacity = 1}
                 onMouseOut={(e) => e.target.style.opacity = 0.8}
               >
-                ✕
+                &times;
               </button>
             </div>
 
@@ -241,7 +262,7 @@ export default function PpdbModals() {
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>Jalur Seleksi PPDB</div>
                     <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 700, color: '#2563eb', marginTop: '2px' }}>
                       <span style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.2rem 0.6rem', borderRadius: '6px' }}>
-                        🚀 {selectedRecord.jalur_ppdb || '-'}
+                        {selectedRecord.jalur_ppdb || '-'}
                       </span>
                     </div>
                   </div>
@@ -262,7 +283,7 @@ export default function PpdbModals() {
 
                   <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem' }}>
                     <div className="print-field-label" style={{ fontSize: '0.75rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.5px' }}>No. HP Orang Tua / Wali</div>
-                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>📞 {selectedRecord.nomor_hp_orangtua || selectedRecord.no_hp || '-'}</div>
+                    <div className="print-field-value" style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a', marginTop: '2px' }}>{selectedRecord.nomor_hp_orangtua || selectedRecord.no_hp || '-'}</div>
                   </div>
 
                   <div className="print-field" style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '0.5rem', gridColumn: 'span 2' }}>
@@ -345,9 +366,9 @@ export default function PpdbModals() {
                 {/* Grid Dokumen (No Print) */}
                 <div className="no-print" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
                   {[
-                    { label: "Kartu Keluarga", field: "berkas_kk", icon: "📋" },
-                    { label: "Akta Kelahiran", field: "berkas_akta", icon: "👶" },
-                    { label: "Ijazah TK / PAUD (Opsional)", field: "berkas_ijazah", icon: "🎓" }
+                    { label: "Kartu Keluarga", field: "berkas_kk" },
+                    { label: "Akta Kelahiran", field: "berkas_akta" },
+                    { label: "Ijazah TK / PAUD (Opsional)", field: "berkas_ijazah" }
                   ].map((doc, idx) => {
                     const url = selectedRecord[doc.field];
                     return (
@@ -367,7 +388,6 @@ export default function PpdbModals() {
                             {doc.label}
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>
-                            <span>{doc.icon}</span>
                             <span style={{ fontSize: '0.8rem', color: url ? '#1e293b' : '#94a3b8', fontStyle: url ? 'normal' : 'italic' }}>
                               {url ? 'PDF Terunggah' : 'Belum diunggah'}
                             </span>
@@ -406,7 +426,8 @@ export default function PpdbModals() {
                               e.currentTarget.style.borderColor = '#bae6fd';
                             }}
                           >
-                            👁️ Buka Dokumen
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Buka Dokumen
                           </a>
                         ) : (
                           <div style={{ 
@@ -428,7 +449,10 @@ export default function PpdbModals() {
                 </div>
 
                 <div style={{ backgroundColor: '#f8fafc', padding: '1.25rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '2rem' }}>
-                  <h5 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>⚠️ INSTRUKSI DAFTAR ULANG:</h5>
+                  <h5 style={{ margin: '0 0 6px 0', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#eab308" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    INSTRUKSI DAFTAR ULANG:
+                  </h5>
                   <ol style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.75rem', color: '#475569', lineHeight: '1.6' }}>
                     <li>Simpan atau cetak bukti pendaftaran elektronik ini secara fisik.</li>
                     <li>Bawa bukti pendaftaran ini beserta berkas kelengkapan (FC Akta Lahir, FC Kartu Keluarga, FC Ijazah TK jika ada, dan Pas Foto 3x4) ke SDN Bobong.</li>
@@ -456,18 +480,19 @@ export default function PpdbModals() {
               <button 
                 type="button" 
                 className="btn btn-secondary" 
-                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem' }}
                 onClick={() => { setIsDetailModalOpen(false); setSelectedRecord(null); }}
               >
-                ✕ Tutup Detail
+                Tutup Detail
               </button>
               <button 
                 type="button" 
                 className="btn btn-primary" 
-                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ padding: '0.65rem 1.5rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 onClick={() => window.print()}
               >
-                🖨️ Cetak Bukti Pendaftaran (Slip)
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Cetak Bukti Pendaftaran (Slip)
               </button>
             </div>
 

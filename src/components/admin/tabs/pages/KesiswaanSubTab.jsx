@@ -56,8 +56,9 @@ export default function KesiswaanSubTab(props) {
                         <h3 style={{ margin: 0 }}>Daftar Kegiatan Ekstrakurikuler (Ekskul)</h3>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Daftar kartu wadah pengembangan minat & bakat siswa.</p>
                       </div>
-                      <button type="button" onClick={handleAddEkskul} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                        ➕ Tambah Ekskul Baru
+                      <button type="button" onClick={handleAddEkskul} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Tambah Ekskul Baru
                       </button>
                     </div>
 
@@ -147,7 +148,7 @@ export default function KesiswaanSubTab(props) {
                             className="btn-action-delete"
                             style={{ alignSelf: 'center', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
                           >
-                            🗑️
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                           </button>
                         </div>
                       ))}
@@ -165,8 +166,9 @@ export default function KesiswaanSubTab(props) {
                         <h3 style={{ margin: 0 }}>Daftar Prestasi Hebat Murid</h3>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Daftar raihan kejuaraan murid yang dipajang di halaman Kesiswaan.</p>
                       </div>
-                      <button type="button" onClick={handleAddKesiswaanPrestasi} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                        ➕ Tambah Prestasi Murid
+                      <button type="button" onClick={handleAddKesiswaanPrestasi} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Tambah Prestasi Murid
                       </button>
                     </div>
 
@@ -186,7 +188,7 @@ export default function KesiswaanSubTab(props) {
                           <div className="form-group" style={{ marginBottom: 0 }}>
                             <input
                               type="text"
-                              placeholder="Ikon Emoji"
+                              placeholder="Ikon Kode"
                               className="form-control"
                               value={pr.icon || ''}
                               onChange={(e) => handleUpdateKesiswaanPrestasi(idx, 'icon', e.target.value)}
@@ -229,7 +231,7 @@ export default function KesiswaanSubTab(props) {
                             className="btn-action-delete"
                             style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
                           >
-                            🗑️
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                           </button>
                         </div>
                       ))}
@@ -247,8 +249,9 @@ export default function KesiswaanSubTab(props) {
                         <h3 style={{ margin: 0 }}>Galeri Karya Kreatif Kreasi Murid</h3>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Etalase pameran kreasi seni, budaya, kerajinan tangan, atau puisi murid.</p>
                       </div>
-                      <button type="button" onClick={handleAddKarya} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                        ➕ Tambah Karya Murid
+                      <button type="button" onClick={handleAddKarya} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Tambah Karya Murid
                       </button>
                     </div>
 
@@ -258,7 +261,7 @@ export default function KesiswaanSubTab(props) {
                           <div className="form-group" style={{ marginBottom: 0 }}>
                             <input
                               type="text"
-                              placeholder="Ikon Emoji"
+                              placeholder="Ikon Kode"
                               className="form-control"
                               value={kr.icon || ''}
                               onChange={(e) => handleUpdateKarya(idx, 'icon', e.target.value)}
@@ -301,7 +304,7 @@ export default function KesiswaanSubTab(props) {
                             className="btn-action-delete"
                             style={{ height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 0.75rem' }}
                           >
-                            🗑️
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                           </button>
                         </div>
                       ))}

@@ -190,7 +190,14 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
       {/* Toast Notification */}
       {toast && (
         <div className={`guru-toast toast-${toast.type}`} role="alert">
-          <span>{toast.type === 'success' ? '✅' : '⚠️'} {toast.message}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            {toast.type === 'success' ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            )}
+            {toast.message}
+          </span>
         </div>
       )}
 
@@ -223,28 +230,36 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
         {/* Statistics Cards */}
         <section className="guru-stats-grid">
           <div className="guru-stat-card glass-card card-total">
-            <div className="stat-icon">👥</div>
+            <div className="stat-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
             <div className="stat-data">
               <h3>Total Siswa</h3>
               <p>{stats.total}</p>
             </div>
           </div>
           <div className="guru-stat-card glass-card card-lengkap">
-            <div className="stat-icon">🟢</div>
+            <div className="stat-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
             <div className="stat-data">
               <h3>Rapor Lengkap</h3>
               <p>{stats.lengkap}</p>
             </div>
           </div>
           <div className="guru-stat-card glass-card card-sebagian">
-            <div className="stat-icon">🟡</div>
+            <div className="stat-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
             <div className="stat-data">
               <h3>Belum Lengkap</h3>
               <p>{stats.sebagian}</p>
             </div>
           </div>
           <div className="guru-stat-card glass-card card-belum">
-            <div className="stat-icon">🔴</div>
+            <div className="stat-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
             <div className="stat-data">
               <h3>Belum Diisi</h3>
               <p>{stats.belum}</p>
@@ -265,7 +280,9 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <button className="clear-search" onClick={() => setSearchQuery('')}>✕</button>
+                <button className="clear-search" onClick={() => setSearchQuery('')} aria-label="Hapus pencarian">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               )}
             </div>
           </div>
@@ -345,8 +362,10 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
                           <button 
                             className="btn-edit-grades"
                             onClick={() => openEditGrades(student)}
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                           >
-                            📝 Input Nilai
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Input Nilai
                           </button>
                         </td>
                       </tr>
@@ -358,12 +377,16 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
                       <div className="empty-state">
                         {!classFilter ? (
                           <>
-                            <span className="empty-icon">🏫</span>
+                            <span className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                            </span>
                             <p>Silakan pilih Kelas terlebih dahulu pada filter di atas untuk menampilkan daftar siswa.</p>
                           </>
                         ) : (
                           <>
-                            <span className="empty-icon">🔍</span>
+                            <span className="empty-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </span>
                             <p>Tidak ada data siswa di kelas {classFilter === 'All' ? 'manapun' : classFilter} atau pencarian Anda tidak ditemukan.</p>
                           </>
                         )}

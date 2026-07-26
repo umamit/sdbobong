@@ -83,8 +83,9 @@ export default function TeacherModals() {
             textAlign: 'left'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
-                ➕ Tambah Guru / Staf Baru
+              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Tambah Guru / Staf Baru
               </h3>
               <button 
                 onClick={() => setAddTeacherModalOpen(false)}
@@ -278,8 +279,9 @@ export default function TeacherModals() {
                     onChange={handleTeacherPhotoChange}
                     style={{ width: '100%', boxSizing: 'border-box' }}
                   />
-                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
-                    💡 <strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span><strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.</span>
                   </p>
                 </div>
               </div>
@@ -297,9 +299,10 @@ export default function TeacherModals() {
                   type="submit" 
                   id="btn-submit-teacher" 
                   className="btn btn-primary" 
-                  style={{ flex: 1, padding: '0.65rem' }}
+                  style={{ flex: 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
-                  💾 Simpan Data Guru
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Simpan Data Guru
                 </button>
               </div>
             </form>
@@ -340,8 +343,9 @@ export default function TeacherModals() {
             textAlign: 'left'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800 }}>
-                ✏️ Edit Data Guru / Staf
+              <h3 style={{ margin: 0, color: '#0f172a', fontSize: '1.25rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit Data Guru / Staf
               </h3>
               <button 
                 onClick={() => setEditTeacherModalOpen(false)}
@@ -559,8 +563,9 @@ export default function TeacherModals() {
                     onChange={handleEditTeacherPhotoChange}
                     style={{ width: '100%', boxSizing: 'border-box' }}
                   />
-                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0 }}>
-                    💡 <strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span><strong>Rekomendasi:</strong> Gunakan foto format kotak/persegi (1:1) atau rasio potret agar kartu struktur organisasi di halaman Profil terlihat rapi dan simetris tanpa terpotong secara paksa oleh CSS.</span>
                   </p>
                 </div>
               </div>
@@ -578,9 +583,10 @@ export default function TeacherModals() {
                   type="submit" 
                   id="btn-edit-submit-teacher" 
                   className="btn btn-primary" 
-                  style={{ flex: 1, padding: '0.65rem' }}
+                  style={{ flex: 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
-                  💾 Simpan Perubahan
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Simpan Perubahan
                 </button>
               </div>
             </form>

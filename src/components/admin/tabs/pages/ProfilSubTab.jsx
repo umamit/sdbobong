@@ -156,8 +156,9 @@ export default function ProfilSubTab(props) {
                         placeholder="Tulis setiap misi dalam baris baru..."
                         style={{ width: '100%', resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', lineHeight: '1.5' }}
                       ></textarea>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0 }}>
-                        💡 Tekan Enter untuk membuat butir misi baru. Spasi kosong di baris terakhir otomatis divalidasi dan diabaikan saat rendering.
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', marginBottom: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        <span>Tekan Enter untuk membuat butir misi baru. Spasi kosong di baris terakhir otomatis divalidasi dan diabaikan saat rendering.</span>
                       </p>
                     </div>
                   </div>

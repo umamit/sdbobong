@@ -23,7 +23,8 @@ export default function ContentTab() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
                   <div style={{ flex: '1', minWidth: '280px' }}>
                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config?.stats?.maintenance_mode ? '#f59e0b' : 'var(--text-color)', transition: 'color 0.3s' }}>
-                      🛠️ Mode Pemeliharaan (Maintenance Mode)
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                      Mode Pemeliharaan (Maintenance Mode)
                     </h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
                       Saat diaktifkan, seluruh halaman publik akan dikunci otomatis dan dialihkan ke halaman pemeliharaan premium. Anda sebagai admin tetap bisa mengakses dashboard ini secara penuh.
@@ -65,7 +66,8 @@ export default function ContentTab() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
                   <div style={{ flex: '1', minWidth: '280px' }}>
                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config?.stats?.allow_copy ? '#10b981' : 'var(--text-color)', transition: 'color 0.3s' }}>
-                      📋 Salin Teks & Klik Kanan (Public Copy Permission)
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                      Salin Teks & Klik Kanan (Public Copy Permission)
                     </h3>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
                       Saat dinonaktifkan (Default), proteksi anti-plagiasi aktif untuk mencegah pengunjung menyalin tulisan, mengakses menu klik kanan, atau menyeret gambar di halaman publik. Aktifkan agar pengunjung dapat menyalin materi pelajaran atau pengumuman secara bebas.
@@ -143,7 +145,10 @@ export default function ContentTab() {
 
 
 
-                  <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', padding: '0.5rem 1rem' }}>💾 Simpan Pengumuman</button>
+                  <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Simpan Pengumuman
+                  </button>
                 </form>
               </div>
 
@@ -275,7 +280,10 @@ export default function ContentTab() {
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-secondary" style={{ marginTop: 'var(--space-xs)', width: '100%', padding: '0.5rem' }}>💾 Simpan Data Statistik</button>
+                  <button type="submit" className="btn btn-secondary" style={{ marginTop: 'var(--space-xs)', width: '100%', padding: '0.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Simpan Data Statistik
+                  </button>
                 </form>
               </div>
 

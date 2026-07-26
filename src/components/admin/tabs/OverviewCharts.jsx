@@ -125,7 +125,7 @@ export default function OverviewCharts() {
               return (
                 <div className="analytics-card" style={{ marginTop: '1.5rem', position: 'relative' }}>
                   <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
-                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>📊 Analisis Data PPDB Real-time</h3>
+                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>Analisis Data PPDB Real-time</h3>
                     <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Visualisasi statistik pendaftar siswa baru berdasarkan gender dan jalur masuk.</p>
                   </div>
 
@@ -237,7 +237,7 @@ export default function OverviewCharts() {
 
                           {/* Y-axis Labels & Bars */}
                           {/* 1. Zonasi */}
-                          <text x="80" y="27" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">🛣️ Zonasi</text>
+                          <text x="80" y="27" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">Zonasi</text>
                           <rect 
                             x="90" y="15" 
                             width={totalPPDB > 0 ? (zonasiPct / 100) * 290 : 0} 
@@ -256,7 +256,7 @@ export default function OverviewCharts() {
                           </text>
 
                           {/* 2. Afirmasi */}
-                          <text x="80" y="57" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">❤️ Afirmasi</text>
+                          <text x="80" y="57" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">Afirmasi</text>
                           <rect 
                             x="90" y="45" 
                             width={totalPPDB > 0 ? (afirmasiPct / 100) * 290 : 0} 
@@ -275,7 +275,7 @@ export default function OverviewCharts() {
                           </text>
 
                           {/* 3. Prestasi */}
-                          <text x="80" y="87" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">🏆 Prestasi</text>
+                          <text x="80" y="87" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">Prestasi</text>
                           <rect 
                             x="90" y="75" 
                             width={totalPPDB > 0 ? (prestasiPct / 100) * 290 : 0} 
@@ -294,7 +294,7 @@ export default function OverviewCharts() {
                           </text>
 
                           {/* 4. Perpindahan */}
-                          <text x="80" y="117" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">💼 Pindahan</text>
+                          <text x="80" y="117" fill="#475569" fontSize="10" fontWeight="600" textAnchor="end">Pindahan</text>
                           <rect 
                             x="90" y="105" 
                             width={totalPPDB > 0 ? (perpindahanPct / 100) * 290 : 0} 
@@ -386,7 +386,7 @@ export default function OverviewCharts() {
               return (
                 <div className="analytics-card" style={{ marginTop: '1.5rem', position: 'relative' }}>
                   <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem', marginBottom: '1.25rem' }}>
-                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>📈 Tren Harian Pendaftaran PPDB</h3>
+                    <h3 style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}>Tren Harian Pendaftaran PPDB</h3>
                     <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                       Grafik garis yang menunjukkan total pendaftaran siswa baru per hari.
                     </p>
@@ -512,8 +512,8 @@ export default function OverviewCharts() {
                                 setHoveredIndex(i);
                                 handleMouseMove(
                                   e, 
-                                  `📅 ${formatDateLabel(p.date)}`, 
-                                  `📝 ${p.count} Pendaftar Baru`
+                                  formatDateLabel(p.date), 
+                                  `${p.count} Pendaftar Baru`
                                 );
                               }}
                               onMouseLeave={() => {
@@ -546,7 +546,9 @@ export default function OverviewCharts() {
                         alignItems: 'center',
                         gap: '6px'
                       }}>
-                        <span style={{ fontSize: '2rem' }}>📊</span>
+                        <div style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        </div>
                         <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#1e293b' }}>Belum Ada Pendaftaran PPDB</div>
                         <div style={{ fontSize: '0.75rem', color: '#64748b', maxWidth: '250px' }}>
                           Grafik tren harian pendaftaran akan terisi otomatis setelah berkas pendaftaran pertama masuk ke sistem.

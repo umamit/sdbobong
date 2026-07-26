@@ -55,13 +55,25 @@ export default function ContentUtilityModals() {
         <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
           <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
-              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingDownload ? '✏️ Edit Berkas Unduhan' : '➕ Tambah Berkas Unduhan Baru'}</h3>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {editingDownload ? (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Berkas Unduhan
+                  </>
+                ) : (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah Berkas Unduhan Baru
+                  </>
+                )}
+              </h3>
               <button 
                 type="button" 
                 onClick={() => { setDownloadModalOpen(false); setEditingDownload(null); }} 
                 style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
               >
-                ✕
+                &times;
               </button>
             </div>
             
@@ -127,9 +139,10 @@ export default function ContentUtilityModals() {
                 <button 
                   type="submit" 
                   className="btn btn-primary" 
-                  style={{ flex: 1, padding: '0.65rem' }}
+                  style={{ flex: 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
-                  💾 Simpan Berkas
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Simpan Berkas
                 </button>
               </div>
             </form>
@@ -142,13 +155,25 @@ export default function ContentUtilityModals() {
         <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
           <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
-              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingFaq ? '✏️ Edit FAQ' : '➕ Tambah FAQ Baru'}</h3>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {editingFaq ? (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit FAQ
+                  </>
+                ) : (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah FAQ Baru
+                  </>
+                )}
+              </h3>
               <button 
                 type="button" 
                 onClick={() => { setFaqModalOpen(false); setEditingFaq(null); }} 
                 style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
               >
-                ✕
+                &times;
               </button>
             </div>
             
@@ -195,9 +220,10 @@ export default function ContentUtilityModals() {
                 <button 
                   type="submit" 
                   className="btn btn-primary" 
-                  style={{ flex: 1, padding: '0.65rem' }}
+                  style={{ flex: 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
-                  💾 Simpan FAQ
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Simpan FAQ
                 </button>
               </div>
             </form>
@@ -210,13 +236,25 @@ export default function ContentUtilityModals() {
         <div className="modal-backdrop" style={{ display: 'flex', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1100, justifyContent: 'center', alignItems: 'center', padding: '1rem', boxSizing: 'border-box' }}>
           <div className="modal-content animate-slideUp" style={{ backgroundColor: '#ffffff', borderRadius: '16px', maxWidth: '550px', width: '100%', border: 'none', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.75rem', borderBottom: '1px solid #f1f5f9', backgroundColor: 'var(--primary)', color: '#ffffff' }}>
-              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700 }}>{editingGalleryItem ? '✏️ Edit Item Galeri' : '➕ Tambah Media Galeri Baru'}</h3>
+              <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {editingGalleryItem ? (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Item Galeri
+                  </>
+                ) : (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah Media Galeri Baru
+                  </>
+                )}
+              </h3>
               <button 
                 type="button" 
                 onClick={() => { setGalleryModalOpen(false); setEditingGalleryItem(null); }} 
                 style={{ background: 'none', border: 'none', color: '#ffffff', fontSize: '1.5rem', cursor: 'pointer', opacity: 0.8 }}
               >
-                ✕
+                &times;
               </button>
             </div>
             
@@ -246,8 +284,8 @@ export default function ContentUtilityModals() {
                     style={{ width: '100%', boxSizing: 'border-box' }}
                     required
                   >
-                    <option value="image">🖼️ FOTO (Gambar)</option>
-                    <option value="video">🎥 VIDEO (Youtube Embed / MP4)</option>
+                    <option value="image">FOTO (Gambar)</option>
+                    <option value="video">VIDEO (Youtube Embed / MP4)</option>
                   </select>
                 </div>
 
@@ -261,11 +299,11 @@ export default function ContentUtilityModals() {
                     style={{ width: '100%', boxSizing: 'border-box' }}
                     required
                   >
-                    <option value="umum">📁 UMUM (Dokumentasi Lainnya)</option>
-                    <option value="akademik">📖 AKADEMIK (Kegiatan Belajar)</option>
-                    <option value="pramuka">⛺ PRAMUKA (Kegiatan Kepanduan)</option>
-                    <option value="upacara">🎖️ UPACARA (Upacara & Peringatan Hari Besar)</option>
-                    <option value="sarana">🏫 SARANA (Fasilitas & Infrastruktur)</option>
+                    <option value="umum">UMUM (Dokumentasi Lainnya)</option>
+                    <option value="akademik">AKADEMIK (Kegiatan Belajar)</option>
+                    <option value="pramuka">PRAMUKA (Kegiatan Kepanduan)</option>
+                    <option value="upacara">UPACARA (Upacara & Peringatan Hari Besar)</option>
+                    <option value="sarana">SARANA (Fasilitas & Infrastruktur)</option>
                   </select>
                 </div>
 
@@ -287,10 +325,15 @@ export default function ContentUtilityModals() {
                         transition: 'all 0.2s',
                         backgroundColor: gallerySourceType === 'url' ? '#ffffff' : 'transparent',
                         color: gallerySourceType === 'url' ? 'var(--primary)' : '#64748b',
-                        boxShadow: gallerySourceType === 'url' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                        boxShadow: gallerySourceType === 'url' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
                       }}
                     >
-                      🔗 Tautan Link (Copas)
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                      Tautan Link (Copas)
                     </button>
                     <button
                       type="button"
@@ -306,10 +349,15 @@ export default function ContentUtilityModals() {
                         transition: 'all 0.2s',
                         backgroundColor: gallerySourceType === 'upload' ? '#ffffff' : 'transparent',
                         color: gallerySourceType === 'upload' ? 'var(--primary)' : '#64748b',
-                        boxShadow: gallerySourceType === 'upload' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+                        boxShadow: gallerySourceType === 'upload' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
                       }}
                     >
-                      📤 Unggah File Lokal
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      Unggah File Lokal
                     </button>
                   </div>
                 </div>
@@ -400,9 +448,10 @@ export default function ContentUtilityModals() {
                 <button 
                   type="submit" 
                   className="btn btn-primary" 
-                  style={{ flex: 1, padding: '0.65rem' }}
+                  style={{ flex: 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
-                  💾 Simpan Media
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Simpan Media
                 </button>
               </div>
             </form>

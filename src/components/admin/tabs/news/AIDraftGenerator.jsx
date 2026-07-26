@@ -3,10 +3,10 @@
 
 
 const SUGGESTION_PROMPTS = [
-  { label: '🧹 Kerja Bakti / Sabtu Bersih', prompt: 'Kegiatan gotong royong kerja bakti Sabtu Bersih oleh siswa-siswi dan guru untuk membersihkan lingkungan sekolah dan kelas.' },
-  { label: '🤝 Rapat Komite Sekolah', prompt: 'Musyawarah koordinasi komite sekolah bersama wali murid untuk membahas program kerja tahunan dan peningkatan sarana prasarana.' },
-  { label: '🏆 Lomba Seni & Olahraga', prompt: 'Siswa-siswi SD Negeri Bobong berhasil meraih juara dalam perlombaan seni dan olahraga tingkat kabupaten.' },
-  { label: '🩺 Program Imunisasi BIAS', prompt: 'Pelaksanaan kegiatan imunisasi Bulan Imunisasi Anak Sekolah (BIAS) bekerja sama dengan Puskesmas setempat.' },
+  { label: 'Kerja Bakti / Sabtu Bersih', prompt: 'Kegiatan gotong royong kerja bakti Sabtu Bersih oleh siswa-siswi dan guru untuk membersihkan lingkungan sekolah dan kelas.' },
+  { label: 'Rapat Komite Sekolah', prompt: 'Musyawarah koordinasi komite sekolah bersama wali murid untuk membahas program kerja tahunan dan peningkatan sarana prasarana.' },
+  { label: 'Lomba Seni & Olahraga', prompt: 'Siswa-siswi SD Negeri Bobong berhasil meraih juara dalam perlombaan seni dan olahraga tingkat kabupaten.' },
+  { label: 'Program Imunisasi BIAS', prompt: 'Pelaksanaan kegiatan imunisasi Bulan Imunisasi Anak Sekolah (BIAS) bekerja sama dengan Puskesmas setempat.' },
 ];
 
 export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, onGenerate }) {
@@ -28,7 +28,9 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
       <div style={{ position: 'absolute', bottom: '-30px', left: '-30px', width: '100px', height: '100px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0) 70%)', pointerEvents: 'none' }} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-        <span style={{ fontSize: '1.8rem', animation: 'float 3s ease-in-out infinite' }}>🪄</span>
+        <span style={{ display: 'flex', alignItems: 'center', color: '#60a5fa' }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+        </span>
         <div>
           <h3 style={{ margin: 0, border: 'none', padding: 0, fontSize: '1.25rem', fontWeight: 800, color: '#f8fafc', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '8px' }}>
             Asisten Draf Berita AI <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#3b82f6', background: 'rgba(59, 130, 246, 0.15)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>BETA</span>
@@ -84,7 +86,10 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
               Merumuskan Draf AI...
             </>
           ) : (
-            <><span>✨</span> Buat Draf dengan AI</>
+            <>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+              Buat Draf dengan AI
+            </>
           )}
         </button>
       </div>

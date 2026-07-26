@@ -40,7 +40,9 @@ export default function StudentsTab() {
               {/* Premium Stat Cards */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
                 <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#dcfce7', color: '#15803d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👥</div>
+                  <div style={{ backgroundColor: '#dcfce7', color: '#15803d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Total Siswa Aktif</h4>
                     <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.status === 'Aktif').length} Siswa</p>
@@ -48,7 +50,9 @@ export default function StudentsTab() {
                 </div>
 
                 <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#e0f2fe', color: '#0369a1', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👦</div>
+                  <div style={{ backgroundColor: '#e0f2fe', color: '#0369a1', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Laki-laki (Aktif)</h4>
                     <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Laki-laki' && s.status === 'Aktif').length} Siswa</p>
@@ -56,7 +60,9 @@ export default function StudentsTab() {
                 </div>
 
                 <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#fce7f3', color: '#be185d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>👧</div>
+                  <div style={{ backgroundColor: '#fce7f3', color: '#be185d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Perempuan (Aktif)</h4>
                     <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Perempuan' && s.status === 'Aktif').length} Siswa</p>
@@ -64,7 +70,9 @@ export default function StudentsTab() {
                 </div>
 
                 <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#f1f5f9', color: '#475569', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem' }}>🏫</div>
+                  <div style={{ backgroundColor: '#f1f5f9', color: '#475569', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Sebaran Kelas</h4>
                     <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px', fontSize: '0.7rem', fontWeight: 700 }}>
@@ -78,11 +86,13 @@ export default function StudentsTab() {
                 </div>
               </div>
 
-              {/* Toolbar */}
-              <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ margin: 0 }}>Daftar Database Siswa SDN Bobong</h3>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>Kelola basis data lengkap seluruh siswa terdaftar, riwayat perpindahan, dan status akademik.</p>
+              {/* Title & Add Button Row */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#0f172a' }}>Data Induk Siswa Sekolah</h3>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    Kelola biodata, NISN/NIS, domisili, data orang tua, dan nilai akademik siswa secara mandiri.
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -104,7 +114,8 @@ export default function StudentsTab() {
                   className="btn btn-primary"
                   style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  ➕ Tambah Siswa Baru
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Tambah Siswa Baru
                 </button>
               </div>
 
@@ -121,7 +132,9 @@ export default function StudentsTab() {
                     className="form-control"
                     style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
                   />
-                  <span style={{ position: 'absolute', left: '1rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+                  <span style={{ position: 'absolute', left: '1rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </span>
                 </div>
 
                 {/* Filters Row */}
@@ -258,12 +271,24 @@ export default function StudentsTab() {
                             </span>
                           </td>
                           <td style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.4' }}>
-                            <div>📍 {stud.birth_place || '-'}, {stud.birth_date || '-'}</div>
-                            <div style={{ color: '#64748b', fontStyle: 'italic', marginTop: '2px' }}>🏠 {stud.address || '-'}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                              {stud.birth_place || '-'}, {stud.birth_date || '-'}
+                            </div>
+                            <div style={{ color: '#64748b', fontStyle: 'italic', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                              {stud.address || '-'}
+                            </div>
                           </td>
                           <td style={{ fontSize: '0.8rem', color: '#475569', lineHeight: '1.4' }}>
-                            <div style={{ fontWeight: 600 }}>👨‍👦 {stud.parent_name || '-'}</div>
-                            <div style={{ color: 'var(--primary)', fontWeight: 600, marginTop: '2px' }}>📞 {stud.parent_phone || '-'}</div>
+                            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                              {stud.parent_name || '-'}
+                            </div>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                              {stud.parent_phone || '-'}
+                            </div>
                           </td>
                           <td style={{ textAlign: 'center' }}>
                             <span className="badge" style={{ 
@@ -320,17 +345,19 @@ export default function StudentsTab() {
                                   setStudentModalOpen(true);
                                 }}
                                 className="btn btn-secondary"
-                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', backgroundColor: '#e2e8f0', color: '#1e293b', border: '1px solid #cbd5e1', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                               >
-                                ✏️ Edit
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteStudent(stud.id)}
                                 className="btn-action-delete"
-                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                               >
-                                🗑️ Hapus
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Hapus
                               </button>
                             </div>
                           </td>

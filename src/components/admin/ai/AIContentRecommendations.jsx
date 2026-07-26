@@ -58,7 +58,7 @@ export default function AIContentRecommendations() {
       marginBottom: '1.25rem'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-        <span style={{ fontSize: '1.1rem' }}>💡</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
         <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: 'var(--primary)' }}>
           Rekomendasi Konten AI
         </h4>
@@ -74,7 +74,9 @@ export default function AIContentRecommendations() {
             background: 'rgba(255,255,255,0.5)',
             border: '1px solid rgba(0,0,0,0.04)'
           }}>
-            <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>{rec.icon || '📌'}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', marginTop: '2px' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
             <div>
               <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-main)' }}>{rec.title}</div>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>{rec.description}</div>

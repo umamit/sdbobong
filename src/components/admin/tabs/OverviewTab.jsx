@@ -139,8 +139,10 @@ export default function OverviewTab() {
                 </div>
               </div>
               <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', borderColor: '#e2e8f0' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>💻</div>
-                <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontWeight: 800 }}>Status Server & Database</h4>
+                <div style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <h4 style={{ margin: '0 0 0.5rem 0', color: '#0f172a', fontWeight: 800 }}>Status Server &amp; Database</h4>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>Koneksi database sinkronisasi saat ini:</p>
                 <span className="badge" style={{
                   backgroundColor: dbStatus === 'active' ? '#d1fae5' : dbStatus === 'disabled' ? '#fee2e2' : '#fef3c7',
@@ -186,7 +188,10 @@ export default function OverviewTab() {
             <div className="grid-2" style={{ marginTop: '1.5rem' }}>
               {/* CHANGE PASSWORD FORM CARD */}
               <div className="settings-card">
-                <h3>🔐 Ganti Password Admin</h3>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Ganti Password Admin
+                </h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
                   Perbarui kata sandi untuk akun administrator Anda secara aman. Sesi Anda akan tetap aktif setelah perubahan selesai.
                 </p>
@@ -235,10 +240,11 @@ export default function OverviewTab() {
                   <button 
                     type="submit" 
                     className="btn btn-primary" 
-                    style={{ padding: '0.6rem 1rem', marginTop: '0.5rem', alignSelf: 'flex-start' }}
+                    style={{ padding: '0.6rem 1rem', marginTop: '0.5rem', alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                     disabled={isChangingPassword}
                   >
-                    {isChangingPassword ? 'Memproses...' : '🔐 Perbarui Password'}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    {isChangingPassword ? 'Memproses...' : 'Perbarui Password'}
                   </button>
                 </form>
               </div>
@@ -246,13 +252,17 @@ export default function OverviewTab() {
               {/* BACKUP & RESTORE CONFIG CARD */}
               <div className="settings-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <h3>💾 Cadangan & Pemulihan Konfigurasi</h3>
+                  <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Cadangan &amp; Pemulihan Konfigurasi
+                  </h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
                     Ekspor seluruh pengaturan konten teks, gambar, pengumuman berjalan, dan statistik sekolah ke berkas JSON cadangan lokal. Anda dapat memulihkannya kapan saja untuk mengembalikan data ke kondisi yang dicadangkan.
                   </p>
 
-                  <div style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.8rem', color: '#1e3a8a', marginBottom: '1.25rem', fontWeight: 500 }}>
-                    💡 <strong>Tips:</strong> Disarankan melakukan pencadangan (export) sebelum Anda melakukan perubahan teks berskala besar di halaman website!
+                  <div style={{ backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '0.75rem 1rem', fontSize: '0.8rem', color: '#1e3a8a', marginBottom: '1.25rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <strong>Tips:</strong> Disarankan melakukan pencadangan (export) sebelum Anda melakukan perubahan teks berskala besar di halaman website!
                   </div>
                 </div>
 
@@ -265,7 +275,8 @@ export default function OverviewTab() {
                       className="btn btn-secondary"
                       style={{ padding: '0.6rem 1.2rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                     >
-                      📥 Ekspor Cadangan (.json)
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Ekspor Cadangan (.json)
                     </button>
                   </div>
 
@@ -285,7 +296,8 @@ export default function OverviewTab() {
                         className="btn btn-danger"
                         style={{ padding: '0.6rem 1.2rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', backgroundColor: '#ef4444' }}
                       >
-                        📤 Unggah & Pulihkan Cadangan
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Unggah &amp; Pulihkan Cadangan
                       </button>
                     </div>
                   </div>

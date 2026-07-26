@@ -131,26 +131,29 @@ export default function PpdbTab() {
                         boxShadow: '0 4px 12px rgba(239,68,68,0.3)'
                       }}
                     >
-                      {analyzingAnomaly ? '⏳ Menganalisis...' : '🧠 Analisis Anomali AI'}
+                      {analyzingAnomaly ? 'Menganalisis...' : 'Analisis Anomali AI'}
                     </button>
                     <button 
                       type="button"
                       onClick={() => window.print()} 
                       className="btn btn-secondary" 
-                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
                     >
-                      🖸️ Cetak Laporan (PDF)
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                      Cetak Laporan (PDF)
                     </button>
-                    <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                      📥 Ekspor Data ke Excel/CSV
+                    <a href="/api/ppdb?export=true" className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Ekspor Data ke Excel/CSV
                     </a>
                   {records.length > 0 && (
                     <button 
                       onClick={handleDeleteAllPPDB} 
                       className="btn btn-danger" 
-                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}
                     >
-                      🗑️ Hapus Semua Data
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                      Hapus Semua Data
                     </button>
                   )}
                 </div>
@@ -169,7 +172,13 @@ export default function PpdbTab() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '1.2rem' }}>{anomalyResult.total_flagged > 0 ? '🚨' : '✅'}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', color: anomalyResult.total_flagged > 0 ? '#dc2626' : '#059669' }}>
+                        {anomalyResult.total_flagged > 0 ? (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        ) : (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        )}
+                      </div>
                       <strong style={{ fontSize: '0.95rem', color: anomalyResult.total_flagged > 0 ? '#dc2626' : '#059669' }}>
                         {anomalyResult.total_flagged > 0
                           ? `${anomalyResult.total_flagged} dari ${anomalyResult.total_checked} pendaftar terindikasi anomali`
@@ -184,8 +193,9 @@ export default function PpdbTab() {
                   </div>
 
                   {anomalyResult.ai_summary?.length > 0 && (
-                    <div style={{ padding: '10px 14px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: '8px', marginBottom: '12px', fontSize: '0.85rem', color: '#4f46e5', lineHeight: 1.5 }}>
-                      🧠 <strong>Ringkasan AI:</strong> {anomalyResult.ai_summary[0]}
+                    <div style={{ padding: '10px 14px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)', borderRadius: '8px', marginBottom: '12px', fontSize: '0.85rem', color: '#4f46e5', lineHeight: 1.5, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                      <div><strong>Ringkasan AI:</strong> {anomalyResult.ai_summary[0]}</div>
                     </div>
                   )}
 
@@ -237,7 +247,9 @@ export default function PpdbTab() {
                     className="form-control"
                     style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
                   />
-                  <span style={{ position: 'absolute', left: '1rem', bottom: '0.7rem', color: 'var(--text-muted)', fontSize: '1.1rem' }}>🔍</span>
+                  <span style={{ position: 'absolute', left: '1rem', bottom: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </span>
                 </div>
                 
                 <div style={{ minWidth: '150px' }}>
@@ -336,7 +348,10 @@ export default function PpdbTab() {
                             </td>
                             <td>
                               <span>Ibu: {r.nama_ibu_kandung || r.nama_ibu}</span><br />
-                              <span style={{ fontSize: '0.75rem', color: 'var(--primary)' }}>📞 {r.nomor_hp_orangtua || r.no_hp}</span>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--primary)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                {r.nomor_hp_orangtua || r.no_hp}
+                              </span>
                             </td>
                             <td>
                               <span>{r.tempat_lahir}, {r.tanggal_lahir}</span><br />
@@ -371,10 +386,11 @@ export default function PpdbTab() {
                                   type="button"
                                   onClick={() => { setSelectedRecord(r); setIsDetailModalOpen(true); }}
                                   className="btn btn-secondary"
-                                  style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
+                                  style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#f1f5f9', color: '#1e293b', border: '1px solid #cbd5e1' }}
                                   title="Lihat Detail & Cetak Bukti"
                                 >
-                                  👁️ Detail
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                  Detail
                                 </button>
                                 <button
                                   type="button"
@@ -396,7 +412,8 @@ export default function PpdbTab() {
                                   }}
                                   title="Kirim Notifikasi Status PPDB lewat WhatsApp"
                                 >
-                                  💬 WA
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                  WA
                                 </button>
                                 <button onClick={() => handlePPDBDelete(r.id)} type="button" className="btn-action-delete" style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0 }}>Hapus</button>
                               </div>
@@ -468,7 +485,8 @@ export default function PpdbTab() {
               <div className="no-print" style={{ marginTop: '2.5rem', backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
                 <div style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '1.25rem 1.75rem' }}>
                   <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    ⚙️ Setelan WhatsApp Gateway (Notifikasi Otomatis PPDB)
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Setelan WhatsApp Gateway (Notifikasi Otomatis PPDB)
                   </h3>
                   <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>
                     Mengirim pesan WhatsApp secara otomatis ke nomor HP orang tua ketika status pendaftaran calon siswa diubah.
@@ -488,8 +506,8 @@ export default function PpdbTab() {
                         className="form-control"
                         style={{ width: '100%', boxSizing: 'border-box' }}
                       >
-                        <option value="false">🔴 Nonaktif (Pesan Tidak Terkirim)</option>
-                        <option value="true">🟢 Aktif (Kirim Otomatis)</option>
+                        <option value="false">Nonaktif (Pesan Tidak Terkirim)</option>
+                        <option value="true">Aktif (Kirim Otomatis)</option>
                       </select>
                     </div>
 
@@ -544,9 +562,12 @@ export default function PpdbTab() {
                   </div>
 
                   <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '1.25rem' }}>
-                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, color: '#334155' }}>💬 Draf Template Pesan Notifikasi</h4>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                      Draf Template Pesan Notifikasi
+                    </h4>
                     <p style={{ margin: '0 0 1rem 0', fontSize: '0.75rem', color: '#64748b', backgroundColor: '#f8fafc', padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-                      💡 <strong>Petunjuk Tag Dinamis:</strong> Gunakan tag berikut di dalam draf pesan agar diganti otomatis oleh sistem saat dikirim: <br />
+                      <strong>Petunjuk Tag Dinamis:</strong> Gunakan tag berikut di dalam draf pesan agar diganti otomatis oleh sistem saat dikirim: <br />
                       <code>[NAMA_SISWA]</code> : Nama lengkap calon siswa, &nbsp;
                       <code>[NAMA_ORANGTUA]</code> : Nama ibu/ayah orang tua, &nbsp;
                       <code>[JALUR]</code> : Jalur PPDB terpilih (misal: Zonasi)
@@ -588,9 +609,10 @@ export default function PpdbTab() {
                     <button
                       type="submit"
                       className="btn btn-primary"
-                      style={{ padding: '0.65rem 2rem', fontWeight: 700, borderRadius: '8px' }}
+                      style={{ padding: '0.65rem 2rem', fontWeight: 700, borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                     >
-                      💾 Simpan Setelan WhatsApp Gateway
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                      Simpan Setelan WhatsApp Gateway
                     </button>
                   </div>
 

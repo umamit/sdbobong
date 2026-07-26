@@ -142,12 +142,14 @@ export default function NewsTab() {
                 <label htmlFor="news_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1.5MB per berkas):</label>
                 <input type="file" id="news_photo" name="photos" multiple className="form-control" accept="image/png, image/jpeg, image/jpg" onChange={handleNewsPhotosChange} style={{ width: '100%' }} />
                 {editingNews ? (
-                  <p style={{ fontSize: '0.75rem', color: '#0284c7', marginTop: '6px', marginBottom: '10px', fontWeight: 500 }}>
-                    ℹ️ <strong>Foto Saat Ini:</strong> Berita ini sudah memiliki {editingNews.images ? editingNews.images.length : 1} foto. Mengunggah foto baru di atas akan menggantikan galeri foto saat ini.
+                  <p style={{ fontSize: '0.75rem', color: '#0284c7', marginTop: '6px', marginBottom: '10px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span><strong>Foto Saat Ini:</strong> Berita ini sudah memiliki {editingNews.images ? editingNews.images.length : 1} foto. Mengunggah foto baru di atas akan menggantikan galeri foto saat ini.</span>
                   </p>
                 ) : (
-                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px' }}>
-                    💡 <strong>Multi-Upload:</strong> Anda dapat memilih beberapa foto sekaligus untuk membuat galeri dokumentasi dalam satu postingan berita!
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                    <span><strong>Multi-Upload:</strong> Anda dapat memilih beberapa foto sekaligus untuk membuat galeri dokumentasi dalam satu postingan berita!</span>
                   </p>
                 )}
 
@@ -155,7 +157,8 @@ export default function NewsTab() {
                 {newsPhotoPreviews.length > 0 && (
                   <div style={{ marginTop: '12px', padding: '12px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)' }}>
                     <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      📸 Foto terpilih ({newsPhotoPreviews.length}):
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                      Foto terpilih ({newsPhotoPreviews.length}):
                     </p>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))', gap: '8px' }}>
                       {newsPhotoPreviews.map((previewUrl, index) => (
@@ -168,7 +171,7 @@ export default function NewsTab() {
                             onMouseEnter={(e) => { e.target.style.background = '#ef4444'; e.target.style.transform = 'scale(1.1)'; }}
                             onMouseLeave={(e) => { e.target.style.background = 'rgba(239, 68, 68, 0.9)'; e.target.style.transform = 'none'; }}
                             title="Hapus foto ini"
-                          >✕</button>
+                          >&times;</button>
                         </div>
                       ))}
                     </div>
@@ -184,10 +187,20 @@ export default function NewsTab() {
 
             <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-xs)' }}>
               {editingNews && (
-                <button type="button" onClick={handleNewsCancelEdit} className="btn" style={{ flex: 1, padding: '0.65rem', backgroundColor: '#64748b', color: '#ffffff', fontWeight: 600, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}>✕ Batal Edit</button>
+                <button type="button" onClick={handleNewsCancelEdit} className="btn" style={{ flex: 1, padding: '0.65rem', backgroundColor: '#64748b', color: '#ffffff', fontWeight: 600, border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}>Batal Edit</button>
               )}
-              <button type="submit" className="btn btn-primary" style={{ flex: editingNews ? 2 : 1, padding: '0.65rem' }}>
-                {editingNews ? '💾 Simpan Perubahan' : '📢 Terbitkan Berita'}
+              <button type="submit" className="btn btn-primary" style={{ flex: editingNews ? 2 : 1, padding: '0.65rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                {editingNews ? (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Simpan Perubahan
+                  </>
+                ) : (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    Terbitkan Berita
+                  </>
+                )}
               </button>
             </div>
           </form>
@@ -210,8 +223,9 @@ export default function NewsTab() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{n.date} • {n.category}</span>
                         {n.images && n.images.length > 1 && (
-                          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#0284c7', background: 'rgba(14, 165, 233, 0.1)', border: '1px solid rgba(14, 165, 233, 0.2)', padding: '1px 6px', borderRadius: '4px', lineHeight: '1.2' }}>
-                            📸 {n.images.length} Foto
+                          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#0284c7', background: 'rgba(14, 165, 233, 0.1)', border: '1px solid rgba(14, 165, 233, 0.2)', padding: '1px 6px', borderRadius: '4px', lineHeight: '1.2', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            {n.images.length} Foto
                           </span>
                         )}
                       </div>

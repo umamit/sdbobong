@@ -70,10 +70,10 @@ export default function MessagesTab() {
     const s = sentiments[msgId];
     if (!s) return null;
     const colors = {
-      positif: { bg: '#d1fae5', text: '#065f46', icon: '😊' },
-      negatif: { bg: '#fee2e2', text: '#991b1b', icon: '😟' },
-      urgent: { bg: '#fef3c7', text: '#92400e', icon: '🔴' },
-      netral: { bg: '#e2e8f0', text: '#475569', icon: '😐' },
+      positif: { bg: '#d1fae5', text: '#065f46' },
+      negatif: { bg: '#fee2e2', text: '#991b1b' },
+      urgent: { bg: '#fef3c7', text: '#92400e' },
+      netral: { bg: '#e2e8f0', text: '#475569' },
     };
     const c = colors[s.sentiment] || colors.netral;
     return (
@@ -89,7 +89,7 @@ export default function MessagesTab() {
         color: c.text,
         marginLeft: '6px'
       }}>
-        {c.icon} {s.sentiment}
+        {s.sentiment}
       </span>
     );
   };
@@ -123,11 +123,8 @@ export default function MessagesTab() {
                     transition: 'all 0.2s'
                   }}
                 >
-                  {analyzing ? (
-                    <>⏳ Menganalisis...</>
-                  ) : (
-                    <>🤖 Analisis Sentimen AI</>
-                  )}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                  {analyzing ? 'Menganalisis...' : 'Analisis Sentimen AI'}
                 </button>
               </div>
 
@@ -146,7 +143,8 @@ export default function MessagesTab() {
                   }}>
                     <div style={{ padding: '16px 22px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <h3 style={{ margin: 0, border: 'none', padding: 0, color: '#f8fafc', fontSize: '1.05rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        🧠 Draf Balasan AI
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                        Draf Balasan AI
                         {replyModal.msg.name && <span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#94a3b8' }}>untuk {replyModal.msg.name}</span>}
                       </h3>
                       <button type="button" onClick={() => setReplyModal(null)}
@@ -155,36 +153,30 @@ export default function MessagesTab() {
                     <div style={{ padding: '20px 22px' }}>
                       {replyModal.loading ? (
                         <div style={{ textAlign: 'center', padding: '30px 0', color: '#94a3b8', fontSize: '0.9rem' }}>
-                          ⏳ Merumuskan draf balasan...
+                          Merumuskan draf balasan...
                         </div>
                       ) : (
                         <>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '6px' }}>Pesan Asli</label>
-                          <div style={{ padding: '10px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', fontSize: '0.85rem', color: '#cbd5e1', marginBottom: '14px', maxHeight: '80px', overflowY: 'auto' }}>
-                            {replyModal.msg.message}
+                          <div style={{
+                            background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(255,255,255,0.08)',
+                            borderRadius: '10px', padding: '14px 16px', color: '#e2e8f0',
+                            fontSize: '0.88rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: '250px', overflowY: 'auto'
+                          }}>
+                            {replyModal.draft}
                           </div>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '6px' }}>Draf Balasan</label>
-                          <textarea
-                            readOnly
-                            value={replyModal.draft}
-                            style={{
-                              width: '100%', minHeight: '180px', padding: '12px 14px',
-                              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
-                              borderRadius: '8px', color: '#e2e8f0', fontSize: '0.87rem',
-                              lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box'
-                            }}
-                          />
-                          <div style={{ display: 'flex', gap: '10px', marginTop: '14px', justifyContent: 'flex-end' }}>
+                          <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                             <button
                               type="button"
                               onClick={() => { navigator.clipboard.writeText(replyModal.draft); }}
                               style={{
                                 background: 'rgba(255,255,255,0.06)', color: '#cbd5e1',
                                 border: '1px solid rgba(255,255,255,0.12)', borderRadius: '8px',
-                                padding: '8px 16px', fontSize: '0.82rem', cursor: 'pointer', fontWeight: 600
+                                padding: '8px 16px', fontSize: '0.82rem', cursor: 'pointer', fontWeight: 600,
+                                display: 'inline-flex', alignItems: 'center', gap: '5px'
                               }}
                             >
-                              📋 Salin Teks
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                              Salin Teks
                             </button>
                             {(replyModal.msg.no_hp || replyModal.msg.no_hp_ayah || replyModal.msg.no_hp_ibu) && (
                               <a
@@ -197,7 +189,8 @@ export default function MessagesTab() {
                                   textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '5px'
                                 }}
                               >
-                                📲 Kirim via WhatsApp
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                Kirim via WhatsApp
                               </a>
                             )}
                           </div>
@@ -221,7 +214,9 @@ export default function MessagesTab() {
                     className="form-control"
                     style={{ width: '100%', paddingLeft: '2.5rem', boxSizing: 'border-box' }}
                   />
-                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', fontSize: '1rem' }}>🔍</span>
+                  <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </span>
                 </div>
 
                 {/* Filter Type Selector */}
@@ -234,9 +229,9 @@ export default function MessagesTab() {
                     className="form-control"
                     style={{ padding: '0.5rem', borderRadius: '8px', minWidth: '130px' }}
                   >
-                    <option value="all">📁 Semua</option>
-                    <option value="guestbook">💬 Buku Tamu</option>
-                    <option value="feedback">🔒 Kotak Saran</option>
+                    <option value="all">Semua Tipe</option>
+                    <option value="guestbook">Buku Tamu</option>
+                    <option value="feedback">Kotak Saran</option>
                   </select>
                 </div>
 
@@ -250,10 +245,10 @@ export default function MessagesTab() {
                     className="form-control"
                     style={{ padding: '0.5rem', borderRadius: '8px', minWidth: '130px' }}
                   >
-                    <option value="all">📂 Semua</option>
-                    <option value="pending">⏳ Menunggu</option>
-                    <option value="approved">✅ Disetujui</option>
-                    <option value="rejected">❌ Ditolak</option>
+                    <option value="all">Semua Status</option>
+                    <option value="pending">Menunggu</option>
+                    <option value="approved">Disetujui</option>
+                    <option value="rejected">Ditolak</option>
                   </select>
                 </div>
 
@@ -283,7 +278,7 @@ export default function MessagesTab() {
                               {msg.name || '-'}
                               {getSentimentBadge(msg.id)}
                             </div>
-                            <div style={{ fontSize: '0.75rem', fontWeight: 500, color: '#64748b', marginTop: '2px' }}>👤 {msg.role || '-'}</div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 500, color: '#64748b', marginTop: '2px' }}>{msg.role || '-'}</div>
                           </td>
                           <td style={{ textAlign: 'center' }}>
                             <span className="badge" style={{ 
@@ -296,7 +291,7 @@ export default function MessagesTab() {
                               color: msg.type === 'feedback' ? '#991b1b' : '#166534',
                               border: msg.type === 'feedback' ? '1px solid #fecaca' : '1px solid #bbf7d0'
                             }}>
-                              {msg.type === 'feedback' ? '🔒 PRIVATE' : '💬 PUBLIC'}
+                              {msg.type === 'feedback' ? 'PRIVATE' : 'PUBLIC'}
                             </span>
                           </td>
                           <td style={{ fontSize: '0.85rem', color: '#1e293b', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>
@@ -319,7 +314,7 @@ export default function MessagesTab() {
                                 color: msg.status === 'approved' ? '#15803d' : msg.status === 'rejected' ? '#b91c1c' : '#a16207',
                                 border: msg.status === 'approved' ? '1px solid #bbf7d0' : msg.status === 'rejected' ? '1px solid #fecaca' : '1px solid #fef08a'
                               }}>
-                                {msg.status === 'approved' ? '✅ Disetujui' : msg.status === 'rejected' ? '❌ Ditolak' : '⏳ Menunggu'}
+                                {msg.status === 'approved' ? 'Disetujui' : msg.status === 'rejected' ? 'Ditolak' : 'Menunggu'}
                               </span>
                             )}
                           </td>
@@ -332,18 +327,20 @@ export default function MessagesTab() {
                                     onClick={() => handleModerateMessage(msg.id, 'approved')}
                                     disabled={msg.status === 'approved'}
                                     className="btn btn-primary"
-                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', opacity: msg.status === 'approved' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}
+                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', opacity: msg.status === 'approved' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
                                   >
-                                    👍 Setujui
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Setujui
                                   </button>
                                   <button
                                     type="button"
                                     onClick={() => handleModerateMessage(msg.id, 'rejected')}
                                     disabled={msg.status === 'rejected'}
                                     className="btn-action-delete"
-                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', backgroundColor: '#fef3c7', color: '#b45309', border: '1px solid #fde68a', opacity: msg.status === 'rejected' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', margin: 0 }}
+                                    style={{ flex: 1, padding: '0.3rem 0.5rem', fontSize: '0.75rem', backgroundColor: '#fef3c7', color: '#b45309', border: '1px solid #fde68a', opacity: msg.status === 'rejected' ? 0.5 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', margin: 0 }}
                                   >
-                                    👎 Tolak
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Tolak
                                   </button>
                                 </div>
                               )}
@@ -354,18 +351,21 @@ export default function MessagesTab() {
                                   padding: '0.3rem 0.5rem', fontSize: '0.75rem', margin: 0,
                                   width: '100%', background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
                                   color: '#fff', border: 'none', borderRadius: '6px',
-                                  cursor: 'pointer', fontWeight: 700, marginBottom: '4px'
+                                  cursor: 'pointer', fontWeight: 700, marginBottom: '4px',
+                                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '4px'
                                 }}
                               >
-                                🧠 Draf Balasan AI
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                                Draf Balasan AI
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteMessage(msg.id)}
                                 className="btn-action-delete"
-                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0, width: '100%', alignSelf: 'center' }}
+                                style={{ padding: '0.35rem 0.7rem', fontSize: '0.75rem', margin: 0, width: '100%', alignSelf: 'center', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
                               >
-                                🗑️ Hapus Permanen
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Hapus Permanen
                               </button>
                             </div>
                           </td>

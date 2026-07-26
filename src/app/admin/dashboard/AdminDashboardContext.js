@@ -372,7 +372,7 @@ export function AdminDashboardProvider({
               return [newRecord, ...prev];
             });
 
-            showToast('success', `🔔 Pendaftar baru terdeteksi: ${newRecord.nama_lengkap}!`);
+            showToast('success', `Pendaftar baru terdeteksi: ${newRecord.nama_lengkap}!`);
           }
         }
       )
@@ -392,7 +392,7 @@ export function AdminDashboardProvider({
               if (exists) return prev;
               return [newMsg, ...prev];
             });
-            showToast('success', `✉️ Pesan baru di Buku Tamu dari: ${newMsg.nama}!`);
+            showToast('success', `Pesan baru di Buku Tamu dari: ${newMsg.nama}!`);
           }
         }
       )
