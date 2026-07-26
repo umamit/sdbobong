@@ -216,6 +216,14 @@ For security-related changes, recommend verifying headers (e.g., via `curl`) to 
 
 ---
 
+# 14. Standard Ikonografi UI (Penggunaan Vector SVG Icon)
+
+- Selalu gunakan ikon vektor SVG (inline SVG) sebagai elemen visual UI, label, dan tombol di seluruh antarmuka aplikasi.
+- **Dilarang keras** menggunakan emoji teks Unicode (seperti ✏️, ➕, 🗑️, 💾, 💡, 🚀, 🎓, dll.) pada komponen UI (halaman publik, dashboard admin, dashboard guru, modal, formulir, dan tabel data).
+- Selalu gunakan ikon vektor SVG yang bersih, fleksibel, dan responsif (menggunakan properti `viewBox="0 0 24 24" fill="none" stroke="currentColor"` atau helper komponen icon) tanpa menambah dependency npm baru sesuai Rule 5.
+
+---
+
 # Golden Rule
 
 
