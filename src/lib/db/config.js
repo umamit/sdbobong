@@ -100,7 +100,8 @@ export async function loadWebConfig() {
           force_local_cache: data.force_local_cache === true,
           downloads: data.downloads || data.stats?._downloads_fallback || localConfig.downloads || [],
           faqs: data.faqs || data.stats?._faqs_fallback || localConfig.faqs || [],
-          gallery: data.gallery || data.stats?._gallery_fallback || localConfig.gallery || []
+          gallery: data.gallery || data.stats?._gallery_fallback || localConfig.gallery || [],
+          popup_announcement: data.popup_announcement || localConfig.popup_announcement || null
         };
         const safeDbConfig = mergeWithDefaults(dbConfig);
         setCachedConfig(safeDbConfig);

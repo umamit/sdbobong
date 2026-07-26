@@ -116,6 +116,7 @@ export const DEFAULT_CONFIG = {
   downloads: [],
   faqs: [],
   gallery: [],
+  popup_announcement: null,
   force_local_cache: false,
 
   // Security (diisi oleh admin, bukan publik)
