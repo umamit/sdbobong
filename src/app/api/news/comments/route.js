@@ -47,7 +47,7 @@ export async function GET(request) {
     }
   } catch (error) {
     console.error('[comments GET]', error);
-    return NextResponse.json({ error: 'Gagal memuat komentar' }, { status: 500 });
+    return NextResponse.json({ comments: [] }, { status: 200 });
   }
 }
 

@@ -19,7 +19,7 @@ export async function GET(request) {
     });
   } catch (error) {
     console.error('[reactions GET]', error);
-    return NextResponse.json({ error: 'Gagal memuat reaksi' }, { status: 500 });
+    return NextResponse.json({ reactions: [] }, { status: 200 });
   }
 }
 
