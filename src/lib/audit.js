@@ -31,13 +31,12 @@ export async function loadAuditLogs() {
   if (!isSupabaseEnabled()) return localLogs;
 
   try {
-    const { data: dbLogs, error } = await supabase
-      .from("audit_logs_sdn_bobong")
-      .select("*")
-      .order("timestamp", { ascending: false })
-      .limit(500); // Safety cap
+    const dbLogs = await prisma.auditLog.findMany({
+      orderBy: { timestamp: 'desc' },
+      take: 500
+    });
     
-    if (!error && dbLogs) {
+    if (dbLogs) {
       const mappedLogs = dbLogs.map(l => ({
         id: l.id,
         timestamp: l.timestamp,
@@ -56,7 +55,7 @@ export async function loadAuditLogs() {
       return mappedLogs;
     }
   } catch (e) {
-    console.error("Supabase loadAuditLogs failed, falling back to local:", e.message || e);
+    console.error("Prisma loadAuditLogs failed, falling back to local:", e.message || e);
   }
 
   return localLogs;
