@@ -182,19 +182,51 @@ export const speakText = (text, index, setActiveSpeakingIndex) => {
   });
 };
 
-// Send Chat Message helper to API
-export async function sendChatMessage(messagesHistory, userMessage) {
+// Send Chat Message helper to API — mendukung streaming dan membatasi history
+// @param {Array}    messagesHistory - Seluruh history percakapan
+// @param {Object}   userMessage     - Pesan terbaru dari pengguna
+// @param {Object}   options         - { onChunk(chunk, fullText) } callback untuk streaming
+export async function sendChatMessage(messagesHistory, userMessage, { onChunk } = {}) {
+  // Batasi history ke 10 pesan terakhir untuk efisiensi token
+  const HISTORY_LIMIT = 10;
+  const limitedHistory = messagesHistory.slice(-HISTORY_LIMIT);
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: [...messagesHistory, userMessage] }),
+      body: JSON.stringify({ messages: [...limitedHistory, userMessage] }),
       signal: controller.signal,
     });
+
+    if (!response.ok) return { ok: false, error: 'error' };
+
+    const contentType = response.headers.get('content-type') || '';
+
+    // Streaming mode: server mengembalikan text/plain
+    if (contentType.includes('text/plain') && response.body) {
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        fullText += chunk;
+        if (onChunk) onChunk(chunk, fullText);
+      }
+      return { ok: true, reply: fullText };
+    }
+
+    // Fallback mode: server mengembalikan application/json
     const data = await response.json();
-    return { ok: response.ok, reply: data.reply };
+    const reply = data.reply || '';
+    if (onChunk && reply) onChunk(reply, reply);
+    return { ok: true, reply };
+
   } catch (err) {
     const isTimeout = err.name === 'AbortError';
     return { ok: false, error: isTimeout ? 'timeout' : 'error' };
@@ -203,11 +235,16 @@ export async function sendChatMessage(messagesHistory, userMessage) {
   }
 }
 
-// QUICK_PROMPTS static list
+// QUICK_PROMPTS — 8 pertanyaan pintas yang paling sering ditanyakan
 export const QUICK_PROMPTS = [
   { label: 'Cara Daftar PPDB?', query: 'Bagaimana cara mendaftar PPDB online maupun offline di SDN Bobong?' },
   { label: 'Kontak Panitia?', query: 'Siapa kontak resmi panitia PPDB yang bisa dihubungi di WhatsApp?' },
   { label: 'Alamat Sekolah?', query: 'Di mana alamat lengkap dan lokasi peta SD Negeri Bobong?' },
-  { label: 'Biaya Pendaftaran?', query: 'Berapa biaya pendaftaran masuk ke sekolah SD Negeri Bobong?' }
+  { label: 'Biaya Pendaftaran?', query: 'Berapa biaya pendaftaran masuk ke sekolah SD Negeri Bobong?' },
+  { label: 'Jadwal Sekolah?', query: 'Bagaimana jadwal belajar harian dan sistem shift KBM di SDN Bobong?' },
+  { label: 'Prestasi Siswa?', query: 'Apa saja prestasi yang pernah diraih oleh siswa-siswi SD Negeri Bobong?' },
+  { label: 'Ekstrakurikuler?', query: 'Apa saja kegiatan ekstrakurikuler yang tersedia di SD Negeri Bobong?' },
+  { label: 'Profil Sekolah?', query: 'Bagaimana profil singkat SD Negeri Bobong, termasuk visi, misi, dan sejarahnya?' },
 ];
+
 

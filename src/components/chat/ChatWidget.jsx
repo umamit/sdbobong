@@ -18,9 +18,10 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: '✨ Halo! Saya **Aim AI**, Asisten Virtual resmi SD Negeri Bobong. 🏫\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami? 😊'
+      content: 'Halo! Saya **Aim AI**, Asisten Virtual resmi SD Negeri Bobong.\n\nAda yang bisa saya bantu hari ini mengenai pendaftaran siswa baru (PPDB), profil sekolah, alamat, atau informasi guru dan prestasi kami?'
     }
   ]);
+  const [streamingContent, setStreamingContent] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
@@ -90,22 +91,41 @@ export default function ChatWidget() {
     if (!messageText || isTyping) return;
 
     const userMessage = { role: 'user', content: messageText };
+    const historySnapshot = messages;
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
 
-    const result = await sendChatMessage(messages, userMessage);
-    if (result.ok && result.reply) {
-      setMessages(prev => [...prev, { role: 'assistant', content: result.reply }]);
-    } else {
+    // Tambahkan placeholder pesan asisten untuk streaming
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+    setStreamingContent('');
+
+    const result = await sendChatMessage(historySnapshot, userMessage, {
+      onChunk: (chunk, fullText) => {
+        setStreamingContent(fullText);
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: 'assistant', content: fullText };
+          return updated;
+        });
+      }
+    });
+
+    if (!result.ok) {
       const isTimeout = result.error === 'timeout';
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: isTimeout 
-          ? 'Asisten membutuhkan waktu terlalu lama untuk merespons. Silakan coba lagi dalam beberapa saat.'
-          : 'Maaf, terjadi kendala koneksi ke server asisten. Silakan periksa kembali koneksi internet Anda atau hubungi panitia PPDB langsung di WhatsApp.' 
-      }]);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: 'assistant',
+          content: isTimeout
+            ? 'Asisten membutuhkan waktu terlalu lama untuk merespons. Silakan coba lagi dalam beberapa saat.'
+            : 'Maaf, terjadi kendala koneksi ke server asisten. Silakan periksa kembali koneksi internet Anda atau hubungi panitia PPDB langsung di WhatsApp.'
+        };
+        return updated;
+      });
     }
+
+    setStreamingContent('');
     setIsTyping(false);
   };
 

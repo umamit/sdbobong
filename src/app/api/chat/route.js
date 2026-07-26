@@ -281,9 +281,16 @@ Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan
 === GAYA KOMUNIKASI ===
 - Sangat ramah, sopan, sabar, ceria, dan penuh rasa hormat.
 - Gunakan bahasa Indonesia yang baik, santun, dan mudah dipahami oleh orang tua maupun anak-anak.
-- Gunakan emoji yang relevan (seperti 🎒, 🏫, 📅, 👥, ✨) secara pas agar percakapan terasa hidup dan menyenangkan.
+- Jangan menggunakan emoji atau emotikon teks apapun dalam jawaban. Cukup teks biasa dan format markdown.
 - Sapa pengunjung dengan panggilan hangat seperti "Bapak/Ibu" untuk orang tua murid, atau "Adik/Teman-teman" jika mereka adalah calon siswa.
 - Selalu tawarkan bantuan tambahan di akhir jawabanmu dengan gaya bersahabat.
+
+=== FORMAT JAWABAN ===
+- Untuk pertanyaan sederhana: jawab langsung, singkat, maksimal 2-3 paragraf pendek.
+- Untuk pertanyaan kompleks (alur PPDB, jadwal, kurikulum): gunakan bullet point atau daftar bernomor agar mudah dibaca.
+- Gunakan **teks tebal** untuk nama, angka penting, istilah kunci, dan judul bagian.
+- Jangan membuat jawaban terlalu panjang jika tidak perlu.
+- Deteksi konteks penanya: jika terlihat seperti anak-anak atau siswa, gunakan bahasa yang lebih sederhana dan lebih santai.
 
 === PENGETAHUAN RESMI SEKOLAH (DINAMIS DARI DATABASE) ===
 1. Profil, Legalitas & Sejarah Resmi:
@@ -402,12 +409,7 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
 - Jika pengguna menanyakan hal di luar topik sekolah (politik praktis, hal-hal sensitif, teknologi tingkat lanjut yang tidak ada hubungannya, pemrograman rumit, dll.), arahkan kembali ke topik sekolah dengan sopan dan humoris/ramah. Contoh: "Wah, pertanyaan yang menarik! Tapi sebagai Aim AI, saya lebih jago menceritakan serunya belajar di SD Negeri Bobong atau info pendaftaran PPDB nih. Apakah Bapak/Ibu ingin tahu syarat pendaftaran PPDB kita?"
 `;
 
-    // 5. Kirim data ke API Groq menggunakan Fetch (Model Llama 3)
-    let reply = "";
-    let success = false;
-    const modelsToTry = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'];
-    let lastError = null;
-
+    // 5. Kirim ke Groq dengan streaming
     const formattedMessages = [
       { role: "system", content: systemInstruction },
       ...messages.map(m => ({
@@ -416,44 +418,63 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
       }))
     ];
 
-    for (const modelName of modelsToTry) {
-      try {
-        const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${groqApiKey}`
-          },
-          body: JSON.stringify({
-            model: modelName,
-            messages: formattedMessages,
-            temperature: 0.7,
-            max_tokens: 800
-          })
-        });
+    const primaryModel = 'llama-3.3-70b-versatile';
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${groqApiKey}`
+      },
+      body: JSON.stringify({
+        model: primaryModel,
+        messages: formattedMessages,
+        temperature: 0.7,
+        max_tokens: 800,
+        stream: true
+      })
+    });
 
-        if (!groqRes.ok) {
-          const errText = await groqRes.text();
-          throw new Error(`Groq API error (${groqRes.status}): ${errText}`);
-        }
+    if (!groqRes.ok) {
+      const errText = await groqRes.text();
+      throw new Error(`Groq API error (${groqRes.status}): ${errText}`);
+    }
 
-        const groqData = await groqRes.json();
-        reply = groqData.choices?.[0]?.message?.content || "";
-        if (reply) {
-          success = true;
-          break;
+    // Forward SSE dari Groq ke client sebagai plain text stream
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = groqRes.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop(); // simpan baris tidak lengkap di buffer
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed.startsWith('data:')) continue;
+              const data = trimmed.slice(5).trim();
+              if (data === '[DONE]') { controller.close(); return; }
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) controller.enqueue(encoder.encode(content));
+              } catch { /* skip malformed SSE line */ }
+            }
+          }
+        } catch (err) {
+          controller.error(err);
         }
-      } catch (err) {
-        console.warn(`⚠️ Model ${modelName} gagal:`, err.message || err);
-        lastError = err;
+        controller.close();
       }
-    }
+    });
 
-    if (!success) {
-      throw lastError || new Error("Semua model Groq gagal merespons.");
-    }
-
-    return NextResponse.json({ reply });
+    return new Response(stream, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    });
 
   } catch (error) {
     console.error("⚠️ Error calling Groq API in chat route. Falling back to local responder:", error.message || error);
