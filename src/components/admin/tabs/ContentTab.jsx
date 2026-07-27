@@ -108,14 +108,45 @@ export default function ContentTab() {
               <div className="settings-card">
                 <h3>Edit Pengumuman Berjalan (Marquee Banner)</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
-                  Teks pengumuman di bawah akan ditampilkan di bagian paling atas halaman website utama publik. Anda dapat memasukkan hingga 3 pengumuman sekaligus.
+                  Teks pengumuman di bawah akan ditampilkan di bagian paling atas halaman website utama publik. Anda dapat menambah, mengubah, atau menghapus pengumuman secara bebas.
                 </p>
 
                 <form onSubmit={handleAnnouncementsUpdate}>
                   <input type="hidden" name="action_type" value="announcements" />
-                  {config?.marquee_announcements && config?.marquee_announcements.map((ann, idx) => (
+                  {(config?.marquee_announcements && config?.marquee_announcements.length > 0
+                    ? config.marquee_announcements
+                    : ['']
+                  ).map((ann, idx) => (
                     <div key={idx} className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                      <label htmlFor={`announcement_${idx}`}>Pengumuman #{idx + 1}</label>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                        <label htmlFor={`announcement_${idx}`} style={{ fontWeight: 600 }}>Pengumuman #{idx + 1}</label>
+                        {(config?.marquee_announcements?.length > 1) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setConfig(prev => {
+                                const newAnn = (prev?.marquee_announcements || []).filter((_, i) => i !== idx);
+                                return { ...prev, marquee_announcements: newAnn.length > 0 ? newAnn : [''] };
+                              });
+                            }}
+                            style={{
+                              background: 'rgba(239, 68, 68, 0.1)',
+                              color: '#ef4444',
+                              border: '1px solid rgba(239, 68, 68, 0.2)',
+                              borderRadius: '4px',
+                              padding: '2px 8px',
+                              fontSize: '0.75rem',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Hapus Baris Ini
+                          </button>
+                        )}
+                      </div>
                       <input
                         type="text"
                         id={`announcement_${idx}`}
@@ -125,47 +156,39 @@ export default function ContentTab() {
                         onChange={(e) => {
                           const val = e.target.value;
                           setConfig(prev => {
-                            const newAnn = [...(prev?.marquee_announcements || [])];
+                            const newAnn = [...(prev?.marquee_announcements || [''])];
                             newAnn[idx] = val;
                             return { ...prev, marquee_announcements: newAnn };
                           });
                         }}
+                        placeholder="Ketik isi teks pengumuman di sini..."
                         style={{ width: '100%' }}
                         required
                       />
                     </div>
                   ))}
-                  {(!config?.marquee_announcements || config?.marquee_announcements.length === 0) && (
-                    [0, 1, 2].map((idx) => (
-                      <div key={idx} className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
-                        <label htmlFor={`announcement_${idx}`}>Pengumuman #{idx + 1}</label>
-                        <input
-                          type="text"
-                          id={`announcement_${idx}`}
-                          name="announcements[]"
-                          className="form-control"
-                          value={config?.marquee_announcements?.[idx] || ''}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            setConfig(prev => {
-                              const newAnn = [...(prev?.marquee_announcements || ['', '', ''])];
-                              newAnn[idx] = val;
-                              return { ...prev, marquee_announcements: newAnn };
-                            });
-                          }}
-                          style={{ width: '100%' }}
-                          required
-                        />
-                      </div>
-                    ))
-                  )}
 
+                  <div style={{ display: 'flex', gap: '10px', marginTop: 'var(--space-md)', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        setConfig(prev => ({
+                          ...prev,
+                          marquee_announcements: [...(prev?.marquee_announcements || []), '']
+                        }));
+                      }}
+                      style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                      Tambah Baris Pengumuman Baru
+                    </button>
 
-
-                  <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--space-xs)', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Simpan Pengumuman
-                  </button>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                      Simpan Pengumuman
+                    </button>
+                  </div>
                 </form>
               </div>
 
