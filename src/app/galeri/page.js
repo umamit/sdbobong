@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 export default async function GaleriPage() {
-  const config = await loadWebConfig();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Galeri:", err); return {}; })) || {};
   const initialGallery = config.gallery || [];
 
   return (

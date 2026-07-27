@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 export default async function Akademik() {
-  const config = await loadWebConfig();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Akademik:", err); return {}; })) || {};
 
   const defaultJadwalKBM = [
     { id: "kbm-1", kelas: "Kelas I, II, & III (Shift Pagi)", hari: "Senin - Kamis: 07.15 - 12.45 WIT\nJumat: 07.15 - 11.00 WIT\nSabtu: 07.15 - 12.45 WIT", keterangan: "Pembelajaran Pagi (Hari Jumat & Sabtu semua kelas masuk pagi)" },

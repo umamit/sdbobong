@@ -19,7 +19,7 @@ export default async function GuruDashboardPage() {
   }
 
   // 3. Load students list
-  const studentsList = await loadStudents();
+  const studentsList = (await loadStudents().catch(err => { console.error("Error loadStudents in GuruDashboard:", err); return []; })) || [];
 
   return (
     <GuruDashboardClient 

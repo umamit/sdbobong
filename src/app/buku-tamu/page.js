@@ -10,9 +10,9 @@ export const metadata = {
 };
 
 export default async function BukuTamuPage() {
-  const allMessages = await loadMessages();
+  const allMessages = (await loadMessages().catch(err => { console.error("Error loadMessages in BukuTamu:", err); return []; })) || [];
   // Filter only approved guestbook messages for public display
-  const approvedMessages = allMessages.filter(m => m.type === 'guestbook' && m.status === 'approved');
+  const approvedMessages = (allMessages || []).filter(m => m.type === 'guestbook' && m.status === 'approved');
 
   return (
     <>

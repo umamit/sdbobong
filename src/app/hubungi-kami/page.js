@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function HubungiKamiPage() {
-  const config = await loadWebConfig();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in HubungiKami:", err); return {}; })) || {};
   const initialFaqs = config.faqs || [];
 
   return (

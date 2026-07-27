@@ -92,8 +92,8 @@ export default async function PPDBPage() {
     });
   }
 
-  const config = await loadWebConfig();
-  const teachers = await loadTeachers();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in PPDB page:", err); return {}; })) || {};
+  const teachers = (await loadTeachers().catch(err => { console.error("Error loadTeachers in PPDB page:", err); return []; })) || [];
 
   return <PPDBPortal pendaftarList={pendaftarList} config={config} teachers={teachers} />;
 }

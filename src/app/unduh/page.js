@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function UnduhPage() {
-  const config = await loadWebConfig();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Unduh page:", err); return {}; })) || {};
   const initialDownloads = config.downloads || [];
 
   return (

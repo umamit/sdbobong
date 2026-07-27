@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function Kesiswaan() {
-  const config = await loadWebConfig();
+  const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Kesiswaan:", err); return {}; })) || {};
 
   const kesiswaan = config.stats?.page_contents?.kesiswaan || {
     banner_title: "Kesiswaan & Ekstrakurikuler",
