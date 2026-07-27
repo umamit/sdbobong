@@ -120,32 +120,30 @@ export default function ContentTab() {
                     <div key={idx} className="form-group" style={{ marginBottom: 'var(--space-sm)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                         <label htmlFor={`announcement_${idx}`} style={{ fontWeight: 600 }}>Pengumuman #{idx + 1}</label>
-                        {(config?.marquee_announcements?.length > 1) && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setConfig(prev => {
-                                const newAnn = (prev?.marquee_announcements || []).filter((_, i) => i !== idx);
-                                return { ...prev, marquee_announcements: newAnn.length > 0 ? newAnn : [''] };
-                              });
-                            }}
-                            style={{
-                              background: 'rgba(239, 68, 68, 0.1)',
-                              color: '#ef4444',
-                              border: '1px solid rgba(239, 68, 68, 0.2)',
-                              borderRadius: '4px',
-                              padding: '2px 8px',
-                              fontSize: '0.75rem',
-                              cursor: 'pointer',
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '4px'
-                            }}
-                          >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            Hapus Baris Ini
-                          </button>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setConfig(prev => {
+                              const newAnn = (prev?.marquee_announcements || []).filter((_, i) => i !== idx);
+                              return { ...prev, marquee_announcements: newAnn };
+                            });
+                          }}
+                          style={{
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            color: '#ef4444',
+                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                            borderRadius: '4px',
+                            padding: '2px 8px',
+                            fontSize: '0.75rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                          Hapus Baris Ini
+                        </button>
                       </div>
                       <input
                         type="text"
@@ -163,7 +161,6 @@ export default function ContentTab() {
                         }}
                         placeholder="Ketik isi teks pengumuman di sini..."
                         style={{ width: '100%' }}
-                        required
                       />
                     </div>
                   ))}
