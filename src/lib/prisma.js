@@ -5,9 +5,9 @@ import pg from 'pg';
 const globalForPrisma = globalThis;
 
 const pool = new pg.Pool({
-  connectionString: process.env.DIRECT_URL || process.env.DATABASE_URL,
-  max: 1,
-  idleTimeoutMillis: 10000,
+  connectionString: process.env.DATABASE_URL || process.env.DIRECT_URL,
+  max: 5,
+  idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
 });
 
