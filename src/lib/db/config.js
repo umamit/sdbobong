@@ -96,10 +96,15 @@ export async function loadWebConfig() {
     } catch (e) { console.error("Error loading local web config:", e); }
   }
 
-  if (isSupabaseEnabled()) {
+  if (isSupabaseEnabled() && supabase) {
     try {
-      const data = await prisma.config.findUnique({ where: { id: "global_config" } });
-      if (data) {
+      const { data, error } = await supabase
+        .from('config_sdn_bobong')
+        .select('*')
+        .eq('id', 'global_config')
+        .maybeSingle();
+
+      if (!error && data) {
         const dbConfig = {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
           marquee_speed: data.stats?.marquee_speed || data.marquee_speed || localConfig.marquee_speed || 40,
@@ -115,21 +120,10 @@ export async function loadWebConfig() {
         setCachedConfig(safeDbConfig);
         try { fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(safeDbConfig, null, 4), 'utf-8'); } catch (e) {}
         return safeDbConfig;
-      } else {
-        const seedData = {
-          id: "global_config",
-          marquee_announcements: localConfig.marquee_announcements,
-          stats: localConfig.stats,
-          ppdb_contacts: localConfig.ppdb_contacts,
-          force_local_cache: localConfig.force_local_cache === true,
-          downloads: localConfig.downloads,
-          faqs: localConfig.faqs,
-          gallery: localConfig.gallery
-        };
-        try { await prisma.config.create({ data: seedData }); }
-        catch (e2) { console.error("Prisma config seeding failed:", e2); }
       }
-    } catch (e) { console.error("Error loading web config from Supabase via Prisma:", e.message || e); }
+    } catch (e) {
+      console.error("Error loading web config from Supabase REST:", e.message || e);
+    }
   }
 
   const safeLocalConfig = mergeWithDefaults(localConfig);
@@ -154,32 +148,29 @@ export async function saveWebConfig(config) {
   try { fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8'); localSaved = true; }
   catch (e) { console.error("Error saving config locally:", e); }
 
-  if (isSupabaseEnabled()) {
+  if (isSupabaseEnabled() && supabase) {
     try {
-      await prisma.config.upsert({
-        where: { id: "global_config" },
-        update: {
-          marquee_announcements: config.marquee_announcements,
-          stats: config.stats,
-          ppdb_contacts: config.ppdb_contacts,
-          force_local_cache: config.force_local_cache === true,
-          downloads: config.downloads || [],
-          faqs: config.faqs || [],
-          gallery: config.gallery || []
-        },
-        create: {
-          id: "global_config",
-          marquee_announcements: config.marquee_announcements,
-          stats: config.stats,
-          ppdb_contacts: config.ppdb_contacts,
-          force_local_cache: config.force_local_cache === true,
-          downloads: config.downloads || [],
-          faqs: config.faqs || [],
-          gallery: config.gallery || []
-        }
-      });
+      const payload = {
+        id: "global_config",
+        marquee_announcements: config.marquee_announcements,
+        stats: config.stats,
+        ppdb_contacts: config.ppdb_contacts,
+        force_local_cache: config.force_local_cache === true,
+        downloads: config.downloads || [],
+        faqs: config.faqs || [],
+        gallery: config.gallery || []
+      };
+
+      const { error } = await supabase
+        .from('config_sdn_bobong')
+        .upsert(payload, { onConflict: 'id' });
+
+      if (error) throw error;
       return true;
-    } catch (e) { console.error("Error saving config to Supabase via Prisma:", e.message || e); return localSaved; }
+    } catch (e) {
+      console.error("Error saving config to Supabase REST:", e.message || e);
+      return localSaved;
+    }
   }
   return localSaved;
 }

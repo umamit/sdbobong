@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
+import { supabase } from '../../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,15 +10,21 @@ export async function GET(request) {
   if (!newsId) return NextResponse.json({ error: 'news_id required' }, { status: 400 });
 
   try {
-    const reactions = await prisma.newsReaction.findMany({
-      where: { news_id: newsId },
-      orderBy: { type: 'asc' },
-    });
-    return NextResponse.json({ reactions }, {
+    if (!supabase) return NextResponse.json({ reactions: [] }, { status: 200 });
+
+    const { data: reactions, error } = await supabase
+      .from('news_reactions_sdn_bobong')
+      .select('*')
+      .eq('news_id', newsId)
+      .order('type', { ascending: true });
+
+    if (error) throw error;
+
+    return NextResponse.json({ reactions: reactions || [] }, {
       headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' }
     });
   } catch (error) {
-    console.error('[reactions GET]', error);
+    console.error('[reactions GET]', error?.message || error);
     return NextResponse.json({ reactions: [] }, { status: 200 });
   }
 }
@@ -34,16 +40,39 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Data tidak valid' }, { status: 400 });
     }
 
-    // Upsert: tambah row jika belum ada, atau increment count
-    const reaction = await prisma.newsReaction.upsert({
-      where: { news_id_type: { news_id, type } },
-      update: { count: { increment: 1 } },
-      create: { news_id, type, count: 1 },
-    });
+    if (!supabase) return NextResponse.json({ error: 'Layanan database sedang tidak tersedia' }, { status: 503 });
+
+    // Fetch existing reaction row
+    const { data: existing } = await supabase
+      .from('news_reactions_sdn_bobong')
+      .select('*')
+      .eq('news_id', news_id)
+      .eq('type', type)
+      .single();
+
+    let reaction;
+    if (existing) {
+      const { data, error } = await supabase
+        .from('news_reactions_sdn_bobong')
+        .update({ count: (existing.count || 0) + 1 })
+        .eq('id', existing.id)
+        .select()
+        .single();
+      if (error) throw error;
+      reaction = data;
+    } else {
+      const { data, error } = await supabase
+        .from('news_reactions_sdn_bobong')
+        .insert([{ news_id, type, count: 1 }])
+        .select()
+        .single();
+      if (error) throw error;
+      reaction = data;
+    }
 
     return NextResponse.json({ reaction });
   } catch (error) {
-    console.error('[reactions POST]', error);
+    console.error('[reactions POST]', error?.message || error);
     return NextResponse.json({ error: 'Gagal menyimpan reaksi' }, { status: 500 });
   }
 }

@@ -1,42 +1,50 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
+import { supabase } from '../../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
 // GET /api/news/comments
-// Jika ada ?news_id=xxx -> ambil komentar berita tertentu (maks 20)
-// Jika tanpa news_id -> untuk Admin: ambil semua komentar beserta data judul beritanya
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const newsId = searchParams.get('news_id');
 
   try {
+    if (!supabase) return NextResponse.json({ comments: [] }, { status: 200 });
+
     if (newsId) {
-      const comments = await prisma.newsComment.findMany({
-        where: { news_id: newsId },
-        orderBy: { id: 'desc' },
-        take: 20,
-      });
-      return NextResponse.json({ comments }, {
+      const { data: comments, error } = await supabase
+        .from('news_comments_sdn_bobong')
+        .select('*')
+        .eq('news_id', newsId)
+        .order('id', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+
+      return NextResponse.json({ comments: comments || [] }, {
         headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' }
       });
     } else {
-      // Ambil seluruh komentar untuk admin dashboard
-      const comments = await prisma.newsComment.findMany({
-        orderBy: { id: 'desc' },
-      });
+      const { data: comments, error } = await supabase
+        .from('news_comments_sdn_bobong')
+        .select('*')
+        .order('id', { ascending: false });
 
-      // Ambil data judul berita pendukung
-      const newsIds = [...new Set(comments.map(c => c.news_id))];
-      const newsArticles = await prisma.news.findMany({
-        where: { id: { in: newsIds } },
-        select: { id: true, title: true }
-      });
+      if (error) throw error;
 
-      const newsTitleMap = {};
-      newsArticles.forEach(n => { newsTitleMap[n.id] = n.title; });
+      const newsIds = [...new Set((comments || []).map(c => c.news_id))];
+      let newsTitleMap = {};
 
-      const enrichedComments = comments.map(c => ({
+      if (newsIds.length > 0) {
+        const { data: newsArticles } = await supabase
+          .from('news_sdn_bobong')
+          .select('id, title')
+          .in('id', newsIds);
+
+        (newsArticles || []).forEach(n => { newsTitleMap[n.id] = n.title; });
+      }
+
+      const enrichedComments = (comments || []).map(c => ({
         ...c,
         news_title: newsTitleMap[c.news_id] || 'Berita Telah Dihapus / Tidak Ditemukan'
       }));
@@ -46,12 +54,12 @@ export async function GET(request) {
       });
     }
   } catch (error) {
-    console.error('[comments GET]', error);
+    console.error('[comments GET]', error?.message || error);
     return NextResponse.json({ comments: [] }, { status: 200 });
   }
 }
 
-// POST /api/news/comments  { news_id, nama, pesan }
+// POST /api/news/comments
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -67,23 +75,31 @@ export async function POST(request) {
     if (namaTrim.length > 80) return NextResponse.json({ error: 'Nama terlalu panjang' }, { status: 400 });
     if (pesanTrim.length > 500) return NextResponse.json({ error: 'Komentar maksimal 500 karakter' }, { status: 400 });
 
-    const comment = await prisma.newsComment.create({
-      data: {
-        news_id,
-        nama: namaTrim,
-        pesan: pesanTrim,
-        created_at: new Date().toISOString(),
-      },
-    });
+    if (!supabase) return NextResponse.json({ error: 'Layanan database sedang tidak tersedia' }, { status: 503 });
+
+    const { data: comment, error } = await supabase
+      .from('news_comments_sdn_bobong')
+      .insert([
+        {
+          news_id,
+          nama: namaTrim,
+          pesan: pesanTrim,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({ comment }, { status: 201 });
   } catch (error) {
-    console.error('[comments POST]', error);
+    console.error('[comments POST]', error?.message || error);
     return NextResponse.json({ error: 'Gagal menyimpan komentar' }, { status: 500 });
   }
 }
 
-// DELETE /api/news/comments?id=xxx (khusus admin moderasi)
+// DELETE /api/news/comments?id=xxx
 export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const idStr = searchParams.get('id');
@@ -92,13 +108,18 @@ export async function DELETE(request) {
 
   try {
     const id = parseInt(idStr, 10);
-    await prisma.newsComment.delete({
-      where: { id }
-    });
+    if (!supabase) return NextResponse.json({ error: 'Database tidak aktif' }, { status: 503 });
+
+    const { error } = await supabase
+      .from('news_comments_sdn_bobong')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, message: 'Komentar berhasil dihapus' });
   } catch (error) {
-    console.error('[comments DELETE]', error);
+    console.error('[comments DELETE]', error?.message || error);
     return NextResponse.json({ error: 'Gagal menghapus komentar' }, { status: 500 });
   }
 }
