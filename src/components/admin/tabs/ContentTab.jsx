@@ -121,7 +121,15 @@ export default function ContentTab() {
                         id={`announcement_${idx}`}
                         name="announcements[]"
                         className="form-control"
-                        defaultValue={ann}
+                        value={ann}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setConfig(prev => {
+                            const newAnn = [...(prev?.marquee_announcements || [])];
+                            newAnn[idx] = val;
+                            return { ...prev, marquee_announcements: newAnn };
+                          });
+                        }}
                         style={{ width: '100%' }}
                         required
                       />
@@ -136,6 +144,15 @@ export default function ContentTab() {
                           id={`announcement_${idx}`}
                           name="announcements[]"
                           className="form-control"
+                          value={config?.marquee_announcements?.[idx] || ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setConfig(prev => {
+                              const newAnn = [...(prev?.marquee_announcements || ['', '', ''])];
+                              newAnn[idx] = val;
+                              return { ...prev, marquee_announcements: newAnn };
+                            });
+                          }}
                           style={{ width: '100%' }}
                           required
                         />
