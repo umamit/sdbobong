@@ -19,7 +19,7 @@
         "allow_copy": false,
         "maintenance_mode": false,
         "marquee_speed": 40,
-        "visitor_count": 196,
+        "visitor_count": 197,
         "_downloads_fallback": [],
         "_faqs_fallback": [
             {
@@ -352,6 +352,14 @@
             "category": "umum"
         }
     ],
+    "popup_announcement": {
+        "enabled": true,
+        "title": "Penerimaan Peserta Didik Baru (PPDB) TA 2026/2027 Resmi Dibuka!",
+        "badge": "INFO PPDB ONLINE",
+        "content": "Selamat datang di SD Negeri Bobong! Pendaftaran murid baru secara online maupun offline kini telah dibuka tanpa dipungut biaya apapun (100% Gratis). Silakan klik tombol di bawah untuk mendaftar.",
+        "link": "/ppdb/daftar",
+        "link_label": "Daftar PPDB Online Sekarang →"
+    },
     "force_local_cache": false,
     "suspicious_attempts": [],
     "manual_blacklist": [],

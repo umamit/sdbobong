@@ -77,6 +77,13 @@ export {
   saveStudents,
 } from './db/students.js';
 
+// Alumni
+export {
+  loadAlumni,
+  createAlumniRecord,
+  invalidateAlumniCache,
+} from './db/alumni.js';
+
 // Sync & PPDB column detection
 export {
   syncLocalToSupabase,

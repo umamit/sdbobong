@@ -1,5 +1,5 @@
 import AlumniClient from './AlumniClient';
-import { prisma } from '../../lib/prisma';
+import { loadAlumni } from '../../lib/database';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -12,10 +12,8 @@ export const metadata = {
 export default async function AlumniPage() {
   let initialAlumni = [];
   try {
-    initialAlumni = await prisma.alumni.findMany({
-      where: { status: 'Approved' },
-      orderBy: { id: 'desc' },
-    });
+    const allAlumni = await loadAlumni().catch(() => []);
+    initialAlumni = (allAlumni || []).filter(a => a.status === 'Approved');
   } catch (err) {
     console.error('Error fetching initial alumni:', err);
   }
