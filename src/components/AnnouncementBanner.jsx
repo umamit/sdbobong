@@ -14,8 +14,8 @@ export default function AnnouncementBanner({ initialAnnouncements = [], initialS
   const totalChars = cleanAnnouncements.join(' ').length;
   const dynamicDuration = Math.max(25, Math.round(totalChars * (initialSpeed / 250)));
 
-  // Duplicate items to ensure a seamless infinite loop
-  const marqueeItems = [...cleanAnnouncements, ...cleanAnnouncements];
+  // Render exact array without duplication when 1 announcement item is present
+  const marqueeItems = cleanAnnouncements;
 
   return (
     <div className={`${styles.announcementBanner} no-print public-layout-announcement`}>
