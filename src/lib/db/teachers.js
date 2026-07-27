@@ -97,8 +97,9 @@ export async function saveTeachers(teachersList) {
   try { fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8'); localSaved = true; }
   catch (e) { console.error("Error saving teachers locally:", e); }
   if (isSupabaseEnabled()) {
-    try {
-      for (const t of sortedList) {
+    let supabaseSuccess = true;
+    for (const t of sortedList) {
+      try {
         const packedDetails = (t.subject || t.education || t.motto || t.bio || t.password)
           ? `${t.details || ""}<!--TEACHER_DETAILS:${JSON.stringify({ subject: t.subject||'', education: t.education||'', motto: t.motto||'', bio: t.bio||'', password: t.password||'' })}-->`
           : t.details;
@@ -107,19 +108,26 @@ export async function saveTeachers(teachersList) {
           update: { name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image, nip: t.nip || "" },
           create: { id: t.id, name: t.name, role: t.role, details: packedDetails, status: t.status, image: t.image, nip: t.nip || "" }
         });
+      } catch (e) {
+        console.error(`[saveTeachers] Prisma upsert failed for "${t.name}" (${t.id}):`, e.message || e);
+        supabaseSuccess = false;
       }
+    }
+    try {
       const localIds = new Set(sortedList.map(t => t.id));
       const supabaseTeachers = await prisma.teacher.findMany({ select: { id: true } });
       if (supabaseTeachers) {
         for (const row of supabaseTeachers) {
           if (!localIds.has(row.id)) {
-            await prisma.teacher.delete({ where: { id: row.id } });
+            await prisma.teacher.delete({ where: { id: row.id } }).catch(() => {});
           }
         }
       }
-      invalidateTeachersCache();
-      return true;
-    } catch (e) { console.error("Error saving teachers to Supabase via Prisma:", e.message || e); return localSaved; }
+    } catch (e) {
+      console.error("[saveTeachers] Cleanup orphan teachers failed:", e.message || e);
+    }
+    invalidateTeachersCache();
+    return supabaseSuccess || localSaved;
   }
   invalidateTeachersCache();
   return localSaved;

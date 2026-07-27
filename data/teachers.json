@@ -149,7 +149,7 @@
         "role": "Guru Kelas 4A",
         "details": "Guru Kelas Atas",
         "status": "Honorer Daerah",
-        "image": "/images/teacher_2.jpg",
+        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1785161300673_612318957_1588374748852309_4439619193869360024_n.webp",
         "subject": "Guru Kelas Atas",
         "education": "S1",
         "motto": "",
