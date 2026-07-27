@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, setCachedConfig, getFreshCachedConfig, invalidateConfigCache, WEBSITE_CONFIG_JSON } from './core.js';
+import { supabase, isSupabaseEnabled, setCachedConfig, getFreshCachedConfig, invalidateConfigCache, WEBSITE_CONFIG_JSON } from './core.js';
 import { mergeWithDefaults } from './config.defaults.js';
 import { prisma } from '../prisma.js';
 
