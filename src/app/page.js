@@ -12,11 +12,11 @@ export const revalidate = 0; // Disable compile-time cache to fetch fresh conten
 export default async function Home() {
   noStore(); // Force dynamic fetching and bypass any cached render
   const [allNews, config, teachers] = await Promise.all([
-    loadNews(),
-    loadWebConfig(),
-    loadTeachers()
+    loadNews().catch(err => { console.error("Error loadNews in Home:", err); return []; }),
+    loadWebConfig().catch(err => { console.error("Error loadWebConfig in Home:", err); return {}; }),
+    loadTeachers().catch(err => { console.error("Error loadTeachers in Home:", err); return []; })
   ]);
-  const newsList = allNews.slice(0, 3);
+  const newsList = (allNews || []).slice(0, 3);
   const defaultStats = {
     siswa_aktif: 205,
     guru_staf: 14,

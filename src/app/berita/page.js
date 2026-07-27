@@ -12,7 +12,7 @@ export const metadata = {
 };
 
 export default async function Berita() {
-  const newsList = await loadNews();
+  const newsList = (await loadNews().catch(err => { console.error("Error loadNews in Berita:", err); return []; })) || [];
 
   return (
     <>

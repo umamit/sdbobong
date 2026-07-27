@@ -32,7 +32,12 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   // Load global configurations dynamically at render time (Server component)
-  const config = await loadWebConfig();
+  let config = {};
+  try {
+    config = (await loadWebConfig().catch(err => { console.error("Error loading config in RootLayout:", err); return {}; })) || {};
+  } catch (err) {
+    console.error("Critical error in RootLayout config load:", err);
+  }
   const announcements = config.marquee_announcements || [];
   const marqueeSpeed = config.marquee_speed || 40;
   const contacts = config.ppdb_contacts || {};

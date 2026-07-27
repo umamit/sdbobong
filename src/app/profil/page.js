@@ -16,9 +16,9 @@ export const metadata = {
 export default async function Profil() {
   noStore(); // Prevent server and CDN caching of teacher data
   const [teachers, achievements, config] = await Promise.all([
-    loadTeachers(),
-    loadAchievements(),
-    loadWebConfig()
+    loadTeachers().catch(err => { console.error("Error loadTeachers in Profil:", err); return []; }),
+    loadAchievements().catch(err => { console.error("Error loadAchievements in Profil:", err); return []; }),
+    loadWebConfig().catch(err => { console.error("Error loadWebConfig in Profil:", err); return {}; })
   ]);
 
   const profil = config.stats?.page_contents?.profil || {
