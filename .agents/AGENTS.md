@@ -299,6 +299,13 @@ print(f'- {path}: {count} baris')
 
 ---
 
+# 17. Standar Git Push & Otomatisasi Deployment (No Vercel CLI Trigger)
+
+- Saat pengguna memberikan instruksi `"push"` atau `"push ke github"`, AI **dilarang keras** memicu penyebaran manual melalui terminal menggunakan `npx vercel --prod`.
+- Eksekusi `git push` secara alami akan mengaktifkan otomatisasi rilis Vercel Production via GitHub Webhook Integration secara teratur dan aman. Perintah `vercel --prod` hanya boleh dijalankan jika pengguna secara eksplisit meminta rilis manual via Vercel CLI.
+
+---
+
 # Golden Rule
 
 
