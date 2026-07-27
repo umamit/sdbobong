@@ -188,7 +188,13 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
     fs.writeFileSync(path.join(uploadDir, uniqueFilename), finalBuffer);
     return `/images/uploads/${uniqueFilename}`;
-  } catch (e) { console.error("Local file save failed:", e); return "ERROR"; }
+  } catch (e) {
+    console.error("Local file save failed (Read-Only FS on Vercel):", e.message);
+    if (finalBuffer && finalBuffer.length <= 15 * 1024 * 1024) {
+      return `data:${finalMimeType};base64,${finalBuffer.toString('base64')}`;
+    }
+    return "ERROR";
+  }
 }
 
 export function anonymizeName(name) {

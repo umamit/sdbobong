@@ -65,7 +65,7 @@ export default function BerandaSubTab(props) {
                       {/* Preview */}
                       <div style={{ flex: '1', minWidth: '200px' }}>
                         <label style={{ display: 'block', marginBottom: '8px', fontWeight: 600, fontSize: '0.85rem' }}>Latar Belakang Saat Ini:</label>
-                        {config?.stats?.hero_background && /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config?.stats?.hero_background) ? (
+                        {config?.stats?.hero_background && (/\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config?.stats?.hero_background) || /^data:video\//i.test(config?.stats?.hero_background)) ? (
                           <video 
                             src={config?.stats?.hero_background}
                             autoPlay

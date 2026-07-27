@@ -49,7 +49,8 @@ export default async function Home() {
   };
 
   const isVideoBg = config.stats?.hero_background && (
-    /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background)
+    /\.(mp4|webm|ogg|mov|m4v)($|\?)/i.test(config.stats.hero_background) ||
+    /^data:video\//i.test(config.stats.hero_background)
   );
 
   const schoolSchema = {
