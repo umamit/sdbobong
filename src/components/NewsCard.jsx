@@ -199,6 +199,11 @@ export default function NewsCard({ news, className = '', priority = false }) {
               loading={priority && index === activeIndex ? "eager" : "lazy"}
               fetchPriority={priority && index === activeIndex ? "high" : "auto"}
               decoding="async"
+              onError={(e) => {
+                if (e.currentTarget.src !== '/images/hero_school.svg') {
+                  e.currentTarget.src = '/images/hero_school.svg';
+                }
+              }}
             />
           </div>
         ))}
