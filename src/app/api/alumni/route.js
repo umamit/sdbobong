@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
-import { loadAlumni, createAlumniRecord, invalidateAlumniCache } from '../../../lib/database';
+import { loadAlumni, createAlumniRecord, deleteAlumniRecord, invalidateAlumniCache } from '../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -116,13 +116,7 @@ export async function DELETE(request) {
 
   try {
     const id = parseInt(idStr, 10);
-    try {
-      await prisma.alumni.delete({ where: { id } });
-    } catch (e) {
-      console.error("Prisma delete alumni failed, invalidating cache:", e);
-    }
-    invalidateAlumniCache();
-
+    await deleteAlumniRecord(id);
     return NextResponse.json({ success: true, message: 'Data alumni berhasil dihapus' });
   } catch (error) {
     console.error('[alumni DELETE error]', error);

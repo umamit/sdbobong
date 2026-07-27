@@ -134,3 +134,31 @@ export async function createAlumniRecord(alumniData) {
   }
   return newRecord;
 }
+
+export async function deleteAlumniRecord(id) {
+  invalidateAlumniCache();
+
+  // Remove from local JSON
+  if (fs.existsSync(ALUMNI_JSON)) {
+    try {
+      const local = JSON.parse(fs.readFileSync(ALUMNI_JSON, 'utf-8'));
+      const filtered = local.filter(a => Number(a.id) !== Number(id));
+      fs.writeFileSync(ALUMNI_JSON, JSON.stringify(filtered, null, 4), 'utf-8');
+    } catch (e) {
+      console.error("Error removing alumni from local JSON:", e);
+    }
+  }
+
+  // Remove from Supabase via Prisma — gracefully ignore P2025 (record not found)
+  if (isSupabaseEnabled()) {
+    try {
+      await prisma.alumni.delete({ where: { id: Number(id) } });
+    } catch (e) {
+      if (e?.code !== 'P2025') {
+        console.error("Error deleting alumni from Supabase:", e.message || e);
+      }
+    }
+  }
+
+  return true;
+}

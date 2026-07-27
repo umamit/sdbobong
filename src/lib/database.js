@@ -81,6 +81,7 @@ export {
 export {
   loadAlumni,
   createAlumniRecord,
+  deleteAlumniRecord,
   invalidateAlumniCache,
 } from './db/alumni.js';
 
