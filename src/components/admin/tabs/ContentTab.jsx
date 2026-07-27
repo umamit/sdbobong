@@ -7,6 +7,7 @@ export default function ContentTab() {
   const {
     activeTab,
     config,
+    setConfig,
     handleAllowCopyToggle,
     handleAnnouncementsUpdate,
     handleMaintenanceModeToggle,
