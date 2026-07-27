@@ -289,6 +289,27 @@ print(f'File melebihi 800 baris: {len(long_files)}')
 print(f'- {path}: {count} baris')
 ```
 
+### Skrip 4 – Pemindai Impor Tak Lengkap (`Unimported Variable Scanner`)
+Gunakan untuk memastikan seluruh identifier kritis (`supabase`, `prisma`) telah di-import secara eksplisit di header file sebelum digunakan.
+```python
+import os, re
+missing = []
+for root, dirs, files in os.walk('src'):
+  for file in files:
+    if file.endswith(('.js', '.jsx', '.ts', '.tsx')):
+      path = os.path.join(root, file)
+      with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+        lines = f.readlines()
+      content = re.sub(r'//.*|/\*[\s\S]*?\*/', '', ''.join(lines))
+      for var in ['supabase', 'prisma']:
+        if re.search(r'(?<![\.\w])' + var + r'(?![\w])', content):
+          if not re.search(r'\b' + var + r'\b', ''.join(lines[:30])):
+            missing.append((path, var))
+print(f'File dengan unimported variable: {len(missing)}')
+for path, var in missing:
+  print(f'- {path}: missing {var}')
+```
+
 ---
 
 # 16. Standar Migrasi & Manajemen Supabase (Supabase CLI & Node Audit)
@@ -303,6 +324,15 @@ print(f'- {path}: {count} baris')
 
 - Saat pengguna memberikan instruksi `"push"` atau `"push ke github"`, AI **dilarang keras** memicu penyebaran manual melalui terminal menggunakan `npx vercel --prod`.
 - Eksekusi `git push` secara alami akan mengaktifkan otomatisasi rilis Vercel Production via GitHub Webhook Integration secara teratur dan aman. Perintah `vercel --prod` hanya boleh dijalankan jika pengguna secara eksplisit meminta rilis manual via Vercel CLI.
+
+---
+
+# 18. Verifikasi Impor & Pencegahan ReferenceError (Strict Import Audit)
+
+- Setiap kali membuat modul baru, memisahkan berkas (*refactoring*), atau mengubah handler data:
+  - **Wajib memverifikasi bahwa semua identifier global/library (seperti `supabase`, `prisma`, `fs`, `path`, `NextResponse`, dll.) telah di-import secara eksplisit di bagian atas berkas** sebelum digunakan dalam ekspresi atau cabang logika.
+  - Dilarang keras mengasumsikan keberadaan variabel eksternal tanpa baris `import` atau `require` yang sah di bagian atas berkas.
+  - Setiap eksekusi query atau pemanggilan helper async (`loadWebConfig`, `loadNews`, `loadTeachers`, dll.) **wajib memiliki proteksi `.catch()` inline atau pembungkus `try...catch`** guna menjamin tidak ada `ReferenceError` atau `Unhandled Rejection` yang merusak proses rendering server (*Server Components*).
 
 ---
 
