@@ -7,126 +7,150 @@ import fs from 'fs';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
-  // 1. Run local to Supabase sync in the background (non-blocking) to optimize load speed
-  syncLocalToSupabase().catch(err => console.error("Error in background database sync on dashboard access:", err));
+  try {
+    // 1. Run local to Supabase sync in the background (non-blocking) to optimize load speed
+    syncLocalToSupabase().catch(err => console.error("Error in background database sync on dashboard access:", err));
 
-  // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, students, and audit logs in parallel
-  const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs, studentsList] = await Promise.all([
-    loadWebConfig(),
-    loadNews(),
-    loadTeachers(),
-    loadAchievements(),
-    getStorageUsage(),
-    loadMessages(),
-    loadGraduation(),
-    loadAuditLogs(),
-    loadStudents()
-  ]);
+    // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, students, and audit logs in parallel safely
+    const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs, studentsList] = await Promise.all([
+      loadWebConfig().catch(e => { console.error("loadWebConfig failed:", e); return {}; }),
+      loadNews().catch(e => { console.error("loadNews failed:", e); return []; }),
+      loadTeachers().catch(e => { console.error("loadTeachers failed:", e); return []; }),
+      loadAchievements().catch(e => { console.error("loadAchievements failed:", e); return []; }),
+      getStorageUsage().catch(e => { console.error("getStorageUsage failed:", e); return null; }),
+      loadMessages().catch(e => { console.error("loadMessages failed:", e); return []; }),
+      loadGraduation().catch(e => { console.error("loadGraduation failed:", e); return []; }),
+      loadAuditLogs().catch(e => { console.error("loadAuditLogs failed:", e); return []; }),
+      loadStudents().catch(e => { console.error("loadStudents failed:", e); return []; })
+    ]);
 
-  // 3. Load PPDB records
-  let records = [];
-  let dbStatus = false; // default fallback (auto local)
+    // 3. Load PPDB records
+    let records = [];
+    let dbStatus = false; // default fallback (auto local)
 
-  const supabaseActive = isSupabaseEnabled();
+    const supabaseActive = isSupabaseEnabled();
 
-  if (supabaseActive) {
-    try {
-      const data = await prisma.pPDB.findMany({
-        orderBy: { waktu_daftar: 'desc' }
-      });
-      
-      if (data) {
-        records = data.map(r => {
-          const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
-          return {
-            ...r,
-            alamat_domisili: unpacked.cleanAlamat,
-            berkas_kk: r.berkas_kk || unpacked.berkas.berkas_kk || "",
-            berkas_akta: r.berkas_akta || unpacked.berkas.berkas_akta || "",
-            berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
-            berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
-            berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || "",
-            berkas_ijazah: r.berkas_ijazah || unpacked.berkas.berkas_ijazah || ""
-          };
-        });
-        dbStatus = 'active';
-      }
-    } catch (e) {
-      console.error("Error querying database via Prisma for admin dashboard page:", e);
-    }
-  } else {
-    // If Supabase is disabled manually, or key is missing
-    if (supabase) {
-      dbStatus = 'forced_local';
-    } else {
-      dbStatus = 'disabled';
-    }
-  }
-
-  if (records.length === 0) {
-    if (fs.existsSync(PENDAFTARAN_JSON)) {
+    if (supabaseActive) {
       try {
-        const localData = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
-        records = localData.map((r, idx) => ({
-          ...r,
-          id: r.id || r.nik || r.nik_siswa || String(idx + 1),
-          nama_lengkap: r.nama_lengkap || "",
-          nik_siswa: r.nik || r.nik_siswa || "",
-          tempat_lahir: r.tempat_lahir || "",
-          tanggal_lahir: r.tanggal_lahir || "",
-          jenis_kelamin: r.jenis_kelamin || "",
-          nama_ibu_kandung: r.nama_ibu || r.nama_ibu_kandung || "",
-          nomor_hp_orangtua: r.no_hp || r.nomor_hp_orangtua || "",
-          alamat_domisili: r.alamat || r.alamat_domisili || "",
-          jalur_ppdb: r.jalur_ppdb || "",
-          waktu_daftar: r.waktu_daftar || "",
-          status: r.status || "Diterima Sistem",
-          berkas_kk: r.berkas_kk || "",
-          berkas_akta: r.berkas_akta || "",
-          berkas_ktp: r.berkas_ktp || "",
-          berkas_sptjm: r.berkas_sptjm || "",
-          berkas_kip: r.berkas_kip || "",
-          berkas_ijazah: r.berkas_ijazah || ""
-        }));
-        records.sort((a, b) => (b.waktu_daftar || "").localeCompare(a.waktu_daftar || ""));
+        const data = await prisma.pPDB.findMany({
+          orderBy: { waktu_daftar: 'desc' }
+        });
+        
+        if (data) {
+          records = data.map(r => {
+            const unpacked = unpackBerkasFromAlamat(r.alamat_domisili || "");
+            return {
+              ...r,
+              alamat_domisili: unpacked.cleanAlamat,
+              berkas_kk: r.berkas_kk || unpacked.berkas.berkas_kk || "",
+              berkas_akta: r.berkas_akta || unpacked.berkas.berkas_akta || "",
+              berkas_ktp: r.berkas_ktp || unpacked.berkas.berkas_ktp || "",
+              berkas_sptjm: r.berkas_sptjm || unpacked.berkas.berkas_sptjm || "",
+              berkas_kip: r.berkas_kip || unpacked.berkas.berkas_kip || "",
+              berkas_ijazah: r.berkas_ijazah || unpacked.berkas.berkas_ijazah || ""
+            };
+          });
+          dbStatus = 'active';
+        }
       } catch (e) {
-        console.error("Error reading JSON fallback for admin page:", e);
+        console.error("Error querying database via Prisma for admin dashboard page:", e);
+      }
+    } else {
+      // If Supabase is disabled manually, or key is missing
+      if (supabase) {
+        dbStatus = 'forced_local';
+      } else {
+        dbStatus = 'disabled';
       }
     }
+
+    if (records.length === 0) {
+      if (fs.existsSync(PENDAFTARAN_JSON)) {
+        try {
+          const localData = JSON.parse(fs.readFileSync(PENDAFTARAN_JSON, 'utf-8'));
+          records = localData.map((r, idx) => ({
+            ...r,
+            id: r.id || r.nik || r.nik_siswa || String(idx + 1),
+            nama_lengkap: r.nama_lengkap || "",
+            nik_siswa: r.nik || r.nik_siswa || "",
+            tempat_lahir: r.tempat_lahir || "",
+            tanggal_lahir: r.tanggal_lahir || "",
+            jenis_kelamin: r.jenis_kelamin || "",
+            nama_ibu_kandung: r.nama_ibu || r.nama_ibu_kandung || "",
+            nomor_hp_orangtua: r.no_hp || r.nomor_hp_orangtua || "",
+            alamat_domisili: r.alamat || r.alamat_domisili || "",
+            jalur_ppdb: r.jalur_ppdb || "",
+            waktu_daftar: r.waktu_daftar || "",
+            status: r.status || "Diterima Sistem",
+            berkas_kk: r.berkas_kk || "",
+            berkas_akta: r.berkas_akta || "",
+            berkas_ktp: r.berkas_ktp || "",
+            berkas_sptjm: r.berkas_sptjm || "",
+            berkas_kip: r.berkas_kip || "",
+            berkas_ijazah: r.berkas_ijazah || ""
+          }));
+          records.sort((a, b) => (b.waktu_daftar || "").localeCompare(a.waktu_daftar || ""));
+        } catch (e) {
+          console.error("Error reading JSON fallback for admin page:", e);
+        }
+      }
+    }
+
+    // 4. Overlay local status
+    let localStatuses = {};
+    try {
+      localStatuses = loadLocalStatuses() || {};
+    } catch (e) {
+      console.error("Error loading local statuses:", e);
+    }
+    records = records.map(r => {
+      const r_id = r.id || r.nik_siswa || r.nik;
+      const nik = r.nik_siswa || r.nik;
+      let status = r.status;
+      if (!status || status === "Diterima Sistem") {
+        if (nik && localStatuses[String(nik)]) {
+          status = localStatuses[String(nik)];
+        }
+      }
+      if (!status) status = "Diterima Sistem";
+      return {
+        ...r,
+        id: r_id,
+        status: status
+      };
+    });
+
+    return (
+      <AdminDashboardClient
+        initialConfig={config || {}}
+        initialNewsList={newsList || []}
+        initialTeachers={teachers || []}
+        initialAchievements={achievements || []}
+        initialRecords={records || []}
+        dbStatus={dbStatus || 'disabled'}
+        initialStorageInfo={storageInfo || null}
+        initialMessages={messagesList || []}
+        initialGraduation={graduationList || []}
+        initialAuditLogs={auditLogs || []}
+        initialStudents={studentsList || []}
+      />
+    );
+  } catch (criticalError) {
+    console.error("Fatal error inside AdminDashboardPage:", criticalError);
+    return (
+      <AdminDashboardClient
+        initialConfig={{}}
+        initialNewsList={[]}
+        initialTeachers={[]}
+        initialAchievements={[]}
+        initialRecords={[]}
+        dbStatus="disabled"
+        initialStorageInfo={null}
+        initialMessages={[]}
+        initialGraduation={[]}
+        initialAuditLogs={[]}
+        initialStudents={[]}
+      />
+    );
   }
-
-  // 4. Overlay local status
-  const localStatuses = loadLocalStatuses();
-  records = records.map(r => {
-    const r_id = r.id || r.nik_siswa || r.nik;
-    const nik = r.nik_siswa || r.nik;
-    let status = r.status;
-    if (!status || status === "Diterima Sistem") {
-      if (nik && localStatuses[String(nik)]) {
-        status = localStatuses[String(nik)];
-      }
-    }
-    if (!status) status = "Diterima Sistem";
-    return {
-      ...r,
-      id: r_id,
-      status: status
-    };
-  });
-
-  return (
-    <AdminDashboardClient
-      initialConfig={config}
-      initialNewsList={newsList}
-      initialTeachers={teachers}
-      initialAchievements={achievements}
-      initialRecords={records}
-      dbStatus={dbStatus}
-      initialStorageInfo={storageInfo}
-      initialMessages={messagesList}
-      initialGraduation={graduationList}
-      initialAuditLogs={auditLogs}
-      initialStudents={studentsList}
-    />
-  );
 }
