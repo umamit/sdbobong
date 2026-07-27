@@ -144,9 +144,9 @@ export default function useConfigHandlers({
         });
         
         if (duration === -1) {
-          showToast('warning', 'Sistem tidak dapat membaca durasi video di browser ini. Unggah tetap dilanjutkan, pastikan durasi video Anda di bawah 10 detik.');
-        } else if (duration > 10.5) {
-          showToast('danger', `Durasi video ${duration.toFixed(1)}s melebihi batas maksimal 10 detik!`);
+          showToast('warning', 'Sistem tidak dapat membaca durasi video di browser ini. Unggah tetap dilanjutkan, pastikan durasi video Anda di bawah 30 detik.');
+        } else if (duration > 30.5) {
+          showToast('danger', `Durasi video ${duration.toFixed(1)}s melebihi batas maksimal 30 detik!`);
           return;
         }
         
