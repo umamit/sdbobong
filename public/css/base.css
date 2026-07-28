@@ -440,3 +440,57 @@ button:focus-visible {
     outline-offset: 2px;
 }
 
+/* ==========================================================================
+   Apple HIG — Shimmer Skeleton Animation & Dynamic Type Scaler
+   ========================================================================== */
+
+@keyframes appleShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.apple-skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.06) 25%,
+        rgba(0, 0, 0, 0.12) 37%,
+        rgba(0, 0, 0, 0.06) 63%
+    );
+    background-size: 400% 100%;
+    animation: appleShimmer 1.6s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+}
+
+[data-theme='dark'] .apple-skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.12) 37%,
+        rgba(255, 255, 255, 0.06) 63%
+    );
+    background-size: 400% 100%;
+}
+
+/* Dynamic Type Scaling Helper */
+:root {
+    --text-scale-factor: 1;
+}
+
+@media (max-width: 480px) {
+    :root {
+        --text-scale-factor: 0.95;
+    }
+}
+
+/* Apple HIG Bottom Safe Area Spacer for Mobile Tab Bar */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 72px;
+    }
+}
+
+
