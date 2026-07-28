@@ -548,11 +548,11 @@
     fill: currentColor;
 }
 
-/* Responsivitas Mobile */
-@media (max-width: 480px) {
+/* Responsivitas Mobile — menaikkan posisi tombol AI agar melayang di atas Mobile Bottom Tab Bar */
+@media (max-width: 768px) {
     .aimAiContainer {
-        bottom: 25px;
-        right: 15px;
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px) + 12px);
+        right: 16px;
     }
 
     .aimAiWindow {
