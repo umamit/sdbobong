@@ -1,8 +1,8 @@
 {
     "marquee_announcements": [
-        "📢 PENGUMUMAN BARU: Pendaftaran PPDB 2026/2027 dimulai pada tgl. 20 Juni-04 Juli 2026, jangan lupa persiapkan berkasmu😘",
-        "📅 INFO: Pertemua Guru dan Orang Tua murid serta Komite Sekolah berhasil dilaksanakan kemarin",
-        "💡MPLS SD Negeri Bobong dimulai pada 13 - 17 Juli 2026"
+        "There is minor maintenance due to limited server capacity.",
+        "Technical issue due to database migration",
+        "Some features might be temporarily unavailable. We are working to resolve this quickly"
     ],
     "marquee_speed": 40,
     "stats": {
@@ -141,7 +141,7 @@
                 "sejarah": "",
                 "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.\n\nSelama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
                 "sejarah_badge": "SEJARAH SEKOLAH",
-                "sejarah_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1781158923764_20260611_130741.jpg",
+                "sejarah_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1785122180370_20260611_130741_2.webp",
                 "sejarah_title": "Perjalanan SD Negeri Bobong"
             },
             "akademik": {
@@ -256,12 +256,12 @@
         "nama_humas": "Belum diset admin",
         "wa_humas": "",
         "jabatan_humas": "",
-        "nama_operator": "Belum diset admin",
-        "wa_operator": "",
-        "jabatan_operator": "",
+        "nama_operator": "Surahmi Wambes, S.Pd",
+        "wa_operator": "6282299578986",
+        "jabatan_operator": "Guru Kelas 4A",
         "email_sekolah": "admin@sdnegeribobong.sch.id",
         "nip_humas": "",
-        "nip_operator": ""
+        "nip_operator": "101502"
     },
     "downloads": [],
     "faqs": [
