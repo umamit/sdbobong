@@ -7,22 +7,7 @@ export default function LayoutControl() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 0. Maintenance Mode Bypass Guard for Public Pages
-    const isPublic = pathname && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
-    if (isPublic) {
-      const getCookie = (name) => {
-        if (typeof document === 'undefined') return '';
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return '';
-      };
 
-      const isMaintenanceCookie = getCookie('maintenance_mode') === 'true';
-      if (isMaintenanceCookie) {
-        window.location.reload();
-      }
-    }
 
     // 1. Admin & Guru & Bypass Class Control
     const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai', '/akademik/kalender', '/kalender'];
