@@ -17,9 +17,9 @@
         "cuci_tangan": 4,
         "hero_background": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1785120056503_Video_background_hero_section_202607102024.mp4",
         "allow_copy": false,
-        "maintenance_mode": false,
+        "maintenance_mode": true,
         "marquee_speed": 40,
-        "visitor_count": 228,
+        "visitor_count": 229,
         "_downloads_fallback": [],
         "_faqs_fallback": [
             {

@@ -53,7 +53,7 @@ export default async function RootLayout({ children }) {
   const bypassPaths = ['/formulir-ppdb', '/ppdb/cetak', '/ppdb-online/sukses', '/ppdb/daftar/sukses', '/nilai', '/akademik/nilai', '/akademik/kalender', '/kalender'];
   const isBypassPath = bypassPaths.includes(pathname);
   const isPrintableForm = pathname === '/formulir-ppdb' || pathname === '/ppdb/cetak';
-  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/api');
+  const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/guru') && !pathname.startsWith('/login') && !pathname.startsWith('/api');
 
 
   if (isMaintenanceActive) {
