@@ -217,8 +217,8 @@ export default function BeritaSearchClient({ newsList = [] }) {
       {/* News Grid with Framer Motion AnimatePresence */}
       {paginatedNews.length > 0 ? (
         <motion.div
-          className="grid-2"
-          style={{ marginBottom: 'var(--space-lg)' }}
+          className="grid-3"
+          style={{ marginBottom: 'var(--space-lg)', gap: '1.25rem' }}
           variants={gridVariants}
           initial="hidden"
           whileInView="show"
