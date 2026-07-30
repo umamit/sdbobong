@@ -8,6 +8,7 @@ import Sidebar from '../../../components/admin/shared/Sidebar';
 import Header from '../../../components/admin/shared/Header';
 import Modals from '../../../components/admin/shared/Modals';
 import PremiumLoadingOverlay from '../../../components/PremiumLoadingOverlay';
+import AdminErrorBoundary from '../../../components/admin/shared/AdminErrorBoundary';
 
 // Loading Spinner for lazy-loaded tabs
 function TabLoadingSpinner() {
@@ -170,8 +171,10 @@ function AdminDashboardShell() {
 
 export default function AdminDashboardClient(props) {
   return (
-    <AdminDashboardProvider {...props}>
-      <AdminDashboardShell />
-    </AdminDashboardProvider>
+    <AdminErrorBoundary>
+      <AdminDashboardProvider {...props}>
+        <AdminDashboardShell />
+      </AdminDashboardProvider>
+    </AdminErrorBoundary>
   );
 }

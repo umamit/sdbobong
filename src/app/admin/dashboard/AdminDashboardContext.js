@@ -46,9 +46,20 @@ export function AdminDashboardProvider({
 }) {
   const router = useRouter();
 
+  // Defensive Normalization Guard to prevent crashes when switching Supabase databases
+  const safeConfig = (initialConfig && typeof initialConfig === 'object') ? initialConfig : {};
+  const safeNewsList = Array.isArray(initialNewsList) ? initialNewsList : [];
+  const safeTeachers = Array.isArray(initialTeachers) ? initialTeachers : [];
+  const safeAchievements = Array.isArray(initialAchievements) ? initialAchievements : [];
+  const safeRecords = Array.isArray(initialRecords) ? initialRecords : [];
+  const safeMessages = Array.isArray(initialMessages) ? initialMessages : [];
+  const safeGraduation = Array.isArray(initialGraduation) ? initialGraduation : [];
+  const safeAuditLogs = Array.isArray(initialAuditLogs) ? initialAuditLogs : [];
+  const safeStudents = Array.isArray(initialStudents) ? initialStudents : [];
+
   // Shared Core List States
-  const [config, setConfig] = useState(initialConfig);
-  const [teachers, setTeachers] = useState(initialTeachers);
+  const [config, setConfig] = useState(safeConfig);
+  const [teachers, setTeachers] = useState(safeTeachers);
   const [pageContents, setPageContents] = useState({});
 
   // Global UI States
@@ -196,7 +207,7 @@ export function AdminDashboardProvider({
 
   // 3. News Handlers Hook
   const newsStuff = useNewsHandlers({
-    initialNewsList,
+    initialNewsList: safeNewsList,
     fetch: customFetch,
     showToast,
     setIsProcessing,
@@ -221,7 +232,7 @@ export function AdminDashboardProvider({
 
   // 5. Achievement Handlers Hook
   const achievementStuff = useAchievementHandlers({
-    initialAchievements,
+    initialAchievements: safeAchievements,
     fetch: customFetch,
     showToast,
     router,
@@ -231,7 +242,7 @@ export function AdminDashboardProvider({
 
   // 6. PPDB Handlers Hook
   const ppdbStuff = usePpdbHandlers({
-    initialRecords,
+    initialRecords: safeRecords,
     fetch: customFetch,
     showToast,
     router,
@@ -241,7 +252,7 @@ export function AdminDashboardProvider({
 
   // 7. Student Handlers Hook
   const studentStuff = useStudentHandlers({
-    initialStudents,
+    initialStudents: safeStudents,
     fetch: customFetch,
     showToast,
     router,
@@ -251,7 +262,7 @@ export function AdminDashboardProvider({
 
   // 8. Graduation Handlers Hook
   const graduationStuff = useGraduationHandlers({
-    initialGraduation,
+    initialGraduation: safeGraduation,
     fetch: customFetch,
     showToast,
     router,
@@ -273,7 +284,7 @@ export function AdminDashboardProvider({
   const contentUtilityStuff = useContentUtilityHandlers({
     config,
     setConfig,
-    initialMessages,
+    initialMessages: safeMessages,
     fetch: customFetch,
     showToast,
     router,
@@ -301,7 +312,7 @@ export function AdminDashboardProvider({
     setGraduation: graduationStuff.setGraduation,
     messages: contentUtilityStuff.messages,
     setMessages: contentUtilityStuff.setMessages,
-    initialAuditLogs,
+    initialAuditLogs: safeAuditLogs,
     initialStorageInfo,
     fetch: customFetch,
     showToast,
