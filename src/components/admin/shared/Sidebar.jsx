@@ -5,6 +5,7 @@ import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardCo
 
 export default function Sidebar({ onClose }) {
   const { activeTab, setActiveTab, handleLogout } = useAdminDashboard();
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLinkClick = (tab) => {
     setActiveTab(tab);
@@ -14,10 +15,21 @@ export default function Sidebar({ onClose }) {
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${collapsed ? 'is-collapsed' : ''}`}>
       <div className="sidebar-brand">
-        <img src="/images/logo_sekolah.png" alt="Logo" width="40" height="40" />
-        <span>SD NEGERI BOBONG</span>
+        <img src="/images/logo_sekolah.png" alt="Logo" width="36" height="36" />
+        {!collapsed && <span>SD NEGERI BOBONG</span>}
+        <button
+          type="button"
+          className="btn-ipados-toggle"
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? "Mekarkan Sidebar (iPadOS Rail)" : "Ciutkan Sidebar (iPadOS Rail)"}
+          aria-label="Toggle Sidebar"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            {collapsed ? <polyline points="13 17 18 12 13 7" /> : <polyline points="11 17 6 12 11 7" />}
+          </svg>
+        </button>
       </div>
       <ul className="sidebar-menu">
         <li className="sidebar-item">

@@ -86,7 +86,44 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     white-space: nowrap;
+    flex: 1;
 }
+
+.btn-ipados-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    margin-left: auto;
+}
+
+.btn-ipados-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.sidebar.is-collapsed {
+    width: 80px;
+}
+
+.sidebar.is-collapsed .sidebar-item span,
+.sidebar.is-collapsed .sidebar-footer span {
+    display: none;
+}
+
+.sidebar.is-collapsed .sidebar-link {
+    justify-content: center;
+    padding: 0.85rem 0;
+}
+
 .sidebar-menu {
     list-style: none;
     padding: 1.5rem 0;
