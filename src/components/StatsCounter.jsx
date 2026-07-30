@@ -189,10 +189,10 @@ export default function StatsCounter({ stats = {} }) {
         }
 
         .stats-counter-card {
-          background: linear-gradient(145deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.18);
+          background: rgba(255, 255, 255, 0.06);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           border-radius: var(--radius-xl, 18px);
           padding: 1.75rem 1.25rem;
           display: flex;
