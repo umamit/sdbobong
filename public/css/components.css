@@ -768,4 +768,129 @@
     background: #dc2626;
 }
 
+/* ==========================================================================
+   Apple HIG — Sarana Prasarana Bento Glassmorphism Grid
+   ========================================================================== */
+
+.sarpras-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+    .sarpras-bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.sarpras-bento-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-xl, 18px);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.35s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.sarpras-bento-card::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    bottom: 15%;
+    left: 0;
+    width: 3.5px;
+    background: var(--f-accent, #12A5B8);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 10px var(--f-glow);
+    transition: top 0.3s ease, bottom 0.3s ease;
+}
+
+.sarpras-bento-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.sarpras-bento-card:hover::after {
+    left: 170%;
+}
+
+.sarpras-bento-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22), 0 0 20px var(--f-glow);
+}
+
+.sarpras-bento-card:hover::before {
+    top: 5%;
+    bottom: 5%;
+}
+
+.sarpras-icon-box {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    background: var(--f-glow, rgba(18, 165, 184, 0.2));
+    color: var(--f-accent, #12A5B8);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px var(--f-glow);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sarpras-bento-card:hover .sarpras-icon-box {
+    transform: scale(1.12) rotate(4deg);
+}
+
+.sarpras-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sarpras-number {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Outfit', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.35rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sarpras-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.2;
+}
+
+
 

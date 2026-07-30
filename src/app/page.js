@@ -388,52 +388,102 @@ export default async function Home() {
             <StatsCounter stats={stats} />
           </div>
 
-          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '2px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src="/images/animated/school.png" alt="Sekolah" width={24} height={24} style={{ display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain' }} /> Sarana, Prasarana &amp; Sanitasi
+          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginBottom: 'var(--space-sm)', borderBottom: '1px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(255, 200, 59, 0.2)', color: '#FFC83B' }}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </span>
+            <span>Sarana, Prasarana &amp; Sanitasi</span>
           </div>
-          <FramerRevealContainer className="stats-grid sarpras-grid">
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
-              </div>
-              <div className="stat-number">{stats.rombel}</div>
-              <div className="stat-label">Rombongan Belajar</div>
-            </FramerRevealItem>
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
-              </div>
-              <div className="stat-number">{stats.ruang_kelas}</div>
-              <div className="stat-label">Ruang Kelas</div>
-            </FramerRevealItem>
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v8M8 12h8" /></svg>
-              </div>
-              <div className="stat-number">{stats.uks}</div>
-              <div className="stat-label">Unit Kesehatan (UKS)</div>
-            </FramerRevealItem>
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>
-              </div>
-              <div className="stat-number">{stats.gudang}</div>
-              <div className="stat-label">Gudang Sekolah</div>
-            </FramerRevealItem>
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M9 22V12h6v10M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M12 10a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z" /></svg>
-              </div>
-              <div className="stat-number">{stats.toilet}</div>
-              <div className="stat-label">Kamar Mandi / WC</div>
-            </FramerRevealItem>
-            <FramerRevealItem className="stat-item" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(8px)' }}>
-              <div className="stat-icon-wrapper">
-                <svg className="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" /></svg>
-              </div>
-              <div className="stat-number">{stats.cuci_tangan}</div>
-              <div className="stat-label">Area Cuci Tangan</div>
-            </FramerRevealItem>
+
+          <FramerRevealContainer className="sarpras-bento-grid">
+            {[
+              {
+                label: 'Rombongan Belajar',
+                value: stats.rombel ?? 14,
+                color: '#12A5B8',
+                bgGlow: 'rgba(18, 165, 184, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Ruang Kelas',
+                value: stats.ruang_kelas ?? 8,
+                color: '#FFC83B',
+                bgGlow: 'rgba(255, 200, 59, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Unit Kesehatan (UKS)',
+                value: stats.uks ?? 1,
+                color: '#4CD964',
+                bgGlow: 'rgba(76, 217, 100, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M12 8v8M8 12h8" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Gudang Sekolah',
+                value: stats.gudang ?? 1,
+                color: '#6366F1',
+                bgGlow: 'rgba(99, 102, 241, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Kamar Mandi / WC',
+                value: stats.toilet ?? 2,
+                color: '#FF3B30',
+                bgGlow: 'rgba(255, 59, 48, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M9 22V12h6v10M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/><path d="M12 10a4 4 0 0 0-4 4v8h8v-8a4 4 0 0 0-4-4z" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Area Cuci Tangan',
+                value: stats.cuci_tangan ?? 4,
+                color: '#00C7BE',
+                bgGlow: 'rgba(0, 199, 190, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" />
+                  </svg>
+                ),
+              },
+            ].map((f) => (
+              <FramerRevealItem
+                key={f.label}
+                className="sarpras-bento-card"
+                style={{
+                  '--f-accent': f.color,
+                  '--f-glow': f.bgGlow,
+                }}
+              >
+                <div className="sarpras-icon-box" aria-hidden="true">
+                  {f.icon}
+                </div>
+                <div className="sarpras-info">
+                  <div className="sarpras-number">{f.value}</div>
+                  <div className="sarpras-label">{f.label}</div>
+                </div>
+              </FramerRevealItem>
+            ))}
           </FramerRevealContainer>
         </div>
       </section>
