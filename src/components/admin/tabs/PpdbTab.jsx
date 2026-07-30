@@ -33,14 +33,14 @@ export default function PpdbTab() {
   } = useAdminDashboard();
 
   const gateway = config?.stats?.wa_gateway || {};
-  const [waEnabled, setWaEnabled] = React.useState(gateway.enabled || false);
-  const [waProvider, setWaProvider] = React.useState(gateway.provider || 'fonnte');
-  const [waToken, setWaToken] = React.useState(gateway.token || '');
-  const [waUrl, setWaUrl] = React.useState(gateway.url || '');
-  const [waVerifiedTemplate, setWaVerifiedTemplate] = React.useState(gateway.message_template_verified || '');
-  const [waRejectedTemplate, setWaRejectedTemplate] = React.useState(gateway.message_template_rejected || '');
+  const [waEnabled, setWaEnabled] = useState(gateway.enabled || false);
+  const [waProvider, setWaProvider] = useState(gateway.provider || 'fonnte');
+  const [waToken, setWaToken] = useState(gateway.token || '');
+  const [waUrl, setWaUrl] = useState(gateway.url || '');
+  const [waVerifiedTemplate, setWaVerifiedTemplate] = useState(gateway.message_template_verified || '');
+  const [waRejectedTemplate, setWaRejectedTemplate] = useState(gateway.message_template_rejected || '');
 
-  React.useEffect(() => {
+  useEffect(() => {
     const gw = config?.stats?.wa_gateway || {};
     setWaEnabled(gw.enabled || false);
     setWaProvider(gw.provider || 'fonnte');

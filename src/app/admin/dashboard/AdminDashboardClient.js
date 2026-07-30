@@ -106,7 +106,7 @@ const AlumniTab = dynamic(() => import('../../../components/admin/tabs/AlumniTab
 
 function AdminDashboardShell() {
   const { activeTab, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab } = useAdminDashboard();
-  const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
     <div className={`admin-dashboard-layout ${isDetailModalOpen ? 'print-detail-open' : ''} ${mobileSidebarOpen ? 'mobile-sidebar-open' : ''}`}>

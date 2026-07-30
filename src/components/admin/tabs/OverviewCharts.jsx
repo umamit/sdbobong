@@ -1,7 +1,7 @@
 'use client';
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 
 export default function OverviewCharts() {
@@ -12,7 +12,7 @@ export default function OverviewCharts() {
     handleMouseLeave
   } = useAdminDashboard();
 
-  const [hoveredIndex, setHoveredIndex] = React.useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const getTrendData = () => {
     if (!records || records.length === 0) {

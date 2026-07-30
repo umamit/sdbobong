@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 export default function PpdbSubTab(props) {
   const {
@@ -18,17 +18,17 @@ export default function PpdbSubTab(props) {
     handleRemovePPDBJadwal
   } = props;
 
-  const [inputNamaHumas, setInputNamaHumas] = React.useState('');
-  const [inputNamaOperator, setInputNamaOperator] = React.useState('');
+  const [inputNamaHumas, setInputNamaHumas] = useState('');
+  const [inputNamaOperator, setInputNamaOperator] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (config?.ppdb_contacts) {
       setInputNamaHumas(config.ppdb_contacts.nama_humas || '');
       setInputNamaOperator(config.ppdb_contacts.nama_operator || '');
     }
   }, [config]);
 
-  const currentNipHumas = React.useMemo(() => {
+  const currentNipHumas = useMemo(() => {
     if (!inputNamaHumas) return "";
     const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaHumas));
     return matched 
@@ -36,7 +36,7 @@ export default function PpdbSubTab(props) {
       : (inputNamaHumas === config?.ppdb_contacts?.nama_humas ? (config?.ppdb_contacts?.nip_humas || "") : "");
   }, [inputNamaHumas, teachers, normalizeTeacherName, config]);
 
-  const currentNipOperator = React.useMemo(() => {
+  const currentNipOperator = useMemo(() => {
     if (!inputNamaOperator) return "";
     const matched = teachers.find(t => t.name && normalizeTeacherName(t.name) === normalizeTeacherName(inputNamaOperator));
     return matched 
