@@ -1,3 +1,5 @@
+'use client';
+
 import { createClient } from '@supabase/supabase-js';
 
 // Client-side image compression using HTML5 Canvas (Zero-dependency, lightweight)
