@@ -28,6 +28,19 @@ export async function handleApiDelete({
     
     const filteredList = list.filter(item => item.id !== id);
 
+    const triggerRevalidation = () => {
+      try {
+        revalidatePath('/', 'layout');
+      } catch (e) {}
+      for (const p of revalidatePaths) {
+        try {
+          revalidatePath(p);
+        } catch (cacheErr) {
+          console.error(`Cache revalidation failed in delete helper for path ${p}:`, cacheErr);
+        }
+      }
+    };
+
     if (filteredList.length === list.length) {
       if (isSupabaseEnabled() && prismaModel) {
         try {
@@ -37,19 +50,14 @@ export async function handleApiDelete({
         }
       }
       await createAuditLog(auditAction, `Menghapus (langsung dari DB): "${itemName}"`, request);
+      triggerRevalidation();
       return NextResponse.json({ success: true, message: "Data sudah tidak ada." });
     }
 
     const saved = await saveFn(filteredList);
     if (saved) {
       await createAuditLog(auditAction, `Menghapus: "${itemName}"`, request);
-      for (const p of revalidatePaths) {
-        try {
-          revalidatePath(p);
-        } catch (cacheErr) {
-          console.error(`Cache revalidation failed in delete helper for path ${p}:`, cacheErr);
-        }
-      }
+      triggerRevalidation();
       return NextResponse.json({ success: true });
     }
     return NextResponse.json({ error: "Gagal menghapus data dari berkas penyimpanan." }, { status: 500 });

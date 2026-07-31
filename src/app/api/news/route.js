@@ -98,6 +98,7 @@ export async function POST(request) {
       await createAuditLog('CREATE_NEWS', `Menerbitkan berita sekolah baru: "${title}"`, request);
       try {
         revalidatePath('/', 'layout');
+        revalidatePath('/berita');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in news POST:", cacheErr);
       }
@@ -180,6 +181,7 @@ export async function PUT(request) {
       await createAuditLog('UPDATE_NEWS', `Memperbarui artikel berita sekolah: "${title}"`, request);
       try {
         revalidatePath('/', 'layout');
+        revalidatePath('/berita');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in news PUT:", cacheErr);
       }
@@ -209,7 +211,7 @@ export async function DELETE(request) {
       prismaModel: prisma.news,
       auditAction: 'DELETE_NEWS',
       getItemName: (n) => n.title,
-      revalidatePaths: ['/']
+      revalidatePaths: ['/', '/berita', '/admin/dashboard']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
