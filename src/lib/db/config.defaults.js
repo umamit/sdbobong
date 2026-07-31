@@ -167,6 +167,20 @@ export function mergeWithDefaults(rawConfig = {}) {
       ...(rawConfig.ppdb_contacts || {}),
     },
   };
+
+  const OFFICIAL_ADDRESS = "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
+
+  if (merged.stats?.page_contents?.profil) {
+    if (!merged.stats.page_contents.profil.alamat_lengkap || merged.stats.page_contents.profil.alamat_lengkap.includes("Jalan Raya Bobong") || merged.stats.page_contents.profil.alamat_lengkap.includes("Desa Bobong")) {
+      merged.stats.page_contents.profil.alamat_lengkap = OFFICIAL_ADDRESS;
+    }
+  }
+  if (merged.ppdb_contacts?.alamat_lengkap) {
+    if (merged.ppdb_contacts.alamat_lengkap.includes("Jalan Raya Bobong") || merged.ppdb_contacts.alamat_lengkap.includes("Desa Bobong")) {
+      merged.ppdb_contacts.alamat_lengkap = OFFICIAL_ADDRESS;
+    }
+  }
+
   return merged;
 }
 

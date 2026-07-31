@@ -263,7 +263,11 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
                 </span>
                 <div>
                   <strong>Alamat Fisik Sekolah:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791</p>
+                  <p style={{ margin: 0, color: '#555' }}>
+                    {contacts.alamat_lengkap && !contacts.alamat_lengkap.includes("Jalan Raya Bobong") && !contacts.alamat_lengkap.includes("Desa Bobong")
+                      ? contacts.alamat_lengkap
+                      : "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}
+                  </p>
                 </div>
               </div>
 
