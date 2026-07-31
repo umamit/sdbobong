@@ -200,7 +200,7 @@ export default function GraduationClient() {
                     <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 'bold', color: '#111' }}>PEMERINTAH KABUPATEN PULAU TALIABU</h4>
                     <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 'bold', color: '#111' }}>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
                     <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--primary-color)' }}>SD NEGERI BOBONG</h2>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#555', fontStyle: 'italic' }}>Alamat: Jalan Raya Bobong, Ibu Kota Kab. Pulau Taliabu, Maluku Utara</p>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#555', fontStyle: 'italic' }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791</p>
                   </div>
                   <img src="/images/logo_sekolah.png" alt="Logo Sekolah" style={{ height: '70px', objectFit: 'contain' }} onError={(e) => e.target.style.display = 'none'} />
                 </div>

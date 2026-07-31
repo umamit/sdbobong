@@ -64,7 +64,7 @@ export default function FormulirPPDBPrint() {
             <h2 style={{ fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.1rem', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1.1 }}>Dinas Pendidikan dan Kebudayaan</h2>
             <h1 style={{ fontSize: '1.25rem', letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--primary-dark)', fontWeight: 800, marginBottom: '0.15rem' }}>SD Negeri Bobong</h1>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 0 }}>NPSN: 60200589 | Akreditasi: B (Baik)</p>
-            <p style={{ fontSize: '0.7rem', marginTop: '0.1rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Maluku Utara</p>
+            <p style={{ fontSize: '0.7rem', marginTop: '0.1rem', color: 'var(--text-muted)', marginBottom: 0 }}>Alamat: Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791</p>
           </div>
           <img src="/images/logo_sekolah.png" alt="Logo Sekolah" className="form-logo" style={{ width: '65px', height: '65px', objectFit: 'contain', marginTop: '-4px', marginBottom: '-4px' }} decoding="async" />
         </div>

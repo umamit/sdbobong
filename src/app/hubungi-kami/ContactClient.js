@@ -263,7 +263,7 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
                 </span>
                 <div>
                   <strong>Alamat Fisik Sekolah:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>Jalan Raya Bobong, Desa Bobong, Kecamatan Taliabu Barat, Kabupaten Pulau Taliabu, Provinsi Maluku Utara, Kode Pos 97791.</p>
+                  <p style={{ margin: 0, color: '#555' }}>Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791</p>
                 </div>
               </div>
 
