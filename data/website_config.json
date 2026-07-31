@@ -187,7 +187,7 @@
                         "month": "Juli 2025"
                     }
                 ],
-                "kurikulum_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1783680285626_Kurikulum_Merdeka.jpg"
+                "kurikulum_image": "/images/logo_kurikulum_merdeka.png"
             },
             "kesiswaan": {
                 "banner_title": "Kesiswaan",
