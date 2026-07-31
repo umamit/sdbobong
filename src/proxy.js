@@ -86,11 +86,13 @@ export async function proxy(request) {
     const isValidToken = await verifyAdminToken(adminToken);
 
     if (isValidToken) {
-      return NextResponse.next({
+      const res = NextResponse.next({
         request: {
           headers: requestHeaders,
         }
       });
+      res.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+      return res;
     }
 
     const { user, response } = await updateSession(request);
