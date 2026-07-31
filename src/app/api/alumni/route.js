@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '../../../lib/prisma';
 import { loadAlumni, createAlumniRecord, deleteAlumniRecord, invalidateAlumniCache } from '../../../lib/database';
 
@@ -66,6 +67,11 @@ export async function POST(request) {
       created_at: new Date().toISOString(),
     });
 
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/alumni');
+    } catch (e) {}
+
     return NextResponse.json({ alumni: newAlumni }, { status: 201 });
   } catch (error) {
     console.error('[alumni POST error]', error);
@@ -99,6 +105,10 @@ export async function PATCH(request) {
       console.error("Prisma update alumni failed, invalidating cache:", e);
     }
     invalidateAlumniCache();
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/alumni');
+    } catch (e) {}
 
     return NextResponse.json({ alumni: updated || { id, status } });
   } catch (error) {
@@ -117,6 +127,10 @@ export async function DELETE(request) {
   try {
     const id = parseInt(idStr, 10);
     await deleteAlumniRecord(id);
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/alumni');
+    } catch (e) {}
     return NextResponse.json({ success: true, message: 'Data alumni berhasil dihapus' });
   } catch (error) {
     console.error('[alumni DELETE error]', error);
