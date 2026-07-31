@@ -116,7 +116,12 @@ export default function Header() {
                 const isSubActive = link.dropdown.some(sub => pathname === sub.href);
                 const isThisDropdownOpen = activeDropdown === idx;
                 return (
-                  <li key={idx} className={`${styles.navItem} ${styles.navItemDropdown} ${isThisDropdownOpen ? styles.active : ''}`}>
+                  <li 
+                    key={idx} 
+                    className={`${styles.navItem} ${styles.navItemDropdown} ${isThisDropdownOpen ? styles.active : ''}`}
+                    onMouseEnter={() => setActiveDropdown(idx)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
                     <button
                       className={`${styles.navLink} ${styles.navDropdownToggle} ${isSubActive ? styles.active : ''}`}
                       onClick={(e) => {
