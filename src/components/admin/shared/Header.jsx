@@ -36,9 +36,37 @@ export default function Header({ onToggleSidebar }) {
           </button>
           <h1 id="page-title">{getPageTitle()}</h1>
         </div>
-        <div className="user-info">
-          <div className="user-avatar">A</div>
-          <span>Administrator</span>
+        <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-view-public"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.4rem 0.85rem',
+              borderRadius: '99px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              backgroundColor: 'rgba(99, 102, 241, 0.08)',
+              color: '#4f46e5',
+              border: '1px solid rgba(99, 102, 241, 0.2)',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease'
+            }}
+            title="Buka Website Publik SD Negeri Bobong di Tab Baru"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            <span>Lihat Website</span>
+          </a>
+          <div className="user-avatar" style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)', color: '#ffffff', fontWeight: 700 }}>A</div>
+          <span style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.9rem' }}>Administrator</span>
         </div>
       </header>
 
