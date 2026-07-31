@@ -11,10 +11,10 @@ function fixSupabaseConnectionString(urlStr) {
     if (url.username && url.username.includes('.')) {
       const parts = url.username.split('.');
       const projectRef = parts[1];
-      if (url.port === '5432' && url.hostname.includes('pooler.supabase.com')) {
-        url.hostname = `db.${projectRef}.supabase.co`;
-        url.username = parts[0];
-      }
+      url.hostname = `db.${projectRef}.supabase.co`;
+      url.username = parts[0];
+      url.port = '5432';
+      url.searchParams.delete('pgbouncer');
     }
     return url.toString();
   } catch (e) {
