@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache } from './core.js';
+import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache, resolveSupabaseMediaUrl } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -36,8 +36,13 @@ export async function loadNews() {
 
   let localNews = [];
   if (fs.existsSync(NEWS_JSON)) {
-    try { localNews = JSON.parse(fs.readFileSync(NEWS_JSON, 'utf-8')).map(n => ({ ...n, images: n.images || (n.image ? [n.image] : []) })); }
-    catch (e) { console.error("Error loading local news:", e); }
+    try {
+      localNews = JSON.parse(fs.readFileSync(NEWS_JSON, 'utf-8')).map(n => ({
+        ...n,
+        image: resolveSupabaseMediaUrl(n.image),
+        images: (n.images || (n.image ? [n.image] : [])).map(resolveSupabaseMediaUrl)
+      }));
+    } catch (e) { console.error("Error loading local news:", e); }
   }
   if (!isSupabaseEnabled()) {
     setCachedNews(localNews);
@@ -70,7 +75,15 @@ export async function loadNews() {
         const localArticle = localNews.find(ln => ln.id === n.id);
         const fallbackImages = n.images ? (typeof n.images === 'string' ? JSON.parse(n.images) : n.images) : (localArticle?.images?.length > 0 ? localArticle.images : (n.image ? [n.image] : []));
         const unpacked = unpackImagesFromContent(n.content, fallbackImages);
-        return { id: n.id, title: n.title, date: n.date, category: n.category, image: n.image, content: unpacked.cleanContent, images: unpacked.images };
+        return {
+          id: n.id,
+          title: n.title,
+          date: n.date,
+          category: n.category,
+          image: resolveSupabaseMediaUrl(n.image),
+          content: unpacked.cleanContent,
+          images: (unpacked.images || []).map(resolveSupabaseMediaUrl)
+        };
       });
       newsList.sort((a, b) => getNewsSortKey(b) - getNewsSortKey(a));
       try { fs.writeFileSync(NEWS_JSON, JSON.stringify(newsList, null, 4), 'utf-8'); } catch (e) {}

@@ -277,3 +277,15 @@ export function formatBytes(bytes, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals < 0 ? 0 : decimals)) + ' ' + sizes[i];
 }
+
+export function resolveSupabaseMediaUrl(url) {
+  if (!url || typeof url !== 'string') return url;
+  const activeUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+  if (!activeUrl) return url;
+
+  const cleanActiveUrl = activeUrl.replace(/\/$/, '');
+  if (url.includes('.supabase.co/storage/v1/object/public/')) {
+    return url.replace(/https:\/\/[a-z0-9-]+\.supabase\.co/gi, cleanActiveUrl);
+  }
+  return url;
+}

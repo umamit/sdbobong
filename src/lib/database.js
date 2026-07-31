@@ -29,6 +29,7 @@ export {
   formatBytes,
   getCachedConfig,
   setCachedConfig,
+  resolveSupabaseMediaUrl,
 } from './db/core.js';
 
 // Config: website config, seeding status
