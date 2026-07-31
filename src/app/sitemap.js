@@ -1,22 +1,26 @@
-export default async function sitemap() {
+import { prisma } from '../lib/prisma';
+
+export async function sitemap() {
   const baseUrl = 'https://sdnegeribobong.sch.id';
   const now = new Date();
 
   // =========================================================================
   // Rute halaman publik resmi SD Negeri Bobong (Next.js App Router)
-  // JANGAN masukkan: /admin, /guru, /login, /ppdb-online/sukses, /api/*
+  // JANGAN masukkan: /admin, /guru/login, /guru/dashboard, /login, /api/*
   // =========================================================================
 
   const pages = [
     // ── Halaman Utama & Profil ─────────────────────────────────────────────
     { route: '',                        priority: 1.0, freq: 'weekly'  }, // Beranda
     { route: '/profil',                 priority: 0.9, freq: 'monthly' }, // Profil Sekolah
+    { route: '/guru',                   priority: 0.8, freq: 'monthly' }, // Daftar Guru & Staf
     { route: '/akademik',               priority: 0.8, freq: 'monthly' }, // Info Akademik
     { route: '/akademik/kalender',      priority: 0.8, freq: 'monthly' }, // Kalender Pendidikan
     { route: '/kesiswaan',              priority: 0.8, freq: 'monthly' }, // Kesiswaan & Ekstrakurikuler
 
     // ── Konten Dinamis & Informasi ───────────────────────────────────────
     { route: '/berita',                 priority: 0.8, freq: 'daily'   }, // Berita & Kegiatan
+    { route: '/alumni',                 priority: 0.8, freq: 'weekly'  }, // Portal Alumni
     { route: '/galeri',                 priority: 0.8, freq: 'weekly'  }, // Galeri Dokumentasi
 
     // ── PPDB ──────────────────────────────────────────────────────────────
@@ -34,10 +38,28 @@ export default async function sitemap() {
     { route: '/buku-tamu',              priority: 0.7, freq: 'weekly'  }, // Buku Tamu Digital
   ];
 
-  return pages.map(({ route, priority, freq }) => ({
+  const staticEntries = pages.map(({ route, priority, freq }) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,
     changeFrequency: freq,
     priority,
   }));
+
+  // Fetch dynamic news articles for sitemap
+  let newsEntries = [];
+  try {
+    const newsList = await prisma.news.findMany({ select: { id: true, date: true } });
+    newsEntries = newsList.map(n => ({
+      url: `${baseUrl}/berita/${n.id}`,
+      lastModified: n.date ? new Date(n.date) : now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }));
+  } catch (e) {
+    console.error("Error generating dynamic news sitemap entries:", e);
+  }
+
+  return [...staticEntries, ...newsEntries];
 }
+
+export default sitemap;
