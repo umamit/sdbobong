@@ -118,7 +118,17 @@ export function invalidateTeachersCache() {
 }
 
 export function isSupabaseEnabled() {
-  if (!supabase) return false;
+  const hasDb = !!(
+    supabase ||
+    process.env.DATABASE_URL ||
+    process.env.DIRECT_URL ||
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.POSTGRES_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.SUPABASE_URL
+  );
+  if (!hasDb) return false;
   if (_configCache.data && _configCache.data.force_local_cache === true) return false;
   try {
     if (fs.existsSync(WEBSITE_CONFIG_JSON)) {
