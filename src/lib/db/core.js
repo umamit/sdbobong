@@ -185,12 +185,13 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
   const baseName = fileObj.name.replace(/[^a-zA-Z0-9.-]/g, '_').replace(/\.[^.]+$/, '');
   const uniqueFilename = `${Date.now()}_${baseName}.${finalExtension}`;
 
-  if (isSupabaseEnabled()) {
+  if (isSupabaseEnabled() && supabase) {
     try {
       const { error } = await supabase.storage.from(bucketName).upload(uniqueFilename, finalBuffer, { contentType: finalMimeType, upsert: true });
-      if (error) throw error;
-      const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(uniqueFilename);
-      return publicUrlData.publicUrl;
+      if (!error) {
+        const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(uniqueFilename);
+        if (publicUrlData?.publicUrl) return publicUrlData.publicUrl;
+      }
     } catch (e) { console.error(`Supabase Storage upload to ${bucketName} failed:`, e.message || e); }
   }
   try {
@@ -199,8 +200,8 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
     fs.writeFileSync(path.join(uploadDir, uniqueFilename), finalBuffer);
     return `/images/uploads/${uniqueFilename}`;
   } catch (e) {
-    console.error("Local file save failed (Read-Only FS on Vercel):", e.message);
-    if (finalBuffer && finalBuffer.length <= 15 * 1024 * 1024) {
+    console.error("Local file save fallback to Base64 (Vercel Serverless):", e.message);
+    if (finalBuffer && finalBuffer.length > 0) {
       return `data:${finalMimeType};base64,${finalBuffer.toString('base64')}`;
     }
     return "ERROR";
