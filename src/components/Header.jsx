@@ -53,6 +53,7 @@ export default function Header() {
       dropdown: [
         { href: '/akademik', label: 'Informasi Akademik' },
         { href: '/akademik/kalender', label: 'Kalender Pendidikan' },
+        { href: 'https://presensi.sdnegeribobong.sch.id', label: 'Presensi Online (Kehadiran)', external: true },
         { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
         { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
         { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' }
@@ -163,16 +164,31 @@ export default function Header() {
                             const isChildActive = pathname === subLink.href;
                             return (
                               <li key={subLink.href} className="dropdown-item">
-                                <Link
-                                  href={subLink.href}
-                                  className={`${styles.dropdownLink} ${isChildActive ? styles.active : ''}`}
-                                  onClick={() => {
-                                    setActiveDropdown(null);
-                                    setIsOpen(false);
-                                  }}
-                                >
-                                  {subLink.label}
-                                </Link>
+                                {subLink.external ? (
+                                  <a
+                                    href={subLink.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className={styles.dropdownLink}
+                                    onClick={() => {
+                                      setActiveDropdown(null);
+                                      setIsOpen(false);
+                                    }}
+                                  >
+                                    {subLink.label} ↗
+                                  </a>
+                                ) : (
+                                  <Link
+                                    href={subLink.href}
+                                    className={`${styles.dropdownLink} ${isChildActive ? styles.active : ''}`}
+                                    onClick={() => {
+                                      setActiveDropdown(null);
+                                      setIsOpen(false);
+                                    }}
+                                  >
+                                    {subLink.label}
+                                  </Link>
+                                )}
                               </li>
                             );
                           })}

@@ -216,6 +216,28 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
             <span className="profile-name">{initialTeacher.name}</span>
             <span className="profile-nip">NIP: {initialTeacher.nip || '-'}</span>
           </div>
+          <a
+            href="https://presensi.sdnegeribobong.sch.id"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#0284c7',
+              color: '#ffffff',
+              padding: '0.45rem 0.9rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              boxShadow: '0 2px 6px rgba(2, 132, 199, 0.3)',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 11"/></svg>
+            <span>Presensi Online ↗</span>
+          </a>
           <button className="btn-guru-logout" onClick={handleLogoutClick} title="Keluar dari sistem">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

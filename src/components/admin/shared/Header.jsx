@@ -38,6 +38,30 @@ export default function Header({ onToggleSidebar }) {
         </div>
         <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <a
+            href="https://presensi.sdnegeribobong.sch.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-view-presensi"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.4rem 0.85rem',
+              borderRadius: '99px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              backgroundColor: 'rgba(2, 132, 199, 0.08)',
+              color: '#0284c7',
+              border: '1px solid rgba(2, 132, 199, 0.2)',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease'
+            }}
+            title="Buka Portal Presensi Digital di Tab Baru"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 11"/></svg>
+            <span>Presensi ↗</span>
+          </a>
+          <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
