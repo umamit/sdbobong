@@ -4,31 +4,11 @@ import pg from 'pg';
 
 const globalForPrisma = globalThis;
 
-function fixSupabaseConnectionString(urlStr) {
-  if (!urlStr) return urlStr;
-  try {
-    const url = new URL(urlStr);
-    if (url.username && url.username.includes('.')) {
-      const parts = url.username.split('.');
-      const projectRef = parts[1];
-      url.hostname = `db.${projectRef}.supabase.co`;
-      url.username = parts[0];
-      url.port = '5432';
-      url.searchParams.delete('pgbouncer');
-    }
-    return url.toString();
-  } catch (e) {
-    return urlStr;
-  }
-}
-
-const rawConnectionString = process.env.DIRECT_URL 
+const connectionString = process.env.DIRECT_URL 
   || process.env.POSTGRES_URL_NON_POOLING 
   || process.env.DATABASE_URL 
   || process.env.POSTGRES_PRISMA_URL 
   || process.env.POSTGRES_URL;
-
-const connectionString = fixSupabaseConnectionString(rawConnectionString);
 
 const pool = connectionString
   ? new pg.Pool({
