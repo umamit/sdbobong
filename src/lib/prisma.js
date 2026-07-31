@@ -4,7 +4,11 @@ import pg from 'pg';
 
 const globalForPrisma = globalThis;
 
-const connectionString = process.env.DIRECT_URL || process.env.DATABASE_URL;
+const connectionString = process.env.DIRECT_URL 
+  || process.env.POSTGRES_URL_NON_POOLING 
+  || process.env.DATABASE_URL 
+  || process.env.POSTGRES_PRISMA_URL 
+  || process.env.POSTGRES_URL;
 
 const pool = connectionString
   ? new pg.Pool({
