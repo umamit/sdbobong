@@ -96,15 +96,22 @@ export async function loadWebConfig() {
     } catch (e) { console.error("Error loading local web config:", e); }
   }
 
-  if (isSupabaseEnabled() && supabase) {
+  if (isSupabaseEnabled()) {
     try {
-      const { data, error } = await supabase
-        .from('config_sdn_bobong')
-        .select('*')
-        .eq('id', 'global_config')
-        .maybeSingle();
+      let data = null;
+      if (prisma) {
+        data = await prisma.config.findUnique({ where: { id: "global_config" } });
+      }
+      if (!data && supabase) {
+        const res = await supabase
+          .from('config_sdn_bobong')
+          .select('*')
+          .eq('id', 'global_config')
+          .maybeSingle();
+        data = res.data;
+      }
 
-      if (!error && data) {
+      if (data) {
         const dbConfig = {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
           marquee_speed: data.stats?.marquee_speed || data.marquee_speed || localConfig.marquee_speed || 40,
@@ -122,7 +129,7 @@ export async function loadWebConfig() {
         return safeDbConfig;
       }
     } catch (e) {
-      console.error("Error loading web config from Supabase REST:", e.message || e);
+      console.error("Error loading web config from database:", e.message || e);
     }
   }
 
@@ -148,7 +155,7 @@ export async function saveWebConfig(config) {
   try { fs.writeFileSync(WEBSITE_CONFIG_JSON, JSON.stringify(config, null, 4), 'utf-8'); localSaved = true; }
   catch (e) { console.error("Error saving config locally:", e); }
 
-  if (isSupabaseEnabled() && supabase) {
+  if (isSupabaseEnabled()) {
     try {
       const payload = {
         id: "global_config",
@@ -158,17 +165,27 @@ export async function saveWebConfig(config) {
         force_local_cache: config.force_local_cache === true,
         downloads: config.downloads || [],
         faqs: config.faqs || [],
-        gallery: config.gallery || []
+        gallery: config.gallery || [],
+        popup_announcement: config.popup_announcement || null
       };
 
-      const { error } = await supabase
-        .from('config_sdn_bobong')
-        .upsert(payload, { onConflict: 'id' });
+      if (prisma) {
+        await prisma.config.upsert({
+          where: { id: "global_config" },
+          update: payload,
+          create: payload
+        });
+        return true;
+      } else if (supabase) {
+        const { error } = await supabase
+          .from('config_sdn_bobong')
+          .upsert(payload, { onConflict: 'id' });
 
-      if (error) throw error;
-      return true;
+        if (error) throw error;
+        return true;
+      }
     } catch (e) {
-      console.error("Error saving config to Supabase REST:", e.message || e);
+      console.error("Error saving config to Database:", e.message || e);
       return localSaved;
     }
   }
