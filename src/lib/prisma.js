@@ -22,7 +22,7 @@ const pool = connectionString
 
 const adapter = pool ? new PrismaPg(pool) : null;
 
-export const prisma = globalForPrisma.prisma
+const basePrisma = globalForPrisma.prisma
   || (adapter
       ? new PrismaClient({
           adapter,
@@ -30,4 +30,70 @@ export const prisma = globalForPrisma.prisma
         })
       : new PrismaClient());
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+export const prisma = basePrisma.$extends({
+  result: {
+    student: {
+      anonymizedName: {
+        needs: { name: true },
+        compute(student) {
+          if (!student.name) return "***";
+          const trimmed = student.name.trim();
+          if (trimmed.length <= 2) return trimmed + "***";
+          return trimmed.substring(0, 2) + "***";
+        }
+      }
+    },
+    news: {
+      formattedDate: {
+        needs: { date: true },
+        compute(news) {
+          if (!news.date) return "";
+          try {
+            const dt = new Date(news.date);
+            return isNaN(dt.getTime()) ? news.date : dt.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+          } catch (e) { return news.date; }
+        }
+      }
+    }
+  },
+  query: {
+    news: {
+      async findMany({ args, query }) {
+        args.where = { deletedAt: null, ...(args.where || {}) };
+        return query(args);
+      },
+      async delete({ args, query }) {
+        return basePrisma.news.update({
+          where: args.where,
+          data: { deletedAt: new Date() }
+        });
+      }
+    },
+    teacher: {
+      async findMany({ args, query }) {
+        args.where = { deletedAt: null, ...(args.where || {}) };
+        return query(args);
+      },
+      async delete({ args, query }) {
+        return basePrisma.teacher.update({
+          where: args.where,
+          data: { deletedAt: new Date() }
+        });
+      }
+    },
+    student: {
+      async findMany({ args, query }) {
+        args.where = { deletedAt: null, ...(args.where || {}) };
+        return query(args);
+      },
+      async delete({ args, query }) {
+        return basePrisma.student.update({
+          where: args.where,
+          data: { deletedAt: new Date() }
+        });
+      }
+    }
+  }
+});
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = basePrisma;

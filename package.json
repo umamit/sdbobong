@@ -1,12 +1,17 @@
 {
   "name": "sdn-bobong-nextjs",
-  "version": "2.73.0",
+  "version": "2.74.0",
   "private": true,
   "scripts": {
     "prebuild": "node scripts/check-print-safety.mjs && node scripts/check-file-lengths.mjs && prisma generate",
     "dev": "next dev -p 5001",
     "build": "next build",
-    "start": "next start -p 5001"
+    "start": "next start -p 5001",
+    "db:studio": "prisma studio",
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

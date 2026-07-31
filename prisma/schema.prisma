@@ -21,31 +21,33 @@ model Config {
 }
 
 model News {
-  id       String @id
-  title    String
-  date     String
-  category String
-  image    String
-  content  String
-  images   Json?  // array of string
+  id        String    @id
+  title     String
+  date      String
+  category  String
+  image     String
+  content   String
+  images    Json?     // array of string
+  deletedAt DateTime?
 
   @@map("news_sdn_bobong")
 }
 
 model Teacher {
-  id       String  @id
-  name     String
-  role     String
-  details  String
-  status   String
-  image    String
-  nip      String?
+  id        String    @id
+  name      String
+  role      String
+  details   String
+  status    String
+  image     String
+  nip       String?
+  deletedAt DateTime?
 
   @@map("teachers_sdn_bobong")
 }
 
 model Student {
-  id           String  @id
+  id           String    @id
   nisn         String
   nis          String
   name         String
@@ -57,6 +59,7 @@ model Student {
   parent_name  String
   parent_phone String
   status       String
+  deletedAt    DateTime?
 
   @@map("students_sdn_bobong")
 }
