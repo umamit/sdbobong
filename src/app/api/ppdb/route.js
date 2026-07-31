@@ -471,6 +471,8 @@ export async function DELETE(request) {
       await createAuditLog('DELETE_PPDB_RECORD', `Menghapus pendaftar PPDB "${targetName || 'Tak Dikenal'}" (NIK/ID: ${targetNik || id})`, request);
       try {
         revalidatePath('/', 'layout');
+        revalidatePath('/ppdb');
+        revalidatePath('/formulir-ppdb');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in ppdb DELETE:", cacheErr);
       }

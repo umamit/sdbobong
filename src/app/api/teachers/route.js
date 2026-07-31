@@ -286,7 +286,7 @@ export async function DELETE(request) {
       prismaModel: prisma.teacher,
       auditAction: 'DELETE_TEACHER',
       getItemName: (t) => `${t.name}${t.role ? ` (${t.role})` : ''}`,
-      revalidatePaths: ['/']
+      revalidatePaths: ['/', '/guru', '/profil', '/admin/dashboard']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });

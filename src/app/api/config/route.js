@@ -555,6 +555,15 @@ export async function POST(request) {
 
     try {
       revalidatePath('/', 'layout');
+      revalidatePath('/profil');
+      revalidatePath('/akademik');
+      revalidatePath('/kesiswaan');
+      revalidatePath('/ppdb');
+      revalidatePath('/berita');
+      revalidatePath('/galeri');
+      revalidatePath('/unduh');
+      revalidatePath('/alumni');
+      revalidatePath('/admin/dashboard');
     } catch (cacheErr) {
       console.error("Cache revalidation failed in config route:", cacheErr);
     }

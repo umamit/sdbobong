@@ -186,7 +186,7 @@ export async function DELETE(request) {
       prismaModel: prisma.graduation,
       auditAction: 'DELETE_GRADUATE',
       getItemName: (g) => `${g.name}${g.nisn ? ` (NISN: ${g.nisn})` : ''}`,
-      revalidatePaths: ['/kelulusan', '/akademik/kelulusan']
+      revalidatePaths: ['/', '/kelulusan', '/akademik/kelulusan', '/admin/dashboard']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });

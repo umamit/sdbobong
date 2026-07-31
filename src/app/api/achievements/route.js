@@ -133,7 +133,7 @@ export async function DELETE(request) {
       prismaModel: prisma.achievement,
       auditAction: 'DELETE_ACHIEVEMENT',
       getItemName: (a) => `${a.title}${a.level ? ` (${a.level})` : ''}`,
-      revalidatePaths: ['/']
+      revalidatePaths: ['/', '/kesiswaan', '/admin/dashboard']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });
