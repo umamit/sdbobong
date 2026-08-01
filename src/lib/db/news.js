@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache, resolveSupabaseMediaUrl } from './core.js';
+import { supabase, isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache, resolveSupabaseMediaUrl } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -49,7 +49,30 @@ export async function loadNews() {
     return localNews;
   }
   try {
-    const supabaseNews = await prisma.news.findMany();
+    let supabaseNews = null;
+    try {
+      supabaseNews = await prisma.news.findMany({
+        select: {
+          id: true,
+          title: true,
+          date: true,
+          category: true,
+          image: true,
+          content: true,
+          images: true
+        }
+      });
+    } catch (prismaErr) {
+      console.warn("Prisma findMany news failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
+      if (supabase) {
+        try {
+          const res = await supabase.from('news_sdn_bobong').select('*');
+          supabaseNews = res.data;
+        } catch (subErr) {
+          console.error("Supabase REST load news failed:", subErr);
+        }
+      }
+    }
     const newsSeeded = await isTableSeeded("news");
     if ((!supabaseNews || supabaseNews.length === 0) && localNews.length > 0 && !newsSeeded) {
       for (const article of localNews) {

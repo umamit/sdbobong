@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, STUDENTS_JSON } from './core.js';
+import { supabase, isSupabaseEnabled, STUDENTS_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -11,7 +11,35 @@ export async function loadStudents() {
   }
   if (!isSupabaseEnabled()) return localStudents;
   try {
-    const dbStudents = await prisma.student.findMany();
+    let dbStudents = null;
+    try {
+      dbStudents = await prisma.student.findMany({
+        select: {
+          id: true,
+          nisn: true,
+          nis: true,
+          name: true,
+          class: true,
+          gender: true,
+          birth_place: true,
+          birth_date: true,
+          address: true,
+          parent_name: true,
+          parent_phone: true,
+          status: true
+        }
+      });
+    } catch (prismaErr) {
+      console.warn("Prisma findMany students failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
+      if (supabase) {
+        try {
+          const res = await supabase.from('students_sdn_bobong').select('*');
+          dbStudents = res.data;
+        } catch (subErr) {
+          console.error("Supabase REST load students failed:", subErr);
+        }
+      }
+    }
     if (dbStudents) {
       const studentsSeeded = await isTableSeeded("students");
       if (dbStudents.length === 0 && localStudents.length > 0 && !studentsSeeded) {

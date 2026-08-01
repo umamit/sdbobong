@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, TEACHERS_JSON, getFreshCachedTeachers, setCachedTeachers, invalidateTeachersCache } from './core.js';
+import { supabase, isSupabaseEnabled, TEACHERS_JSON, getFreshCachedTeachers, setCachedTeachers, invalidateTeachersCache } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -47,7 +47,30 @@ export async function loadTeachers(includePassword = false) {
   }
 
   try {
-    const supabaseTeachers = await prisma.teacher.findMany();
+    let supabaseTeachers = null;
+    try {
+      supabaseTeachers = await prisma.teacher.findMany({
+        select: {
+          id: true,
+          name: true,
+          role: true,
+          details: true,
+          status: true,
+          image: true,
+          nip: true
+        }
+      });
+    } catch (prismaErr) {
+      console.warn("Prisma findMany teachers failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
+      if (supabase) {
+        try {
+          const res = await supabase.from('teachers_sdn_bobong').select('*');
+          supabaseTeachers = res.data;
+        } catch (subErr) {
+          console.error("Supabase REST load teachers failed:", subErr);
+        }
+      }
+    }
     const teachersSeeded = await isTableSeeded("teachers");
     if ((!supabaseTeachers || supabaseTeachers.length === 0) && localTeachers.length > 0 && !teachersSeeded) {
       const sortedLocal = sortTeachersList(localTeachers);
