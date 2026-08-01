@@ -18,21 +18,22 @@ function getDirSize(dirPath) {
 
 export async function getStorageUsage() {
   let supabaseSize = 0, localSize = 0, supabaseError = null;
-  const supabaseActive = isSupabaseEnabled();
+  const supabaseActive = isSupabaseEnabled() && !!supabase && !!supabase.storage;
   try { localSize = getDirSize(path.join(process.cwd(), 'public', 'images', 'uploads')); }
   catch (e) { console.error("Failed to calculate local storage size:", e); }
-  if (supabaseActive) {
+  if (supabaseActive && supabase?.storage) {
     try {
       let bucketsList = ['teachers', 'news'];
       try { const { data: buckets, error } = await supabase.storage.listBuckets(); if (!error && buckets?.length > 0) bucketsList = buckets.map(b => b.name); } catch (e) {}
       for (const bucket of bucketsList) {
         try {
+          if (!supabase?.storage) break;
           const { data: files, error } = await supabase.storage.from(bucket).list('', { limit: 1000 });
-          if (error) { console.error(`Error listing bucket ${bucket}:`, error); continue; }
+          if (error) continue;
           if (files) { for (const file of files) supabaseSize += file.metadata?.size || file.size || 0; }
-        } catch (e) { console.error(`Failed to list files in bucket ${bucket}:`, e); }
+        } catch (e) {}
       }
-    } catch (e) { console.error("Failed to calculate Supabase storage size:", e); supabaseError = e.message || String(e); }
+    } catch (e) { supabaseError = e.message || String(e); }
   }
   const totalSize = supabaseActive ? supabaseSize : localSize;
   return { supabaseSize, localSize, supabaseFormatted: formatBytes(supabaseSize), localFormatted: formatBytes(localSize), totalSize, totalFormatted: formatBytes(totalSize), isSupabaseActive: supabaseActive, error: supabaseError };
