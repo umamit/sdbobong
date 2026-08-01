@@ -149,12 +149,14 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+    padding: 8px 0; /* Memberikan ruang ekstra di atas & bawah agar hover tidak terpotong */
     mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 
 .marqueeTrack {
     display: flex;
+    align-items: center;
     width: max-content;
     animation: continuousMarquee 28s linear infinite;
     will-change: transform;
@@ -168,7 +170,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    padding-right: var(--space-sm);
+    padding: 4px var(--space-sm) 4px 0;
     flex-shrink: 0;
 }
 
@@ -203,9 +205,9 @@
 }
 
 .affiliationItem:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .affiliationLogo {
