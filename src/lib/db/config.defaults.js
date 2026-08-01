@@ -101,21 +101,21 @@ export const DEFAULT_DOWNLOADS = [
   { id: "dl-2", title: "Kalender Pendidikan & Akademik TA 2026/2027", category: "Akademik", fileUrl: "/files/kalender-akademik-2026.pdf", date: "2026-05-15" },
   { id: "dl-3", title: "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)", category: "PPDB", fileUrl: "/formulir-ppdb", date: "2026-05-01" },
   
-  // Katalog Buku SIBI Kemendikbud (Kurikulum Merdeka)
-  { id: "sibi-101", title: "Buku Siswa Bahasa Indonesia: Aku Bisa! Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_Bahasa_Indonesia_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-102", title: "Buku Siswa Matematika Volume 1 Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Matematika", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_Matematika_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-103", title: "Buku Siswa Pendidikan Agama Islam & Budi Pekerti Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Agama Islam", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_PAI_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-201", title: "Buku Siswa Bahasa Indonesia: Keluargaku Unik Kelas 2", category: "Buku SIBI", kelas: "Kelas 2", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas2_Bahasa_Indonesia_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-202", title: "Buku Siswa Matematika Volume 1 Kelas 2", category: "Buku SIBI", kelas: "Kelas 2", subject: "Matematika", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas2_Matematika_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-301", title: "Buku Siswa Bahasa Indonesia: Kawan Seiring Kelas 3", category: "Buku SIBI", kelas: "Kelas 3", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas3_Bahasa_Indonesia_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-302", title: "Buku Siswa IPAS Kelas 3", category: "Buku SIBI", kelas: "Kelas 3", subject: "IPAS", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas3_IPAS_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-401", title: "Buku Siswa IPAS Kelas 4", category: "Buku SIBI", kelas: "Kelas 4", subject: "IPAS", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_IPAS_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-402", title: "Buku Siswa Matematika Volume 1 Kelas 4", category: "Buku SIBI", kelas: "Kelas 4", subject: "Matematika", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_Matematika_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-403", title: "Buku Siswa My Next Words Grade 4 (Bahasa Inggris)", category: "Buku SIBI", kelas: "Kelas 4", subject: "Bahasa Inggris", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_Bahasa_Inggris_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-501", title: "Buku Siswa IPAS Kelas 5", category: "Buku SIBI", kelas: "Kelas 5", subject: "IPAS", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas5_IPAS_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-502", title: "Buku Siswa Matematika Volume 1 Kelas 5", category: "Buku SIBI", kelas: "Kelas 5", subject: "Matematika", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas5_Matematika_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-601", title: "Buku Siswa IPAS Kelas 6", category: "Buku SIBI", kelas: "Kelas 6", subject: "IPAS", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas6_IPAS_BS.pdf", date: "2026-05-01" },
-  { id: "sibi-602", title: "Buku Siswa Bahasa Indonesia: Bergerak Bersama Kelas 6", category: "Buku SIBI", kelas: "Kelas 6", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemdikbud.go.id/storage/pdf/Kelas6_Bahasa_Indonesia_BS.pdf", date: "2026-05-01" }
+  // Katalog Buku SIBI Kemendikdasmen (Kurikulum Merdeka)
+  { id: "sibi-101", title: "Buku Siswa Bahasa Indonesia: Aku Bisa! Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-102", title: "Buku Siswa Matematika Volume 1 Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Matematika", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-103", title: "Buku Siswa Pendidikan Agama Islam & Budi Pekerti Kelas 1", category: "Buku SIBI", kelas: "Kelas 1", subject: "Agama Islam", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-201", title: "Buku Siswa Bahasa Indonesia: Keluargaku Unik Kelas 2", category: "Buku SIBI", kelas: "Kelas 2", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-202", title: "Buku Siswa Matematika Volume 1 Kelas 2", category: "Buku SIBI", kelas: "Kelas 2", subject: "Matematika", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-301", title: "Buku Siswa Bahasa Indonesia: Kawan Seiring Kelas 3", category: "Buku SIBI", kelas: "Kelas 3", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-302", title: "Buku Siswa IPAS Kelas 3", category: "Buku SIBI", kelas: "Kelas 3", subject: "IPAS", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-401", title: "Buku Siswa IPAS Kelas 4", category: "Buku SIBI", kelas: "Kelas 4", subject: "IPAS", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-402", title: "Buku Siswa Matematika Volume 1 Kelas 4", category: "Buku SIBI", kelas: "Kelas 4", subject: "Matematika", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-403", title: "Buku Siswa My Next Words Grade 4 (Bahasa Inggris)", category: "Buku SIBI", kelas: "Kelas 4", subject: "Bahasa Inggris", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-501", title: "Buku Siswa IPAS Kelas 5", category: "Buku SIBI", kelas: "Kelas 5", subject: "IPAS", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-502", title: "Buku Siswa Matematika Volume 1 Kelas 5", category: "Buku SIBI", kelas: "Kelas 5", subject: "Matematika", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-601", title: "Buku Siswa IPAS Kelas 6", category: "Buku SIBI", kelas: "Kelas 6", subject: "IPAS", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" },
+  { id: "sibi-602", title: "Buku Siswa Bahasa Indonesia: Bergerak Bersama Kelas 6", category: "Buku SIBI", kelas: "Kelas 6", subject: "Bahasa Indonesia", fileUrl: "https://buku.kemendikdasmen.go.id/katalog", date: "2026-05-01" }
 ];
 
 export const DEFAULT_CONFIG = {

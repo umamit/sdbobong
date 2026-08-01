@@ -189,7 +189,31 @@ export default function DownloadClient({ initialDownloads }) {
 
                {/* Action Button */}
               <div style={{ marginTop: 'auto' }}>
-                {doc.fileUrl && doc.fileUrl.startsWith('/') && !doc.fileUrl.includes('.') ? (
+                {doc.category === 'Buku SIBI' || (doc.fileUrl && doc.fileUrl.includes('kemendikdasmen.go.id')) ? (
+                  <a
+                    href={doc.fileUrl || 'https://buku.kemendikdasmen.go.id/katalog'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      backgroundColor: '#0284c7',
+                      borderColor: '#0284c7',
+                      color: '#ffffff'
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    Buka &amp; Unduh di SIBI ↗
+                  </a>
+                ) : doc.fileUrl && doc.fileUrl.startsWith('/') && !doc.fileUrl.includes('.') ? (
                   <a
                     href={doc.fileUrl}
                     target="_blank"

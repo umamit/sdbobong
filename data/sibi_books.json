@@ -6,8 +6,7 @@
     "kelas": "Kelas 1",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/1",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_Bahasa_Indonesia_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -17,8 +16,7 @@
     "kelas": "Kelas 1",
     "subject": "Matematika",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/2",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_Matematika_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -28,8 +26,7 @@
     "kelas": "Kelas 1",
     "subject": "Agama Islam",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/3",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas1_PAI_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -39,8 +36,7 @@
     "kelas": "Kelas 2",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/4",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas2_Bahasa_Indonesia_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -50,8 +46,7 @@
     "kelas": "Kelas 2",
     "subject": "Matematika",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/5",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas2_Matematika_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -61,8 +56,7 @@
     "kelas": "Kelas 3",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/6",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas3_Bahasa_Indonesia_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -72,8 +66,7 @@
     "kelas": "Kelas 3",
     "subject": "IPAS",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/7",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas3_IPAS_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -83,8 +76,7 @@
     "kelas": "Kelas 4",
     "subject": "IPAS",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/8",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_IPAS_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -94,8 +86,7 @@
     "kelas": "Kelas 4",
     "subject": "Matematika",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/9",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_Matematika_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -105,8 +96,7 @@
     "kelas": "Kelas 4",
     "subject": "Bahasa Inggris",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/10",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas4_Bahasa_Inggris_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -116,8 +106,7 @@
     "kelas": "Kelas 5",
     "subject": "IPAS",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/11",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas5_IPAS_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -127,8 +116,7 @@
     "kelas": "Kelas 5",
     "subject": "Matematika",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/12",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas5_Matematika_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -138,8 +126,7 @@
     "kelas": "Kelas 6",
     "subject": "IPAS",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/13",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas6_IPAS_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
   {
@@ -149,8 +136,7 @@
     "kelas": "Kelas 6",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
-    "fileUrl": "https://buku.kemdikbud.go.id/catalogs/14",
-    "downloadPdfUrl": "https://buku.kemdikbud.go.id/storage/pdf/Kelas6_Bahasa_Indonesia_BS.pdf",
+    "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   }
 ]
