@@ -20,8 +20,30 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
+  metadataBase: new URL('https://www.sdnegeribobong.sch.id'),
   title: 'SD Negeri Bobong - Berakhlak Mulia, Cerdas, dan Berbudaya',
   description: 'Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.',
+  applicationName: 'SD Negeri Bobong',
+  keywords: ['SD Negeri Bobong', 'SDN Bobong', 'Sekolah Dasar Bobong', 'Pulau Taliabu', 'Pendidikan Taliabu', 'PPDB SD Bobong'],
+  authors: [{ name: 'SD Negeri Bobong' }],
+  creator: 'SD Negeri Bobong',
+  publisher: 'SD Negeri Bobong',
+  openGraph: {
+    title: 'SD Negeri Bobong - Berakhlak Mulia, Cerdas, dan Berbudaya',
+    description: 'Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara. Media informasi PPDB online, pengumuman, berita kegiatan, dan portal akademik.',
+    url: 'https://www.sdnegeribobong.sch.id',
+    siteName: 'SD Negeri Bobong',
+    images: [
+      {
+        url: '/images/logo_sekolah.png',
+        width: 800,
+        height: 800,
+        alt: 'Logo SD Negeri Bobong',
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
   icons: {
     icon: [
       { url: '/favicon.png', sizes: '192x192', type: 'image/png' },
@@ -394,8 +416,23 @@ export default async function RootLayout({ children }) {
         <meta property="og:site_name" content="SD Negeri Bobong" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SD Negeri Bobong - Cerdas, Berkarakter, Mulia" />
-        <meta name="twitter:description" content="Website Resmi SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara." />
+        <meta name="twitter:description" content="Website Resmi SD Negeri Bobong, Kabupaten Pulau Taliabu." />
         <meta name="twitter:image" content="https://www.sdnegeribobong.sch.id/images/logo_sekolah.png" />
+        
+        {/* Google Official Site Name Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "SD Negeri Bobong",
+              "alternateName": ["SDN Bobong", "SD Negeri Bobong Taliabu", "SDN Bobong Taliabu"],
+              "url": "https://www.sdnegeribobong.sch.id"
+            })
+          }}
+        />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" />
