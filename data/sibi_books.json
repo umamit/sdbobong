@@ -6,6 +6,7 @@
     "kelas": "Kelas 1",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_indo_k1.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -16,6 +17,7 @@
     "kelas": "Kelas 1",
     "subject": "Matematika",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_mat_k1.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -26,6 +28,7 @@
     "kelas": "Kelas 1",
     "subject": "Agama Islam",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_pai_k1.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -36,6 +39,7 @@
     "kelas": "Kelas 2",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_indo_k2.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -46,6 +50,7 @@
     "kelas": "Kelas 2",
     "subject": "Matematika",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_mat_k2.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -56,6 +61,7 @@
     "kelas": "Kelas 3",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_indo_k3.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -66,6 +72,7 @@
     "kelas": "Kelas 3",
     "subject": "IPAS",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_ipas_k3.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -76,6 +83,7 @@
     "kelas": "Kelas 4",
     "subject": "IPAS",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_ipas_k4.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -86,6 +94,7 @@
     "kelas": "Kelas 4",
     "subject": "Matematika",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_mat_k4.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -96,6 +105,7 @@
     "kelas": "Kelas 4",
     "subject": "Bahasa Inggris",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_inggris_k4.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -106,6 +116,7 @@
     "kelas": "Kelas 5",
     "subject": "IPAS",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_ipas_k5.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -116,6 +127,7 @@
     "kelas": "Kelas 5",
     "subject": "Matematika",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_mat_k5.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -126,6 +138,7 @@
     "kelas": "Kelas 6",
     "subject": "IPAS",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_ipas_k6.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   },
@@ -136,6 +149,7 @@
     "kelas": "Kelas 6",
     "subject": "Bahasa Indonesia",
     "type": "Buku Siswa",
+    "coverUrl": "https://ik.imagekit.io/pusatperbukuan/catalogs/cover_bs_indo_k6.png",
     "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
     "date": "2026-05-01"
   }

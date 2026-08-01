@@ -176,6 +176,13 @@ export default function DownloadClient({ initialDownloads }) {
                   )}
                 </div>
 
+                {/* Cover Image Thumbnail (SIBI Book Cover) */}
+                {doc.coverUrl && (
+                  <div style={{ width: '100%', height: '130px', borderRadius: '6px', overflow: 'hidden', marginBottom: 'var(--space-xs)', backgroundColor: '#f8fafc', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img src={doc.coverUrl} alt={doc.title} style={{ height: '100%', width: 'auto', objectFit: 'contain' }} loading="lazy" />
+                  </div>
+                )}
+
                 {/* Document Title */}
                 <h3 style={{ fontSize: '1.1rem', marginBottom: 'var(--space-xs)', color: 'var(--primary-color)', lineHeight: 1.35 }}>
                   {doc.title}
