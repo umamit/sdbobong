@@ -6,14 +6,18 @@ import { formatTanggal } from '../../lib/format';
 export default function DownloadClient({ initialDownloads }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
+  const [selectedKelas, setSelectedKelas] = useState('Semua Kelas');
 
-  const categories = ['Semua', 'PPDB', 'Akademik', 'Umum'];
+  const categories = ['Semua', 'PPDB', 'Akademik', 'Buku SIBI', 'Umum'];
+  const kelasOptions = ['Semua Kelas', 'Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6'];
 
-  // Filter downloads based on query and category
+  // Filter downloads based on query, category, and class
   const filteredDownloads = initialDownloads.filter((doc) => {
-    const matchesSearch = doc.title?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = doc.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          doc.subject?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'Semua' || doc.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchesKelas = selectedKelas === 'Semua Kelas' || doc.kelas === selectedKelas;
+    return matchesSearch && matchesCategory && matchesKelas;
   });
 
   const getCategoryBadgeClass = (category) => {
@@ -22,6 +26,8 @@ export default function DownloadClient({ initialDownloads }) {
         return 'badge-ppdb';
       case 'Akademik':
         return 'badge-akademik';
+      case 'Buku SIBI':
+        return 'badge-sibi';
       default:
         return 'badge-umum';
     }
@@ -61,28 +67,61 @@ export default function DownloadClient({ initialDownloads }) {
             />
           </div>
 
-          {/* Category Filters */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: 'none',
-                  fontSize: '0.9rem',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  backgroundColor: selectedCategory === cat ? 'var(--primary-color)' : 'rgba(0, 0, 0, 0.05)',
-                  color: selectedCategory === cat ? 'white' : 'var(--text-color)'
-                }}
-                className="filter-tab-btn"
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Category & Class Filters */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    if (cat !== 'Buku SIBI' && cat !== 'Semua') {
+                      setSelectedKelas('Semua Kelas');
+                    }
+                  }}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    fontSize: '0.9rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    backgroundColor: selectedCategory === cat ? 'var(--primary-color)' : 'rgba(0, 0, 0, 0.05)',
+                    color: selectedCategory === cat ? 'white' : 'var(--text-color)'
+                  }}
+                  className="filter-tab-btn"
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Class Sub-Filter (Active for Semua or Buku SIBI) */}
+            {(selectedCategory === 'Semua' || selectedCategory === 'Buku SIBI') && (
+              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px', paddingTop: '6px', borderTop: '1px dashed rgba(0,0,0,0.1)' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b', marginRight: '4px' }}>Filter Kelas:</span>
+                {kelasOptions.map((kls) => (
+                  <button
+                    key={kls}
+                    onClick={() => setSelectedKelas(kls)}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '99px',
+                      border: selectedKelas === kls ? '1px solid #0284c7' : '1px solid #e2e8f0',
+                      fontSize: '0.8rem',
+                      fontWeight: selectedKelas === kls ? '600' : '400',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: selectedKelas === kls ? '#e0f2fe' : 'white',
+                      color: selectedKelas === kls ? '#0369a1' : '#475569'
+                    }}
+                  >
+                    {kls}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -112,22 +151,33 @@ export default function DownloadClient({ initialDownloads }) {
               }}
             >
               <div>
-                {/* Category Badge */}
-                <span 
-                  className={`welcome-badge ${getCategoryBadgeClass(doc.category)}`}
-                  style={{ 
-                    fontSize: '0.75rem', 
-                    padding: '2px 8px', 
-                    borderRadius: '4px',
-                    display: 'inline-block',
-                    marginBottom: 'var(--space-xs)'
-                  }}
-                >
-                  {doc.category}
-                </span>
+                {/* Category & Class Badges */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: 'var(--space-xs)' }}>
+                  <span 
+                    className={`welcome-badge ${getCategoryBadgeClass(doc.category)}`}
+                    style={{ 
+                      fontSize: '0.75rem', 
+                      padding: '2px 8px', 
+                      borderRadius: '4px',
+                      display: 'inline-block'
+                    }}
+                  >
+                    {doc.category}
+                  </span>
+                  {doc.kelas && (
+                    <span style={{ fontSize: '0.75rem', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#e0f2fe', color: '#0369a1', fontWeight: 600 }}>
+                      {doc.kelas}
+                    </span>
+                  )}
+                  {doc.subject && (
+                    <span style={{ fontSize: '0.75rem', padding: '2px 8px', borderRadius: '4px', backgroundColor: '#f1f5f9', color: '#475569', fontWeight: 500 }}>
+                      {doc.subject}
+                    </span>
+                  )}
+                </div>
 
                 {/* Document Title */}
-                <h3 style={{ fontSize: '1.15rem', marginBottom: 'var(--space-xs)', color: 'var(--primary-color)' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: 'var(--space-xs)', color: 'var(--primary-color)', lineHeight: 1.35 }}>
                   {doc.title}
                 </h3>
                 
