@@ -96,6 +96,12 @@ export const DEFAULT_STATS = {
 // ===========================================================================
 // DEFAULT: config — shape lengkap objek config website
 // ===========================================================================
+export const DEFAULT_DOWNLOADS = [
+  { id: "dl-1", title: "Brosur Informasi PPDB TA 2026/2027", category: "PPDB", fileUrl: "/files/brosur-ppdb-2026.pdf", date: "2026-05-01" },
+  { id: "dl-2", title: "Kalender Pendidikan & Akademik TA 2026/2027", category: "Akademik", fileUrl: "/files/kalender-akademik-2026.pdf", date: "2026-05-15" },
+  { id: "dl-3", title: "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)", category: "PPDB", fileUrl: "/formulir-ppdb", date: "2026-05-01" }
+];
+
 export const DEFAULT_CONFIG = {
   marquee_announcements: [
     'PENGUMUMAN: Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran 2026/2027 Telah Dibuka!',
@@ -113,7 +119,7 @@ export const DEFAULT_CONFIG = {
     jabatan_operator: '',
     email_sekolah: 'admin@sdnegeribobong.sch.id',
   },
-  downloads: [],
+  downloads: DEFAULT_DOWNLOADS,
   faqs: [],
   gallery: [],
   popup_announcement: {
@@ -179,6 +185,10 @@ export function mergeWithDefaults(rawConfig = {}) {
     if (merged.ppdb_contacts.alamat_lengkap.includes("Jalan Raya Bobong") || merged.ppdb_contacts.alamat_lengkap.includes("Desa Bobong")) {
       merged.ppdb_contacts.alamat_lengkap = OFFICIAL_ADDRESS;
     }
+  }
+
+  if (!merged.downloads || !Array.isArray(merged.downloads) || merged.downloads.length === 0) {
+    merged.downloads = DEFAULT_DOWNLOADS;
   }
 
   return merged;
