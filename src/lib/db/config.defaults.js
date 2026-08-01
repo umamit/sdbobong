@@ -82,7 +82,7 @@ export const DEFAULT_STATS = {
   allow_copy: false,         // Izinkan copy-paste konten publik
   maintenance_mode: false,   // Mode pemeliharaan
   marquee_speed: 40,         // Kecepatan teks berjalan (detik)
-  visitor_count: 0,          // Counter pengunjung
+  visitor_count: 229,        // Counter pengunjung default
 
   // Fallback data (diisi otomatis oleh saveWebConfig)
   _downloads_fallback: [],

@@ -8,7 +8,7 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const config = await loadWebConfig();
-    const visitorCount = config.stats?.visitor_count || 0;
+    const visitorCount = config.stats?.visitor_count || config.visitor_count || 229;
     return NextResponse.json({ visitor_count: visitorCount });
   } catch (e) {
     console.error('Failed to get visitor count:', e);
@@ -24,12 +24,14 @@ export async function POST() {
     const config = await loadWebConfig();
     if (!config.stats) config.stats = {};
     
-    let visitorCount = config.stats.visitor_count || 0;
+    let visitorCount = config.stats.visitor_count || config.visitor_count || 229;
 
-    // Only increment if user has not visited in this session/year
+    // Only increment if user has not visited in this 1-hour session window
     if (hasVisited !== 'true') {
       visitorCount += 1;
       config.stats.visitor_count = visitorCount;
+      config.visitor_count = visitorCount;
+      
       const saved = await saveWebConfig(config);
       if (!saved) {
         console.error('Failed to save updated visitor count to database');
@@ -38,7 +40,7 @@ export async function POST() {
       const response = NextResponse.json({ success: true, visitor_count: visitorCount, incremented: true });
       response.cookies.set('has_visited', 'true', {
         path: '/',
-        maxAge: 60 * 60 * 24 * 365, // 1 year
+        maxAge: 60 * 60, // 1 hour session window instead of 365 days
         sameSite: 'lax',
         httpOnly: true
       });
