@@ -67,4 +67,4 @@ User-agent: Bytespider
 Disallow: /
 
 # ── Sitemap Resmi ─────────────────────────────────────────────────────────
-Sitemap: https://sdnegeribobong.sch.id/sitemap.xml
+Sitemap: https://www.sdnegeribobong.sch.id/sitemap.xml

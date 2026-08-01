@@ -1,7 +1,7 @@
 import { prisma } from '../lib/prisma';
 
 export async function sitemap() {
-  const baseUrl = 'https://sdnegeribobong.sch.id';
+  const baseUrl = 'https://www.sdnegeribobong.sch.id';
   const now = new Date();
 
   // =========================================================================

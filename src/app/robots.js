@@ -1,5 +1,5 @@
 export default function robots() {
-  const baseUrl = 'https://sdnegeribobong.sch.id';
+  const baseUrl = 'https://www.sdnegeribobong.sch.id';
 
   return {
     rules: [
