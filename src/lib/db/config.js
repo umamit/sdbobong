@@ -100,7 +100,11 @@ export async function loadWebConfig() {
     try {
       let data = null;
       if (prisma) {
-        data = await prisma.config.findUnique({ where: { id: "global_config" } });
+        try {
+          data = await prisma.config.findUnique({ where: { id: "global_config" } });
+        } catch (prismaErr) {
+          console.warn("Prisma load config failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
+        }
       }
       if (!data && supabase) {
         const res = await supabase

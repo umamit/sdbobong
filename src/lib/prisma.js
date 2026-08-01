@@ -4,11 +4,22 @@ import pg from 'pg';
 
 const globalForPrisma = globalThis;
 
-const connectionString = process.env.DIRECT_URL 
+let rawConnectionString = process.env.DIRECT_URL 
   || process.env.POSTGRES_URL_NON_POOLING 
   || process.env.DATABASE_URL 
   || process.env.POSTGRES_PRISMA_URL 
-  || process.env.POSTGRES_URL;
+  || process.env.POSTGRES_URL || '';
+
+// Clean connection string to prevent pg sslmode deprecation warning & self-signed cert chain error
+let connectionString = rawConnectionString;
+if (connectionString) {
+  if (connectionString.includes('sslmode=require') || connectionString.includes('sslmode=prefer') || connectionString.includes('sslmode=verify-ca')) {
+    connectionString = connectionString
+      .replace(/sslmode=(require|prefer|verify-ca)/g, 'sslmode=no-verify');
+  } else if (!connectionString.includes('sslmode=')) {
+    connectionString += connectionString.includes('?') ? '&sslmode=no-verify' : '?sslmode=no-verify';
+  }
+}
 
 const pool = connectionString
   ? new pg.Pool({
@@ -16,7 +27,9 @@ const pool = connectionString
       max: 5,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
-      ssl: { rejectUnauthorized: false }
+      ssl: {
+        rejectUnauthorized: false
+      }
     })
   : null;
 
