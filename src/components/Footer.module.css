@@ -145,6 +145,42 @@
     font-weight: 600;
 }
 
+.marqueeContainer {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+.marqueeTrack {
+    display: flex;
+    width: max-content;
+    animation: continuousMarquee 28s linear infinite;
+    will-change: transform;
+}
+
+.marqueeContainer:hover .marqueeTrack {
+    animation-play-state: paused;
+}
+
+.marqueeGroup {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding-right: var(--space-sm);
+    flex-shrink: 0;
+}
+
+@keyframes continuousMarquee {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
 .affiliationsLogos {
     display: flex;
     flex-wrap: wrap;
