@@ -1,6 +1,7 @@
 import styles from './Footer.module.css';
 import Link from 'next/link';
 import VisitorCounter from './VisitorCounter';
+import NaunganMarquee from './NaunganMarquee';
 import { loadWebConfig } from '../lib/database';
 
 export default async function Footer() {
@@ -69,48 +70,8 @@ export default async function Footer() {
         </div>
       </div>
       
-      {/* Institutional Affiliations & National Program Badges */}
-      <div className={`container ${styles.footerAffiliations}`}>
-        <div className={styles.affiliationsDivider}></div>
-        <div className={styles.affiliationsContent}>
-          <span className={styles.affiliationsLabel}>Naungan &amp; Program Resmi:</span>
-          
-          {/* Continuous Autoplay Marquee Slider */}
-          <div className={styles.marqueeContainer}>
-            <div className={styles.marqueeTrack}>
-              {/* Double set of items for seamless 360 infinite loop */}
-              {[...Array(2)].map((_, loopIdx) => (
-                <div key={loopIdx} className={styles.marqueeGroup}>
-                  <a href="https://taliabukab.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Pemerintah Kabupaten Pulau Taliabu">
-                    <img src="/images/logo_pemda_taliabu.png" alt="Logo Pemda Taliabu" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Pemerintah Kabupaten Pulau Taliabu</span>
-                  </a>
-                  <div className={styles.affiliationItem} title="Dinas Pendidikan Kabupaten Pulau Taliabu">
-                    <img src="/images/logo_dinas_pendidikan.png" alt="Logo Dinas Pendidikan" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Dinas Pendidikan Taliabu</span>
-                  </div>
-                  <a href="https://kemendikdasmen.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Pendidikan Bermutu Untuk Semua - Kemendikdasmen RI">
-                    <img src="/images/badge_pendidikan_bermutu.png" alt="Pendidikan Bermutu Untuk Semua" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Pendidikan Bermutu Untuk Semua</span>
-                  </a>
-                  <a href="https://kemendikdasmen.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Sekolah Ramah Anak - Kemendikdasmen RI">
-                    <img src="/images/badge_kemendikdasmen_ramah.png" alt="Kemendikdasmen Ramah" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Kemendikdasmen Ramah</span>
-                  </a>
-                  <a href="https://kemendikdasmen.go.id" target="_blank" rel="noopener noreferrer" className={styles.affiliationItem} title="Rumah Pendidikan - Kemendikdasmen RI">
-                    <img src="/images/badge_rumah_pendidikan.png" alt="Rumah Pendidikan" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Rumah Pendidikan</span>
-                  </a>
-                  <div className={styles.affiliationItem} title="Kurikulum Merdeka - Merdeka Belajar">
-                    <img src="/images/logo_kurikulum_merdeka.png" alt="Logo Kurikulum Merdeka" className={styles.affiliationLogo} width={32} height={32} loading="lazy" decoding="async" />
-                    <span className={styles.affiliationText}>Kurikulum Merdeka</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Institutional Affiliations & National Program Badges (Modular Component) */}
+      <NaunganMarquee />
 
       <div className={styles.footerBottom}>
         <div className={`container ${styles.footerBottomFlex}`}>
@@ -125,7 +86,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.83.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.84.0</span>
           </p>
 
 
