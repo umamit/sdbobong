@@ -13,22 +13,7 @@ export async function loadStudents() {
   try {
     let dbStudents = null;
     try {
-      dbStudents = await prisma.student.findMany({
-        select: {
-          id: true,
-          nisn: true,
-          nis: true,
-          name: true,
-          class: true,
-          gender: true,
-          birth_place: true,
-          birth_date: true,
-          address: true,
-          parent_name: true,
-          parent_phone: true,
-          status: true
-        }
-      });
+      dbStudents = await prisma.student.findMany();
     } catch (prismaErr) {
       console.warn("Prisma findMany students failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
       if (supabase) {

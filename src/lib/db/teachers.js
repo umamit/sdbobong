@@ -49,17 +49,7 @@ export async function loadTeachers(includePassword = false) {
   try {
     let supabaseTeachers = null;
     try {
-      supabaseTeachers = await prisma.teacher.findMany({
-        select: {
-          id: true,
-          name: true,
-          role: true,
-          details: true,
-          status: true,
-          image: true,
-          nip: true
-        }
-      });
+      supabaseTeachers = await prisma.teacher.findMany();
     } catch (prismaErr) {
       console.warn("Prisma findMany teachers failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
       if (supabase) {

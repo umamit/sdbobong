@@ -68,44 +68,6 @@ export const prisma = basePrisma.$extends({
         }
       }
     }
-  },
-  query: {
-    news: {
-      async findMany({ args, query }) {
-        args.where = { deletedAt: null, ...(args.where || {}) };
-        return query(args);
-      },
-      async delete({ args, query }) {
-        return basePrisma.news.update({
-          where: args.where,
-          data: { deletedAt: new Date() }
-        });
-      }
-    },
-    teacher: {
-      async findMany({ args, query }) {
-        args.where = { deletedAt: null, ...(args.where || {}) };
-        return query(args);
-      },
-      async delete({ args, query }) {
-        return basePrisma.teacher.update({
-          where: args.where,
-          data: { deletedAt: new Date() }
-        });
-      }
-    },
-    student: {
-      async findMany({ args, query }) {
-        args.where = { deletedAt: null, ...(args.where || {}) };
-        return query(args);
-      },
-      async delete({ args, query }) {
-        return basePrisma.student.update({
-          where: args.where,
-          data: { deletedAt: new Date() }
-        });
-      }
-    }
   }
 });
 

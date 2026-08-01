@@ -51,17 +51,7 @@ export async function loadNews() {
   try {
     let supabaseNews = null;
     try {
-      supabaseNews = await prisma.news.findMany({
-        select: {
-          id: true,
-          title: true,
-          date: true,
-          category: true,
-          image: true,
-          content: true,
-          images: true
-        }
-      });
+      supabaseNews = await prisma.news.findMany();
     } catch (prismaErr) {
       console.warn("Prisma findMany news failed, attempting Supabase REST fallback:", prismaErr.message || prismaErr);
       if (supabase) {
