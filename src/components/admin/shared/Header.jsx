@@ -62,6 +62,30 @@ export default function Header({ onToggleSidebar }) {
             <span>Presensi ↗</span>
           </a>
           <a
+            href="https://ajar.sdnegeribobong.sch.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-view-ajar"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.4rem 0.85rem',
+              borderRadius: '99px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              backgroundColor: 'rgba(217, 119, 6, 0.08)',
+              color: '#d97706',
+              border: '1px solid rgba(217, 119, 6, 0.2)',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease'
+            }}
+            title="Buka Portal Perangkat Ajar di Tab Baru"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Perangkat Ajar ↗</span>
+          </a>
+          <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"

@@ -40,6 +40,7 @@ export default async function Footer() {
             <li><Link href="/profil">Profil Sekolah</Link></li>
             <li><Link href="/akademik">Informasi Akademik</Link></li>
             <li><a href="https://presensi.sdnegeribobong.sch.id" target="_blank" rel="noreferrer">Presensi Online (Kehadiran) ↗</a></li>
+            <li><a href="https://ajar.sdnegeribobong.sch.id" target="_blank" rel="noreferrer">Perangkat Ajar (Modul RPP) ↗</a></li>
             <li><Link href="/akademik/nilai">Portal Cek Rapor</Link></li>
             <li><Link href="/kesiswaan">Kesiswaan &amp; Ekskul</Link></li>
             <li><Link href="/ppdb">Informasi PPDB</Link></li>
@@ -86,7 +87,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.91.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v2.92.0</span>
           </p>
 
 

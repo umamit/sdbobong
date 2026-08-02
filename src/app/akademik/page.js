@@ -76,10 +76,32 @@ export default async function Akademik() {
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p1}</p>
               <p className="text-justify" style={{ maxWidth: '75ch' }}>{akademik.kurikulum_p2}</p>
 
-              <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-md)', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 'var(--space-sm)', marginTop: 'var(--space-md)', flexWrap: 'wrap', alignItems: 'center' }}>
                 {akademik.kurikulum_tags && akademik.kurikulum_tags.map((tag, idx) => (
                   <span key={idx} className="badge badge-accent" style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}>{tag}</span>
                 ))}
+                <a
+                  href="https://ajar.sdnegeribobong.sch.id"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-primary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 1.1rem',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    backgroundColor: 'var(--secondary)',
+                    color: '#1D1D1F',
+                    boxShadow: 'var(--shadow-md)',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                  <span>Portal Perangkat Ajar (Modul &amp; RPP) ↗</span>
+                </a>
               </div>
             </FramerReveal>
           </div>

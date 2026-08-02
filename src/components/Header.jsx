@@ -54,6 +54,7 @@ export default function Header() {
         { href: '/akademik', label: 'Informasi Akademik' },
         { href: '/akademik/kalender', label: 'Kalender Pendidikan' },
         { href: 'https://presensi.sdnegeribobong.sch.id', label: 'Presensi Online (Kehadiran)', external: true },
+        { href: 'https://ajar.sdnegeribobong.sch.id', label: 'Perangkat Ajar (Modul RPP)', external: true },
         { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
         { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
         { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' }
