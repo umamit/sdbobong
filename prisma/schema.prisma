@@ -1,33 +1,33 @@
-datasource db {
-  provider = "postgresql"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+}
+
 model Config {
-  id                    String   @id @default("global_config")
-  marquee_announcements Json     // array of string
-  stats                 Json     // { siswa_aktif, guru_staf, ruang_kelas, akreditasi, ... }
-  ppdb_contacts         Json     // { nama_humas, wa_humas, ... }
-  force_local_cache     Boolean  @default(false)
-  downloads             Json?    // array of objects
-  faqs                  Json?    // array of objects
-  gallery               Json?    // array of objects
-  popup_announcement    Json?    // { enabled, title, content, badge, link, link_label }
+  id                    String  @id @default("global_config")
+  marquee_announcements Json
+  stats                 Json
+  ppdb_contacts         Json
+  force_local_cache     Boolean @default(false)
+  downloads             Json?
+  faqs                  Json?
+  gallery               Json?
+  popup_announcement    Json?
 
   @@map("config_sdn_bobong")
 }
 
 model News {
-  id        String @id
-  title     String
-  date      String
-  category  String
-  image     String
-  content   String
-  images    Json?  // array of string
+  id       String @id
+  title    String
+  date     String
+  category String
+  image    String
+  content  String
+  images   Json?
 
   @@map("news_sdn_bobong")
 }
@@ -147,7 +147,7 @@ model PPDB {
 model NewsReaction {
   id      Int    @id @default(autoincrement())
   news_id String
-  type    String // 'suka' | 'keren' | 'haru' | 'semangat' | 'informatif'
+  type    String
   count   Int    @default(0)
 
   @@unique([news_id, type])
@@ -159,7 +159,7 @@ model NewsComment {
   news_id    String
   nama       String
   pesan      String
-  created_at String // ISO datetime string
+  created_at String
 
   @@map("news_comments_sdn_bobong")
 }

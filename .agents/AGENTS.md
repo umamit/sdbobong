@@ -315,6 +315,7 @@ for path, var in missing:
 # 16. Standar Migrasi & Manajemen Supabase (Supabase CLI & Node Audit)
 
 - Saat berpindah project/akun Supabase atau menangani error `EMAXCONN`, **wajib menggunakan Supabase CLI atau pemindaian skrip Node.js otomatis** untuk verifikasi koneksi regional pooler (`aws-*-pooler.supabase.com`).
+- **Wajib menggunakan `BypassSandbox: true`** pada setiap eksekusi perintah terminal atau skrip Node.js yang melakukan koneksi langsung ke Supabase Cloud (seperti query data, migrasi, manipulasi tabel, atau penghapusan data) agar tidak terisolasi oleh sandbox tanpa koneksi internet eksternal.
 - Pemindahan database wajib menyertakan eksekusi `npx prisma db push --accept-data-loss` via port direct (`5432`) untuk memastikan sinkronisasi skema 100% tanpa ada tabel yang tertinggal.
 - Penanganan error database pada handler API public harus menyertakan *Graceful Fallback* (`try/catch` mengembalikan `200 OK` dengan array/object kosong) agar antarmuka pengguna tidak mengalami crash (500) saat database sedang mengalami lonjakan beban.
 
