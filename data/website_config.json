@@ -19,11 +19,29 @@
         "allow_copy": false,
         "maintenance_mode": false,
         "marquee_speed": 40,
-        "visitor_count": 229,
+        "visitor_count": 238,
         "_downloads_fallback": [
-            { "id": "dl-1", "title": "Brosur Informasi PPDB TA 2026/2027", "category": "PPDB", "fileUrl": "/files/brosur-ppdb-2026.pdf", "date": "2026-05-01" },
-            { "id": "dl-2", "title": "Kalender Pendidikan & Akademik TA 2026/2027", "category": "Akademik", "fileUrl": "/files/kalender-akademik-2026.pdf", "date": "2026-05-15" },
-            { "id": "dl-3", "title": "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)", "category": "PPDB", "fileUrl": "/formulir-ppdb", "date": "2026-05-01" }
+            {
+                "id": "dl-1",
+                "title": "Brosur Informasi PPDB TA 2026/2027",
+                "category": "PPDB",
+                "fileUrl": "/files/brosur-ppdb-2026.pdf",
+                "date": "2026-05-01"
+            },
+            {
+                "id": "dl-2",
+                "title": "Kalender Pendidikan & Akademik TA 2026/2027",
+                "category": "Akademik",
+                "fileUrl": "/files/kalender-akademik-2026.pdf",
+                "date": "2026-05-15"
+            },
+            {
+                "id": "dl-3",
+                "title": "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)",
+                "category": "PPDB",
+                "fileUrl": "/formulir-ppdb",
+                "date": "2026-05-01"
+            }
         ],
         "_faqs_fallback": [
             {
@@ -368,5 +386,6 @@
     "force_local_cache": false,
     "suspicious_attempts": [],
     "manual_blacklist": [],
-    "security_settings": {}
+    "security_settings": {},
+    "visitor_count": 238
 }

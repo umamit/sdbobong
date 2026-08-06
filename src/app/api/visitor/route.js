@@ -8,7 +8,7 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const config = await loadWebConfig();
-    const visitorCount = config.stats?.visitor_count || config.visitor_count || 229;
+    const visitorCount = Math.max(config.stats?.visitor_count || 0, config.visitor_count || 0, 238);
     return NextResponse.json({ visitor_count: visitorCount });
   } catch (e) {
     console.error('Failed to get visitor count:', e);
@@ -24,7 +24,7 @@ export async function POST() {
     const config = await loadWebConfig();
     if (!config.stats) config.stats = {};
     
-    let visitorCount = config.stats.visitor_count || config.visitor_count || 229;
+    let visitorCount = Math.max(config.stats.visitor_count || 0, config.visitor_count || 0, 238);
 
     // Only increment if user has not visited in this 1-hour session window
     if (hasVisited !== 'true') {

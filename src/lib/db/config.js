@@ -116,10 +116,15 @@ export async function loadWebConfig() {
       }
 
       if (data) {
+        const dbVisitorCount = Math.max(data.stats?.visitor_count || 0, localConfig.stats?.visitor_count || 0, 238);
         const dbConfig = {
           marquee_announcements: data.marquee_announcements || localConfig.marquee_announcements,
           marquee_speed: data.stats?.marquee_speed || data.marquee_speed || localConfig.marquee_speed || 40,
-          stats: data.stats || localConfig.stats,
+          stats: {
+            ...localConfig.stats,
+            ...(data.stats || {}),
+            visitor_count: dbVisitorCount
+          },
           ppdb_contacts: data.ppdb_contacts || localConfig.ppdb_contacts,
           force_local_cache: data.force_local_cache === true,
           downloads: data.downloads || data.stats?._downloads_fallback || localConfig.downloads || [],
@@ -138,6 +143,10 @@ export async function loadWebConfig() {
   }
 
   const safeLocalConfig = mergeWithDefaults(localConfig);
+  // Ensure local fallback visitor_count does not drop below DB high mark
+  if (safeLocalConfig.stats) {
+    safeLocalConfig.stats.visitor_count = Math.max(safeLocalConfig.stats.visitor_count || 0, 238);
+  }
   setCachedConfig(safeLocalConfig);
   return safeLocalConfig;
 }
