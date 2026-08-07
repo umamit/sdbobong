@@ -274,8 +274,8 @@ export default function TeachersSectionClient({ teachers, mode = 'all' }) {
       type: 'titleNode',
       position: { x: 210, y: 250 },
       data: {
-        title: 'Dewan Guru & Pendidik',
-        subtitle: 'Jajaran Tenaga Pendidik Sekolah'
+        title: 'Pendidik & Tenaga Kependidikan',
+        subtitle: 'Daftar PTK SD Negeri Bobong'
       }
     }
   ];
@@ -513,8 +513,8 @@ export default function TeachersSectionClient({ teachers, mode = 'all' }) {
         <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="container">
           <div className="section-header">
-            <span className="section-subtitle">Daftar Staf</span>
-            <h2>Pendidik & Tenaga Kependidikan</h2>
+            <span className="section-subtitle">Data PTK</span>
+            <h2>Pendidik &amp; Tenaga Kependidikan</h2>
           </div>
 
           <div className="teachers-grid">

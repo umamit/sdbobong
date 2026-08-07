@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: 'Struktur Organisasi & Dewan Guru - SD Negeri Bobong',
-  description: 'Bagan organisasi kepengurusan komite, tata usaha, bendahara, serta daftar lengkap tenaga pendidik SD Negeri Bobong.',
+  title: 'Struktur Organisasi & Pendidik & Tenaga Kependidikan - SD Negeri Bobong',
+  description: 'Bagan organisasi kepengurusan komite, tata usaha, bendahara, serta daftar lengkap Pendidik dan Tenaga Kependidikan (PTK) SD Negeri Bobong.',
 };
 
 export default async function StrukturOrganisasi() {
@@ -21,10 +21,10 @@ export default async function StrukturOrganisasi() {
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
           <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>
-            <FramerWordReveal text="Struktur & Dewan Guru" />
+            <FramerWordReveal text="Struktur & PTK" />
           </h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>
-            Jajaran manajemen sekolah, komite, tata usaha, serta dewan guru pendidik SD Negeri Bobong.
+            Bagan organisasi manajemen sekolah serta daftar Pendidik dan Tenaga Kependidikan (PTK) SD Negeri Bobong.
           </p>
         </div>
       </section>

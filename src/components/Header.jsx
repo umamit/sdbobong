@@ -53,7 +53,7 @@ export default function Header() {
         { href: '/profil', label: 'Profil Utama' },
         { href: '/profil/sejarah', label: 'Sejarah Sekolah' },
         { href: '/profil/visi-misi', label: 'Visi & Misi' },
-        { href: '/profil/struktur', label: 'Struktur & Dewan Guru' },
+        { href: '/profil/struktur', label: 'Struktur & PTK' },
         { href: '/profil/fasilitas', label: 'Fasilitas & Denah' }
       ]
     },
