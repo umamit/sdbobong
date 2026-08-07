@@ -170,6 +170,34 @@ export async function saveWebConfig(config) {
 
   if (isSupabaseEnabled()) {
     try {
+      // Prevent visitor count regression by checking the current database value first
+      let currentDbData = null;
+      if (prisma) {
+        try {
+          currentDbData = await prisma.config.findUnique({ where: { id: "global_config" } });
+        } catch (err) {
+          console.warn("Prisma fetch during save failed:", err.message);
+        }
+      }
+      if (!currentDbData && supabase) {
+        try {
+          const { data: resData } = await supabase
+            .from('config_sdn_bobong')
+            .select('stats')
+            .eq('id', 'global_config')
+            .maybeSingle();
+          currentDbData = resData;
+        } catch (err) {
+          console.warn("Supabase fetch during save failed:", err.message);
+        }
+      }
+
+      if (currentDbData && currentDbData.stats) {
+        const dbCount = currentDbData.stats.visitor_count || 0;
+        config.stats.visitor_count = Math.max(config.stats.visitor_count || 0, dbCount);
+        config.visitor_count = config.stats.visitor_count;
+      }
+
       const payload = {
         id: "global_config",
         marquee_announcements: config.marquee_announcements,
