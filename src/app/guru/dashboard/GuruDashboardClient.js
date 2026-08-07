@@ -219,7 +219,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
           <a
             href="https://presensi.sdnegeribobong.sch.id"
             target="_blank"
-            rel="noreferrer"
+            rel="nofollow noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -241,7 +241,7 @@ export default function GuruDashboardClient({ initialTeacher, initialStudents })
           <a
             href="https://ajar.sdnegeribobong.sch.id"
             target="_blank"
-            rel="noreferrer"
+            rel="nofollow noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

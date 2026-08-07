@@ -83,7 +83,7 @@ export default async function Akademik() {
                 <a
                   href="https://ajar.sdnegeribobong.sch.id"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="btn btn-primary"
                   style={{
                     display: 'inline-flex',

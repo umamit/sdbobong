@@ -1,4 +1,21 @@
-export default function robots() {
+import { headers } from 'next/headers';
+
+export default async function robots() {
+  const headersList = await headers();
+  const host = headersList.get('host') || '';
+
+  // If the request is for the internal subdomains, block all crawlers completely!
+  if (host.includes('presensi') || host.includes('ajar')) {
+    return {
+      rules: [
+        {
+          userAgent: '*',
+          disallow: '/',
+        }
+      ]
+    };
+  }
+
   const baseUrl = 'https://www.sdnegeribobong.sch.id';
 
   return {
