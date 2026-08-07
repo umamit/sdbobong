@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ReactFlow, Background, Controls, Handle, Position } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 const gridVariants = {
   hidden: { opacity: 0 },
@@ -27,8 +29,140 @@ const cardVariants = {
   }
 };
 
+// Custom Node for Teacher Cards in React Flow
+const TeacherNodeCustom = ({ data }) => {
+  const teacher = data.teacher;
+  const isPlaceholder = data.isPlaceholder;
+  const isKepalaSekolah = data.isKepalaSekolah;
+  const label = data.label;
+
+  const cardStyle = isPlaceholder
+    ? {
+        backgroundColor: '#fff5f5',
+        color: '#e53e3e',
+        border: '2px dashed #fed7d7',
+        padding: '0.6rem 0.85rem',
+        borderRadius: 'var(--radius-md)',
+        textAlign: 'center',
+        width: '210px',
+        boxShadow: 'var(--shadow-sm)',
+        fontSize: '0.8rem',
+      }
+    : isKepalaSekolah
+    ? {
+        backgroundColor: 'var(--primary)',
+        color: 'white',
+        padding: '0.65rem 0.85rem',
+        borderRadius: 'var(--radius-md)',
+        textAlign: 'center',
+        width: '240px',
+        boxShadow: 'var(--shadow-md)',
+        cursor: 'pointer',
+      }
+    : {
+        backgroundColor: 'var(--accent)',
+        color: 'white',
+        padding: '0.5rem 0.85rem',
+        borderRadius: 'var(--radius-md)',
+        textAlign: 'center',
+        width: '180px',
+        boxShadow: 'var(--shadow-sm)',
+        cursor: 'pointer',
+      };
+
+  return (
+    <div
+      onClick={!isPlaceholder ? () => data.onSelect(teacher) : undefined}
+      className={!isPlaceholder ? 'clickable-card' : ''}
+      style={{
+        ...cardStyle,
+        position: 'relative',
+        userSelect: 'none',
+        boxSizing: 'border-box'
+      }}
+    >
+      {data.hasTarget && (
+        <Handle
+          type="target"
+          position={Position.Top}
+          style={{ background: 'var(--primary)', width: '6px', height: '6px', border: '1px solid white' }}
+        />
+      )}
+      
+      {isPlaceholder ? (
+        <>
+          <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Tidak Ada</div>
+          <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{label}</div>
+        </>
+      ) : (
+        <>
+          <div style={{ 
+            fontWeight: 700, 
+            fontFamily: 'var(--font-heading)', 
+            fontSize: isKepalaSekolah ? '0.9rem' : '0.78rem', 
+            whiteSpace: 'nowrap', 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis' 
+          }}>
+            {teacher.name}
+          </div>
+          {data.isValidNip(teacher.nip) && (
+            <div style={{ fontSize: '0.65rem', opacity: 0.8, fontWeight: 500, margin: '2px 0' }}>
+              NIP. {teacher.nip}
+            </div>
+          )}
+          <div style={{ fontSize: isKepalaSekolah ? '0.75rem' : '0.7rem', opacity: 0.9 }}>
+            {teacher.role}
+          </div>
+        </>
+      )}
+
+      {data.hasSource && (
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          style={{ background: 'var(--primary)', width: '6px', height: '6px', border: '1px solid white' }}
+        />
+      )}
+    </div>
+  );
+};
+
+// Custom Node for Group Title Cards in React Flow
+const TitleNodeCustom = ({ data }) => {
+  return (
+    <div style={{
+      backgroundColor: 'var(--secondary)',
+      color: 'var(--primary-dark)',
+      padding: '0.6rem 1rem',
+      borderRadius: 'var(--radius-md)',
+      textAlign: 'center',
+      width: '260px',
+      boxShadow: 'var(--shadow-sm)',
+      position: 'relative',
+      boxSizing: 'border-box'
+    }}>
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: 'var(--primary)', width: '6px', height: '6px', border: '1px solid white' }}
+      />
+      <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', fontSize: '0.85rem' }}>{data.title}</div>
+      <div style={{ fontSize: '0.7rem', fontWeight: 500 }}>{data.subtitle}</div>
+    </div>
+  );
+};
+
+const nodeTypes = {
+  teacherNode: TeacherNodeCustom,
+  titleNode: TitleNodeCustom
+};
+
 export default function TeachersSectionClient({ teachers }) {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const isValidNip = (n) => {
     if (!n) return false;
@@ -73,6 +207,110 @@ export default function TeachersSectionClient({ teachers }) {
     }
   };
 
+  // Build nodes and edges dynamically for React Flow
+  const flowNodes = [
+    {
+      id: 'kepala-sekolah',
+      type: 'teacherNode',
+      position: { x: 230, y: 10 },
+      data: {
+        teacher: kepalaSekolah,
+        isPlaceholder: !kepalaSekolah,
+        isKepalaSekolah: true,
+        label: 'Plt. Kepala Sekolah',
+        hasTarget: false,
+        hasSource: true,
+        onSelect: setSelectedTeacher,
+        isValidNip
+      }
+    },
+    {
+      id: 'komite',
+      type: 'teacherNode',
+      position: { x: 10, y: 130 },
+      data: {
+        teacher: komite,
+        isPlaceholder: !komite,
+        isKepalaSekolah: false,
+        label: 'Ketua Komite Sekolah',
+        hasTarget: true,
+        hasSource: false,
+        onSelect: setSelectedTeacher,
+        isValidNip
+      }
+    },
+    {
+      id: 'tata-usaha',
+      type: 'teacherNode',
+      position: { x: 250, y: 130 },
+      data: {
+        teacher: tataUsaha,
+        isPlaceholder: !tataUsaha,
+        isKepalaSekolah: false,
+        label: 'Tata Usaha',
+        hasTarget: true,
+        hasSource: false,
+        onSelect: setSelectedTeacher,
+        isValidNip
+      }
+    },
+    {
+      id: 'bendahara',
+      type: 'teacherNode',
+      position: { x: 490, y: 130 },
+      data: {
+        teacher: bendahara,
+        isPlaceholder: !bendahara,
+        isKepalaSekolah: false,
+        label: 'Bendahara',
+        hasTarget: true,
+        hasSource: false,
+        onSelect: setSelectedTeacher,
+        isValidNip
+      }
+    },
+    {
+      id: 'dewan-guru-title',
+      type: 'titleNode',
+      position: { x: 210, y: 250 },
+      data: {
+        title: 'Dewan Guru & Pendidik',
+        subtitle: 'Jajaran Tenaga Pendidik Sekolah'
+      }
+    }
+  ];
+
+  const flowEdges = [
+    {
+      id: 'ks-to-komite',
+      source: 'kepala-sekolah',
+      target: 'komite',
+      type: 'smoothstep',
+      style: { stroke: 'var(--primary)', strokeWidth: 2 }
+    },
+    {
+      id: 'ks-to-tu',
+      source: 'kepala-sekolah',
+      target: 'tata-usaha',
+      type: 'smoothstep',
+      style: { stroke: 'var(--primary)', strokeWidth: 2 }
+    },
+    {
+      id: 'ks-to-bendahara',
+      source: 'kepala-sekolah',
+      target: 'bendahara',
+      type: 'smoothstep',
+      style: { stroke: 'var(--primary)', strokeWidth: 2 }
+    },
+    {
+      id: 'ks-to-dg',
+      source: 'kepala-sekolah',
+      target: 'dewan-guru-title',
+      type: 'smoothstep',
+      style: { stroke: 'var(--primary)', strokeWidth: 2 }
+    }
+  ];
+
   return (
     <>
       <style>{`
@@ -109,131 +347,81 @@ export default function TeachersSectionClient({ teachers }) {
             <h2>Struktur Organisasi</h2>
           </div>
 
-          {/* Petunjuk Geser untuk Smartphone */}
-          <div className="mobile-scroll-hint" style={{
-            display: 'none',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: '#EFF6FF',
-            color: '#1D4ED8',
-            padding: '8px 12px',
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.85rem',
-            fontWeight: 500,
-            marginBottom: '15px',
-            border: '1px solid #BFDBFE'
+          <div style={{ 
+            backgroundColor: 'white', 
+            padding: 'var(--space-md)', 
+            borderRadius: 'var(--radius-md)', 
+            border: '1px solid var(--border-color)', 
+            boxShadow: 'var(--shadow-sm)'
           }}>
-            <span>↔️ Geser ke samping untuk melihat bagan lengkap</span>
-          </div>
-
-          <div className="reveal-on-scroll" style={{ backgroundColor: 'white', padding: 'var(--space-md)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
-            <div style={{ minWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-sm)' }}>
-              
-              {/* Kepala Sekolah */}
-              {kepalaSekolah ? (
-                <div 
-                  onClick={() => setSelectedTeacher(kepalaSekolah)}
-                  className="clickable-card"
-                  style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-md)' }}
+            {mounted ? (
+              <div style={{ 
+                width: '100%', 
+                height: '380px', 
+                backgroundColor: '#f8fafc', 
+                borderRadius: 'var(--radius-sm)', 
+                border: '1px solid var(--border-color)',
+                position: 'relative'
+              }}>
+                <ReactFlow
+                  nodes={flowNodes}
+                  edges={flowEdges}
+                  nodeTypes={nodeTypes}
+                  fitView
+                  fitViewOptions={{ padding: 0.15 }}
+                  minZoom={0.6}
+                  maxZoom={1.3}
+                  panOnScroll={true}
+                  zoomOnScroll={false}
+                  preventScrolling={false}
+                  nodesConnectable={false}
+                  nodesDraggable={false}
+                  elementsSelectable={false}
                 >
-                  <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>{kepalaSekolah.name}</div>
-                  {isValidNip(kepalaSekolah.nip) && (
-                    <div style={{ fontSize: '0.75rem', opacity: 0.85, fontWeight: 500, margin: '2px 0' }}>NIP. {kepalaSekolah.nip}</div>
-                  )}
-                  <div style={{ fontSize: '0.8rem', opacity: 0.9 }}>{kepalaSekolah.role}</div>
-                </div>
-              ) : (
-                <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-sm)' }}>
-                  <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: '#e53e3e' }}>Tidak Ada</div>
-                  <div style={{ fontSize: '0.8rem', color: '#c53030' }}>Kepala Sekolah</div>
-                </div>
-              )}
-
-              <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
-
-              <div style={{ display: 'flex', gap: 'var(--space-lg)', justifyContent: 'center', width: '100%', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: 0, left: '18%', right: '18%', height: '2px', backgroundColor: 'var(--primary)', zIndex: 1 }}></div>
-
-                {/* Left Box: Komite */}
-                {komite ? (
-                  <div 
-                    onClick={() => setSelectedTeacher(komite)}
-                    className="clickable-card"
-                    style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}
-                  >
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{komite.name}</div>
-                    {isValidNip(komite.nip) && (
-                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {komite.nip}</div>
-                    )}
-                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{komite.role}</div>
-                  </div>
-                ) : (
-                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
-                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Ketua Komite Sekolah</div>
-                  </div>
-                )}
-
-                {/* Center Box: Tata Usaha */}
-                {tataUsaha ? (
-                  <div 
-                    onClick={() => setSelectedTeacher(tataUsaha)}
-                    className="clickable-card"
-                    style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}
-                  >
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{tataUsaha.name}</div>
-                    {isValidNip(tataUsaha.nip) && (
-                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {tataUsaha.nip}</div>
-                    )}
-                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{tataUsaha.role}</div>
-                  </div>
-                ) : (
-                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
-                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Tata Usaha</div>
-                  </div>
-                )}
-
-                {/* Right Box: Bendahara */}
-                {bendahara ? (
-                  <div 
-                    onClick={() => setSelectedTeacher(bendahara)}
-                    className="clickable-card"
-                    style={{ backgroundColor: 'var(--accent)', color: 'white', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}
-                  >
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{bendahara.name}</div>
-                    {isValidNip(bendahara.nip) && (
-                      <div style={{ fontSize: '0.7rem', opacity: 0.85, fontWeight: 500, margin: '1px 0' }}>NIP. {bendahara.nip}</div>
-                    )}
-                    <div style={{ fontSize: '0.75rem', opacity: 0.9 }}>{bendahara.role}</div>
-                  </div>
-                ) : (
-                  <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '180px', zIndex: 2, marginTop: '18px', boxShadow: 'var(--shadow-sm)', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '-18px', left: '50%', width: '2px', height: '18px', backgroundColor: 'var(--primary)' }}></div>
-                    <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#e53e3e' }}>Tidak Ada</div>
-                    <div style={{ fontSize: '0.75rem', color: '#c53030' }}>Bendahara</div>
-                  </div>
-                )}
+                  <Background color="#cbd5e1" gap={16} size={1} />
+                  <Controls 
+                    showInteractive={false} 
+                    style={{ 
+                      boxShadow: 'var(--shadow-sm)', 
+                      border: '1px solid var(--border-color)', 
+                      borderRadius: '8px',
+                      backgroundColor: 'white'
+                    }} 
+                  />
+                </ReactFlow>
               </div>
-
-              <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)', marginTop: '10px' }}></div>
-
-              {/* Dewan Guru */}
-              <div style={{ backgroundColor: 'var(--secondary)', color: 'var(--primary-dark)', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '400px', boxShadow: 'var(--shadow-sm)' }}>
-                <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Dewan Guru & Pendidik</div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 500 }}>Jajaran Tenaga Pendidik Sekolah</div>
+            ) : (
+              <div style={{ 
+                width: '100%', 
+                height: '380px', 
+                backgroundColor: '#f8fafc', 
+                borderRadius: 'var(--radius-sm)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                color: 'var(--text-muted)',
+                fontSize: '0.9rem'
+              }}>
+                Memuat Bagan Organisasi...
               </div>
+            )}
 
-              <div style={{ width: '2px', height: '20px', backgroundColor: 'var(--primary)' }}></div>
-
-              {/* Grid of Teachers under Dewan Guru */}
-              {dewanGuruList.length > 0 ? (
+            {/* Dewan Guru Sub Grid (Interlocking HTML Grid) */}
+            {dewanGuruList.length > 0 && (
+              <div style={{ 
+                marginTop: '30px', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                gap: '15px' 
+              }}>
+                <div style={{ 
+                  width: '2px', 
+                  height: '20px', 
+                  backgroundColor: 'var(--primary)', 
+                  marginTop: '-30px',
+                  zIndex: 2
+                }}></div>
                 <motion.div 
                   variants={gridVariants}
                   initial="hidden"
@@ -311,13 +499,9 @@ export default function TeachersSectionClient({ teachers }) {
                     </motion.div>
                   ))}
                 </motion.div>
-              ) : (
-                <div style={{ backgroundColor: '#fff5f5', color: '#e53e3e', border: '2px dashed #fed7d7', padding: '0.75rem var(--space-md)', borderRadius: 'var(--radius-md)', textAlign: 'center', width: '280px', boxShadow: 'var(--shadow-sm)' }}>
-                  <div style={{ fontWeight: 700, fontFamily: 'var(--font-heading)', color: '#e53e3e' }}>Tidak Ada</div>
-                  <div style={{ fontSize: '0.8rem', color: '#c53030' }}>Guru & Pendidik</div>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
+
           </div>
         </div>
       </section>
