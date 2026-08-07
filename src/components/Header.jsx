@@ -47,7 +47,16 @@ export default function Header() {
 
   const navLinks = [
     { href: '/', label: 'Beranda' },
-    { href: '/profil', label: 'Profil' },
+    {
+      label: 'Profil',
+      dropdown: [
+        { href: '/profil', label: 'Profil Utama' },
+        { href: '/profil/sejarah', label: 'Sejarah Sekolah' },
+        { href: '/profil/visi-misi', label: 'Visi & Misi' },
+        { href: '/profil/struktur', label: 'Struktur & Dewan Guru' },
+        { href: '/profil/fasilitas', label: 'Fasilitas & Denah' }
+      ]
+    },
     {
       label: 'Akademik',
       dropdown: [

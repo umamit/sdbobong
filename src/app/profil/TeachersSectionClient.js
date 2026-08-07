@@ -158,7 +158,7 @@ const nodeTypes = {
   titleNode: TitleNodeCustom
 };
 
-export default function TeachersSectionClient({ teachers }) {
+export default function TeachersSectionClient({ teachers, mode = 'all' }) {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [mounted, setMounted] = useState(false);
 
@@ -340,7 +340,8 @@ export default function TeachersSectionClient({ teachers }) {
       `}</style>
 
       {/* Bagan Organisasi */}
-      <section className="section-padding">
+      {(mode === 'all' || mode === 'struktur') && (
+        <section className="section-padding">
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Manajemen</span>
@@ -505,9 +506,11 @@ export default function TeachersSectionClient({ teachers }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* Jajaran Detail PTK Grid */}
-      <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
+      {(mode === 'all' || mode === 'staf') && (
+        <section className="section-padding" style={{ backgroundColor: 'var(--bg-main)' }}>
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Daftar Staf</span>
@@ -561,6 +564,7 @@ export default function TeachersSectionClient({ teachers }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ================= BIOGRAPHY MODAL (GLASSMORPHIC) ================= */}
       <AnimatePresence>
