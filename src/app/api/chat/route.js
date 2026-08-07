@@ -28,6 +28,7 @@ export async function POST(req) {
   let namaOperator = "Belum diset admin";
   let waOperator = "Belum diset admin";
   let emailSekolah = "admin@sdnegeribobong.sch.id";
+  let fallbackData = null;
 
 
   try {
@@ -104,7 +105,7 @@ export async function POST(req) {
     const groqApiKey = process.env.GROQ_API_KEY;
 
     // Persiapkan data fallback
-    const fallbackData = {
+    fallbackData = {
       npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian, kepemilikanLahan,
       namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
       stats, faqs, downloads,
@@ -530,7 +531,15 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
         timeZone: 'Asia/Jayapura'
       }) + " WIT (Waktu Indonesia Timur)";
 
-      const reply = generateFallbackResponse(latestMessage, fallbackData);
+      const reply = generateFallbackResponse(latestMessage, fallbackData || {
+        npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian, kepemilikanLahan,
+        namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
+        stats, faqs, downloads,
+        beranda, profil, ppdb, akademik, kesiswaan,
+        news: newsList,
+        marquee: marqueeAnnouncements,
+        currentDate: currentDateText
+      });
       return NextResponse.json({ reply });
     } catch (fallbackError) {
       console.error("❌ Fatal fallback error:", fallbackError);
