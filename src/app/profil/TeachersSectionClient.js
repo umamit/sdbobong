@@ -100,9 +100,8 @@ const TeacherNodeCustom = ({ data }) => {
             fontWeight: 700, 
             fontFamily: 'var(--font-heading)', 
             fontSize: isKepalaSekolah ? '0.9rem' : '0.78rem', 
-            whiteSpace: 'nowrap', 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis' 
+            lineHeight: 1.2,
+            marginBottom: '4px'
           }}>
             {teacher.name}
           </div>
