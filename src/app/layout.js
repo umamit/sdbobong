@@ -76,6 +76,7 @@ export default async function RootLayout({ children }) {
   const isBypassPath = bypassPaths.includes(pathname);
   const isPrintableForm = pathname === '/formulir-ppdb' || pathname === '/ppdb/cetak';
   const isMaintenanceActive = config.stats?.maintenance_mode === true && !pathname.startsWith('/admin') && !pathname.startsWith('/guru') && !pathname.startsWith('/login') && !pathname.startsWith('/api');
+  const isDashboardOrAuth = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname.startsWith('/login');
 
 
   if (isMaintenanceActive) {
@@ -686,12 +687,12 @@ export default async function RootLayout({ children }) {
         </Script>
         <LayoutControl />
         {/* Running Announcement Banner */}
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <AnnouncementBanner initialAnnouncements={announcements} initialSpeed={marqueeSpeed} />
         )}
 
         {/* Header & Navigation */}
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <div className="no-print public-layout-header">
             <Header />
           </div>
@@ -701,17 +702,17 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
 
         {/* Footer */}
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <Footer />
         )}
 
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <ChatWidget />
         )}
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <AnnouncementModal />
         )}
-        {!isPrintableForm && (
+        {!isPrintableForm && !isDashboardOrAuth && (
           <MobileBottomTabBar />
         )}
         <PWAInstallPrompt />
