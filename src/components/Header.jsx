@@ -50,7 +50,6 @@ export default function Header() {
     {
       label: 'Profil',
       dropdown: [
-        { href: '/profil', label: 'Profil Utama' },
         { href: '/profil/sejarah', label: 'Sejarah Sekolah' },
         { href: '/profil/visi-misi', label: 'Visi & Misi' },
         { href: '/profil/struktur', label: 'Struktur & PTK' },
