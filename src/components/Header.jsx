@@ -64,8 +64,7 @@ export default function Header() {
         { href: 'https://presensi.sdnegeribobong.sch.id', label: 'Presensi Online (Kehadiran)', external: true },
         { href: 'https://ajar.sdnegeribobong.sch.id', label: 'Perangkat Ajar (Modul RPP)', external: true },
         { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
-        { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
-        { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' }
+        { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' }
       ]
     },
     {
@@ -80,6 +79,7 @@ export default function Header() {
       label: 'Informasi',
       dropdown: [
         { href: '/berita', label: 'Berita & Kegiatan' },
+        { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' },
         { href: '/alumni', label: 'Portal Alumni' },
         { href: '/galeri', label: 'Galeri Sekolah' },
         { href: '/unduh', label: 'Pusat Unduhan' }
