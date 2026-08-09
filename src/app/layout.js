@@ -21,6 +21,9 @@ export const revalidate = 0;
 
 export const metadata = {
   metadataBase: new URL('https://www.sdnegeribobong.sch.id'),
+  alternates: {
+    canonical: './',
+  },
   title: 'SD Negeri Bobong - Berakhlak Mulia, Cerdas, dan Berbudaya',
   description: 'Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.',
   applicationName: 'SD Negeri Bobong',
