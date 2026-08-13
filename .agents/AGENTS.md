@@ -126,6 +126,11 @@ Client fetches should use:
   - reset
   - typography
   - CSS variables
+- **Skema Warna**: Pemilihan warna elemen UI, aksen, tombol, gradien, dan komponen grafis wajib **selalu menggunakan warna penyusun logo resmi sekolah**:
+  - 🩵 **Biru Toska** (`--primary` / `#12A5B8` / `#0A7E8D`)
+  - 💛 **Kuning Emas** (`--secondary` / `#E5A900` / `#FFC83B`)
+  - 💚 **Hijau Daun** (`--accent` / `#2A9D5C` / `#4CD964`)
+  - Hindari penggunaan warna generik/luar (seperti Biru iOS `#007AFF` atau Ungu `#5856D6`) untuk menjaga konsistensi identitas branding sekolah.
 
 Do not rewrite styling unless explicitly requested.
 
