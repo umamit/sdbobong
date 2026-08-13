@@ -20,14 +20,14 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #007AFF, #5856D6);
+    background: linear-gradient(135deg, var(--primary, #12A5B8), var(--primary-dark, #0A7E8D));
     color: #ffffff;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(18, 165, 184, 0.3);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     padding: 0;
@@ -35,8 +35,8 @@
 
 .aimAiTrigger:hover {
     transform: scale(1.08) rotate(3deg);
-    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.45);
-    background: linear-gradient(135deg, #0056B3, #4A48B8);
+    box-shadow: 0 6px 20px rgba(18, 165, 184, 0.45);
+    background: linear-gradient(135deg, var(--primary-dark, #0A7E8D), #086b77);
 }
 
 .aimAiTrigger:active {
@@ -355,14 +355,14 @@
 }
 
 .aiMessageBubble.user .aiMessageContent {
-    background: #007AFF; /* Apple HIG standard outgoing bubble */
+    background: var(--primary, #12A5B8); /* Outgoing bubble using school toska */
     color: #ffffff;
     border-radius: 18px;
     box-shadow: none;
 }
 
 :global([data-theme='dark']) .aiMessageBubble.user .aiMessageContent {
-    background: #0A84FF !important;
+    background: var(--primary-dark, #0A7E8D) !important;
     color: #ffffff !important;
 }
 

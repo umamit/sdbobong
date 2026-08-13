@@ -41,7 +41,7 @@ export default function DynamicIslandToast({
     success: { accent: '#34C759', bgGlow: 'rgba(52, 199, 89, 0.35)' },
     danger: { accent: '#FF3B30', bgGlow: 'rgba(255, 59, 48, 0.35)' },
     warning: { accent: '#FF9F0A', bgGlow: 'rgba(255, 159, 10, 0.35)' },
-    info: { accent: '#007AFF', bgGlow: 'rgba(0, 122, 255, 0.35)' },
+    info: { accent: '#12A5B8', bgGlow: 'rgba(18, 165, 184, 0.35)' },
   };
 
   const current = typeColors[type] || typeColors.info;

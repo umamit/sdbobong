@@ -120,9 +120,9 @@ export default function StatsCounter({ stats = {} }) {
       value: stats.akreditasi ?? 'B',
       suffix: '',
       label: 'Akreditasi',
-      color: '#AF52DE',
-      bgGlow: 'rgba(175, 82, 222, 0.25)',
-      gradient: 'linear-gradient(135deg, rgba(175, 82, 222, 0.4), rgba(175, 82, 222, 0.12))',
+      color: '#4CD964',
+      bgGlow: 'rgba(76, 217, 100, 0.25)',
+      gradient: 'linear-gradient(135deg, rgba(76, 217, 100, 0.4), rgba(76, 217, 100, 0.12))',
     },
   ];
 
