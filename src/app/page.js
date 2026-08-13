@@ -466,6 +466,39 @@ export default async function Home() {
                   </svg>
                 ),
               },
+              {
+                label: 'Website Sekolah',
+                value: 'Aktif',
+                color: '#FF9500',
+                bgGlow: 'rgba(255, 149, 0, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Presensi Online',
+                value: 'Aktif',
+                color: '#007AFF',
+                bgGlow: 'rgba(0, 122, 255, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                  </svg>
+                ),
+              },
+              {
+                label: 'Perangkat Ajar Digital',
+                value: 'Aktif',
+                color: '#5856D6',
+                bgGlow: 'rgba(88, 86, 214, 0.2)',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                ),
+              },
             ].map((f) => (
               <FramerRevealItem
                 key={f.label}
