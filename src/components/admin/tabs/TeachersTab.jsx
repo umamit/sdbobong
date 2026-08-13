@@ -1,9 +1,12 @@
 'use client';
 
 
+import { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
+import TeacherSyncModal from '../shared/modals/TeacherSyncModal';
 
 export default function TeachersTab() {
+  const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
   const {
     activeTab,
     handleMakeContact,
@@ -25,14 +28,27 @@ export default function TeachersTab() {
                       Daftar pendidik yang terbit di halaman profil publik. Klik tombol **Edit** untuk memuat datanya.
                     </p>
                   </div>
-                  <button 
-                    onClick={() => setAddTeacherModalOpen(true)} 
-                    className="btn btn-primary"
-                    style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Tambah Pendidik Baru
-                  </button>
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <button
+                      type="button"
+                      onClick={() => setIsSyncModalOpen(true)}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#fafafb', color: '#334155', border: '1px solid #cbd5e1' }}
+                    >
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                      </svg>
+                      Sinkronisasi Guru
+                    </button>
+                    <button 
+                      onClick={() => setAddTeacherModalOpen(true)} 
+                      className="btn btn-primary"
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      Tambah Pendidik Baru
+                    </button>
+                  </div>
                 </div>
 
                 <div className="table-responsive" style={{ border: 'none', borderRadius: 0, boxShadow: 'none', marginBottom: 0 }}>
@@ -142,6 +158,14 @@ export default function TeachersTab() {
                 </div>
               </div>
             </div>
+
+            <TeacherSyncModal 
+              isOpen={isSyncModalOpen} 
+              onClose={() => setIsSyncModalOpen(false)}
+              onSyncSuccess={() => {
+                window.location.reload();
+              }}
+            />
           </section>
   );
 }
