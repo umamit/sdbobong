@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+  background: linear-gradient(135deg, var(--primary-dark, #0A7E8D) 0%, var(--primary, #12A5B8) 100%);
   color: #FFFFFF;
   font-size: 0.75rem;
   font-weight: 700;
@@ -63,7 +63,7 @@
 .badgeIcon {
   width: 14px;
   height: 14px;
-  color: #93C5FD;
+  color: var(--primary-light, #48C4D3);
 }
 
 /* Scrolling Ticker Track */
