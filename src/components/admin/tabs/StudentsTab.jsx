@@ -1,9 +1,12 @@
 'use client';
 
 
+import { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
+import DapodikSyncModal from '../shared/modals/DapodikSyncModal';
 
 export default function StudentsTab() {
+  const [isDapodikModalOpen, setIsDapodikModalOpen] = useState(false);
   const {
     activeTab,
     filteredStudents,
@@ -94,29 +97,42 @@ export default function StudentsTab() {
                     Kelola biodata, NISN/NIS, domisili, data orang tua, dan nilai akademik siswa secara mandiri.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditingStudent(null);
-                    setStudNisn('');
-                    setStudNis('');
-                    setStudName('');
-                    setStudClass('1');
-                    setStudGender('Laki-laki');
-                    setStudBirthPlace('');
-                    setStudBirthDate('');
-                    setStudAddress('');
-                    setStudParentName('');
-                    setStudParentPhone('');
-                    setStudStatus('Aktif');
-                    setStudentModalOpen(true);
-                  }}
-                  className="btn btn-primary"
-                  style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                  Tambah Siswa Baru
-                </button>
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <button
+                    type="button"
+                    onClick={() => setIsDapodikModalOpen(true)}
+                    className="btn btn-secondary"
+                    style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#fafafb', color: '#334155', border: '1px solid #cbd5e1' }}
+                  >
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                    </svg>
+                    Sinkronisasi Dapodik
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingStudent(null);
+                      setStudNisn('');
+                      setStudNis('');
+                      setStudName('');
+                      setStudClass('1');
+                      setStudGender('Laki-laki');
+                      setStudBirthPlace('');
+                      setStudBirthDate('');
+                      setStudAddress('');
+                      setStudParentName('');
+                      setStudParentPhone('');
+                      setStudStatus('Aktif');
+                      setStudentModalOpen(true);
+                    }}
+                    className="btn btn-primary"
+                    style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah Siswa Baru
+                  </button>
+                </div>
               </div>
 
               {/* Search & Multi Filter Bar */}
@@ -374,6 +390,15 @@ export default function StudentsTab() {
                 </table>
               </div>
             </div>
+
+            <DapodikSyncModal 
+              isOpen={isDapodikModalOpen} 
+              onClose={() => setIsDapodikModalOpen(false)}
+              onSyncSuccess={() => {
+                // Refresh context to load updated students and statistics
+                window.location.reload();
+              }}
+            />
           </section>
   );
 }
