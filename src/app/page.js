@@ -57,28 +57,40 @@ export default async function Home() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "School",
+        "@type": "ElementarySchool",
         "@id": "https://www.sdnegeribobong.sch.id/#school",
         "name": "SD Negeri Bobong",
         "url": "https://www.sdnegeribobong.sch.id",
         "sameAs": [
-          "https://sdnegeribobong.sch.id"
+          "https://sdnegeribobong.sch.id",
+          "https://www.facebook.com/sdnegeribobong"
         ],
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.sdnegeribobong.sch.id/favicon.png",
-          "width": "192",
-          "height": "192"
+          "url": "https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png",
+          "width": "512",
+          "height": "512"
         },
-        "image": "https://www.sdnegeribobong.sch.id/favicon.png",
+        "image": "https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png",
         "description": "Website resmi SD Negeri Bobong, Kabupaten Pulau Taliabu. Menyediakan informasi profil sekolah, akademik, kesiswaan, PPDB online, dan berita terbaru.",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "Bobong, Pulau Taliabu",
+          "streetAddress": "Jl. Mansur Sou, Desa Wayo",
+          "addressLocality": "Kec. Taliabu Barat, Kab. Pulau Taliabu",
           "addressRegion": "Maluku Utara",
+          "postalCode": "97791",
           "addressCountry": "ID"
         },
-        "telephone": `+${operatorPhone}`
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "-1.8797",
+          "longitude": "124.4789"
+        },
+        "telephone": `+${operatorPhone}`,
+        "npsn": "60200589",
+        "accreditationRating": stats.akreditasi || "B",
+        "numberOfStudents": stats.siswa_aktif || 316,
+        "numberOfEmployees": stats.guru_staf || 23
       },
       {
         "@type": "WebSite",

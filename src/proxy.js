@@ -79,6 +79,14 @@ export async function proxy(request) {
     });
   }
 
+  // 1.5 Redirect dynamic news URLs /berita/:id to /berita#news-:id to prevent indexing 404s
+  if (path.startsWith('/berita/') && path !== '/berita') {
+    const newsId = path.split('/')[2];
+    if (newsId) {
+      return NextResponse.redirect(new URL(`/berita#news-${newsId}`, request.url), 308);
+    }
+  }
+
   // 2. Protect administrative dashboard routes
   if (path.startsWith('/admin') && path !== '/admin/login') {
     // Check if the service role key cookie exists and is valid
