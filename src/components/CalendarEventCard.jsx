@@ -40,17 +40,10 @@ export default function CalendarEventCard({ row, isCurrent, countdown, onClick }
         </span>
       )}
 
-      {/* Accent bar kiri */}
-      <div style={{
-        position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px',
-        backgroundColor: isCurrent ? 'var(--secondary)' : 'var(--primary)',
-        borderRadius: 'var(--radius-md) 0 0 var(--radius-md)'
-      }} />
-
       {/* Judul bulan */}
       <span style={{
         fontFamily: 'var(--font-heading)', fontWeight: 800,
-        fontSize: '1.2rem', color: 'var(--primary-dark)', paddingLeft: '4px'
+        fontSize: '1.2rem', color: 'var(--primary-dark)'
       }}>
         {row.month}
       </span>
@@ -58,7 +51,7 @@ export default function CalendarEventCard({ row, isCurrent, countdown, onClick }
       {/* Deskripsi kegiatan */}
       <p style={{
         fontSize: '0.9rem', color: 'var(--text-main)', margin: 0,
-        fontWeight: 500, lineHeight: 1.5, minHeight: '44px', paddingLeft: '4px'
+        fontWeight: 500, lineHeight: 1.5, minHeight: '44px'
       }}>
         {row.desc}
       </p>

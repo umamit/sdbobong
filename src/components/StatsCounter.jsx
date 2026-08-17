@@ -208,20 +208,6 @@ export default function StatsCounter({ stats = {} }) {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
-        /* Top Accent Pill Line */
-        .stats-counter-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 15%;
-          right: 15%;
-          height: 3px;
-          background: var(--card-accent, #12A5B8);
-          border-radius: 0 0 4px 4px;
-          box-shadow: 0 2px 8px var(--card-glow);
-          transition: left 0.3s ease, right 0.3s ease;
-        }
-
         /* Specular Shine Overlay on Hover */
         .stats-counter-card::after {
           content: '';
@@ -249,11 +235,6 @@ export default function StatsCounter({ stats = {} }) {
           transform: translateY(-8px) scale(1.02);
           border-color: rgba(255, 255, 255, 0.35);
           box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25), 0 0 25px var(--card-glow);
-        }
-
-        .stats-counter-card:hover::before {
-          left: 5%;
-          right: 5%;
         }
 
         .stats-counter-icon-wrap {
