@@ -436,6 +436,11 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
     });
 
     if (!groqRes.ok) {
+      if (groqRes.status === 429) {
+        return NextResponse.json({
+          reply: 'Maaf, Aim AI sedang melayani terlalu banyak pertanyaan sekaligus. Mohon tunggu beberapa detik, lalu coba kirim pertanyaan Anda kembali.'
+        });
+      }
       const errText = await groqRes.text();
       throw new Error(`Groq API error (${groqRes.status}): ${errText}`);
     }
