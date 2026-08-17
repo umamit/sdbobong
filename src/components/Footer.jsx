@@ -78,7 +78,7 @@ export default async function Footer() {
         <div className={`container ${styles.footerBottomFlex}`}>
           <div className={styles.developerNote}>
             <a 
-              href="https://digital.ibraglobalenglish.uk" 
+              href="https://ibradigital.id" 
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.developerLink}
@@ -87,7 +87,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v3.4.0</span>
+            &copy; 2026 SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v3.4.1</span>
           </p>
 
 
