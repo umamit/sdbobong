@@ -281,7 +281,6 @@ export default function PPDBOnlineForm() {
             <div className="form-card-section" style={{
               background: '#fcfcfd',
               border: '1px solid var(--border-color)',
-              borderLeft: '5px solid var(--formal-blue)',
               borderRadius: '12px',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
@@ -517,7 +516,6 @@ export default function PPDBOnlineForm() {
             <div className="form-card-section" style={{
               background: '#fcfcfd',
               border: '1px solid var(--border-color)',
-              borderLeft: '5px solid #16a34a',
               borderRadius: '12px',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'

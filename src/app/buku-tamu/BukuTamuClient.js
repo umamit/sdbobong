@@ -390,7 +390,8 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
                   style={{
                     padding: 'var(--space-md)',
                     background: 'white',
-                    borderLeft: `4px solid ${getRoleBadgeColor(msg.role)}`,
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-md)'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xs)' }}>

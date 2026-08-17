@@ -8,7 +8,6 @@ export default function ParentWaliSection({ formData, handleChange }) {
             <div className="form-card-section" style={{
               background: '#fcfcfd',
               border: '1px solid var(--border-color)',
-              borderLeft: '5px solid var(--formal-red)',
               borderRadius: '12px',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
@@ -147,7 +146,6 @@ export default function ParentWaliSection({ formData, handleChange }) {
             <div className="form-card-section" style={{
               background: '#fcfcfd',
               border: '1px solid var(--border-color)',
-              borderLeft: '5px solid #64748b',
               borderRadius: '12px',
               marginBottom: '2rem',
               boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'

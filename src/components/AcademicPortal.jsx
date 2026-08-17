@@ -511,12 +511,12 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
                       {/* Parent Guide Accordion/Box */}
                       <div style={{ 
                         backgroundColor: 'var(--accent-bg)', 
-                        borderLeft: `4px solid ${proj.color || '#1e40af'}`, 
+                        border: '1px solid var(--border-color)', 
                         padding: '12px var(--space-md)', 
-                        borderRadius: '0 var(--radius-md) var(--radius-md) 0',
+                        borderRadius: 'var(--radius-md)',
                         marginTop: '4px'
                       }}>
-                        <h4 style={{ color: proj.color || '#1e40af', fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <h4 style={{ color: 'var(--primary-dark)', fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                           Tips Dukungan Orang Tua di Rumah:
                         </h4>
