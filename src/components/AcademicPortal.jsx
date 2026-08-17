@@ -1,140 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import GradesClient from '../app/nilai/GradesClient';
-import CalendarEventCard from './CalendarEventCard';
-
-const P5_PROJECTS = [
-  {
-    id: "p5-bahari",
-    title: "Gaya Hidup Berkelanjutan: \"Bahari Lestari Pulau Taliabu\"",
-    badge: "Gaya Hidup Berkelanjutan",
-    desc: "Proyek berfokus pada edukasi pelestarian ekosistem pesisir Pulau Taliabu dari pencemaran sampah plastik, pemilahan sampah organik, serta pembuatan prakarya pot bunga daur ulang untuk mempercantik taman sekolah.",
-    parentGuide: [
-      "Biasakan anak membawa botol minum (tumbler) isi ulang dari rumah guna menekan sampah plastik sekali pakai.",
-      "Ajak anak memilah sampah plastik dan kardus bekas di rumah menjadi bahan kerajinan tangan kreatif.",
-      "Diskusikan pentingnya menjaga kebersihan laut saat berwisata bersama keluarga ke Pantai Wayo."
-    ],
-    skills: ["Kepedulian Ekologis", "Gotong Royong", "Kreativitas Daur Ulang"],
-    color: "#0B3C5D",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    id: "p5-budaya",
-    title: "Kearifan Lokal: \"Anyaman Pandan & Seni Tari Taliabu\"",
-    badge: "Kearifan Lokal",
-    desc: "Mengenalkan murid sejak dini pada kekayaan seni tradisional Pulau Taliabu, mulai dari dasar-dasar menganyam serat daun pandan hingga gerakan Tari Lalyon (tari adat Maluku Utara) untuk festival sekolah.",
-    parentGuide: [
-      "Ajak anak mendengarkan musik atau lagu daerah Maluku Utara di rumah untuk membangun keakraban budaya.",
-      "Ceritakan sejarah leluhur atau legenda menarik khas Pulau Taliabu sebelum anak tidur.",
-      "Dukung anak tampil percaya diri dalam kegiatan pertunjukan pentas budaya sekolah."
-    ],
-    skills: ["Toleransi Kebhinekaan", "Apresiasi Seni", "Literasi Budaya"],
-    color: "#329D9C",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    id: "p5-wirausaha",
-    title: "Kewirausahaan: \"Kantin Kreatif Olahan Sagu Taliabu\"",
-    badge: "Kewirausahaan",
-    desc: "Mengasah mental kemandirian dan kreativitas bisnis siswa melalui pembuatan olahan sagu lokal khas Taliabu yang higienis, serta mempraktikkan proses jual beli sederhana pada kegiatan Market Day sekolah.",
-    parentGuide: [
-      "Ajarkan konsep dasar berhemat dengan membiasakan anak menabung sebagian uang sakunya di celengan.",
-      "Latih anak menghitung kembalian uang belanja sederhana saat berbelanja di warung dekat rumah.",
-      "Bantu anak mengenali nilai-nilai kejujuran, disiplin, and kerja keras dalam dunia usaha kecil."
-    ],
-    skills: ["Kemandirian Finansial", "Logika Berpikir", "Kolaborasi Tim"],
-    color: "#F5A623",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop"
-  }
-];
-
-const MPLS_RUNDOWN = [
-  {
-    day: "Hari Ke-1",
-    theme: "Kenalan Yuk! (Gali Potensi, Raih Prestasi)",
-    color: "#0284c7",
-    activities: [
-      { time: "07.30 – 07.50 WIT", text: "Do’a pagi dan Salam sapa murid baru" },
-      { time: "07.50 – 08.00 WIT", text: "Menyanyikan lagu indonesia raya dan yel-yel sekolah" },
-      { time: "08.00 – 08.30 WIT", text: "Ice Breaking permainan perkenalan nama" },
-      { time: "08.30 – 09.00 WIT", text: "Istirahat & Snack Time (Makan sehat dan bergizi)" },
-      { time: "09.00 – 09.40 WIT", text: "Tur & jelajah keliling sekolahku" },
-      { time: "09.40 – 09.50 WIT", text: "Jeda ceria (Instruksi Kecil menanyakan cita-cita & foto wajah anak anak)" },
-      { time: "09.50 – 10.00 WIT", text: "Refleksi serta berdo’a sebelum pulang" }
-    ]
-  },
-  {
-    day: "Hari Ke-2",
-    theme: "Aku anak hebat! (Membangun Karakter & Mental Juara)",
-    color: "#16a34a",
-    activities: [
-      { time: "07.30 – 07.50 WIT", text: "Do’a pagi dan pertemuan pagi ceria" },
-      { time: "07.50 – 08.00 WIT", text: "Menyanyikan lagu indonesia raya dan yel-yel sekolah" },
-      { time: "08.00 – 08.30 WIT", text: "Ice Breaking Permainan tebak gambar G7KAIH" },
-      { time: "08.30 – 09.00 WIT", text: "Istirahat & Snack Time (Makan sehat dan bergizi)" },
-      { time: "09.00 – 09.30 WIT", text: "Bermain Peran: Tata tertib sekolah" },
-      { time: "09.30 – 09.50 WIT", text: "Materi karakter: Budaya 6S (Senyum, salam, sapa, salim, sopan, dan santun)" },
-      { time: "09.50 – 10.00 WIT", text: "Refleksi serta berdo’a sebelum pulang" }
-    ]
-  },
-  {
-    day: "Hari Ke-3",
-    theme: "Sekolahku Rumahku! (Akrab Dan Nyaman Bersama)",
-    color: "#ea580c",
-    activities: [
-      { time: "07.30 – 07.50 WIT", text: "Do’a pagi dan pertemuan pagi ceria" },
-      { time: "07.50 – 08.00 WIT", text: "Menyanyikan lagu indonesia raya dan yel-yel sekolah" },
-      { time: "08.00 – 08.30 WIT", text: "Permainan Edukatif: Tebak alat tulis" },
-      { time: "08.30 – 09.00 WIT", text: "Istirahat & Snack Time (Makan sehat dan bergizi)" },
-      { time: "09.00 – 09.30 WIT", text: "Simulasi kegiatan belajar (duduk rapi, meletakkan alat tulis rapi, angkat tangan, dan berani tampil ke depan)" },
-      { time: "09.30 – 09.40 WIT", text: "Materi edukasi: Sopan dan santun bermedia sosial" },
-      { time: "09.40 – 09.50 WIT", text: "Game edukatif: Garis Pilihanku!" },
-      { time: "09.50 – 10.00 WIT", text: "Menyanyi, tepuk semangat, dan refleksi serta berdo’a sebelum pulang" }
-    ]
-  },
-  {
-    day: "Hari Ke-4",
-    theme: "Eksplorasi Bakatku (Unjuk Gigi dan Ekspresi Diri)",
-    color: "#eab308",
-    activities: [
-      { time: "07.30 – 07.50 WIT", text: "Do’a pagi dan pertemuan pagi ceria" },
-      { time: "07.50 – 08.00 WIT", text: "Menyanyikan lagu indonesia raya dan yel-yel sekolah" },
-      { time: "08.00 – 08.30 WIT", text: "Permainan disiplin: Susun isi tas Sekolah" },
-      { time: "08.30 – 09.00 WIT", text: "Istirahat & Snack Time (Makan sehat dan bergizi)" },
-      { time: "09.00 – 09.30 WIT", text: "Permainan: Detektif toilet dan UKS" },
-      { time: "09.30 – 09.50 WIT", text: "Operasi Semut (Kerja bakti kilat merapikan kelas baru)" },
-      { time: "09.50 – 10.00 WIT", text: "Tepuk semangat, berdo’a pulang, dan pembagian bintang semangat" }
-    ]
-  },
-  {
-    day: "Hari Ke-5",
-    theme: "Aku Siap Sekolah! (Bersama Menggapai Masa Depan)",
-    color: "#8b5cf6",
-    activities: [
-      { time: "07.30 – 07.45 WIT", text: "Jalan pagi singkat dan berdo’a pagi" },
-      { time: "07.45 – 08.00 WIT", text: "Pertemuan pagi ceria dan Menyanyikan lagu indonesia raya & yel-yel sekolah" },
-      { time: "08.00 – 08.30 WIT", text: "Materi karakter: Anti-Bullying & Menghargai Teman" },
-      { time: "08.30 – 09.00 WIT", text: "Istirahat & Snack Time (Makan sehat dan bergizi)" },
-      { time: "09.00 – 09.30 WIT", text: "Ayo sigap bencana lewat lagu!" },
-      { time: "09.30 – 09.45 WIT", text: "Sambutan penutupan MPLS" },
-      { time: "09.45 – 10.00 WIT", text: "Operasi Semut (Kerja bakti kilat merapikan kelas baru)" },
-      { time: "10.00 – 10.15 WIT", text: "Refleksi, Tepuk semangat, serta berdo’a sebelum pulang." }
-    ]
-  }
-];
+import CalendarTab from './academic/CalendarTab';
+import P5Tab from './academic/P5Tab';
+import KbmTab from './academic/KbmTab';
+import AcademicEventModal from './academic/AcademicEventModal';
+import { MPLS_RUNDOWN } from '../data/mplsRundown';
 
 export default function AcademicPortal({ initialCalendar = [], initialP5Projects = [], initialJadwalKBM = [] }) {
   const [activeTab, setActiveTab] = useState('calendar');
-  const [selectedEvent, setSelectedRoom] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [activeMplsDay, setActiveMplsDay] = useState(0);
   const [countdowns, setCountdowns] = useState({});
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
-  // Build countdown from initialCalendar: extract first date from `dates` field or derive from `month`
   useEffect(() => {
     const MONTH_MAP = {
       'januari': '01', 'februari': '02', 'maret': '03', 'april': '04',
@@ -142,22 +24,17 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
       'september': '09', 'oktober': '10', 'november': '11', 'desember': '12'
     };
 
-    // Build a map of { eventId: ISO date string } from initialCalendar
     const datesMap = {};
     initialCalendar.forEach(evt => {
       if (!evt.id) return;
-      // Try to extract "DD" from dates field like "13 - 17 Juli 2026" or "13 Juli 2026"
       const datesStr = (evt.dates || '').toLowerCase();
       const monthStr = (evt.month || '').toLowerCase();
-      // Extract year from dates or month field
       const yearMatch = (datesStr + ' ' + monthStr).match(/\b(20\d{2})\b/);
       const year = yearMatch ? yearMatch[1] : null;
-      // Extract month number from dates or month field
       let monthNum = null;
       for (const [name, num] of Object.entries(MONTH_MAP)) {
         if (datesStr.includes(name) || monthStr.includes(name)) { monthNum = num; break; }
       }
-      // Extract first day number from dates field
       const dayMatch = datesStr.match(/\b(\d{1,2})\b/);
       const day = dayMatch ? dayMatch[1].padStart(2, '0') : '01';
       if (year && monthNum) {
@@ -172,7 +49,6 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
       Object.entries(datesMap).forEach(([id, dateStr]) => {
         const target = new Date(dateStr + 'T07:15:00').getTime();
         const diff = target - now;
-
         if (diff > 0) {
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -181,17 +57,11 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
           updated[id] = 'Sedang/Sudah Terlaksana';
         }
       });
-
       setCountdowns(updated);
     }, 1000);
 
     return () => clearInterval(timer);
   }, [initialCalendar]);
-
-  const handleEventClick = (row) => {
-    setSelectedRoom(row);
-    setActiveMplsDay(0);
-  };
 
   const getParentTips = (id) => {
     const tips = {
@@ -232,542 +102,40 @@ export default function AcademicPortal({ initialCalendar = [], initialP5Projects
   const months = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
   const currentMonth = months[new Date().getMonth()];
 
+  const tabButtons = [
+    { id: 'calendar', label: 'Agenda Akademik', icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg> },
+    { id: 'p5', label: 'Portal Proyek P5', icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 14a6 6 0 0 1-6-6V9a6 6 0 0 1 6-6m0 16a6 6 0 0 0 6-6V9a6 6 0 0 0-6-6" /></svg> },
+    { id: 'kbm', label: 'Jadwal KBM Harian', icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-16.5a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-16.5v16.5" /></svg> },
+    { id: 'grades', label: 'Rapor Siswa', icon: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.25c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 0 1 3 18.375v-5.25ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125v-9.75ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v14.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg> }
+  ];
+
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-      {/* Tab Switcher Dashboard */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        backgroundColor: 'var(--bg-main)', 
-        padding: '6px', 
-        borderRadius: 'var(--radius-full)', 
-        maxWidth: '720px', 
-        margin: '0 auto',
-        border: '1px solid var(--border-color)',
-        boxShadow: 'var(--shadow-inset)',
-        flexWrap: 'wrap',
-        gap: '4px'
-      }}>
-        <button 
-          onClick={() => setActiveTab('calendar')}
-          style={{
-            flex: '1 1 140px',
-            padding: '10px 16px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            fontWeight: 700,
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-            backgroundColor: activeTab === 'calendar' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'calendar' ? 'white' : 'var(--text-muted)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
-          Agenda Akademik
-        </button>
-        <button 
-          onClick={() => setActiveTab('p5')}
-          style={{
-            flex: '1 1 140px',
-            padding: '10px 16px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            fontWeight: 700,
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-            backgroundColor: activeTab === 'p5' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'p5' ? 'white' : 'var(--text-muted)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 14a6 6 0 0 1-6-6V9a6 6 0 0 1 6-6m0 16a6 6 0 0 0 6-6V9a6 6 0 0 0-6-6" /></svg>
-          Portal Proyek P5
-        </button>
-        <button 
-          onClick={() => setActiveTab('kbm')}
-          style={{
-            flex: '1 1 140px',
-            padding: '10px 16px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            fontWeight: 700,
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-            backgroundColor: activeTab === 'kbm' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'kbm' ? 'white' : 'var(--text-muted)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-16.5a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-16.5v16.5" /></svg>
-          Jadwal KBM Harian
-        </button>
-        <button 
-          onClick={() => setActiveTab('grades')}
-          style={{
-            flex: '1 1 140px',
-            padding: '10px 16px',
-            borderRadius: 'var(--radius-full)',
-            border: 'none',
-            fontWeight: 700,
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.85rem',
-            cursor: 'pointer',
-            transition: 'all 0.25s ease',
-            backgroundColor: activeTab === 'grades' ? 'var(--primary)' : 'transparent',
-            color: activeTab === 'grades' ? 'white' : 'var(--text-muted)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" style={{ width: '18px', height: '18px' }}><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.25c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 0 1 3 18.375v-5.25ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125v-9.75ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v14.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>
-          Rapor Siswa
-        </button>
+      <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '6px', borderRadius: 'var(--radius-full)', maxWidth: '720px', margin: '0 auto', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-inset)', flexWrap: 'wrap', gap: '4px' }}>
+        {tabButtons.map(btn => (
+          <button key={btn.id} onClick={() => setActiveTab(btn.id)} style={{ flex: '1 1 140px', padding: '10px 16px', borderRadius: 'var(--radius-full)', border: 'none', fontWeight: 700, fontFamily: 'var(--font-heading)', fontSize: '0.85rem', cursor: 'pointer', transition: 'all 0.25s ease', backgroundColor: activeTab === btn.id ? 'var(--primary)' : 'transparent', color: activeTab === btn.id ? 'white' : 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            {btn.icon}
+            {btn.label}
+          </button>
+        ))}
       </div>
 
-      {/* TAB CONTENT 1: ACADEMIC CALENDAR */}
-      {activeTab === 'calendar' && (
-        <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
-          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>
-            Akses agenda resmi sekolah dengan mudah. Klik salah satu kegiatan di bawah untuk melihat **Countdown Waktu Mundur** dan **Panduan Edukatif Khusus Orang Tua**!
-          </p>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-            gap: 'var(--space-sm)' 
-          }}>
-            {initialCalendar && initialCalendar.map((row) => (
-              <CalendarEventCard
-                key={row.id}
-                row={row}
-                isCurrent={row.id === currentMonth}
-                countdown={countdowns[row.id]}
-                onClick={() => handleEventClick(row)}
-              />
-            ))}
-          </div>
-
-        </div>
-      )}
-
-      {/* TAB CONTENT 2: JADWAL KBM HARIAN */}
-      {activeTab === 'kbm' && (
-        <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
-          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-            Rincian waktu belajar harian untuk masing-masing fase kelas di SD Negeri Bobong berjalan efektif.
-          </p>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-            gap: 'var(--space-md)' 
-          }}>
-            {(initialJadwalKBM && initialJadwalKBM.length > 0 ? initialJadwalKBM : []).map((kbm, idx) => (
-              <div 
-                key={kbm.id || idx}
-                style={{
-                  backgroundColor: 'white',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: 'var(--space-md)',
-                  boxShadow: 'var(--shadow-sm)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                  transition: 'transform 0.25s, box-shadow 0.25s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                  </span>
-                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--primary-dark)', fontFamily: 'var(--font-heading)' }}>
-                    {kbm.kelas}
-                  </h3>
-                </div>
-
-                <div style={{ 
-                  backgroundColor: 'var(--bg-main)', 
-                  padding: '12px', 
-                  borderRadius: 'var(--radius-md)', 
-                  fontSize: '0.875rem', 
-                  color: 'var(--text-color)', 
-                  lineHeight: 1.6,
-                  whiteSpace: 'pre-line',
-                  border: '1px solid var(--border-color)',
-                  fontWeight: 500
-                }}>
-                  {kbm.hari}
-                </div>
-
-                {kbm.keterangan && (
-                  <p style={{ margin: 0, fontSize: '0.825rem', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.4, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                    <span>{kbm.keterangan}</span>
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* TAB CONTENT 3: P5 SHOWCASE PORTAL */}
-      {activeTab === 'p5' && (
-        <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
-          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>
-            **Projek Penguatan Profil Pelajar Pancasila (P5)** merupakan wadah pengenalan karakter berbasis kearifan lokal. Berikut panduan praktis bagi Ayah & Bunda untuk mendukung karakter anak di rumah!
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
-            {initialP5Projects && initialP5Projects.length > 0 ? (
-              initialP5Projects.map((proj) => {
-                const skillsArray = Array.isArray(proj.skills) 
-                  ? proj.skills 
-                  : (typeof proj.skills === 'string' ? proj.skills.split(',').map(s => s.trim()) : []);
-                const parentGuideArray = Array.isArray(proj.parentGuide) 
-                  ? proj.parentGuide 
-                  : (typeof proj.parentGuide === 'string' ? proj.parentGuide.split('\n').map(p => p.trim()) : []);
-
-                return (
-                  <div 
-                    key={proj.id}
-                    className="p5-grid-card"
-                    style={{
-                      backgroundColor: 'white',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: 'var(--radius-lg)',
-                      overflow: 'hidden',
-                      boxShadow: 'var(--shadow-md)',
-                    }}
-                  >
-                    {/* Image panel */}
-                    <div style={{ position: 'relative', minHeight: '180px' }}>
-                      <img 
-                        src={proj.image} 
-                        alt={proj.title} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                      />
-                      <span style={{
-                        position: 'absolute',
-                        top: '12px',
-                        left: '12px',
-                        backgroundColor: proj.color || '#1e40af',
-                        color: 'white',
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        padding: '4px 10px',
-                        borderRadius: 'var(--radius-full)'
-                      }}>
-                        {proj.badge}
-                      </span>
-                    </div>
-
-                    {/* Content Panel */}
-                    <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      <h3 style={{ color: 'var(--primary-dark)', fontSize: '1.25rem', margin: 0 }}>
-                        {proj.title}
-                      </h3>
-                      
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6, textAlign: 'justify' }}>
-                        {proj.desc}
-                      </p>
-
-                      {/* Skills tags */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '2px 0' }}>
-                        {skillsArray.filter(s => s && s.trim()).map((skill, idx) => (
-                          <span key={idx} style={{ fontSize: '0.75rem', fontWeight: 600, padding: '2px 8px', borderRadius: '4px', backgroundColor: '#F3F4F6', color: '#4b5563' }}>
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Parent Guide Accordion/Box */}
-                      <div style={{ 
-                        backgroundColor: 'var(--accent-bg)', 
-                        border: '1px solid var(--border-color)', 
-                        padding: '12px var(--space-md)', 
-                        borderRadius: 'var(--radius-md)',
-                        marginTop: '4px'
-                      }}>
-                        <h4 style={{ color: 'var(--primary-dark)', fontSize: '0.9rem', margin: '0 0 6px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                          Tips Dukungan Orang Tua di Rumah:
-                        </h4>
-                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--text-main)', lineHeight: 1.5 }}>
-                          {parentGuideArray.filter(t => t && t.trim()).map((tip, idx) => (
-                            <li key={idx} style={{ marginBottom: '4px' }}>{tip}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div style={{
-                textAlign: 'center',
-                padding: 'var(--space-xl) var(--space-md)',
-                backgroundColor: 'white',
-                border: '1px dashed var(--border-color)',
-                borderRadius: 'var(--radius-lg)',
-                color: 'var(--text-muted)'
-              }}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '10px', color: '#94a3b8' }}>
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="12" y1="8" x2="12" y2="12"/>
-                  <line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
-                <h3 style={{ fontSize: '1.1rem', color: 'var(--primary-dark)', margin: '0 0 5px 0' }}>Belum Ada Projek P5</h3>
-                <p style={{ fontSize: '0.85rem', margin: 0 }}>Projek Penguatan Profil Pelajar Pancasila belum ditambahkan. Admin dapat mempublikasikannya melalui Dashboard Admin.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* TAB CONTENT 3: STUDENT GRADES CHECKER */}
+      {activeTab === 'calendar' && <CalendarTab initialCalendar={initialCalendar} currentMonth={currentMonth} countdowns={countdowns} onEventClick={setSelectedEvent} />}
+      {activeTab === 'p5' && <P5Tab initialP5Projects={initialP5Projects} />}
+      {activeTab === 'kbm' && <KbmTab initialJadwalKBM={initialJadwalKBM} />}
       {activeTab === 'grades' && (
         <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
-          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>
-            Masukkan NISN dan Tanggal Lahir siswa untuk mengakses data rapor hasil belajar digital Kurikulum Merdeka secara aman.
-          </p>
+          <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto', fontSize: '0.95rem' }}>Masukkan NISN dan Tanggal Lahir siswa untuk mengakses data rapor hasil belajar digital Kurikulum Merdeka secara aman.</p>
           <GradesClient />
         </div>
       )}
 
-      {/* EVENT MODAL POPUP — rendered via portal to document.body for full-viewport coverage */}
-      {selectedEvent && mounted && createPortal(
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(7, 37, 59, 0.65)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '16px var(--space-sm)',
-          overflowY: 'auto',
-          animation: 'fadeIn 0.2s ease-out'
-        }} onClick={() => setSelectedRoom(null)}>
-          <div style={{
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-lg)',
-            width: '100%',
-            maxWidth: '550px',
-            maxHeight: '90vh',
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-            border: '2px solid white',
-            position: 'relative',
-            animation: 'scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            margin: 'auto'
-          }} onClick={(e) => e.stopPropagation()}>
-            
-            {/* Header */}
-            <div style={{ 
-              background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)',
-              padding: 'var(--space-md)',
-              color: 'white',
-              position: 'relative'
-            }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--secondary-light)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Agenda Akademik {selectedEvent.month}
-              </span>
-              <h3 style={{ color: 'white', fontSize: '1.4rem', margin: '4px 0 0 0', fontFamily: 'var(--font-heading)' }}>
-                {selectedEvent.desc}
-              </h3>
+      <AcademicEventModal selectedEvent={selectedEvent} onClose={() => setSelectedEvent(null)} mounted={mounted} countdowns={countdowns} activeMplsDay={activeMplsDay} setActiveMplsDay={setActiveMplsDay} MPLS_RUNDOWN={MPLS_RUNDOWN} getParentTips={getParentTips} />
 
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setSelectedEvent(null)}
-                style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  border: 'none',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  color: 'white',
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  cursor: 'pointer',
-                  fontSize: '1.2rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'background-color 0.2s'
-                }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
-              >
-                &times;
-              </button>
-            </div>
-
-            {/* Body */}
-            <div style={{ padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: '15px', overflowY: 'auto', flex: '1 1 auto' }}>
-              
-              {/* Target Date and countdown */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '10px', backgroundColor: 'var(--bg-main)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                <div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', fontWeight: 600, textTransform: 'uppercase' }}>Tanggal Pelaksanaan</span>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--primary-dark)', fontWeight: 700, marginTop: '2px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    <span>{selectedEvent.dates}</span>
-                  </div>
-                </div>
-                <div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', fontWeight: 600, textTransform: 'uppercase' }}>Hitung Mundur Acara</span>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--accent)', fontWeight: 800, marginTop: '2px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>{countdowns[selectedEvent.id] || "Mempersiapkan..."}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Detailed MPLS Rundown Timeline */}
-              {(selectedEvent.id === 'juli' || 
-                (selectedEvent.desc && selectedEvent.desc.toLowerCase().includes('mpls')) ||
-                (selectedEvent.title && selectedEvent.title.toLowerCase().includes('mpls'))) && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: '#ffffff' }}>
-                  <h4 style={{ color: 'var(--primary-dark)', fontSize: '0.95rem', margin: '0 0 4px 0', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-                    Rundown Harian MPLS:
-                  </h4>
-                  
-                  {/* Tabs */}
-                  <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', borderBottom: '1px solid var(--border-color)', scrollbarWidth: 'thin' }}>
-                    {MPLS_RUNDOWN.map((dayData, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveMplsDay(idx)}
-                        style={{
-                          padding: '6px 12px',
-                          borderRadius: '16px',
-                          border: 'none',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          backgroundColor: activeMplsDay === idx ? dayData.color : '#f1f5f9',
-                          color: activeMplsDay === idx ? '#ffffff' : '#475569',
-                          whiteSpace: 'nowrap',
-                          transition: 'all 0.2s ease'
-                        }}
-                      >
-                        {dayData.day}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Active Day Content */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ fontSize: '0.825rem', fontWeight: 700, color: '#334155', backgroundColor: '#f8fafc', padding: '6px 10px', borderRadius: '6px', borderLeft: `3px solid ${MPLS_RUNDOWN[activeMplsDay].color}`, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                      <span>Tema: {MPLS_RUNDOWN[activeMplsDay].theme}</span>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px' }}>
-                      {MPLS_RUNDOWN[activeMplsDay].activities.map((act, actIdx) => (
-                        <div key={actIdx} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '0.8rem' }}>
-                          <span style={{
-                            backgroundColor: '#f1f5f9',
-                            color: '#475569',
-                            padding: '2px 6px',
-                            borderRadius: '4px',
-                            fontWeight: 700,
-                            fontSize: '0.725rem',
-                            whiteSpace: 'nowrap',
-                            border: '1px solid #e2e8f0'
-                          }}>
-                            {act.time}
-                          </span>
-                          <span style={{ color: '#334155', fontWeight: 500, lineHeight: 1.4, paddingTop: '1px' }}>
-                            {act.text}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Parents Prep Guide */}
-              <div style={{ backgroundColor: '#FEF3C7', borderLeft: '4px solid var(--secondary)', padding: '15px', borderRadius: '0 var(--radius-md) var(--radius-md) 0' }}>
-                <h4 style={{ color: 'var(--secondary-dark)', fontSize: '0.95rem', margin: '0 0 8px 0', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                  Panduan Persiapan Orang Tua di Rumah:
-                </h4>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.85rem', color: 'var(--primary-dark)', lineHeight: 1.6 }}>
-                  {getParentTips(selectedEvent.id).map((tip, idx) => (
-                    <li key={idx} style={{ marginBottom: '6px' }}>{tip}</li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-
-            {/* Footer */}
-            <div style={{ padding: '12px var(--space-md)', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', backgroundColor: '#F9FAFB', flexShrink: 0 }}>
-              <button 
-                className="btn btn-primary" 
-                onClick={() => setSelectedRoom(null)}
-                style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}
-              >
-                Mengerti
-              </button>
-            </div>
-
-          </div>
-        </div>
-      , document.body)}
-
-      {/* Animation Styles */}
       <style jsx>{`
-        @keyframes tabFadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .p5-grid-card {
-          display: grid;
-          grid-template-columns: 1fr;
-        }
-        @media (min-width: 640px) {
-          .p5-grid-card {
-            grid-template-columns: minmax(200px, 1fr) 2fr;
-          }
-        }
+        @keyframes tabFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .p5-grid-card { display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .p5-grid-card { grid-template-columns: minmax(200px, 1fr) 2fr; } }
       `}</style>
     </div>
   );

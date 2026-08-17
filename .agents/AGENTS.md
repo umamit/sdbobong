@@ -107,8 +107,8 @@ Client fetches should use:
 
 # 6. Code Quality
 
-- Prefer files under 200 lines.
-- Hard limit: 800 lines.
+- Prefer files under 100 lines.
+- Hard limit: 150 lines.
 - Split components only when it improves readability or reuse.
 - Never duplicate helpers or utilities.
 - Reuse existing components before creating new ones.
@@ -278,7 +278,7 @@ for path, reason, count in unused_candidates:
 ```
 
 ### Skrip 3 – Audit Panjang File (`File Length Checker`)
-Gunakan untuk memastikan seluruh file tetap di bawah batas 800 baris sesuai Rule 6.
+Gunakan untuk memastikan seluruh file tetap di bawah batas 150 baris sesuai Rule 6.
 ```python
 import os
 long_files = []
@@ -288,10 +288,11 @@ for root, dirs, files in os.walk('src'):
       path = os.path.join(root, file)
       with open(path, 'r', encoding='utf-8', errors='ignore') as f:
         line_count = len(f.readlines())
-        if line_count > 800:
+        if line_count > 150:
           long_files.append((path, line_count))
-print(f'File melebihi 800 baris: {len(long_files)}')
-print(f'- {path}: {count} baris')
+print(f'File melebihi 150 baris: {len(long_files)}')
+for path, count in long_files:
+  print(f'- {path}: {count} baris')
 ```
 
 ### Skrip 4 – Pemindai Impor Tak Lengkap (`Unimported Variable Scanner`)
