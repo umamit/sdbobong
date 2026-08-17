@@ -89,12 +89,13 @@ export default async function Kesiswaan() {
               
               const badgeBg = isFirst ? '#FFF8E6' : isSecond ? '#F3F4F6' : 'var(--accent-bg)';
               const badgeColor = isFirst ? 'var(--secondary-dark)' : isSecond ? 'var(--text-muted)' : 'var(--accent)';
-              const borderCol = isFirst ? 'var(--secondary)' : 'var(--border-color)';
+              const borderCol = 'var(--border-color)';
+              const ribbonBg = isFirst ? 'var(--secondary)' : isSecond ? '#94a3b8' : 'var(--accent)';
               
               return (
                 <FramerRevealItem key={idx}>
-                  <div className="prestasi-card" style={{ border: `2px solid ${borderCol}`, height: '100%' }}>
-                    <div className="prestasi-ribbon" style={{ backgroundColor: borderCol === 'var(--border-color)' ? '#f1f5f9' : borderCol }}>
+                  <div className="prestasi-card" style={{ border: `1px solid ${borderCol}`, height: '100%' }}>
+                    <div className="prestasi-ribbon" style={{ backgroundColor: ribbonBg }}>
                       <span>{pres.rank}</span>
                     </div>
                     <div className="prestasi-medal-bg" style={{ background: badgeBg, color: badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
