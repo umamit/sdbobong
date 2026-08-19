@@ -231,10 +231,12 @@ export async function POST(request) {
       if (parsedFormData) {
         for (const [key, value] of parsedFormData.entries()) {
           if (value && typeof value === 'object' && value.size > 0) {
+            const isSpImage = key.startsWith('sp_image_');
             const allowedTypes = key.startsWith('sp_pdf_') 
               ? ['png', 'jpg', 'jpeg', 'svg', 'gif', 'pdf'] 
               : ['png', 'jpg', 'jpeg', 'svg', 'gif'];
-            const uploadedUrl = await handlePhotoUpload(value, 'teachers', allowedTypes);
+            const uploadQuality = isSpImage ? 95 : 85;
+            const uploadedUrl = await handlePhotoUpload(value, 'teachers', allowedTypes, uploadQuality);
             if (uploadedUrl && uploadedUrl !== 'INVALID_TYPE' && uploadedUrl !== 'ERROR') {
               if (key === 'sejarah_image_file') {
                 pageData.sejarah_image = uploadedUrl;

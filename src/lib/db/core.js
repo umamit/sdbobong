@@ -150,7 +150,7 @@ export function isSupabaseEnabled() {
  * - 'news' (for news photos)
  * - 'ppdb_berkas' (for student registration PDFs)
  */
-export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowedExts = ['png', 'jpg', 'jpeg']) {
+export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowedExts = ['png', 'jpg', 'jpeg'], quality = 85) {
   if (!fileObj || typeof fileObj === 'string' || !fileObj.name) return "NO_FILE";
   const extension = fileObj.name.split('.').pop().toLowerCase();
   if (!allowedExts.includes(extension)) return "INVALID_TYPE";
@@ -160,7 +160,7 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
     buffer = Buffer.from(await fileObj.arrayBuffer());
   } catch (e) { console.error("Failed to read file buffer:", e); return "ERROR"; }
 
-  // Convert JPG/PNG to WebP for smaller file size (quality 85, visually indistinguishable).
+  // Convert JPG/PNG to WebP for smaller file size (visually indistinguishable).
   // SVG, GIF, and video files are passed through unchanged.
   const CONVERTIBLE_EXTS = ['jpg', 'jpeg', 'png'];
   const isConvertible = CONVERTIBLE_EXTS.includes(extension);
@@ -170,7 +170,7 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
 
   if (isConvertible) {
     try {
-      finalBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
+      finalBuffer = await sharp(buffer).webp({ quality }).toBuffer();
       finalExtension = 'webp';
       finalMimeType = 'image/webp';
     } catch (e) {

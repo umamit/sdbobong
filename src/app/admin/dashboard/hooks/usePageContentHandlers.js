@@ -259,7 +259,8 @@ export default function usePageContentHandlers({
       for (const key of Object.keys(fileFields)) {
         if (fileFields[key]) {
           const file = fileFields[key];
-          formData.append(key, file instanceof File ? await compressImage(file) : file);
+          const shouldCompress = !key.startsWith('sp_image_');
+          formData.append(key, (file instanceof File && shouldCompress) ? await compressImage(file) : file);
         }
       }
 
