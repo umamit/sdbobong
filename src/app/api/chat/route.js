@@ -418,7 +418,7 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
         content: m.content
       }))
     ];
-    const primaryModel = 'llama-3.3-70b-versatile';
+    const primaryModel = 'openai/gpt-oss-120b';
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
