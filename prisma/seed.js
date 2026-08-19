@@ -18,7 +18,7 @@ async function main() {
       const configData = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
       // Cegah regresi visitor_count dari data seed lokal
-      let dbVisitorCount = 238;
+      let dbVisitorCount = 345;
       try {
         const existing = await prisma.config.findUnique({ where: { id: 'global_config' } });
         if (existing && existing.stats && typeof existing.stats === 'object') {
