@@ -259,8 +259,16 @@ export default function usePageContentHandlers({
       for (const key of Object.keys(fileFields)) {
         if (fileFields[key]) {
           const file = fileFields[key];
-          const shouldCompress = !key.startsWith('sp_image_');
-          formData.append(key, (file instanceof File && shouldCompress) ? await compressImage(file) : file);
+          if (file instanceof File) {
+            // Gunakan resolusi 2500px & kualitas 92% (High-Fidelity) untuk infografis agar teks tajam
+            // namun ukurannya tetap di bawah batas 4.5MB Vercel.
+            const compressed = key.startsWith('sp_image_')
+              ? await compressImage(file, 2500, 2500, 0.92)
+              : await compressImage(file);
+            formData.append(key, compressed);
+          } else {
+            formData.append(key, file);
+          }
         }
       }
 
