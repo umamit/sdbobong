@@ -25,6 +25,10 @@ Cache-Control: private, no-cache, no-store, must-revalidate
 - Add `"use client"` only when interactivity is required.
 - Never mix client and server logic in the same file.
 - Keep database access server-side.
+- **Pencegahan Hydration Mismatch**:
+  - Dilarang menggunakan objek browser global (seperti `window`, `document`, `navigator`, `localStorage`, atau `typeof window !== 'undefined'`) secara langsung dalam logika rendering awal komponen JSX.
+  - Untuk nilai atau objek browser-only yang bervariasi antara server dan klien (seperti URL origin, resolusi layar, deteksi perangkat), wajib gunakan pola **State + `useEffect`** (inisialisasi state dengan nilai default yang aman untuk SSR, lalu perbarui nilainya di dalam hook `useEffect` setelah komponen berhasil termuat / *mounted*).
+  - Gunakan properti `suppressHydrationWarning={true}` hanya untuk elemen data dinamis yang tidak dapat dihindari perbedaannya (seperti tampilan waktu lokal waktu riil).
 - Never modify:
   - layout.js
   - proxy.js (Next.js 16 middleware)
@@ -162,6 +166,9 @@ After every modification:
 - Verify Server/Client boundaries.
 - Verify no hydration issues.
 - Verify no undefined variables.
+- **Kesesuaian Browser (Safari Macbook & Lain-lain)**:
+  - Pengembangan website ini menggunakan Safari di Macbook sebagai lingkungan kerja utama pengguna.
+  - Setiap perubahan tata letak (layout), properti CSS (seperti `clamp`, `flex`, `grid`, `position`), animasi, dan penanganan event browser **wajib disesuaikan dan diuji kompatibilitasnya dengan Safari Macbook** terlebih dahulu, serta memastikan tampilan tetap responsif dan konsisten di browser populer lainnya (Chrome, Edge, Firefox).
 - Recommend running:
 
 ```
