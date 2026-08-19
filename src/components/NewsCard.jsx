@@ -12,17 +12,24 @@ export default function NewsCard({ news, className = '', priority = false }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return;
+
+    const checkAndScroll = () => {
       const hash = window.location.hash;
       const cleanNewsId = news.id.replace('news-', '');
-      if (hash === `#news-${news.id}` || hash === `#news-${cleanNewsId}`) {
+      const cleanHash = hash.replace('#news-', '').replace('news-', '');
+      const match = hash === `#news-${news.id}` || 
+                    hash === `#news-${cleanNewsId}` ||
+                    (cleanHash && cleanHash === cleanNewsId);
+
+      if (match) {
         setIsExpanded(true);
         setTimeout(() => {
           const el = document.getElementById(`news-${news.id}`);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             el.style.borderColor = 'var(--primary)';
-            el.style.boxShadow = '0 0 0 4px rgba(99, 102, 241, 0.25)';
+            el.style.boxShadow = '0 0 0 4px rgba(18, 165, 184, 0.25)';
             setTimeout(() => {
               el.style.borderColor = '';
               el.style.boxShadow = '';
@@ -30,7 +37,13 @@ export default function NewsCard({ news, className = '', priority = false }) {
           }
         }, 400);
       }
-    }
+    };
+
+    checkAndScroll();
+    window.addEventListener('hashchange', checkAndScroll);
+    return () => {
+      window.removeEventListener('hashchange', checkAndScroll);
+    };
   }, [news.id]);
 
   // Drag and touch swipe state

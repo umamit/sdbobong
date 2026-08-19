@@ -74,25 +74,33 @@ export default function BeritaSearchClient({ newsList = [] }) {
     });
   }, [newsList, searchQuery, selectedCategory, selectedYear, sortOrder]);
 
-  const hasCheckedHash = useRef(false);
-
-  // Auto-paginate to the page containing the news item matched by URL hash on mount
+  // Auto-paginate to the page containing the news item matched by URL hash
   useEffect(() => {
-    if (hasCheckedHash.current) return;
-    if (typeof window !== 'undefined' && window.location.hash) {
+    if (typeof window === 'undefined') return;
+
+    const handleHashPagination = () => {
       const hash = window.location.hash;
-      if (hash.startsWith('#news-')) {
+      if (hash && hash.startsWith('#news-')) {
         const targetId = hash.replace('#news-', '');
-        const targetIdx = filteredNews.findIndex(
-          n => n.id === targetId || n.id === `news-${targetId}`
-        );
+        const cleanTargetId = targetId.replace(/^news-/, '');
+        
+        const targetIdx = filteredNews.findIndex(n => {
+          const cleanNId = n.id.replace(/^news-/, '');
+          return cleanNId === cleanTargetId || n.id === targetId || n.id === `news-${targetId}`;
+        });
+
         if (targetIdx !== -1) {
           const targetPage = Math.floor(targetIdx / ITEMS_PER_PAGE) + 1;
           setCurrentPage(targetPage);
-          hasCheckedHash.current = true;
         }
       }
-    }
+    };
+
+    handleHashPagination();
+    window.addEventListener('hashchange', handleHashPagination);
+    return () => {
+      window.removeEventListener('hashchange', handleHashPagination);
+    };
   }, [filteredNews]);
 
   // Pagination
