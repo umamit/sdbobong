@@ -231,17 +231,23 @@ export async function POST(request) {
       if (parsedFormData) {
         for (const [key, value] of parsedFormData.entries()) {
           if (value && typeof value === 'object' && value.size > 0) {
-            const allowedTypes = key === 'sp_pdf_file' 
+            const allowedTypes = key.startsWith('sp_pdf_') 
               ? ['png', 'jpg', 'jpeg', 'svg', 'gif', 'pdf'] 
               : ['png', 'jpg', 'jpeg', 'svg', 'gif'];
             const uploadedUrl = await handlePhotoUpload(value, 'teachers', allowedTypes);
             if (uploadedUrl && uploadedUrl !== 'INVALID_TYPE' && uploadedUrl !== 'ERROR') {
               if (key === 'sejarah_image_file') {
                 pageData.sejarah_image = uploadedUrl;
-              } else if (key === 'sp_image_file') {
-                pageData.sp_image = uploadedUrl;
-              } else if (key === 'sp_pdf_file') {
-                pageData.sp_pdf = uploadedUrl;
+              } else if (key.startsWith('sp_image_')) {
+                const index = parseInt(key.split('_')[2], 10);
+                if (pageData.standar_pelayanan_list && pageData.standar_pelayanan_list[index]) {
+                  pageData.standar_pelayanan_list[index].image = uploadedUrl;
+                }
+              } else if (key.startsWith('sp_pdf_')) {
+                const index = parseInt(key.split('_')[2], 10);
+                if (pageData.standar_pelayanan_list && pageData.standar_pelayanan_list[index]) {
+                  pageData.standar_pelayanan_list[index].pdf = uploadedUrl;
+                }
               } else if (key === 'kurikulum_image_file') {
                 pageData.kurikulum_image = uploadedUrl;
               } else if (key.startsWith('ekskul_image_')) {

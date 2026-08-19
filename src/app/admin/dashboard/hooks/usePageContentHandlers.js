@@ -27,9 +27,9 @@ export default function usePageContentHandlers({
   const [ekskulPreviews, setEkskulPreviews] = useState({});
   const [p5Files, setP5Files] = useState({});
   const [p5Previews, setP5Previews] = useState({});
-  const [spImageFile, setSpImageFile] = useState(null);
-  const [spImagePreview, setSpImagePreview] = useState('');
-  const [spPdfFile, setSpPdfFile] = useState(null);
+  const [spFiles, setSpFiles] = useState({});
+  const [spPreviews, setSpPreviews] = useState({});
+  const [spPdfFiles, setSpPdfFiles] = useState({});
 
   useEffect(() => {
     if (config?.stats?.page_contents) {
@@ -214,19 +214,35 @@ export default function usePageContentHandlers({
     reader.readAsDataURL(file);
   };
 
-  const handleSpImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setSpImageFile(file);
+  const handleSpFileChange = (index, file) => {
+    setSpFiles(prev => ({ ...prev, [index]: file }));
     const reader = new FileReader();
-    reader.onloadend = () => setSpImagePreview(reader.result);
+    reader.onloadend = () => setSpPreviews(prev => ({ ...prev, [index]: reader.result }));
     reader.readAsDataURL(file);
   };
 
-  const handleSpPdfChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setSpPdfFile(file);
+  const handleSpPdfFileChange = (index, file) => {
+    setSpPdfFiles(prev => ({ ...prev, [index]: file }));
+  };
+
+  const handleAddSpItem = () => {
+    handleFieldChange('profil', 'standar_pelayanan_list', [
+      ...(pageContents.profil?.standar_pelayanan_list || []),
+      { id: 'sp-' + Date.now(), title: '', image: '', pdf: '', biaya: '', waktu: '', alur: '', kontak: '' }
+    ]);
+  };
+
+  const handleUpdateSpItem = (index, key, val) => {
+    const updated = [...(pageContents.profil?.standar_pelayanan_list || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('profil', 'standar_pelayanan_list', updated);
+  };
+
+  const handleRemoveSpItem = (index) => {
+    handleFieldChange('profil', 'standar_pelayanan_list', (pageContents.profil?.standar_pelayanan_list || []).filter((_, i) => i !== index));
+    setSpFiles(prev => { const n = { ...prev }; delete n[index]; return n; });
+    setSpPreviews(prev => { const n = { ...prev }; delete n[index]; return n; });
+    setSpPdfFiles(prev => { const n = { ...prev }; delete n[index]; return n; });
   };
 
   // --- Save ---
@@ -269,8 +285,8 @@ export default function usePageContentHandlers({
 
     if (pageName === 'profil') {
       if (sejarahFile) filesToUpload['sejarah_image_file'] = sejarahFile;
-      if (spImageFile) filesToUpload['sp_image_file'] = spImageFile;
-      if (spPdfFile) filesToUpload['sp_pdf_file'] = spPdfFile;
+      Object.keys(spFiles).forEach(index => { filesToUpload[`sp_image_${index}`] = spFiles[index]; });
+      Object.keys(spPdfFiles).forEach(index => { filesToUpload[`sp_pdf_${index}`] = spPdfFiles[index]; });
     } else if (pageName === 'akademik') {
       if (kurikulumFile) filesToUpload['kurikulum_image_file'] = kurikulumFile;
       Object.keys(p5Files).forEach(index => { filesToUpload[`p5_image_${index}`] = p5Files[index]; });
@@ -282,8 +298,9 @@ export default function usePageContentHandlers({
 
     if (pageName === 'profil') {
       setSejarahFile(null);
-      setSpImageFile(null);
-      setSpPdfFile(null);
+      setSpFiles({});
+      setSpPreviews({});
+      setSpPdfFiles({});
     }
     else if (pageName === 'akademik') { setKurikulumFile(null); setP5Files({}); setP5Previews({}); }
     else if (pageName === 'kesiswaan') setEkskulFiles({});
@@ -295,9 +312,10 @@ export default function usePageContentHandlers({
     kurikulumFile, setKurikulumFile, kurikulumPreview, setKurikulumPreview,
     ekskulFiles, setEkskulFiles, ekskulPreviews, setEkskulPreviews,
     p5Files, setP5Files, p5Previews, setP5Previews,
-    spImageFile, setSpImageFile, spImagePreview, setSpImagePreview,
-    spPdfFile, setSpPdfFile,
-    handleSpImageChange, handleSpPdfChange,
+    spFiles, setSpFiles, spPreviews, setSpPreviews,
+    spPdfFiles, setSpPdfFiles,
+    handleSpFileChange, handleSpPdfFileChange,
+    handleAddSpItem, handleUpdateSpItem, handleRemoveSpItem,
     handleFieldChange,
     handleP5FileChange, handleAddP5Project, handleUpdateP5Project, handleRemoveP5Project,
     handleAddSeragam, handleUpdateSeragam, handleRemoveSeragam,
