@@ -164,6 +164,9 @@ export default function ChatWidget() {
           inputRef={inputRef} 
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} 
         />
+        <div className={styles.aiFooterNote}>
+          Jeda bertanya ideal: 15-20 detik agar performa AI maksimal.
+        </div>
       </ChatWindow>
     </div>
   );

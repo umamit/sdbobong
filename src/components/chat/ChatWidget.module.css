@@ -645,3 +645,22 @@
     transform: scale(1.1);
     opacity: 1 !important;
 }
+
+.aiFooterNote {
+    font-size: 0.72rem;
+    color: #8e8e93;
+    text-align: center;
+    padding: 0.35rem 0.5rem 0.45rem;
+    background-color: rgba(242, 242, 247, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(60, 60, 67, 0.08);
+    flex-shrink: 0;
+    line-height: 1.25;
+}
+
+:global([data-theme='dark']) .aiFooterNote {
+    background-color: rgba(28, 28, 30, 0.85) !important;
+    border-top: 1px solid rgba(235, 235, 245, 0.08) !important;
+    color: #8e8e93 !important;
+}
