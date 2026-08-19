@@ -53,12 +53,21 @@ export async function sitemap() {
   let newsEntries = [];
   try {
     const newsList = await prisma.news.findMany({ select: { id: true, date: true } });
-    newsEntries = newsList.map(n => ({
-      url: `${baseUrl}/berita/${n.id}`,
-      lastModified: n.date ? new Date(n.date) : now,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    }));
+    newsEntries = newsList.map(n => {
+      let mDate = now;
+      if (n.date) {
+        const parsed = new Date(n.date);
+        if (!isNaN(parsed.getTime())) {
+          mDate = parsed;
+        }
+      }
+      return {
+        url: `${baseUrl}/berita/${n.id}`,
+        lastModified: mDate,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      };
+    });
   } catch (e) {
     console.error("Error generating dynamic news sitemap entries:", e);
   }
