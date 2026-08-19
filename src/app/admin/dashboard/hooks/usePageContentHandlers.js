@@ -33,7 +33,14 @@ export default function usePageContentHandlers({
 
   useEffect(() => {
     if (config?.stats?.page_contents) {
-      setPageContents(config.stats.page_contents);
+      const pcs = JSON.parse(JSON.stringify(config.stats.page_contents));
+      if (pcs.profil?.standar_pelayanan_list) {
+        pcs.profil.standar_pelayanan_list = pcs.profil.standar_pelayanan_list.map((item, idx) => ({
+          ...item,
+          id: item.id || `sp-${idx}-${Date.now()}`
+        }));
+      }
+      setPageContents(pcs);
     }
   }, [config]);
 
@@ -214,15 +221,17 @@ export default function usePageContentHandlers({
     reader.readAsDataURL(file);
   };
 
-  const handleSpFileChange = (index, file) => {
-    setSpFiles(prev => ({ ...prev, [index]: file }));
+  const handleSpFileChange = (id, file) => {
+    if (!file) return;
+    setSpFiles(prev => ({ ...prev, [id]: file }));
     const reader = new FileReader();
-    reader.onloadend = () => setSpPreviews(prev => ({ ...prev, [index]: reader.result }));
+    reader.onloadend = () => setSpPreviews(prev => ({ ...prev, [id]: reader.result }));
     reader.readAsDataURL(file);
   };
 
-  const handleSpPdfFileChange = (index, file) => {
-    setSpPdfFiles(prev => ({ ...prev, [index]: file }));
+  const handleSpPdfFileChange = (id, file) => {
+    if (!file) return;
+    setSpPdfFiles(prev => ({ ...prev, [id]: file }));
   };
 
   const handleAddSpItem = () => {
@@ -238,11 +247,11 @@ export default function usePageContentHandlers({
     handleFieldChange('profil', 'standar_pelayanan_list', updated);
   };
 
-  const handleRemoveSpItem = (index) => {
+  const handleRemoveSpItem = (index, id) => {
     handleFieldChange('profil', 'standar_pelayanan_list', (pageContents.profil?.standar_pelayanan_list || []).filter((_, i) => i !== index));
-    setSpFiles(prev => { const n = { ...prev }; delete n[index]; return n; });
-    setSpPreviews(prev => { const n = { ...prev }; delete n[index]; return n; });
-    setSpPdfFiles(prev => { const n = { ...prev }; delete n[index]; return n; });
+    setSpFiles(prev => { const n = { ...prev }; delete n[id]; return n; });
+    setSpPreviews(prev => { const n = { ...prev }; delete n[id]; return n; });
+    setSpPdfFiles(prev => { const n = { ...prev }; delete n[id]; return n; });
   };
 
   // --- Save ---
@@ -294,8 +303,8 @@ export default function usePageContentHandlers({
 
     if (pageName === 'profil') {
       if (sejarahFile) filesToUpload['sejarah_image_file'] = sejarahFile;
-      Object.keys(spFiles).forEach(index => { filesToUpload[`sp_image_${index}`] = spFiles[index]; });
-      Object.keys(spPdfFiles).forEach(index => { filesToUpload[`sp_pdf_${index}`] = spPdfFiles[index]; });
+      Object.keys(spFiles).forEach(id => { filesToUpload[`sp_image_${id}`] = spFiles[id]; });
+      Object.keys(spPdfFiles).forEach(id => { filesToUpload[`sp_pdf_${id}`] = spPdfFiles[id]; });
     } else if (pageName === 'akademik') {
       if (kurikulumFile) filesToUpload['kurikulum_image_file'] = kurikulumFile;
       Object.keys(p5Files).forEach(index => { filesToUpload[`p5_image_${index}`] = p5Files[index]; });

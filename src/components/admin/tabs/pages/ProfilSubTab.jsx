@@ -401,7 +401,7 @@ export default function ProfilSubTab(props) {
                           <div key={item.id || index} style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: 'var(--space-md)', backgroundColor: '#f8fafc', position: 'relative' }}>
                             <button 
                               type="button" 
-                              onClick={() => handleRemoveSpItem(index)}
+                              onClick={() => handleRemoveSpItem(index, item.id)}
                               style={{ 
                                 position: 'absolute', top: '10px', right: '10px', 
                                 border: 'none', backgroundColor: 'transparent', 
@@ -435,7 +435,7 @@ export default function ProfilSubTab(props) {
                                     overflow: 'hidden', backgroundColor: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', flexShrink: 0
                                   }}>
                                     <img 
-                                      src={spPreviews[index] || item.image || '/images/standar_pelayanan.png'} 
+                                      src={spPreviews[item.id] || item.image || '/images/standar_pelayanan.png'} 
                                       alt="Poster" 
                                       style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
                                     />
@@ -444,7 +444,7 @@ export default function ProfilSubTab(props) {
                                     type="file" 
                                     className="form-control" 
                                     accept="image/*"
-                                    onChange={(e) => handleSpFileChange(index, e.target.files[0])}
+                                    onChange={(e) => handleSpFileChange(item.id, e.target.files[0])}
                                     style={{ flex: 1 }}
                                   />
                                 </div>
@@ -456,7 +456,7 @@ export default function ProfilSubTab(props) {
                                   type="file" 
                                   className="form-control" 
                                   accept="application/pdf"
-                                  onChange={(e) => handleSpPdfFileChange(index, e.target.files[0])}
+                                  onChange={(e) => handleSpPdfFileChange(item.id, e.target.files[0])}
                                 />
                                 {item.pdf && (
                                   <p style={{ fontSize: '0.75rem', marginTop: '4px', marginBottom: 0 }}>

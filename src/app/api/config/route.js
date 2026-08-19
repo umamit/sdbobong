@@ -241,14 +241,16 @@ export async function POST(request) {
               if (key === 'sejarah_image_file') {
                 pageData.sejarah_image = uploadedUrl;
               } else if (key.startsWith('sp_image_')) {
-                const index = parseInt(key.split('_')[2], 10);
-                if (pageData.standar_pelayanan_list && pageData.standar_pelayanan_list[index]) {
-                  pageData.standar_pelayanan_list[index].image = uploadedUrl;
+                const targetId = key.substring('sp_image_'.length);
+                if (pageData.standar_pelayanan_list) {
+                  const item = pageData.standar_pelayanan_list.find(s => s.id === targetId);
+                  if (item) item.image = uploadedUrl;
                 }
               } else if (key.startsWith('sp_pdf_')) {
-                const index = parseInt(key.split('_')[2], 10);
-                if (pageData.standar_pelayanan_list && pageData.standar_pelayanan_list[index]) {
-                  pageData.standar_pelayanan_list[index].pdf = uploadedUrl;
+                const targetId = key.substring('sp_pdf_'.length);
+                if (pageData.standar_pelayanan_list) {
+                  const item = pageData.standar_pelayanan_list.find(s => s.id === targetId);
+                  if (item) item.pdf = uploadedUrl;
                 }
               } else if (key === 'kurikulum_image_file') {
                 pageData.kurikulum_image = uploadedUrl;
