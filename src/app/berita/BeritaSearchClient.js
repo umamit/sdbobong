@@ -67,6 +67,7 @@ export default function BeritaSearchClient({ newsList = [] }) {
 
   const handleClearHash = () => {
     if (typeof window !== 'undefined') {
+      window.location.hash = '';
       window.history.pushState("", document.title, window.location.pathname + window.location.search);
       setIsolatedNewsId(null);
     }
