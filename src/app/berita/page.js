@@ -19,14 +19,23 @@ export default async function Berita() {
     const images = n.images && n.images.length > 0 ? n.images : [n.image || 'https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png'];
     const plainText = n.content ? n.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
     
+    let publishDate = new Date();
+    if (n.date) {
+      const parsed = new Date(n.date);
+      if (!isNaN(parsed.getTime())) {
+        publishDate = parsed;
+      }
+    }
+    const isoDateStr = publishDate.toISOString();
+    
     return {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
-      "@id": `https://www.sdnegeribobong.sch.id/berita#news-${n.id}`,
+      "@id": `https://www.sdnegeribobong.sch.id/berita#news-${n.id.replace(/^news-/, '')}`,
       "headline": n.title,
       "image": images,
-      "datePublished": n.date ? new Date(n.date).toISOString() : new Date().toISOString(),
-      "dateModified": n.date ? new Date(n.date).toISOString() : new Date().toISOString(),
+      "datePublished": isoDateStr,
+      "dateModified": isoDateStr,
       "author": {
         "@type": "Organization",
         "name": "SD Negeri Bobong",
