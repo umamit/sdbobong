@@ -36,6 +36,41 @@ export default function BeritaSearchClient({ newsList = [] }) {
   const [selectedYear, setSelectedYear] = useState('Semua');
   const [sortOrder, setSortOrder] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isolatedNewsId, setIsolatedNewsId] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleHashCheck = () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#news-')) {
+        const targetId = hash.replace('#news-', '');
+        const cleanTargetId = targetId.replace(/^news-/, '');
+        const matched = newsList.find(n => {
+          const cleanNId = n.id.replace(/^news-/, '');
+          return cleanNId === cleanTargetId || n.id === targetId;
+        });
+        if (matched) {
+          setIsolatedNewsId(matched.id);
+          return;
+        }
+      }
+      setIsolatedNewsId(null);
+    };
+
+    handleHashCheck();
+    window.addEventListener('hashchange', handleHashCheck);
+    return () => {
+      window.removeEventListener('hashchange', handleHashCheck);
+    };
+  }, [newsList]);
+
+  const handleClearHash = () => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState("", document.title, window.location.pathname + window.location.search);
+      setIsolatedNewsId(null);
+    }
+  };
 
   const categories = ['Semua', 'Pengumuman', 'Kegiatan', 'Artikel'];
 
@@ -128,6 +163,58 @@ export default function BeritaSearchClient({ newsList = [] }) {
     transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
     whiteSpace: 'nowrap',
   });
+
+  if (isolatedNewsId) {
+    const newsItem = newsList.find(n => n.id === isolatedNewsId);
+    if (newsItem) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', maxWidth: '800px', margin: '0 auto' }}>
+          {/* Back Button */}
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '8px' }}>
+            <button
+              onClick={handleClearHash}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 20px',
+                borderRadius: '12px',
+                backgroundColor: 'white',
+                border: '1px solid var(--border-color)',
+                color: 'var(--text-color)',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                boxShadow: 'var(--shadow-sm)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--primary)';
+                e.currentTarget.style.backgroundColor = 'var(--bg-light)';
+                e.currentTarget.style.transform = 'translateX(-4px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+                e.currentTarget.style.backgroundColor = 'white';
+                e.currentTarget.style.transform = 'translateX(0)';
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Kembali ke Semua Berita
+            </button>
+          </div>
+
+          {/* Isolated News Card */}
+          <div style={{ boxShadow: 'var(--shadow-lg)', borderRadius: '16px', overflow: 'hidden' }}>
+            <NewsCard news={newsItem} priority={true} />
+          </div>
+        </div>
+      );
+    }
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
