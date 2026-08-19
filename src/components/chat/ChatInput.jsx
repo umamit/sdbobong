@@ -9,6 +9,7 @@ export default function ChatInput({
   toggleRecording, 
   onSend, 
   disabled, 
+  cooldown = 0,
   inputRef,
   onKeyDown 
 }) {
@@ -36,7 +37,7 @@ export default function ChatInput({
         ref={inputRef}
         type="text"
         className={styles.aiChatInput}
-        placeholder={isRecording ? "Sedang mendengarkan suara Anda..." : "Tulis pertanyaan Anda..."}
+        placeholder={cooldown > 0 ? `Jeda bertanya (${cooldown}d)...` : isRecording ? "Sedang mendengarkan suara Anda..." : "Tulis pertanyaan Anda..."}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={onKeyDown}
