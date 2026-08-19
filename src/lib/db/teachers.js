@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, TEACHERS_JSON, getFreshCachedTeachers, setCachedTeachers, invalidateTeachersCache } from './core.js';
+import { supabase, isSupabaseEnabled, TEACHERS_JSON, getFreshCachedTeachers, setCachedTeachers, invalidateTeachersCache, invalidateChatKnowledge } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -101,6 +101,8 @@ export async function loadTeachers(includePassword = false) {
 }
 
 export async function saveTeachers(teachersList) {
+  invalidateTeachersCache();
+  invalidateChatKnowledge();
   const existingTeachers = await loadTeachers(true);
   const sortedList = sortTeachersList(teachersList).map(t => {
     const existing = existingTeachers.find(et => et.id === t.id);

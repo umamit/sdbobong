@@ -1,11 +1,7 @@
 import { NextResponse } from 'next/server';
-import { loadWebConfig, loadTeachers, loadAchievements, loadNews } from '../../../lib/database';
+import { loadWebConfig, loadTeachers, loadAchievements, loadNews, getFreshChatKnowledge, setChatKnowledge } from '../../../lib/database';
 import { chatSchema, parseBody } from '../../../lib/validators';
 import { generateFallbackResponse } from './fallback';
-
-let _globalChatKnowledgeCache = null;
-let _globalChatKnowledgeExpiresAt = 0;
-const KNOWLEDGE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 export const dynamic = 'force-dynamic';
 
@@ -43,12 +39,9 @@ export async function POST(req) {
     // Ambil pesan terbaru dari pengguna
     latestMessage = messages[messages.length - 1]?.content || "";
 
-    // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel dengan cache 5 menit
-    let dbData = null;
-    const nowTimestamp = Date.now();
-    if (_globalChatKnowledgeCache && nowTimestamp < _globalChatKnowledgeExpiresAt) {
-      dbData = _globalChatKnowledgeCache;
-    } else {
+    // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel dengan cache global 5 menit
+    let dbData = getFreshChatKnowledge();
+    if (!dbData) {
       const [dbConfig, teachersList, achievementsList, newsList] = await Promise.all([
         loadWebConfig(),
         loadTeachers(),
@@ -56,8 +49,7 @@ export async function POST(req) {
         loadNews()
       ]);
       dbData = { dbConfig, teachersList, achievementsList, newsList };
-      _globalChatKnowledgeCache = dbData;
-      _globalChatKnowledgeExpiresAt = nowTimestamp + KNOWLEDGE_CACHE_TTL;
+      setChatKnowledge(dbData);
     }
     const { dbConfig, teachersList, achievementsList, newsList } = dbData;
 
@@ -449,11 +441,6 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
     });
 
     if (!groqRes.ok) {
-      if (groqRes.status === 429) {
-        return NextResponse.json({
-          reply: 'Maaf, Aim AI sedang melayani terlalu banyak pertanyaan sekaligus. Mohon tunggu beberapa detik, lalu coba kirim pertanyaan Anda kembali.'
-        });
-      }
       const errText = await groqRes.text();
       throw new Error(`Groq API error (${groqRes.status}): ${errText}`);
     }

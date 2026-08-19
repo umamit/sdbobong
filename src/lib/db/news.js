@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache, resolveSupabaseMediaUrl } from './core.js';
+import { supabase, isSupabaseEnabled, NEWS_JSON, packImagesIntoContent, unpackImagesFromContent, getFreshCachedNews, setCachedNews, invalidateNewsCache, invalidateChatKnowledge, resolveSupabaseMediaUrl } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -109,6 +109,8 @@ export async function loadNews() {
 }
 
 export async function saveNews(newsList) {
+  invalidateNewsCache();
+  invalidateChatKnowledge();
   let localSaved = false;
   try { fs.writeFileSync(NEWS_JSON, JSON.stringify(newsList, null, 4), 'utf-8'); localSaved = true; }
   catch (e) { console.error("Error saving news locally:", e); }

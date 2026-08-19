@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { isSupabaseEnabled, ACHIEVEMENTS_JSON } from './core.js';
+import { isSupabaseEnabled, invalidateChatKnowledge, ACHIEVEMENTS_JSON } from './core.js';
 import { isTableSeeded, markTableSeeded } from './config.js';
 import { prisma } from '../prisma.js';
 
@@ -27,13 +27,14 @@ export async function loadAchievements() {
       const achievementsList = supabaseAchievements.map(ach => ({ id: ach.id, title: ach.title, level: ach.level, year: ach.year, description: ach.description }));
       achievementsList.sort((a, b) => String(b.year || "").localeCompare(String(a.year || "")));
       try { fs.writeFileSync(ACHIEVEMENTS_JSON, JSON.stringify(achievementsList, null, 4), 'utf-8'); } catch (e) {}
-      return achievementsList;
+      return achievementsList.slice(0, 15);
     }
   } catch (e) { console.error("Error loading achievements from Supabase via Prisma:", e.message || e); }
-  return localAchievements;
+  return localAchievements.slice(0, 15);
 }
 
 export async function saveAchievements(achievementsList) {
+  invalidateChatKnowledge();
   let localSaved = false;
   try { fs.writeFileSync(ACHIEVEMENTS_JSON, JSON.stringify(achievementsList, null, 4), 'utf-8'); localSaved = true; }
   catch (e) { console.error("Error saving achievements locally:", e); }

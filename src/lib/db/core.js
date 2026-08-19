@@ -117,6 +117,23 @@ export function invalidateTeachersCache() {
   _teachersCache = { data: null, expiresAt: 0 };
 }
 
+// --- Shared TTL-based in-memory cache for chat knowledge (Aim AI) ---
+const CHAT_KNOWLEDGE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+let _chatKnowledgeCache = { data: null, expiresAt: 0 };
+
+export function getFreshChatKnowledge() {
+  if (_chatKnowledgeCache.data && Date.now() < _chatKnowledgeCache.expiresAt) return _chatKnowledgeCache.data;
+  return null;
+}
+
+export function setChatKnowledge(data) {
+  _chatKnowledgeCache = { data, expiresAt: Date.now() + CHAT_KNOWLEDGE_TTL_MS };
+}
+
+export function invalidateChatKnowledge() {
+  _chatKnowledgeCache = { data: null, expiresAt: 0 };
+}
+
 export function isSupabaseEnabled() {
   const hasDb = !!(
     supabase ||

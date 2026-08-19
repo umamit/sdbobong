@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { supabase, isSupabaseEnabled, setCachedConfig, getFreshCachedConfig, invalidateConfigCache, WEBSITE_CONFIG_JSON } from './core.js';
+import { supabase, isSupabaseEnabled, setCachedConfig, getFreshCachedConfig, invalidateConfigCache, invalidateChatKnowledge, WEBSITE_CONFIG_JSON } from './core.js';
 import { mergeWithDefaults } from './config.defaults.js';
 import { prisma } from '../prisma.js';
 
@@ -154,6 +154,7 @@ export async function loadWebConfig() {
 export async function saveWebConfig(config) {
   // Invalidate TTL cache immediately so the next request fetches fresh data from DB.
   invalidateConfigCache();
+  invalidateChatKnowledge();
   setCachedConfig(config);
   if (!config.stats) config.stats = {};
   config.stats.marquee_speed = config.marquee_speed || 40;

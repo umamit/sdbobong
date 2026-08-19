@@ -29,6 +29,8 @@ export {
   formatBytes,
   getCachedConfig,
   setCachedConfig,
+  getFreshChatKnowledge,
+  setChatKnowledge,
   resolveSupabaseMediaUrl,
 } from './db/core.js';
 
