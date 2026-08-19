@@ -87,7 +87,7 @@ export default function StandarPelayananTabs({ initialServices = [], maklumatIma
       <div className="sp-layout-grid">
         <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', padding: 'var(--space-md)', display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
           <h3 style={{ fontSize: '1.01rem', color: 'var(--primary-dark)', fontFamily: 'var(--font-heading)', fontWeight: 800, margin: 0 }}>Poster Alur Pelayanan</h3>
-          <div style={{ width: '100%', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--border-color)', backgroundColor: '#f8fafc', maxHeight: '580px', overflowY: 'auto' }}>
+          <div style={{ width: '100%', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--border-color)', backgroundColor: '#f8fafc', maxHeight: '750px', overflowY: 'auto' }}>
             <img src={activeService.image || '/images/standar_pelayanan.png'} alt={`Poster ${activeService.title}`} loading="lazy" width="800" height="1130" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }} />
           </div>
         </div>

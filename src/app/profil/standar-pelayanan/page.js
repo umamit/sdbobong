@@ -17,7 +17,7 @@ export default async function StandarPelayananPage() {
 
   return (
     <div style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', padding: 'var(--space-xl) 0' }}>
-      <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 var(--space-md)' }}>
+      <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 var(--space-md)' }}>
         
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" style={{ marginBottom: 'var(--space-md)', fontSize: '0.85rem' }}>
