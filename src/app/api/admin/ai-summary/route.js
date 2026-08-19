@@ -9,23 +9,23 @@ export async function GET(req) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const groqApiKey = process.env.GROQ_API_KEY;
-  if (!groqApiKey) {
-    return NextResponse.json({
-      summary: [
-        { icon: "chart", text: `Total pengunjung saat ini tercatat sebanyak ${visitorCount} orang.` },
-        { icon: "school", text: `Sekolah memiliki ${configStats.guru_staf || 14} guru aktif dan ${configStats.siswa_aktif || 205} siswa.` },
-        { icon: "info", text: "Aktifkan kunci API Groq untuk menerima insight AI otomatis." }
-      ]
-    }, { status: 200 });
-  }
-
   try {
     const config = await loadWebConfig();
     const configStats = config?.stats || {};
     const visitorCount = configStats.visitor_count || 0;
     const maintenanceMode = configStats.maintenance_mode || false;
     const pageContents = configStats.page_contents || {};
+
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      return NextResponse.json({
+        summary: [
+          { icon: "chart", text: `Total pengunjung saat ini tercatat sebanyak ${visitorCount} orang.` },
+          { icon: "school", text: `Sekolah memiliki ${configStats.guru_staf || 14} guru aktif dan ${configStats.siswa_aktif || 205} siswa.` },
+          { icon: "info", text: "Aktifkan kunci API Groq untuk menerima insight AI otomatis." }
+        ]
+      }, { status: 200 });
+    }
 
     // Collect data points for AI analysis
     const dataPoints = [
@@ -54,7 +54,7 @@ Jangan gunakan markdown, hanya JSON valid.`;
         "Authorization": `Bearer ${groqApiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: `Hari ini: ${dateStr}\n\nData dashboard:\n${dataPoints.join('\n')}\n\nBuat ringkasan insight dashboard.` }

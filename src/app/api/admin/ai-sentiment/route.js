@@ -67,7 +67,7 @@ Hanya JSON valid, tanpa markdown.`;
         "Authorization": `Bearer ${groqApiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: `Analisis sentimen pesan-pesan berikut:\n${JSON.stringify(messagesForAI, null, 2)}` }
