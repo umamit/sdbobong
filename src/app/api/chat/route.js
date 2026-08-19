@@ -3,6 +3,10 @@ import { loadWebConfig, loadTeachers, loadAchievements, loadNews } from '../../.
 import { chatSchema, parseBody } from '../../../lib/validators';
 import { generateFallbackResponse } from './fallback';
 
+let _globalChatKnowledgeCache = null;
+let _globalChatKnowledgeExpiresAt = 0;
+const KNOWLEDGE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
@@ -39,13 +43,23 @@ export async function POST(req) {
     // Ambil pesan terbaru dari pengguna
     latestMessage = messages[messages.length - 1]?.content || "";
 
-    // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel
-    const [dbConfig, teachersList, achievementsList, newsList] = await Promise.all([
-      loadWebConfig(),
-      loadTeachers(),
-      loadAchievements(),
-      loadNews()
-    ]);
+    // 1. Muat data dinamis dari database untuk pengetahuan asisten secara paralel dengan cache 5 menit
+    let dbData = null;
+    const nowTimestamp = Date.now();
+    if (_globalChatKnowledgeCache && nowTimestamp < _globalChatKnowledgeExpiresAt) {
+      dbData = _globalChatKnowledgeCache;
+    } else {
+      const [dbConfig, teachersList, achievementsList, newsList] = await Promise.all([
+        loadWebConfig(),
+        loadTeachers(),
+        loadAchievements(),
+        loadNews()
+      ]);
+      dbData = { dbConfig, teachersList, achievementsList, newsList };
+      _globalChatKnowledgeCache = dbData;
+      _globalChatKnowledgeExpiresAt = nowTimestamp + KNOWLEDGE_CACHE_TTL;
+    }
+    const { dbConfig, teachersList, achievementsList, newsList } = dbData;
 
     config = dbConfig || {};
     const contacts = config.ppdb_contacts || {};
