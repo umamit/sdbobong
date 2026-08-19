@@ -13,6 +13,7 @@ export const metadata = {
 export default async function StandarPelayananPage() {
   const config = await loadWebConfig().catch(() => ({}));
   const services = config?.stats?.page_contents?.profil?.standar_pelayanan_list || [];
+  const maklumatImage = config?.stats?.page_contents?.profil?.maklumat_image || '';
 
   return (
     <div style={{ backgroundColor: 'var(--bg-main)', minHeight: '100vh', padding: 'var(--space-xl) 0' }}>
@@ -43,7 +44,7 @@ export default async function StandarPelayananPage() {
         </div>
 
         {/* Interactive Tabbed Content (Client Component) */}
-        <StandarPelayananTabs initialServices={services} />
+        <StandarPelayananTabs initialServices={services} maklumatImage={maklumatImage} />
 
       </div>
     </div>
