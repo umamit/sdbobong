@@ -16,8 +16,8 @@ export default function NewsCard({ news, className = '', priority = false }) {
 
     const checkAndScroll = () => {
       const hash = window.location.hash;
-      const cleanNewsId = news.id.replace('news-', '');
-      const cleanHash = hash.replace('#news-', '').replace('news-', '');
+      const cleanNewsId = news.id.replace(/^news-/, '');
+      const cleanHash = hash.replace('#news-', '').replace(/^news-/, '');
       const match = hash === `#news-${news.id}` || 
                     hash === `#news-${cleanNewsId}` ||
                     (cleanHash && cleanHash === cleanNewsId);
@@ -25,7 +25,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
       if (match) {
         setIsExpanded(true);
         setTimeout(() => {
-          const el = document.getElementById(`news-${news.id}`);
+          const el = document.getElementById(`news-${cleanNewsId}`);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             el.style.borderColor = 'var(--primary)';
@@ -163,7 +163,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
 
   return (
     <motion.article
-      id={`news-${news.id}`}
+      id={`news-${news.id.replace(/^news-/, '')}`}
       className={`news-card card ${className}`}
       style={{ display: 'flex', flexDirection: 'column' }}
       initial={{ opacity: 0, y: 24 }}
@@ -387,7 +387,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             <a 
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
                 `Baca berita terbaru dari SD Negeri Bobong: *"${news.title}"*\n\nSelengkapnya di: ${
-                  typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id}` : `https://sdnegeribobong.sch.id/berita#news-${news.id}`
+                  typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`
                 }`
               )}`}
               target="_blank" 
@@ -424,7 +424,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             {/* Facebook */}
             <a 
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id}` : `https://sdnegeribobong.sch.id/berita#news-${news.id}`
+                typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`
               )}`}
               target="_blank" 
               rel="noopener noreferrer"
@@ -461,7 +461,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             <button 
               onClick={(e) => {
                 e.preventDefault();
-                const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id}` : `https://sdnegeribobong.sch.id/berita#news-${news.id}`;
+                const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`;
                 navigator.clipboard.writeText(shareUrl).then(() => {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
