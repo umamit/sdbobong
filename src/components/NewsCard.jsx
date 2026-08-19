@@ -170,6 +170,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
 
   return (
     <motion.article
+      layout
       id={`news-${news.id.replace(/^news-/, '')}`}
       className={`news-card card ${className}`}
       style={{ display: 'flex', flexDirection: 'column' }}
@@ -177,7 +178,11 @@ export default function NewsCard({ news, className = '', priority = false }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       whileHover={{ y: -6 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ 
+        layout: { type: 'spring', stiffness: 100, damping: 18 },
+        duration: 0.4, 
+        ease: [0.25, 0.1, 0.25, 1] 
+      }}
     >
       {/* Slider Visual Container */}
       <div 

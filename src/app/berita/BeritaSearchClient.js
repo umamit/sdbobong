@@ -349,7 +349,11 @@ export default function BeritaSearchClient({ newsList = [] }) {
                 layout
                 variants={cardVariants}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                transition={{ 
+                  layout: { type: 'spring', stiffness: 100, damping: 18 },
+                  duration: 0.3, 
+                  ease: 'easeOut' 
+                }}
               >
                 <NewsCard news={news} priority={idx === 0} />
               </motion.div>

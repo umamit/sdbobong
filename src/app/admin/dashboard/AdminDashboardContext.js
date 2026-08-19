@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 // Import client-side helpers
 import { clientSupabase } from './hooks/helpers';
 import AppleConfirmModal from '../../../components/ui/AppleConfirmModal';
+import DynamicIslandToast from '../../../components/ui/DynamicIslandToast';
 
 // Import custom hooks
 import useConfigHandlers from './hooks/useConfigHandlers';
@@ -511,6 +512,13 @@ export function AdminDashboardProvider({
           onCancel={dialogState.onCancel}
         />
       )}
+      <DynamicIslandToast
+        open={!!toast}
+        type={toast?.type === 'danger' ? 'danger' : toast?.type === 'warning' ? 'warning' : toast?.type === 'success' ? 'success' : 'info'}
+        title={toast?.type === 'success' ? 'Sukses' : toast?.type === 'warning' ? 'Perhatian' : toast?.type === 'danger' ? 'Gagal' : 'Informasi'}
+        message={toast?.message || ''}
+        onClose={() => setToast(null)}
+      />
     </AdminDashboardContext.Provider>
   );
 }
