@@ -16,11 +16,28 @@ async function main() {
   if (fs.existsSync(configPath)) {
     try {
       const configData = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+
+      // Cegah regresi visitor_count dari data seed lokal
+      let dbVisitorCount = 238;
+      try {
+        const existing = await prisma.config.findUnique({ where: { id: 'global_config' } });
+        if (existing && existing.stats && typeof existing.stats === 'object') {
+          dbVisitorCount = Math.max(existing.stats.visitor_count || 0, dbVisitorCount);
+        }
+      } catch (err) {
+        console.warn("⚠️ Gagal membaca data existing config, menggunakan nilai default.");
+      }
+
+      const mergedStats = {
+        ...(configData.stats || {}),
+        visitor_count: dbVisitorCount
+      };
+
       await prisma.config.upsert({
         where: { id: 'global_config' },
         update: {
           marquee_announcements: configData.marquee_announcements || [],
-          stats: configData.stats || {},
+          stats: mergedStats,
           ppdb_contacts: configData.ppdb_contacts || {},
           force_local_cache: configData.force_local_cache === true,
           downloads: configData.downloads || [],
@@ -31,7 +48,7 @@ async function main() {
         create: {
           id: 'global_config',
           marquee_announcements: configData.marquee_announcements || [],
-          stats: configData.stats || {},
+          stats: mergedStats,
           ppdb_contacts: configData.ppdb_contacts || {},
           force_local_cache: false,
           downloads: configData.downloads || [],
