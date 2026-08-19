@@ -186,11 +186,12 @@ export default function NewsCard({ news, className = '', priority = false }) {
         onDragStart={(e) => e.preventDefault()}
         style={{ 
           position: 'relative', 
-          height: '180px',
+          height: isExpanded ? 'clamp(240px, 40vh, 400px)' : '180px',
           cursor: images.length > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
           userSelect: 'none',
           borderRadius: '14px 14px 0 0',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          transition: 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         {images.map((imgUrl, index) => (
