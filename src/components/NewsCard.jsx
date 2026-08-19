@@ -10,6 +10,13 @@ export default function NewsCard({ news, className = '', priority = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [shareOrigin, setShareOrigin] = useState('https://www.sdnegeribobong.sch.id');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareOrigin(window.location.origin);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -387,9 +394,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             {/* WhatsApp */}
             <a 
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                `Baca berita terbaru dari SD Negeri Bobong: *"${news.title}"*\n\nSelengkapnya di: ${
-                  typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`
-                }`
+                `Baca berita terbaru dari SD Negeri Bobong: *"${news.title}"*\n\nSelengkapnya di: ${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`
               )}`}
               target="_blank" 
               rel="noopener noreferrer"
@@ -425,7 +430,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             {/* Facebook */}
             <a 
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`
+                `${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`
               )}`}
               target="_blank" 
               rel="noopener noreferrer"
@@ -462,7 +467,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             <button 
               onClick={(e) => {
                 e.preventDefault();
-                const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/berita#news-${news.id.replace(/^news-/, '')}` : `https://sdnegeribobong.sch.id/berita#news-${news.id.replace(/^news-/, '')}`;
+                const shareUrl = `${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`;
                 navigator.clipboard.writeText(shareUrl).then(() => {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
