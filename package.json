@@ -37,14 +37,15 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.51.5",
-    "recharts": "^2.12.7",
+    "recharts": "^3.0.0",
     "sonner": "^1.4.41",
     "xlsx": "^0.18.5",
     "zod": "^4.4.3"
   },
   "overrides": {
     "postcss": "^8.5.10",
-    "@hono/node-server": ">=1.19.13"
+    "@hono/node-server": ">=1.19.13",
+    "react-is": "^19.0.0"
   },
   "devDependencies": {
     "prisma": "^7.8.0"
