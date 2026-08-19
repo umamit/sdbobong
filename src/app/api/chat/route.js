@@ -418,8 +418,7 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
         content: m.content
       }))
     ];
-
-    const primaryModel = 'openai/gpt-oss-120b';
+    const primaryModel = 'llama-3.3-70b-versatile';
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -485,73 +484,13 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
   } catch (error) {
     console.error("⚠️ Error calling Groq API in chat route. Falling back to local responder:", error.message || error);
     try {
-      // Re-load variables defensively for catch block fallback
-      const [dbConfig, newsList] = await Promise.all([
-        loadWebConfig(),
-        loadNews()
-      ]);
-      const config = dbConfig || {};
-      const contacts = config.ppdb_contacts || {};
-      const stats = config.stats || {};
-      const pageContents = stats.page_contents || {};
-      
-      const profil = pageContents.profil || {};
-      const beranda = pageContents.beranda || {};
-      const ppdb = pageContents.ppdb || {};
-      const akademik = pageContents.akademik || {};
-      const kesiswaan = pageContents.kesiswaan || {};
-      
-      const faqs = config.faqs || [];
-      const downloads = config.downloads || [];
-
-      if (profil.npsn) npsn = profil.npsn;
-      if (profil.status_sekolah) statusSekolah = profil.status_sekolah;
-      if (profil.akreditasi) akreditasi = profil.akreditasi;
-      if (profil.kurikulum_operasional) kurikulum = profil.kurikulum_operasional;
-      if (profil.alamat_lengkap) alamat = profil.alamat_lengkap;
-      if (profil.sk_pendirian) skPendirian = profil.sk_pendirian;
-      if (contacts.nama_humas !== undefined) {
-        namaHumas = contacts.nama_humas && contacts.nama_humas.trim() !== "" ? contacts.nama_humas.trim() : "Belum ditetapkan / Belum ada";
-      }
-      if (contacts.wa_humas !== undefined) {
-        waHumas = contacts.wa_humas && contacts.wa_humas.trim() !== "" ? contacts.wa_humas.trim() : "Belum ditentukan";
-      }
-      if (contacts.nama_operator !== undefined) {
-        namaOperator = contacts.nama_operator && contacts.nama_operator.trim() !== "" ? contacts.nama_operator.trim() : "Belum ditetapkan / Belum ada";
-      }
-      if (contacts.wa_operator !== undefined) {
-        waOperator = contacts.wa_operator && contacts.wa_operator.trim() !== "" ? contacts.wa_operator.trim() : "Belum ditentukan";
-      }
-      if (contacts.email_sekolah !== undefined) {
-        emailSekolah = contacts.email_sekolah && contacts.email_sekolah.trim() !== "" ? contacts.email_sekolah.trim() : "Belum ditentukan";
-      }
-
-      const marqueeAnnouncements = config.marquee_announcements || [];
-      const now = new Date();
-      const currentDateText = now.toLocaleDateString('id-ID', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        timeZone: 'Asia/Jayapura'
-      }) + " WIT (Waktu Indonesia Timur)";
-
-      const reply = generateFallbackResponse(latestMessage, fallbackData || {
-        npsn, statusSekolah, akreditasi, kurikulum, alamat, skPendirian, kepemilikanLahan,
-        namaHumas, waHumas, namaOperator, waOperator, emailSekolah,
-        stats, faqs, downloads,
-        beranda, profil, ppdb, akademik, kesiswaan,
-        news: newsList,
-        marquee: marqueeAnnouncements,
-        currentDate: currentDateText
-      });
+      const reply = generateFallbackResponse(latestMessage, fallbackData);
       return NextResponse.json({ reply });
     } catch (fallbackError) {
       console.error("❌ Fatal fallback error:", fallbackError);
       return NextResponse.json({ 
-        error: "Terjadi kesalahan internal pada server asisten.",
-        details: error.message 
-      }, { status: 500 });
+        reply: "Halo! Maaf, sistem asisten sekolah sedang mengalami kendala jaringan. Silakan hubungi panitia sekolah secara langsung di nomor WhatsApp Humas atau kunjungi halaman Hubungi Kami."
+      });
     }
   }
 }
