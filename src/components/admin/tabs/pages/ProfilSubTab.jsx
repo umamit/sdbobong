@@ -7,7 +7,10 @@ export default function ProfilSubTab(props) {
     pageContents,
     handleFieldChange,
     sejarahPreview,
-    handleSejarahFileChange
+    handleSejarahFileChange,
+    spImagePreview,
+    handleSpImageChange,
+    handleSpPdfChange
   } = props;
 
   return (
@@ -360,6 +363,114 @@ export default function ProfilSubTab(props) {
                           rows="2"
                           style={{ width: '100%', resize: 'vertical' }}
                         ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <h3>Standar Pelayanan Publik (Canva Poster & PDF)</h3>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                      Kelola media infografis canva dan ringkasan teks untuk halaman Standar Pelayanan Publik.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem' }}>Unggah Gambar Poster Baru (PNG/JPG)</label>
+                        <div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}>
+                          <div style={{ 
+                            width: '80px', 
+                            height: '110px', 
+                            borderRadius: '6px', 
+                            border: '2px dashed var(--primary)', 
+                            overflow: 'hidden', 
+                            backgroundColor: '#f8fafc', 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center',
+                            flexShrink: 0
+                          }}>
+                            <img 
+                              src={spImagePreview || pageContents.profil?.sp_image || '/images/standar_pelayanan.png'} 
+                              alt="Poster Preview" 
+                              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <input
+                              type="file"
+                              className="form-control"
+                              accept="image/png, image/jpeg, image/jpg"
+                              onChange={handleSpImageChange}
+                              style={{ width: '100%' }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: 600, fontSize: '0.9rem' }}>Unggah Brosur PDF Baru</label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          accept="application/pdf"
+                          onChange={handleSpPdfChange}
+                          style={{ width: '100%' }}
+                        />
+                        {pageContents.profil?.sp_pdf && (
+                          <p style={{ fontSize: '0.75rem', marginTop: '6px', marginBottom: 0 }}>
+                            Berkas aktif saat ini: <a href={pageContents.profil.sp_pdf} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>Lihat PDF</a>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Biaya Pelayanan</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sp_biaya || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sp_biaya', e.target.value)}
+                          placeholder="Gratis (Rp 0,-)"
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Waktu Pelayanan</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sp_waktu || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sp_waktu', e.target.value)}
+                          placeholder="Senin s.d. Sabtu pukul 08.00 - 12.00 WIT"
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Alur Pelayanan</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sp_alur || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sp_alur', e.target.value)}
+                          placeholder="Ajukan dokumen persyaratan ke meja tata usaha untuk langsung diproses."
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600, fontSize: '0.9rem' }}>Kontak Pengaduan</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={pageContents.profil?.sp_kontak || ''}
+                          onChange={(e) => handleFieldChange('profil', 'sp_kontak', e.target.value)}
+                          placeholder="Hubungi Humas / Operator sekolah jika Anda memiliki pertanyaan."
+                          style={{ width: '100%' }}
+                        />
                       </div>
                     </div>
                   </div>

@@ -27,6 +27,9 @@ export default function usePageContentHandlers({
   const [ekskulPreviews, setEkskulPreviews] = useState({});
   const [p5Files, setP5Files] = useState({});
   const [p5Previews, setP5Previews] = useState({});
+  const [spImageFile, setSpImageFile] = useState(null);
+  const [spImagePreview, setSpImagePreview] = useState('');
+  const [spPdfFile, setSpPdfFile] = useState(null);
 
   useEffect(() => {
     if (config?.stats?.page_contents) {
@@ -211,6 +214,21 @@ export default function usePageContentHandlers({
     reader.readAsDataURL(file);
   };
 
+  const handleSpImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setSpImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setSpImagePreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handleSpPdfChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setSpPdfFile(file);
+  };
+
   // --- Save ---
   const handlePageContentsSave = async (pageName, updatedData, fileFields = {}) => {
     setIsProcessing(true);
@@ -249,8 +267,10 @@ export default function usePageContentHandlers({
     const dataToSave = { ...pageContents[pageName] };
     const filesToUpload = {};
 
-    if (pageName === 'profil' && sejarahFile) {
-      filesToUpload['sejarah_image_file'] = sejarahFile;
+    if (pageName === 'profil') {
+      if (sejarahFile) filesToUpload['sejarah_image_file'] = sejarahFile;
+      if (spImageFile) filesToUpload['sp_image_file'] = spImageFile;
+      if (spPdfFile) filesToUpload['sp_pdf_file'] = spPdfFile;
     } else if (pageName === 'akademik') {
       if (kurikulumFile) filesToUpload['kurikulum_image_file'] = kurikulumFile;
       Object.keys(p5Files).forEach(index => { filesToUpload[`p5_image_${index}`] = p5Files[index]; });
@@ -260,7 +280,11 @@ export default function usePageContentHandlers({
 
     await handlePageContentsSave(pageName, dataToSave, filesToUpload);
 
-    if (pageName === 'profil') setSejarahFile(null);
+    if (pageName === 'profil') {
+      setSejarahFile(null);
+      setSpImageFile(null);
+      setSpPdfFile(null);
+    }
     else if (pageName === 'akademik') { setKurikulumFile(null); setP5Files({}); setP5Previews({}); }
     else if (pageName === 'kesiswaan') setEkskulFiles({});
   };
@@ -271,6 +295,9 @@ export default function usePageContentHandlers({
     kurikulumFile, setKurikulumFile, kurikulumPreview, setKurikulumPreview,
     ekskulFiles, setEkskulFiles, ekskulPreviews, setEkskulPreviews,
     p5Files, setP5Files, p5Previews, setP5Previews,
+    spImageFile, setSpImageFile, spImagePreview, setSpImagePreview,
+    spPdfFile, setSpPdfFile,
+    handleSpImageChange, handleSpPdfChange,
     handleFieldChange,
     handleP5FileChange, handleAddP5Project, handleUpdateP5Project, handleRemoveP5Project,
     handleAddSeragam, handleUpdateSeragam, handleRemoveSeragam,
