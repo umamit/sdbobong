@@ -1,5 +1,8 @@
 import { prisma } from '../lib/prisma';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function sitemap() {
   const baseUrl = 'https://www.sdnegeribobong.sch.id';
   const now = new Date();
@@ -17,6 +20,7 @@ export async function sitemap() {
     { route: '/profil/visi-misi',       priority: 0.8, freq: 'monthly' }, // Visi & Misi
     { route: '/profil/struktur',        priority: 0.8, freq: 'monthly' }, // Struktur & Dewan Guru
     { route: '/profil/fasilitas',       priority: 0.8, freq: 'monthly' }, // Fasilitas & Denah
+    { route: '/profil/standar-pelayanan', priority: 0.8, freq: 'monthly' }, // Standar Pelayanan Publik
     { route: '/guru',                   priority: 0.8, freq: 'monthly' }, // Daftar Guru & Staf
     { route: '/akademik',               priority: 0.8, freq: 'monthly' }, // Info Akademik
     { route: '/akademik/kalender',      priority: 0.8, freq: 'monthly' }, // Kalender Pendidikan
