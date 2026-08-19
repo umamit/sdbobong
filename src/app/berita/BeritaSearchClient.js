@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NewsCard from '../../components/NewsCard';
 
@@ -73,6 +73,27 @@ export default function BeritaSearchClient({ newsList = [] }) {
       return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
     });
   }, [newsList, searchQuery, selectedCategory, selectedYear, sortOrder]);
+
+  const hasCheckedHash = useRef(false);
+
+  // Auto-paginate to the page containing the news item matched by URL hash on mount
+  useEffect(() => {
+    if (hasCheckedHash.current) return;
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash;
+      if (hash.startsWith('#news-')) {
+        const targetId = hash.replace('#news-', '');
+        const targetIdx = filteredNews.findIndex(
+          n => n.id === targetId || n.id === `news-${targetId}`
+        );
+        if (targetIdx !== -1) {
+          const targetPage = Math.floor(targetIdx / ITEMS_PER_PAGE) + 1;
+          setCurrentPage(targetPage);
+          hasCheckedHash.current = true;
+        }
+      }
+    }
+  }, [filteredNews]);
 
   // Pagination
   const totalPages = Math.ceil(filteredNews.length / ITEMS_PER_PAGE);

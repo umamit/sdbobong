@@ -14,7 +14,8 @@ export default function NewsCard({ news, className = '', priority = false }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
-      if (hash === `#news-${news.id}`) {
+      const cleanNewsId = news.id.replace('news-', '');
+      if (hash === `#news-${news.id}` || hash === `#news-${cleanNewsId}`) {
         setIsExpanded(true);
         setTimeout(() => {
           const el = document.getElementById(`news-${news.id}`);
