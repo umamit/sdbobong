@@ -1,7 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
-import sharp from 'sharp';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
@@ -187,11 +186,12 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
 
   if (isConvertible) {
     try {
+      const { default: sharp } = await import('sharp');
       finalBuffer = await sharp(buffer).webp({ quality }).toBuffer();
       finalExtension = 'webp';
       finalMimeType = 'image/webp';
     } catch (e) {
-      console.error('WebP conversion failed, uploading original:', e.message);
+      console.error('WebP conversion failed or sharp not installed, uploading original:', e.message);
       // Fallback: upload original if conversion fails
       finalBuffer = buffer;
       finalExtension = extension;

@@ -12,7 +12,7 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const newsList = await loadNews();
+    const newsList = await loadNews(true);
     return NextResponse.json(newsList);
   } catch (e) {
     return NextResponse.json({ error: "Gagal memuat berita: " + e.message }, { status: 500 });

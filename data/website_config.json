@@ -1,8 +1,9 @@
 {
     "marquee_announcements": [
-        "There is minor maintenance due to limited server capacity.",
-        "Technical issue due to database migration",
-        "Some features might be temporarily unavailable. We are working to resolve this quickly"
+        "INFO SEKOLAH: Pantau terus informasi terbaru, kegiatan, dan pengumuman SD Negeri Bobong melalui website resmi sekolah.",
+        "SEMANGAT BELAJAR: Raih prestasi, bangun karakter, dan jadilah generasi hebat bersama SD Negeri Bobong!",
+        "AYO BERSAMA: Ciptakan lingkungan sekolah yang aman, nyaman, disiplin, dan menyenangkan untuk belajar dan berkembang.",
+        "Presensi Guru dan Perangkat Ajar, bisa diakses melalui bilah navigasi Akademik"
     ],
     "marquee_speed": 40,
     "stats": {
@@ -19,28 +20,154 @@
         "allow_copy": false,
         "maintenance_mode": false,
         "marquee_speed": 40,
-        "visitor_count": 345,
+        "visitor_count": 351,
         "_downloads_fallback": [
             {
                 "id": "dl-1",
+                "date": "2026-05-01",
                 "title": "Brosur Informasi PPDB TA 2026/2027",
-                "category": "PPDB",
                 "fileUrl": "/files/brosur-ppdb-2026.pdf",
-                "date": "2026-05-01"
+                "category": "PPDB"
             },
             {
                 "id": "dl-2",
+                "date": "2026-05-15",
                 "title": "Kalender Pendidikan & Akademik TA 2026/2027",
-                "category": "Akademik",
                 "fileUrl": "/files/kalender-akademik-2026.pdf",
-                "date": "2026-05-15"
+                "category": "Akademik"
             },
             {
                 "id": "dl-3",
+                "date": "2026-05-01",
                 "title": "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)",
-                "category": "PPDB",
                 "fileUrl": "/formulir-ppdb",
-                "date": "2026-05-01"
+                "category": "PPDB"
+            },
+            {
+                "id": "sibi-101",
+                "date": "2026-05-01",
+                "kelas": "Kelas 1",
+                "title": "Buku Siswa Bahasa Indonesia: Aku Bisa! Kelas 1",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Bahasa Indonesia",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-102",
+                "date": "2026-05-01",
+                "kelas": "Kelas 1",
+                "title": "Buku Siswa Matematika Volume 1 Kelas 1",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Matematika",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-103",
+                "date": "2026-05-01",
+                "kelas": "Kelas 1",
+                "title": "Buku Siswa Pendidikan Agama Islam & Budi Pekerti Kelas 1",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Agama Islam",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-201",
+                "date": "2026-05-01",
+                "kelas": "Kelas 2",
+                "title": "Buku Siswa Bahasa Indonesia: Keluargaku Unik Kelas 2",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Bahasa Indonesia",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-202",
+                "date": "2026-05-01",
+                "kelas": "Kelas 2",
+                "title": "Buku Siswa Matematika Volume 1 Kelas 2",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Matematika",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-301",
+                "date": "2026-05-01",
+                "kelas": "Kelas 3",
+                "title": "Buku Siswa Bahasa Indonesia: Kawan Seiring Kelas 3",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Bahasa Indonesia",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-302",
+                "date": "2026-05-01",
+                "kelas": "Kelas 3",
+                "title": "Buku Siswa IPAS Kelas 3",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "IPAS",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-401",
+                "date": "2026-05-01",
+                "kelas": "Kelas 4",
+                "title": "Buku Siswa IPAS Kelas 4",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "IPAS",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-402",
+                "date": "2026-05-01",
+                "kelas": "Kelas 4",
+                "title": "Buku Siswa Matematika Volume 1 Kelas 4",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Matematika",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-403",
+                "date": "2026-05-01",
+                "kelas": "Kelas 4",
+                "title": "Buku Siswa My Next Words Grade 4 (Bahasa Inggris)",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Bahasa Inggris",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-501",
+                "date": "2026-05-01",
+                "kelas": "Kelas 5",
+                "title": "Buku Siswa IPAS Kelas 5",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "IPAS",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-502",
+                "date": "2026-05-01",
+                "kelas": "Kelas 5",
+                "title": "Buku Siswa Matematika Volume 1 Kelas 5",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Matematika",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-601",
+                "date": "2026-05-01",
+                "kelas": "Kelas 6",
+                "title": "Buku Siswa IPAS Kelas 6",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "IPAS",
+                "category": "Buku SIBI"
+            },
+            {
+                "id": "sibi-602",
+                "date": "2026-05-01",
+                "kelas": "Kelas 6",
+                "title": "Buku Siswa Bahasa Indonesia: Bergerak Bersama Kelas 6",
+                "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+                "subject": "Bahasa Indonesia",
+                "category": "Buku SIBI"
             }
         ],
         "_faqs_fallback": [
@@ -152,7 +279,6 @@
                 "kurikulum": "Kurikulum Merdeka",
                 "kepala_sekolah": "HUSNITA USMAN, S.Pd., M.Pd",
                 "nip_kepala": "199610272019032006",
-                "alamat_lengkap": "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791",
                 "visi": "\"Terwujudnya peserta didik yang Berakhlak Mulia, Cerdas dalam berpikir, serta Luhur dalam Menjaga Nilai Budaya Bangsa di era global.\"",
                 "misi": [
                     "Menanamkan nilai keimanan, ketakwaan, dan akhlak mulia dalam setiap aktivitas harian di lingkungan sekolah.",
@@ -163,10 +289,54 @@
                 ],
                 "sejarah": "",
                 "sejarah_p1": "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara.",
+                "sejarah_p2": "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten.",
                 "sejarah_badge": "SEJARAH SEKOLAH",
                 "sejarah_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1785122180370_20260611_130741_2.webp",
                 "sejarah_title": "Perjalanan SD Negeri Bobong",
-                "sejarah_p2": "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten."
+                "alamat_lengkap": "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791",
+                "maklumat_image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1787122081853_maklumat_pelayanan.webp",
+                "standar_pelayanan_list": [
+                    {
+                        "id": "sp-kbm",
+                        "pdf": "/docs/standar_pelayanan.pdf",
+                        "alur": "Peserta didik terdaftar aktif mengikuti KBM tatap muka sesuai jadwal kelas masing-masing.",
+                        "biaya": "Gratis (Rp 0,-) - Bebas biaya pendidikan terjamin APBD & Bosnas.",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1787121060885_sp-kbm.webp",
+                        "title": "STANDAR PELAYANAN PENYELENGGARAAN KEGIATAN BELAJAR MENGAJAR",
+                        "waktu": "Dilaksanakan setiap hari kerja sekolah sepanjang kalender akademik aktif.",
+                        "kontak": "Kepala Sekolah (Husnita Usman, S.Pd., M.Pd) / Wali Kelas masing-masing."
+                    },
+                    {
+                        "id": "sp-ekskul",
+                        "pdf": "/docs/standar_pelayanan.pdf",
+                        "alur": "Siswa mendaftarkan diri secara aktif pada ekskul pilihan melalui wali kelas / pembina ekskul.",
+                        "biaya": "Gratis (Rp 0,-) - Seluruh fasilitas dan bimbingan ekskul dibiayai dana sekolah.",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1787121062583_sp-ekskul.webp",
+                        "title": "STANDAR PELAYANAN PENDAMPINGAN DAN FASILITASI KEGIATAN EKSTRAKURIKULER",
+                        "waktu": "Dilaksanakan di luar jam belajar reguler sesuai jadwal masing-masing bidang ekskul.",
+                        "kontak": "Pembina Ekstrakurikuler / Humas Sekolah."
+                    },
+                    {
+                        "id": "sp-rapor",
+                        "pdf": "/docs/standar_pelayanan.pdf",
+                        "alur": "Orang tua / Wali murid mengambil dokumen rapor langsung di ruang kelas masing-masing.",
+                        "biaya": "Gratis (Rp 0,-) - Pembagian hasil belajar siswa bebas dari pungutan.",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1787121063314_sp-rapor.webp",
+                        "title": "STANDAR PELAYANAN PENGAMBILAN RAPOR PESERTA DIDIK",
+                        "waktu": "Verifikasi berkas ± 5 menit. Penyerahan dan konsultasi 10-20 menit per siswa.",
+                        "kontak": "Wali Kelas masing-masing."
+                    },
+                    {
+                        "id": "sp-bk",
+                        "pdf": "/docs/standar_pelayanan.pdf",
+                        "alur": "Siswa / Orang tua mengajukan permohonan bimbingan/konseling langsung ke ruang BK / Guru BK.",
+                        "biaya": "Gratis (Rp 0,-) - Layanan bimbingan karir, pribadi, dan sosial gratis didanai sekolah.",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1787121063803_sp-bk.webp",
+                        "title": "STANDAR PELAYANAN BIMBINGAN DAN KONSELING PESERTA DIDIK",
+                        "waktu": "Konseling Individu: 45-60 menit. Bimbingan Kelompok: Sesuai jadwal. Konsultasi: 30-60 menit.",
+                        "kontak": "Guru BK / Konselor Sekolah / Wali Kelas."
+                    }
+                ]
             },
             "akademik": {
                 "banner_title": "Akademik",
@@ -274,7 +444,8 @@
         "students_seeded": true,
         "teachers_seeded": true,
         "graduation_seeded": true,
-        "achievements_seeded": true
+        "achievements_seeded": true,
+        "alumni_seeded": true
     },
     "ppdb_contacts": {
         "nama_humas": "Belum diset admin",
@@ -287,7 +458,155 @@
         "nip_humas": "",
         "nip_operator": "101502"
     },
-    "downloads": [],
+    "downloads": [
+        {
+            "id": "dl-1",
+            "date": "2026-05-01",
+            "title": "Brosur Informasi PPDB TA 2026/2027",
+            "fileUrl": "/files/brosur-ppdb-2026.pdf",
+            "category": "PPDB"
+        },
+        {
+            "id": "dl-2",
+            "date": "2026-05-15",
+            "title": "Kalender Pendidikan & Akademik TA 2026/2027",
+            "fileUrl": "/files/kalender-akademik-2026.pdf",
+            "category": "Akademik"
+        },
+        {
+            "id": "dl-3",
+            "date": "2026-05-01",
+            "title": "Formulir Pendaftaran PPDB Offline (Siap Cetak A4)",
+            "fileUrl": "/formulir-ppdb",
+            "category": "PPDB"
+        },
+        {
+            "id": "sibi-101",
+            "date": "2026-05-01",
+            "kelas": "Kelas 1",
+            "title": "Buku Siswa Bahasa Indonesia: Aku Bisa! Kelas 1",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Bahasa Indonesia",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-102",
+            "date": "2026-05-01",
+            "kelas": "Kelas 1",
+            "title": "Buku Siswa Matematika Volume 1 Kelas 1",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Matematika",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-103",
+            "date": "2026-05-01",
+            "kelas": "Kelas 1",
+            "title": "Buku Siswa Pendidikan Agama Islam & Budi Pekerti Kelas 1",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Agama Islam",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-201",
+            "date": "2026-05-01",
+            "kelas": "Kelas 2",
+            "title": "Buku Siswa Bahasa Indonesia: Keluargaku Unik Kelas 2",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Bahasa Indonesia",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-202",
+            "date": "2026-05-01",
+            "kelas": "Kelas 2",
+            "title": "Buku Siswa Matematika Volume 1 Kelas 2",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Matematika",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-301",
+            "date": "2026-05-01",
+            "kelas": "Kelas 3",
+            "title": "Buku Siswa Bahasa Indonesia: Kawan Seiring Kelas 3",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Bahasa Indonesia",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-302",
+            "date": "2026-05-01",
+            "kelas": "Kelas 3",
+            "title": "Buku Siswa IPAS Kelas 3",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "IPAS",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-401",
+            "date": "2026-05-01",
+            "kelas": "Kelas 4",
+            "title": "Buku Siswa IPAS Kelas 4",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "IPAS",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-402",
+            "date": "2026-05-01",
+            "kelas": "Kelas 4",
+            "title": "Buku Siswa Matematika Volume 1 Kelas 4",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Matematika",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-403",
+            "date": "2026-05-01",
+            "kelas": "Kelas 4",
+            "title": "Buku Siswa My Next Words Grade 4 (Bahasa Inggris)",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Bahasa Inggris",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-501",
+            "date": "2026-05-01",
+            "kelas": "Kelas 5",
+            "title": "Buku Siswa IPAS Kelas 5",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "IPAS",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-502",
+            "date": "2026-05-01",
+            "kelas": "Kelas 5",
+            "title": "Buku Siswa Matematika Volume 1 Kelas 5",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Matematika",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-601",
+            "date": "2026-05-01",
+            "kelas": "Kelas 6",
+            "title": "Buku Siswa IPAS Kelas 6",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "IPAS",
+            "category": "Buku SIBI"
+        },
+        {
+            "id": "sibi-602",
+            "date": "2026-05-01",
+            "kelas": "Kelas 6",
+            "title": "Buku Siswa Bahasa Indonesia: Bergerak Bersama Kelas 6",
+            "fileUrl": "https://buku.kemendikdasmen.go.id/katalog",
+            "subject": "Bahasa Indonesia",
+            "category": "Buku SIBI"
+        }
+    ],
     "faqs": [
         {
             "id": "faq-1",
@@ -377,16 +696,15 @@
         }
     ],
     "popup_announcement": {
-        "enabled": true,
-        "title": "Penerimaan Peserta Didik Baru (PPDB) TA 2026/2027 Resmi Dibuka!",
-        "badge": "INFO PPDB ONLINE",
-        "content": "Selamat datang di SD Negeri Bobong! Pendaftaran murid baru secara online maupun offline kini telah dibuka tanpa dipungut biaya apapun (100% Gratis). Silakan klik tombol di bawah untuk mendaftar.",
         "link": "/ppdb/daftar",
+        "badge": "INFO PPDB ONLINE",
+        "title": "Penerimaan Peserta Didik Baru (PPDB) TA 2026/2027 Resmi Dibuka!",
+        "content": "Selamat datang di SD Negeri Bobong! Pendaftaran murid baru secara online maupun offline kini telah dibuka tanpa dipungut biaya apapun (100% Gratis). Silakan klik tombol di bawah untuk mendaftar.",
+        "enabled": true,
         "link_label": "Daftar PPDB Online Sekarang →"
     },
     "force_local_cache": false,
     "suspicious_attempts": [],
     "manual_blacklist": [],
-    "security_settings": {},
-    "visitor_count": 238
+    "security_settings": {}
 }

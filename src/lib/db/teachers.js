@@ -30,10 +30,12 @@ export function sortTeachersList(teachersList) {
   });
 }
 
-export async function loadTeachers(includePassword = false) {
+export async function loadTeachers(includePassword = false, forceFresh = false) {
   const cleanList = (list) => includePassword ? list : list.map(({ password, ...rest }) => rest);
-  const fresh = getFreshCachedTeachers();
-  if (fresh) return cleanList(fresh);
+  if (!includePassword && !forceFresh) {
+    const fresh = getFreshCachedTeachers();
+    if (fresh) return cleanList(fresh);
+  }
 
   let localTeachers = [];
   if (fs.existsSync(TEACHERS_JSON)) {
@@ -84,7 +86,7 @@ export async function loadTeachers(includePassword = false) {
           try { const match = details.match(/<!--TEACHER_DETAILS:([\s\S]*?)-->/); if (match) { extra = JSON.parse(match[1]); details = details.replace(/<!--TEACHER_DETAILS:[\s\S]*?-->/, '').trim(); } } catch (err) {}
         }
         const obj = { id: t.id, name: t.name, role: t.role, details, status: t.status, image: t.image, subject: extra.subject||"", education: extra.education||"", motto: extra.motto||"", bio: extra.bio||"" };
-        if (includePassword || extra.password) obj.password = extra.password || "";
+        if (includePassword) obj.password = extra.password || "";
         obj.nip = t.nip || "";
         if (!obj.nip) { const localMatch = localTeachers.find(lt => lt.id === t.id); if (localMatch?.nip) obj.nip = localMatch.nip; }
         return obj;
@@ -109,8 +111,7 @@ export async function saveTeachers(teachersList) {
     return { ...t, password: t.password !== undefined ? t.password : (existing?.password || "") };
   });
   let localSaved = false;
-  try { fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8'); localSaved = true; }
-  catch (e) { console.error("Error saving teachers locally:", e); }
+  try { fs.writeFileSync(TEACHERS_JSON, JSON.stringify(sortedList, null, 4), 'utf-8'); localSaved = true; } catch (e) { console.error("Error saving teachers locally:", e); }
   if (isSupabaseEnabled()) {
     let supabaseSuccess = true;
     for (const t of sortedList) {
@@ -133,17 +134,11 @@ export async function saveTeachers(teachersList) {
       const supabaseTeachers = await prisma.teacher.findMany({ select: { id: true } });
       if (supabaseTeachers) {
         for (const row of supabaseTeachers) {
-          if (!localIds.has(row.id)) {
-            await prisma.teacher.delete({ where: { id: row.id } }).catch(() => {});
-          }
+          if (!localIds.has(row.id)) await prisma.teacher.delete({ where: { id: row.id } }).catch(() => {});
         }
       }
-    } catch (e) {
-      console.error("[saveTeachers] Cleanup orphan teachers failed:", e.message || e);
-    }
-    invalidateTeachersCache();
-    return supabaseSuccess || localSaved;
+    } catch (e) { console.error("[saveTeachers] Cleanup orphan teachers failed:", e.message || e); }
+    invalidateTeachersCache(); return supabaseSuccess || localSaved;
   }
-  invalidateTeachersCache();
-  return localSaved;
+  invalidateTeachersCache(); return localSaved;
 }

@@ -30,9 +30,11 @@ function getNewsSortKey(item) {
   return 0;
 }
 
-export async function loadNews() {
-  const fresh = getFreshCachedNews();
-  if (fresh) return fresh;
+export async function loadNews(forceFresh = false) {
+  if (!forceFresh) {
+    const fresh = getFreshCachedNews();
+    if (fresh) return fresh;
+  }
 
   let localNews = [];
   if (fs.existsSync(NEWS_JSON)) {

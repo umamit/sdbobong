@@ -13,7 +13,7 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    const teachersList = await loadTeachers();
+    const teachersList = await loadTeachers(false, true);
     return NextResponse.json(teachersList);
   } catch (e) {
     return NextResponse.json({ error: "Gagal memuat data guru: " + e.message }, { status: 500 });
@@ -63,7 +63,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Forbidden name" }, { status: 400 });
     }
 
-    const teachersList = await loadTeachers();
+    const teachersList = await loadTeachers(false, true);
 
     // Periksa duplikat nama guru
     const duplicateTeacher = teachersList.find(t => t.name.toLowerCase() === name.toLowerCase());
@@ -170,7 +170,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: "ID guru tidak ditentukan." }, { status: 400 });
     }
 
-    const teachersList = await loadTeachers();
+    const teachersList = await loadTeachers(false, true);
     const teacherIndex = teachersList.findIndex(t => t.id === id);
 
     if (teacherIndex === -1) {

@@ -13,9 +13,9 @@ export default async function AdminDashboardPage() {
 
     // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, students, and audit logs in parallel safely
     const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs, studentsList] = await Promise.all([
-      loadWebConfig().catch(e => { console.error("loadWebConfig failed:", e); return {}; }),
-      loadNews().catch(e => { console.error("loadNews failed:", e); return []; }),
-      loadTeachers().catch(e => { console.error("loadTeachers failed:", e); return []; }),
+      loadWebConfig(true).catch(e => { console.error("loadWebConfig failed:", e); return {}; }),
+      loadNews(true).catch(e => { console.error("loadNews failed:", e); return []; }),
+      loadTeachers(false, true).catch(e => { console.error("loadTeachers failed:", e); return []; }),
       loadAchievements().catch(e => { console.error("loadAchievements failed:", e); return []; }),
       getStorageUsage().catch(e => { console.error("getStorageUsage failed:", e); return null; }),
       loadMessages().catch(e => { console.error("loadMessages failed:", e); return []; }),

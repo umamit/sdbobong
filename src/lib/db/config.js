@@ -37,11 +37,13 @@ export async function markTableSeeded(tableName) {
   } catch (e) { console.error(`Error marking ${tableName} as seeded:`, e); }
 }
 
-export async function loadWebConfig() {
+export async function loadWebConfig(forceFresh = false) {
   // Return immediately if a fresh in-memory cache is available (< 60s old).
   // This is the primary mechanism to avoid repeated Supabase round-trips on every SSR request.
-  const fresh = getFreshCachedConfig();
-  if (fresh) return fresh;
+  if (!forceFresh) {
+    const fresh = getFreshCachedConfig();
+    if (fresh) return fresh;
+  }
 
   let localConfig = {
     marquee_announcements: [

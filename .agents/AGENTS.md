@@ -346,7 +346,14 @@ for path, var in missing:
 - Setiap kali membuat modul baru, memisahkan berkas (*refactoring*), atau mengubah handler data:
   - **Wajib memverifikasi bahwa semua identifier global/library (seperti `supabase`, `prisma`, `fs`, `path`, `NextResponse`, dll.) telah di-import secara eksplisit di bagian atas berkas** sebelum digunakan dalam ekspresi atau cabang logika.
   - Dilarang keras mengasumsikan keberadaan variabel eksternal tanpa baris `import` atau `require` yang sah di bagian atas berkas.
-  - Setiap eksekusi query atau pemanggilan helper async (`loadWebConfig`, `loadNews`, `loadTeachers`, dll.) **wajib memiliki proteksi `.catch()` inline atau pembungkus `try...catch`** guna menjamin tidak ada `ReferenceError` atau `Unhandled Rejection` yang merusak proses rendering server (*Server Components*).
+  - Setiap eksekusi query atau pemanggilan helper async (`loadWebConfig`, `loadNews`, `loadTeachers`, dll.) **wajib memiliki proteksi `.catch()` inline atau pembungkus `try...catch`** guna menjamin tidak ada `ReferenceError` or `Unhandled Rejection` yang merusak proses rendering server (*Server Components*).
+
+---
+
+# 19. Proteksi Komponen DynamicIsland (Toast & Alert)
+
+- **Dilarang keras memodifikasi, mendesain ulang, mengganti, atau menghapus** komponen `DynamicIslandToast` atau elemen bertema DynamicIsland lainnya beserta logika transisi Framer Motion dan visualnya.
+- Elemen ini merupakan komponen visual inti untuk notifikasi transaksi admin (sukses, gagal, peringatan) dan harus dibiarkan seperti bentuk aslinya kecuali ada instruksi tertulis langsung dari pengguna.
 
 ---
 
