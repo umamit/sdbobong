@@ -399,7 +399,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             {/* WhatsApp */}
             <a 
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                `Baca berita terbaru dari SD Negeri Bobong: *"${news.title}"*\n\nSelengkapnya di: ${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`
+                `Baca berita terbaru dari SD Negeri Bobong: *"${news.title}"*\n\nSelengkapnya di: ${shareOrigin}/berita/${news.id}`
               )}`}
               target="_blank" 
               rel="noopener noreferrer"
@@ -435,7 +435,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             {/* Facebook */}
             <a 
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                `${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`
+                `${shareOrigin}/berita/${news.id}`
               )}`}
               target="_blank" 
               rel="noopener noreferrer"
@@ -472,7 +472,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
             <button 
               onClick={(e) => {
                 e.preventDefault();
-                const shareUrl = `${shareOrigin}/berita#news-${news.id.replace(/^news-/, '')}`;
+                const shareUrl = `${shareOrigin}/berita/${news.id}`;
                 navigator.clipboard.writeText(shareUrl).then(() => {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
