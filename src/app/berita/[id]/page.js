@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
 
   const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
   const origin = 'https://www.sdnegeribobong.sch.id';
-  const imageUrl = article.image 
+  const imageUrl = article.image && !article.image.startsWith('data:')
     ? (article.image.startsWith('http') ? article.image : `${origin}${article.image}`)
     : `${origin}/images/logo_sekolah_512.png`;
 
@@ -48,7 +48,12 @@ export default async function BeritaDetailPage({ params }) {
   // Generate LD+JSON Schema for Google NewsArticle
   const origin = 'https://www.sdnegeribobong.sch.id';
   const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
-  const images = rawImages.map(img => img.startsWith('http') ? img : `${origin}${img}`);
+  const images = rawImages
+    .filter(img => img && !img.startsWith('data:'))
+    .map(img => img.startsWith('http') ? img : `${origin}${img}`);
+  if (images.length === 0) {
+    images.push(`${origin}/images/logo_sekolah_512.png`);
+  }
   const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
   
   let publishDate = new Date();
