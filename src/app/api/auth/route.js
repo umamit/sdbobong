@@ -74,7 +74,16 @@ export async function POST(request) {
     }
 
     // Fallback to Supabase Auth email/password check
-    const supabase = createClient();
+    let supabase;
+    try {
+      supabase = createClient();
+    } catch (clientErr) {
+      console.error("Failed to create Supabase client:", clientErr);
+      return sensitiveJson({
+        error: "Konfigurasi API Supabase belum terpasang di Vercel Dashboard. Harap tambahkan NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY di menu Settings > Environment Variables Vercel Anda."
+      }, 400);
+    }
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
