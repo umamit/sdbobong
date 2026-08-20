@@ -280,8 +280,19 @@ export async function POST(req) {
       ? kesiswaanKaryaList.map(k => `- ${k.title} (${k.category}): ${k.desc}`).join('\n')
       : "-";
 
-    // 4. Susun System Instruction yang kaya data dan ramah
-    const systemInstruction = `
+    // 4. Susun System Instruction secara dinamis menggunakan RAG (Retrieval-Augmented Generation) Lokal
+    const queryLower = latestMessage.toLowerCase();
+
+    // Dapatkan history 3 pesan terakhir dari pengguna untuk pendeteksian konteks multi-turn
+    const userHistoryMessages = messages.filter(m => m.role === 'user').slice(-3);
+    const queryForRag = userHistoryMessages.map(m => m.content).join(" ").toLowerCase();
+
+    // Rambu-rambu apakah user menyapa secara umum
+    const isGenericGreeting = queryForRag.trim().length < 8 || 
+      ['halo', 'hei', 'hy', 'hi', 'pagi', 'siang', 'sore', 'malam', 'assalamualaikum', 'salam', 'tanya', 'ask'].some(kw => queryForRag.includes(kw));
+
+    // Base System Instruction (Selalu disertakan)
+    let systemInstruction = `
 Kamu adalah "Aim AI", asisten virtual pintar dan ramah yang mewakili SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara.
 Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan masyarakat umum) memberikan informasi yang akurat, lengkap, dan hangat mengenai sekolah kita.
 
@@ -300,25 +311,36 @@ Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan
 - Deteksi konteks penanya: jika terlihat seperti anak-anak atau siswa, gunakan bahasa yang lebih sederhana dan lebih santai.
 
 === PENGETAHUAN RESMI SEKOLAH (DINAMIS DARI DATABASE) ===
-1. Profil, Legalitas & Sejarah Resmi:
+1. Profil & Kontak Ringkas Sekolah:
    - Nama Resmi Sekolah: SD Negeri Bobong
    - NPSN: ${npsn}
    - Status Sekolah: ${statusSekolah}
    - Akreditasi: ${akreditasi}
-   - Kurikulum Operasional: ${kurikulum}
-   - No. SK Pendirian: ${skPendirian}
-   - Status Kepemilikan Lahan: ${kepemilikanLahan}
    - Alamat Lengkap: ${alamat}
+   - Humas Sekolah: ${namaHumas} (Hubungi WhatsApp: +${waHumas})
+   - Operator Sekolah: ${namaOperator} (Hubungi WhatsApp: +${waOperator})
+   - Email Resmi Sekolah: ${emailSekolah}
+`;
+
+    // RAG: 2. Visi, Misi, Sejarah & Sambutan
+    const profilKeywords = ['profil', 'visi', 'misi', 'sejarah', 'sambutan', 'kepala sekolah', 'lahan', 'sk pendirian', 'didirikan', 'tentang', 'yayasan'];
+    if (profilKeywords.some(kw => queryForRag.includes(kw)) || isGenericGreeting) {
+      systemInstruction += `
+2. Visi, Misi, Sejarah & Sambutan Utama:
    - Visi Sekolah: ${visiText}
    - Misi Sekolah:
 ${listMisiText}
    - Sejarah Singkat:
 ${sejarahText}
-
-2. Sambutan Beranda Halaman Utama:
 ${sambutanText}
+`;
+    }
 
-3. Statistik Sekolah Saat Ini:
+    // RAG: 3. Statistik Sekolah & Fasilitas
+    const facilitiesKeywords = ['fasilitas', 'kelas', 'ruangan', 'toilet', 'uks', 'gudang', 'olahraga', 'lapangan', 'sarana', 'prasarana', 'jumlah siswa', 'jumlah guru', 'rombel', 'ruang', 'gedung'];
+    if (facilitiesKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+3. Statistik Sekolah & Fasilitas:
    - Jumlah Siswa Aktif: ${stats.siswa_aktif || 205} siswa
    - Jumlah Guru & Staf: ${stats.guru_staf || 14} orang
    - Jumlah Ruang Kelas: ${stats.ruang_kelas || 9} ruangan
@@ -327,22 +349,21 @@ ${sambutanText}
    - UKS: ${stats.uks || 1} unit
    - Gudang: ${stats.gudang || 1} unit
    - Cuci Tangan: ${stats.cuci_tangan || 4} area
+   - Detail Sarana & Prasarana:
+     * Ruang Belajar: ${profil.ruang_belajar_desc || "9 Ruang Kelas belajar yang bersih, kondusif, dan nyaman untuk proses KBM."}
+     * Ruang Guru: ${profil.ruang_guru_desc || "1 Ruang Guru dan Kepala Sekolah sebagai pusat koordinasi."}
+     * Sanitasi: ${profil.sanitasi_desc || "2 Ruang Toilet bersih dan terawat untuk guru dan siswa."}
+     * Gudang: ${profil.gudang_desc || "1 Ruang Gudang penyimpanan inventaris sekolah."}
+     * Olahraga: ${profil.olahraga_desc || "Halaman olahraga dan upacara yang luas di tengah sekolah."}
+     * Literasi: ${profil.literasi_desc || "Pojok baca kelas dan koleksi buku bacaan harian."}
+`;
+    }
 
-4. Kontak Resmi Sekolah & Panitia PPDB:
-   - Humas Sekolah: ${namaHumas} (Hubungi WhatsApp: +${waHumas})
-   - Operator Sekolah: ${namaOperator} (Hubungi WhatsApp: +${waOperator})
-   - Email Resmi Sekolah: ${emailSekolah}
-   - Jika ingin menghubungi via WhatsApp, berikan nomor WhatsApp Humas atau Operator sekolah resmi di atas.
-
-5. Sarana & Prasarana (Fasilitas):
-   - Ruang Belajar: ${profil.ruang_belajar_desc || "9 Ruang Kelas belajar yang bersih, kondusif, dan nyaman untuk proses KBM."}
-   - Ruang Guru: ${profil.ruang_guru_desc || "1 Ruang Guru dan Kepala Sekolah sebagai pusat koordinasi."}
-   - Sanitasi: ${profil.sanitasi_desc || "2 Ruang Toilet bersih dan terawat untuk guru dan siswa."}
-   - Gudang: ${profil.gudang_desc || "1 Ruang Gudang penyimpanan inventaris sekolah."}
-   - Olahraga: ${profil.olahraga_desc || "Halaman olahraga dan upacara yang luas di tengah sekolah."}
-   - Literasi: ${profil.literasi_desc || "Pojok baca kelas dan koleksi buku bacaan harian."}
-
-6. Penerimaan Peserta Didik Baru (PPDB):
+    // RAG: 4. PPDB
+    const ppdbKeywords = ['ppdb', 'daftar', 'pendaftaran', 'masuk', 'syarat', 'berkas', 'biaya', 'umur', 'usia', 'formulir', 'daring', 'online', 'offline', 'gelombang'];
+    if (ppdbKeywords.some(kw => queryForRag.includes(kw)) || isGenericGreeting) {
+      systemInstruction += `
+4. Penerimaan Peserta Didik Baru (PPDB):
    - Judul Banner PPDB: ${ppdbBannerTitle}
    - Deskripsi: ${ppdbBannerTextVal}
    - Batas Usia: ${ppdbUsiaText}
@@ -354,8 +375,14 @@ ${listPpdbBerkasText}
 ${listPpdbAlurText}
    - Tanya-Jawab (FAQ) PPDB Khusus:
 ${listPpdbFaqText}
+`;
+    }
 
-7. Informasi Akademik & Kurikulum:
+    // RAG: 5. Akademik, Kurikulum & Jadwal
+    const akademikKeywords = ['akademik', 'kurikulum', 'merdeka', 'p5', 'belajar', 'tata tertib', 'seragam', 'shift', 'jadwal', 'kbm', 'kalender', 'jumat', 'sabtu', 'pagi', 'siang'];
+    if (akademikKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+5. Informasi Akademik, Kurikulum & Jadwal:
    - Deskripsi Akademik: ${akademikBannerTextVal}
    - Detail Kurikulum: ${kurikulumTitleVal} - ${kurikulumP1Val}
    - Proyek P5 (${kurikulumP2Val}):
@@ -374,8 +401,14 @@ ${listAkademikSeragamText}
      * Shift Siang (Wajib untuk Kelas IV, V, dan VI):
        - Senin s.d. Kamis: Masuk siang pukul 12:45 WIT, pulang pukul 16:15 WIT.
        - Jumat dan Sabtu: TIDAK ADA Shift Siang. Seluruh siswa kelas siang (Kelas IV, V, VI) wajib masuk pagi bersama kelas pagi, dengan jadwal kepulangan hari Jumat jam 11:00 WIT dan hari Sabtu jam 12:45 WIT.
+`;
+    }
 
-8. Kesiswaan & Kegiatan Ekstrakurikuler:
+    // RAG: 6. Kesiswaan & Ekskul
+    const kesiswaanKeywords = ['siswa', 'kesiswaan', 'ekstrakurikuler', 'ekskul', 'pramuka', 'karya', 'prestasi', 'lomba', 'juara'];
+    if (kesiswaanKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+6. Kesiswaan, Ekstrakurikuler & Pojok Karya:
    - Deskripsi Kesiswaan: ${kesiswaanBannerTextVal}
    - Program Ekstrakurikuler:
 ${listKesiswaanEkskulText}
@@ -383,25 +416,69 @@ ${listKesiswaanEkskulText}
 ${listKesiswaanPrestasiText}
    - Pojok Karya Siswa:
 ${listKesiswaanKaryaText}
+`;
+    }
 
-9. Daftar Guru & Staf Aktif (Database):
+    // RAG: 7. Dewan Guru (Dengan filtrasi pencarian spesifik nama)
+    const guruKeywords = ['guru', 'staf', 'kepala sekolah', 'pengajar', 'pendidik', 'nip', 'pns', 'honorer'];
+    const specificGuruMatch = teachersList.some(t => queryForRag.includes(t.name.toLowerCase()) || t.name.toLowerCase().split(' ').some(part => part.length > 2 && queryForRag.includes(part)));
+    if (guruKeywords.some(kw => queryForRag.includes(kw)) || specificGuruMatch) {
+      let listGuruText = "";
+      const specificMatches = teachersList.filter(t => queryForRag.includes(t.name.toLowerCase()) || t.name.toLowerCase().split(' ').some(part => part.length > 2 && queryForRag.includes(part)));
+      
+      if (specificMatches.length > 0) {
+        listGuruText = specificMatches.map(t => `- ${t.name} (${t.role || 'Tenaga Pendidik'}) - NIP: ${t.nip || 'Tidak ada'}`).join('\n');
+      } else {
+        listGuruText = teachersList.map(t => `- ${t.name} (${t.role || 'Tenaga Pendidik'})`).join('\n');
+      }
+      
+      systemInstruction += `
+7. Daftar Guru & Staf Aktif (Database):
 ${listGuruText}
+`;
+    }
 
-10. Prestasi Sekolah Umum (Database):
+    // RAG: 8. Prestasi Sekolah
+    const prestasiKeywords = ['prestasi sekolah', 'akreditasi sekolah', 'piagam', 'penghargaan sekolah'];
+    if (prestasiKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+8. Prestasi Sekolah Umum (Database):
 ${listPrestasiText}
+`;
+    }
 
-11. Pusat Unduhan (Berkas yang Bisa Diunduh):
+    // RAG: 9. Unduhan
+    const unduhanKeywords = ['unduh', 'download', 'berkas', 'file', 'dokumen', 'formulir pdf'];
+    if (unduhanKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+9. Pusat Unduhan (Berkas yang Bisa Diunduh):
 ${listUnduhanText}
+`;
+    }
 
-12. FAQ Sekolah Umum:
+    // RAG: 10. FAQ
+    const faqKeywords = ['tanya', 'jawab', 'faq', 'pertanyaan'];
+    if (faqKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+10. FAQ Sekolah Umum:
 ${listFaqText}
+`;
+    }
 
-13. Berita & Pengumuman Terbaru (Database):
+    // RAG: 11. Berita
+    const beritaKeywords = ['berita', 'kegiatan', 'warta', 'artikel', 'pengumuman', 'terbaru', 'info', 'marquee'];
+    if (beritaKeywords.some(kw => queryForRag.includes(kw))) {
+      systemInstruction += `
+11. Berita & Pengumuman Terbaru (Database):
 ${listNewsText}
 
-14. Pengumuman Berjalan (Marquee):
+12. Pengumuman Berjalan (Marquee):
 ${listMarqueeText}
+`;
+    }
 
+    // Append core boundaries
+    systemInstruction += `
 === INFORMASI WAKTU SEKARANG (PENTING) ===
 Hari ini adalah: ${currentDateText}
 Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu informasi atau agenda kegiatan di masa depan masih berlaku atau sudah lewat/usang/lampau. Jangan pernah menginformasikan agenda yang sudah lewat seolah-olah akan terjadi di masa depan.
