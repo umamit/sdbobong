@@ -79,13 +79,7 @@ export async function proxy(request) {
     });
   }
 
-  if (path.startsWith('/berita/') && path !== '/berita') {
-    const newsId = path.split('/')[2];
-    if (newsId) {
-      const cleanNewsId = newsId.replace(/^news-/, '');
-      return NextResponse.redirect(new URL(`/berita#news-${cleanNewsId}`, request.url), 308);
-    }
-  }
+
 
   // 2. Protect administrative dashboard routes
   if (path.startsWith('/admin') && path !== '/admin/login') {

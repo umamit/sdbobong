@@ -31,7 +31,7 @@ export default async function Berita() {
     return {
       "@context": "https://schema.org",
       "@type": "NewsArticle",
-      "@id": `https://www.sdnegeribobong.sch.id/berita#news-${n.id.replace(/^news-/, '')}`,
+      "@id": `https://www.sdnegeribobong.sch.id/berita/${n.id}`,
       "headline": n.title,
       "image": images,
       "datePublished": isoDateStr,

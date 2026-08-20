@@ -30,13 +30,13 @@ const cardVariants = {
   }
 };
 
-export default function BeritaSearchClient({ newsList = [] }) {
+export default function BeritaSearchClient({ newsList = [], initialIsolatedId = null }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [selectedYear, setSelectedYear] = useState('Semua');
   const [sortOrder, setSortOrder] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isolatedNewsId, setIsolatedNewsId] = useState(null);
+  const [isolatedNewsId, setIsolatedNewsId] = useState(initialIsolatedId);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

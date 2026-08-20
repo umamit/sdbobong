@@ -21,7 +21,6 @@ export async function sitemap() {
     { route: '/profil/struktur',        priority: 0.8, freq: 'monthly' }, // Struktur & Dewan Guru
     { route: '/profil/fasilitas',       priority: 0.8, freq: 'monthly' }, // Fasilitas & Denah
     { route: '/profil/standar-pelayanan', priority: 0.8, freq: 'monthly' }, // Standar Pelayanan Publik
-    { route: '/guru',                   priority: 0.8, freq: 'monthly' }, // Daftar Guru & Staf
     { route: '/akademik',               priority: 0.8, freq: 'monthly' }, // Info Akademik
     { route: '/akademik/kalender',      priority: 0.8, freq: 'monthly' }, // Kalender Pendidikan
     { route: '/kesiswaan',              priority: 0.8, freq: 'monthly' }, // Kesiswaan & Ekstrakurikuler
