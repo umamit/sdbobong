@@ -22,55 +22,14 @@ export async function POST(request) {
       supabaseUser = user;
     } catch (e) {}
 
-    // Must be either local admin session or Supabase admin user
-    if (!isLocalAdminSession && !supabaseUser) {
+    // Must be a valid admin session and have a Supabase user
+    if (!isLocalAdminSession || !supabaseUser) {
       return sensitiveJson({ error: 'Unauthorized: Akses ditolak.' }, 401);
     }
 
     const parsed = await parseBody(request, changePasswordSchema);
     if (!parsed.success) return parsed.error;
     const { currentPassword, newPassword } = parsed.data;
-
-    // 1. Case: Local Admin Session (using ADMIN_PASSWORD in .env)
-    if (isLocalAdminSession) {
-      const expectedOldPassword = process.env.ADMIN_PASSWORD || 'sdnbobong2026';
-      
-      if (currentPassword !== expectedOldPassword) {
-        return sensitiveJson({ error: 'Password saat ini salah!' }, 400);
-      }
-
-      // We need to update .env file
-      try {
-        const envPath = path.join(process.cwd(), '.env');
-        let envContent = '';
-        try {
-          envContent = await fs.readFile(envPath, 'utf-8');
-        } catch (readErr) {
-          // Fallback to reading env.example or just create .env if it doesn't exist
-          envContent = '';
-        }
-
-        let updatedEnvContent = '';
-        const passwordRegex = /^ADMIN_PASSWORD=.*$/m;
-
-        if (passwordRegex.test(envContent)) {
-          // Replace existing key
-          updatedEnvContent = envContent.replace(passwordRegex, `ADMIN_PASSWORD=${newPassword}`);
-        } else {
-          // Append new key
-          updatedEnvContent = envContent + `\nADMIN_PASSWORD=${newPassword}\n`;
-        }
-
-        await fs.writeFile(envPath, updatedEnvContent, 'utf-8');
-        
-        // Also dynamically update current process.env value so that the current running process uses the new password immediately
-        process.env.ADMIN_PASSWORD = newPassword;
-
-        return sensitiveJson({ success: true, message: 'Password admin lokal berhasil diperbarui!' });
-      } catch (err) {
-        return sensitiveJson({ error: 'Gagal memperbarui file konfigurasi di server: ' + err.message }, 500);
-      }
-    }
 
     // 2. Case: Supabase Auth Session
     if (supabaseUser) {
