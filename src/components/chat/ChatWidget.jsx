@@ -26,7 +26,6 @@ export default function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [isSoundEnabled, setIsSoundEnabled] = useState(false);
   const [activeSpeakingIndex, setActiveSpeakingIndex] = useState(null);
-  const [cooldown, setCooldown] = useState(0);
 
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -44,14 +43,6 @@ export default function ChatWidget() {
       setTimeout(() => inputRef.current.focus(), 300);
     }
   }, [isOpen]);
-
-  // Cooldown countdown timer
-  useEffect(() => {
-    if (cooldown > 0) {
-      const timer = setTimeout(() => setCooldown(prev => prev - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [cooldown]);
 
   // Hentikan suara jika asisten ditutup atau dilepaskan
   useEffect(() => {
@@ -97,7 +88,7 @@ export default function ChatWidget() {
 
   const handleSendMessage = async (textToSend) => {
     const messageText = textToSend || inputValue.trim();
-    if (!messageText || isTyping || cooldown > 0) return;
+    if (!messageText || isTyping) return;
 
     const userMessage = { role: 'user', content: messageText };
     const historySnapshot = messages;
@@ -136,7 +127,6 @@ export default function ChatWidget() {
 
     setStreamingContent('');
     setIsTyping(false);
-    setCooldown(15); // Set a 15-second cooldown after responding
   };
 
   return (
@@ -162,7 +152,7 @@ export default function ChatWidget() {
         <QuickPrompts 
           quickPrompts={QUICK_PROMPTS} 
           onPromptClick={handleSendMessage} 
-          disabled={isTyping || cooldown > 0} 
+          disabled={isTyping} 
         />
         <ChatInput 
           inputValue={inputValue} 
@@ -170,14 +160,10 @@ export default function ChatWidget() {
           isRecording={isRecording} 
           toggleRecording={() => toggleRecording(() => stopSpeaking(setActiveSpeakingIndex))} 
           onSend={handleSendMessage} 
-          disabled={isTyping || cooldown > 0} 
-          cooldown={cooldown}
+          disabled={isTyping} 
           inputRef={inputRef} 
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} 
         />
-        <div className={styles.aiFooterNote}>
-          Jeda bertanya ideal: 15-20 detik agar performa AI maksimal.
-        </div>
       </ChatWindow>
     </div>
   );
