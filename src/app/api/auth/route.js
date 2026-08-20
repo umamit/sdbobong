@@ -73,34 +73,6 @@ export async function POST(request) {
       }
     }
 
-    // Check if login password is the Service Role Key or matches the env admin config
-    const isServiceRoleKey = cleanPass === serviceRoleKey && serviceRoleKey.length > 0;
-    const isLocalAdmin = email === process.env.ADMIN_USERNAME && cleanPass === process.env.ADMIN_PASSWORD;
-
-    if (isServiceRoleKey || isLocalAdmin) {
-      const response = sensitiveJson({ success: true });
-      const secureToken = await createAdminToken();
-      response.cookies.set('admin_session_token', secureToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 3600 // 1 hour
-      });
-
-      // Successful local admin log
-      await createAuditLog('LOGIN', `Admin berhasil login (Metode: Lokal / Env)`, request);
-
-      // Reset block status on successful login
-      if (ipRecord) {
-        ipRecord.attempts = 0;
-        ipRecord.resolved = true;
-        await saveWebConfig(config);
-      }
-
-      return response;
-    }
-
     // Fallback to Supabase Auth email/password check
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithPassword({
