@@ -15,8 +15,13 @@ export default function NewsCard({ news, className = '', priority = false }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setShareOrigin(window.location.origin);
+      const path = window.location.pathname;
+      const cleanId = news.id.replace(/^news-/, '');
+      if (path === `/berita/${news.id}` || path === `/berita/${cleanId}`) {
+        setIsExpanded(true);
+      }
     }
-  }, []);
+  }, [news.id]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

@@ -55,7 +55,13 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           return;
         }
       }
-      setIsolatedNewsId(null);
+      
+      // Jika tidak ada hash di URL, gunakan initialIsolatedId dari rute dinamis server
+      if (initialIsolatedId) {
+        setIsolatedNewsId(initialIsolatedId);
+      } else {
+        setIsolatedNewsId(null);
+      }
     };
 
     handleHashCheck();
@@ -63,13 +69,17 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
     return () => {
       window.removeEventListener('hashchange', handleHashCheck);
     };
-  }, [newsList]);
+  }, [newsList, initialIsolatedId]);
 
   const handleClearHash = () => {
     if (typeof window !== 'undefined') {
-      window.location.hash = '';
-      window.history.pushState("", document.title, window.location.pathname + window.location.search);
-      setIsolatedNewsId(null);
+      if (window.location.pathname !== '/berita') {
+        window.location.href = '/berita';
+      } else {
+        window.location.hash = '';
+        window.history.pushState("", document.title, window.location.pathname + window.location.search);
+        setIsolatedNewsId(null);
+      }
     }
   };
 
