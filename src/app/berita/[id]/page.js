@@ -17,6 +17,10 @@ export async function generateMetadata({ params }) {
   }
 
   const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
+  const origin = 'https://www.sdnegeribobong.sch.id';
+  const imageUrl = article.image 
+    ? (article.image.startsWith('http') ? article.image : `${origin}${article.image}`)
+    : `${origin}/images/logo_sekolah_512.png`;
 
   return {
     title: `${article.title} - SD Negeri Bobong`,
@@ -24,7 +28,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: article.title,
       description: plainText || article.title,
-      images: article.image ? [article.image] : ['/images/logo_sekolah_512.png'],
+      images: [imageUrl],
       type: 'article',
     }
   };
@@ -42,7 +46,9 @@ export default async function BeritaDetailPage({ params }) {
   }
 
   // Generate LD+JSON Schema for Google NewsArticle
-  const images = article.images && article.images.length > 0 ? article.images : [article.image || 'https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png'];
+  const origin = 'https://www.sdnegeribobong.sch.id';
+  const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
+  const images = rawImages.map(img => img.startsWith('http') ? img : `${origin}${img}`);
   const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
   
   let publishDate = new Date();
