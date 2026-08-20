@@ -11,6 +11,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareOrigin, setShareOrigin] = useState('https://www.sdnegeribobong.sch.id');
+  const [isOnDetailPage, setIsOnDetailPage] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -19,6 +20,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
       const cleanId = news.id.replace(/^news-/, '');
       if (path === `/berita/${news.id}` || path === `/berita/${cleanId}`) {
         setIsExpanded(true);
+        setIsOnDetailPage(true);
       }
     }
   }, [news.id]);
@@ -341,17 +343,21 @@ export default function NewsCard({ news, className = '', priority = false }) {
             />
           </div>
 
-          {isLong && (
+          {isLong && !isOnDetailPage && (
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.href = `/berita/${news.id}`;
+                }
+              }}
               type="button"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'rgba(59, 130, 246, 0.08)',
-                border: '1px solid rgba(59, 130, 246, 0.15)',
-                color: 'var(--primary, #3b82f6)',
+                background: 'rgba(18, 165, 184, 0.08)',
+                border: '1px solid rgba(18, 165, 184, 0.15)',
+                color: 'var(--primary)',
                 fontWeight: '700',
                 fontSize: '0.85rem',
                 cursor: 'pointer',
@@ -359,30 +365,22 @@ export default function NewsCard({ news, className = '', priority = false }) {
                 borderRadius: '20px',
                 transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 marginTop: '12px',
-                boxShadow: '0 2px 6px rgba(59, 130, 246, 0.05)'
+                boxShadow: '0 2px 6px rgba(18, 165, 184, 0.05)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)';
-                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                e.currentTarget.style.background = 'rgba(18, 165, 184, 0.15)';
+                e.currentTarget.style.borderColor = 'rgba(18, 165, 184, 0.3)';
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 10px rgba(59, 130, 246, 0.12)';
+                e.currentTarget.style.boxShadow = '0 4px 10px rgba(18, 165, 184, 0.12)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(59, 130, 246, 0.08)';
-                e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.15)';
+                e.currentTarget.style.background = 'rgba(18, 165, 184, 0.08)';
+                e.currentTarget.style.borderColor = 'rgba(18, 165, 184, 0.15)';
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 6px rgba(59, 130, 246, 0.05)';
+                e.currentTarget.style.boxShadow = '0 2px 6px rgba(18, 165, 184, 0.05)';
               }}
             >
-              {isExpanded ? (
-                <>
-                  Tutup Bacaan <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>▲</span>
-                </>
-              ) : (
-                <>
-                  Baca Selengkapnya <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>▼</span>
-                </>
-              )}
+              Baca Selengkapnya <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>▼</span>
             </button>
           )}
         </div>
@@ -489,7 +487,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
-                backgroundColor: copied ? '#10b981' : 'rgba(100, 116, 139, 0.1)',
+                backgroundColor: copied ? '#2A9D5C' : 'rgba(100, 116, 139, 0.1)',
                 color: copied ? '#ffffff' : '#64748B',
                 display: 'flex',
                 alignItems: 'center',

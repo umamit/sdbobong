@@ -267,7 +267,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
                 color: 'var(--text-color)', outline: 'none',
                 transition: 'border-color 0.25s, box-shadow 0.25s', boxSizing: 'border-box',
               }}
-              onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.15)'; }}
+              onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(18, 165, 184, 0.15)'; }}
               onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
             />
             {searchQuery && (
