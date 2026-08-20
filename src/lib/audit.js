@@ -5,6 +5,7 @@ import { prisma } from './prisma';
 
 const BUNDLED_DATA_DIR = path.join(process.cwd(), 'data');
 const AUDIT_LOGS_JSON = path.join(BUNDLED_DATA_DIR, 'audit_logs.json');
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY);
 
 // Ensure data folder exists
 try {
@@ -47,10 +48,12 @@ export async function loadAuditLogs() {
         userAgent: l.user_agent || l.userAgent
       }));
 
-      // Cache locally
-      try {
-        fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify(mappedLogs, null, 4), 'utf-8');
-      } catch (e) {}
+      // Cache locally if not in serverless
+      if (!isServerless) {
+        try {
+          fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify(mappedLogs, null, 4), 'utf-8');
+        } catch (e) {}
+      }
 
       return mappedLogs;
     }
@@ -66,11 +69,13 @@ export async function loadAuditLogs() {
  */
 export async function saveAuditLogs(logsList) {
   let localSaved = false;
-  try {
-    fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify(logsList, null, 4), 'utf-8');
-    localSaved = true;
-  } catch (e) {
-    console.error("Error saving audit logs locally:", e);
+  if (!isServerless) {
+    try {
+      fs.writeFileSync(AUDIT_LOGS_JSON, JSON.stringify(logsList, null, 4), 'utf-8');
+      localSaved = true;
+    } catch (e) {
+      console.error("Error saving audit logs locally:", e);
+    }
   }
 
   if (isSupabaseEnabled()) {
