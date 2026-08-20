@@ -217,10 +217,7 @@ export async function handlePhotoUpload(fileObj, bucketName = 'teachers', allowe
     fs.writeFileSync(path.join(uploadDir, uniqueFilename), finalBuffer);
     return `/images/uploads/${uniqueFilename}`;
   } catch (e) {
-    console.error("Local file save fallback to Base64 (Vercel Serverless):", e.message);
-    if (finalBuffer && finalBuffer.length > 0) {
-      return `data:${finalMimeType};base64,${finalBuffer.toString('base64')}`;
-    }
+    console.error("Local file save fallback failed:", e.message);
     return "ERROR";
   }
 }
