@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sdn-bobong-cache-v2.57.0';
+const CACHE_NAME = 'sdn-bobong-cache-v3.7.5';
 
 // List of core assets to cache on install (Cache-First)
 const STATIC_ASSETS = [
