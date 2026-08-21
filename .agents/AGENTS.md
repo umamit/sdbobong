@@ -357,6 +357,17 @@ for path, var in missing:
 
 ---
 
+# 20. Larangan Pola Desain Kartu Generik (Anti-AI Card Design)
+
+- **Dilarang keras** menggunakan pola desain kartu yang terasa generik dan "buatan AI", antara lain:
+  - `border-left` berwarna aksen per kartu (colored left border strip)
+  - Warna berbeda-beda per item dalam satu daftar hanya sebagai dekorasi
+  - Badge/chip berwarna cerah tanpa makna fungsional
+- Desain kartu yang baik mengandalkan **tipografi kuat**, **whitespace cukup**, dan **border/shadow halus seragam** — bukan dekorasi warna berlebihan.
+- Warna aksen (`--primary`, `--secondary`, `--accent`) hanya digunakan secara **hemat dan bermakna**: pada elemen interaktif (tombol, link, indikator status), bukan sebagai hiasan tiap kartu.
+
+---
+
 # Golden Rule
 
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatTanggal, formatTanggalPendek } from '../../lib/format';
+import GalleryCarousel from './GalleryCarousel';
 
 // Helper function to extract YouTube Video ID from any format
 function getYoutubeId(url) {
@@ -115,6 +116,14 @@ export default function GalleryClient({ initialGallery }) {
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [searchQuery, setSearchQuery] = useState('');
   const [displayLimit, setDisplayLimit] = useState(12);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const types = ['Semua', 'image', 'video'];
   const categories = ['Semua', 'Akademik', 'Pramuka', 'Upacara', 'Sarana', 'Umum'];
@@ -312,8 +321,11 @@ export default function GalleryClient({ initialGallery }) {
         </div>
       </div>
 
-      {/* Masonry-style Pinterest Grid */}
-      {displayedItems.length > 0 ? (
+      {/* Mobile View: Horizontal Scroll Carousel Card */}
+      {isMobile ? (
+        <GalleryCarousel items={filteredGallery} onItemClick={(item) => setActiveImage(item)} />
+      ) : displayedItems.length > 0 ? (
+        /* Desktop View: Masonry-style Pinterest Grid */
         <motion.div 
           className="gallery-masonry-grid" 
           variants={gridVariants}
@@ -523,8 +535,8 @@ export default function GalleryClient({ initialGallery }) {
         </div>
       )}
 
-      {/* Muat Lebih Banyak / Load More Button */}
-      {filteredGallery.length > displayLimit && (
+      {/* Muat Lebih Banyak / Load More Button (Desktop only) */}
+      {!isMobile && filteredGallery.length > displayLimit && (
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-xl)' }} className="animate-fadeIn">
           <button
             onClick={() => setDisplayLimit(prev => prev + 12)}

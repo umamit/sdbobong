@@ -7,11 +7,6 @@ const KODE_ETIK = [
   { label: 'KEBERSAMAAN', items: ['Menjaga hubungan kerja sama baik', 'Loyal kepada Pancasila dan NKRI'] },
 ];
 
-const ACCENT_COLORS = [
-  'var(--primary)', 'var(--secondary)', 'var(--accent)',
-  'var(--primary-dark)', 'var(--primary)', 'var(--accent)',
-];
-
 export default function KodeEtikSection() {
   return (
     <section style={{ marginTop: 'var(--space-xl)' }}>
@@ -37,12 +32,11 @@ export default function KodeEtikSection() {
             border: '1px solid var(--border-color)',
             boxShadow: 'var(--shadow-sm)',
             padding: 'var(--space-md)',
-            borderLeft: `4px solid ${ACCENT_COLORS[idx]}`,
           }}>
             <span style={{
               display: 'inline-block', fontSize: '0.725rem', fontWeight: 800,
               textTransform: 'uppercase', letterSpacing: '0.08em',
-              color: ACCENT_COLORS[idx], marginBottom: '8px',
+              color: 'var(--primary-dark)', marginBottom: '8px',
             }}>
               {item.label}
             </span>
