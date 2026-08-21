@@ -4,8 +4,8 @@ export default async function robots() {
   const headersList = await headers();
   const host = headersList.get('host') || '';
 
-  // If the request is for the internal subdomains, block all crawlers completely!
-  if (host.includes('presensi') || host.includes('ajar')) {
+  // If the request is for internal/administrative subdomains, block all crawlers completely!
+  if (host.includes('admin') || host.includes('presensi') || host.includes('ajar')) {
     return {
       rules: [
         {
@@ -26,8 +26,8 @@ export default async function robots() {
         disallow: [
           '/admin',
           '/admin/',
-          '/guru',
-          '/guru/',
+          '/guru/login',
+          '/guru/dashboard',
           '/login',
           '/api/',
           '/ppdb-online/sukses',
