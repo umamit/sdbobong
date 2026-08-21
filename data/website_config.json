@@ -20,7 +20,7 @@
         "allow_copy": false,
         "maintenance_mode": false,
         "marquee_speed": 40,
-        "visitor_count": 351,
+        "visitor_count": 374,
         "_downloads_fallback": [
             {
                 "id": "dl-1",
@@ -247,14 +247,6 @@
                 "date": "2026-06-11",
                 "type": "video",
                 "title": "Hari pertama ke sekolah SD Negeri Bobong tahun 2025",
-                "category": "umum"
-            },
-            {
-                "id": "gal-1781163589402",
-                "url": "https://drive.google.com/uc?export=view&id=1oMK_PjT__GzTOHCNumTRDHaPyBsJtOXb",
-                "date": "2026-06-11",
-                "type": "image",
-                "title": "Kelulusan",
                 "category": "umum"
             }
         ],
@@ -685,14 +677,6 @@
             "type": "video",
             "title": "Hari pertama ke sekolah SD Negeri Bobong tahun 2025",
             "category": "umum"
-        },
-        {
-            "id": "gal-1781163589402",
-            "url": "https://drive.google.com/uc?export=view&id=1oMK_PjT__GzTOHCNumTRDHaPyBsJtOXb",
-            "date": "2026-06-11",
-            "type": "image",
-            "title": "Kelulusan",
-            "category": "umum"
         }
     ],
     "popup_announcement": {
@@ -706,5 +690,6 @@
     "force_local_cache": false,
     "suspicious_attempts": [],
     "manual_blacklist": [],
-    "security_settings": {}
+    "security_settings": {},
+    "visitor_count": 374
 }

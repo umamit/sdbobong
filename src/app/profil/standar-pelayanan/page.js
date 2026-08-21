@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { loadWebConfig } from '../../../lib/database';
 import StandarPelayananTabs from './StandarPelayananTabs';
+import KodeEtikSection from './KodeEtikSection';
+
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -45,6 +47,9 @@ export default async function StandarPelayananPage() {
 
         {/* Interactive Tabbed Content (Client Component) */}
         <StandarPelayananTabs initialServices={services} maklumatImage={maklumatImage} />
+
+        {/* Kode Etik Pegawai */}
+        <KodeEtikSection />
 
       </div>
     </div>
