@@ -45,7 +45,12 @@ export default async function Home() {
     welcome_title: "Mendidik dengan Hati, Membentuk Generasi Berakhlak Mulia, Cerdas, dan Berbudaya",
     welcome_quote: "\"Pendidikan utama adalah menanamkan akhlak mulia dan ketakwaan, diiringi pengembangan kecerdasan berpikir serta pelestarian nilai budaya agar generasi siap bersaing di era global.\"",
     welcome_p1: "Assalamu'alaikum Warahmatullahi Wabarakatuh,\nSalam sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
-    welcome_p2: "Sebagai sekolah dasar rujukan di ibukota Kabupaten Pulau Taliabu, kami berkomitmen mewujudkan layanan pendidikan yang berkualitas dengan mengutamakan pembentukan karakter siswa yang berakhlak mulia, cerdas dalam berpikir, serta luhur dalam menjaga nilai budaya bangsa. Kehadiran website ini diharapkan mampu mempererat kolaborasi antara sekolah, orang tua, dan masyarakat luas demi kemajuan belajar anak."
+    welcome_p2: "Sebagai sekolah dasar rujukan di ibukota Kabupaten Pulau Taliabu, kami berkomitmen mewujudkan layanan pendidikan yang berkualitas dengan mengutamakan pembentukan karakter siswa yang berakhlak mulia, cerdas dalam berpikir, serta luhur dalam menjaga nilai budaya bangsa. Kehadiran website ini diharapkan mampu mempererat kolaborasi antara sekolah, orang tua, dan masyarakat luas demi kemajuan belajar anak.",
+    inovasi_list: [
+      { id: 'default_1', label: 'Website Sekolah', value: 'Aktif', color: '#FFC83B' },
+      { id: 'default_2', label: 'Presensi Online', value: 'Aktif', color: '#12A5B8' },
+      { id: 'default_3', label: 'Perangkat Ajar Digital', value: 'Aktif', color: '#4CD964' }
+    ]
   };
 
   const isVideoBg = config.stats?.hero_background && (
@@ -511,7 +516,7 @@ export default async function Home() {
                   </svg>
                 ),
               },
-            ].map((f) => (
+            ].slice(0, 6).map((f) => (
               <FramerRevealItem
                 key={f.label}
                 className="sarpras-bento-card"
@@ -529,6 +534,69 @@ export default async function Home() {
                 </div>
               </FramerRevealItem>
             ))}
+          </FramerRevealContainer>
+
+          {/* Inovasi Digital Section */}
+          <div className="stats-category-title" style={{ color: 'var(--secondary-light)', fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, marginTop: 'var(--space-md)', marginBottom: 'var(--space-sm)', borderBottom: '1px dashed rgba(255, 255, 255, 0.2)', paddingBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(76, 217, 100, 0.2)', color: '#4CD964' }}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            </span>
+            <span>Inovasi Digital Sekolah</span>
+          </div>
+
+          <FramerRevealContainer className="sarpras-bento-grid">
+            {(beranda.inovasi_list || []).map((f) => {
+              // Custom glow parser to dynamically match colors safely
+              const lowerColor = (f.color || '').toLowerCase();
+              let bgGlow = 'rgba(18, 165, 184, 0.2)'; // Default Biru Toska glow
+              if (lowerColor === '#ffc83b') bgGlow = 'rgba(255, 200, 59, 0.2)';
+              else if (lowerColor === '#2a9d5c' || lowerColor === '#4cd964') bgGlow = 'rgba(76, 217, 100, 0.2)';
+              else if (lowerColor === '#ff3b30' || lowerColor === '#ef4444') bgGlow = 'rgba(255, 59, 48, 0.2)';
+
+              // Icon selector mapping based on label
+              const labelLower = (f.label || '').toLowerCase();
+              let icon = (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                  <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              ); // Default Web globe
+
+              if (labelLower.includes('presensi') || labelLower.includes('absen')) {
+                icon = (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                  </svg>
+                );
+              } else if (labelLower.includes('ajar') || labelLower.includes('buku') || labelLower.includes('perangkat')) {
+                icon = (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                );
+              }
+
+              return (
+                <FramerRevealItem
+                  key={f.id || f.label}
+                  className="sarpras-bento-card"
+                  style={{
+                    '--f-accent': f.color || '#12A5B8',
+                    '--f-glow': bgGlow,
+                  }}
+                >
+                  <div className="sarpras-icon-box" aria-hidden="true">
+                    {icon}
+                  </div>
+                  <div className="sarpras-info">
+                    <div className="sarpras-number">{f.value || 'Aktif'}</div>
+                    <div className="sarpras-label">{f.label}</div>
+                  </div>
+                </FramerRevealItem>
+              );
+            })}
           </FramerRevealContainer>
         </div>
       </section>

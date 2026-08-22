@@ -40,6 +40,9 @@ export default function usePageContentHandlers({
           id: item.id || `sp-${idx}-${Date.now()}`
         }));
       }
+      if (pcs.beranda && !pcs.beranda.inovasi_list) {
+        pcs.beranda.inovasi_list = [];
+      }
       setPageContents(pcs);
     }
   }, [config]);
@@ -49,6 +52,26 @@ export default function usePageContentHandlers({
       ...prev,
       [page]: { ...prev[page], [key]: value }
     }));
+  };
+
+  // --- Inovasi Digital ---
+  const handleAddInovasi = () => {
+    const updated = [
+      ...(pageContents.beranda?.inovasi_list || []),
+      { id: 'inovasi_' + Date.now(), label: '', value: 'Aktif', color: '#12A5B8' }
+    ];
+    handleFieldChange('beranda', 'inovasi_list', updated);
+  };
+
+  const handleUpdateInovasi = (index, key, val) => {
+    const updated = [...(pageContents.beranda?.inovasi_list || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    handleFieldChange('beranda', 'inovasi_list', updated);
+  };
+
+  const handleRemoveInovasi = (index) => {
+    const updated = (pageContents.beranda?.inovasi_list || []).filter((_, i) => i !== index);
+    handleFieldChange('beranda', 'inovasi_list', updated);
   };
 
   // --- P5 Projects ---
@@ -344,6 +367,7 @@ export default function usePageContentHandlers({
     handleAddPPDBFaq, handleUpdatePPDBFaq, handleRemovePPDBFaq,
     handleAddPPDBJadwal, handleUpdatePPDBJadwal, handleRemovePPDBJadwal,
     handleSejarahFileChange, handleKurikulumFileChange,
-    handlePageContentsSave, submitPageContents
+    handlePageContentsSave, submitPageContents,
+    handleAddInovasi, handleUpdateInovasi, handleRemoveInovasi
   };
 }
