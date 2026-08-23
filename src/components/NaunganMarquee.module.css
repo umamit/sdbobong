@@ -41,6 +41,7 @@
     display: flex;
     align-items: center;
     width: max-content;
+    gap: 1.5rem; /* Tambahkan gap antar grup agar konsisten */
     animation: continuousMarquee 32s linear infinite; /* Sedikit memperlambat ke 32s agar tidak pusing */
     will-change: transform;
     backface-visibility: hidden;
@@ -56,8 +57,9 @@
 .marqueeGroup {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
-    padding: 4px var(--space-sm) 4px 0;
+    gap: 1.5rem; /* Gunakan nilai tetap simetris */
+    padding: 4px 0; /* Atur padding horizontal ke 0 agar jarak antar grup murni diatur oleh gap di track */
+    margin: 0;
     flex-shrink: 0;
 }
 
