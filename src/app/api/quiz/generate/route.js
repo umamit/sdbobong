@@ -39,13 +39,12 @@ export async function POST(req) {
     category = body.category || 'umum';
   } catch (e) {}
 
-  // 1. Ambil nama Kepala Sekolah secara dinamis dari database dewan guru
+  // 1. Ambil nama Kepala Sekolah dari konfigurasi website
   let kepalaSekolah = "Ibu Kepala Sekolah";
   try {
-    const { loadTeachers } = require('../../../../lib/database');
-    const teachers = await loadTeachers().catch(() => []);
-    const kepsek = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah"));
-    if (kepsek) kepalaSekolah = kepsek.name;
+    const { loadWebConfig } = require('../../../../lib/database');
+    const config = await loadWebConfig().catch(() => null);
+    if (config?.profil?.kepala_sekolah) kepalaSekolah = config.profil.kepala_sekolah;
   } catch (dbErr) {}
 
   // 2. Jika Groq API tidak aktif, langsung kirim data fallback lokal

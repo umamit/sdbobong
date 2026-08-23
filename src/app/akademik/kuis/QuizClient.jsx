@@ -25,24 +25,31 @@ export default function QuizClient() {
   const [time, setTime] = useState(TIMER);
   const scoreRef = useRef(0);
   const [score, setScore] = useState(0);
-
-  useEffect(() => { const s = localStorage.getItem('quiz_hs'); if (s) setBest(+s); }, []);
+  const timerRef = useRef(null);
 
   useEffect(() => {
-    if (state !== 'quiz' || ans !== null) return;
-    setTime(TIMER);
-    const t = setInterval(() => setTime(s => s > 0 ? s - 1 : 0), 1000);
-    return () => clearInterval(t);
-  }, [idx, state, ans]);
+    const s = localStorage.getItem('quiz_hs');
+    if (s) setBest(+s);
+    return () => clearInterval(timerRef.current);
+  }, []);
 
+  // Timeout: waktu habis = anggap salah
   useEffect(() => {
     if (time === 0 && state === 'quiz' && ans === null) { setAns(-1); setExplain(true); }
   }, [time, state, ans]);
+
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    setTime(TIMER);
+    timerRef.current = setInterval(() => setTime(s => { if (s <= 1) { clearInterval(timerRef.current); return 0; } return s - 1; }), 1000);
+  };
+  const stopTimer = () => { clearInterval(timerRef.current); timerRef.current = null; };
 
   const playBeep = (f) => {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const o = ctx.createOscillator(), g = ctx.createGain();
+
       o.connect(g); g.connect(ctx.destination);
       o.frequency.value = f; g.gain.setValueAtTime(0.1, ctx.currentTime);
       o.start(); o.stop(ctx.currentTime + 0.15);
@@ -50,16 +57,19 @@ export default function QuizClient() {
   };
 
   const startQuiz = async (catId) => {
+    stopTimer();
     scoreRef.current = 0; setScore(0); setState('loading');
     try {
       const res = await fetch('/api/quiz/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ category: catId }) });
       const data = await res.json();
       setQuestions(data.questions || []); setIdx(0); setAns(null); setExplain(false); setState('quiz');
+      startTimer();
     } catch { setState('select'); }
   };
 
   const onAnswer = (i) => {
     if (ans !== null) return;
+    stopTimer();
     setAns(i);
     if (questions[idx].a === i) { scoreRef.current += 20; setScore(scoreRef.current); playBeep(880); }
     else playBeep(220);
@@ -67,8 +77,11 @@ export default function QuizClient() {
   };
 
   const onNext = () => {
-    if (idx + 1 < questions.length) { setIdx(i => i + 1); setAns(null); setExplain(false); }
-    else {
+    if (idx + 1 < questions.length) {
+      setIdx(i => i + 1); setAns(null); setExplain(false);
+      startTimer();
+    } else {
+      stopTimer();
       if (scoreRef.current > best) { setBest(scoreRef.current); localStorage.setItem('quiz_hs', scoreRef.current); }
       setState('result');
       import('canvas-confetti').then(c => c.default({ particleCount: 120, spread: 80, origin: { y: 0.6 } })).catch(() => {});
@@ -99,7 +112,7 @@ export default function QuizClient() {
         <div style={{ textAlign: 'left' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
             <span>Soal {idx + 1}/{questions.length}</span>
-            <span style={{ color: time <= 5 ? '#ef4444' : 'inherit', fontWeight: time <= 5 ? 700 : 400, transition: 'color 0.3s' }}>{time}s</span>
+            <span style={{ color: time <= 5 ? '#ef4444' : 'var(--text-muted)', fontWeight: time <= 5 ? 700 : 400, transition: 'color 0.3s' }}>{time}s</span>
             <span>Skor: {score}</span>
           </div>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1e293b', marginBottom: '1.25rem' }}>{questions[idx].q}</h3>
