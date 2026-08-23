@@ -7,7 +7,7 @@ const CATS = [
   { id: 'matematika', label: 'Matematika', c: 'var(--secondary-dark)' },
   { id: 'ipa', label: 'IPA', c: 'var(--accent)' },
   { id: 'bahasa', label: 'Bahasa Indonesia', c: '#0A7E8D' },
-  { id: 'sejarah', label: 'Sejarah & Budaya', c: '#B8860B' },
+  { id: 'literasi', label: 'Literasi & Numerasi', c: '#B8860B' },
 ];
 const TIMER = 15;
 

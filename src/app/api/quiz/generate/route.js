@@ -23,10 +23,10 @@ const FALLBACK_QUIZ = {
     { q: "Manakah penulisan kalimat yang benar?", o: ["aku pergi ke sekolah?", "Aku pergi ke sekolah.", "aku Pergi ke Sekolah.", "aku pergi ke sekolah"], a: 1, hint: "Kalimat berita diakhiri tanda titik dan huruf pertama ditulis kapital." },
     { q: "Apa antonim (lawan kata) dari kata 'rajin'?", o: ["Cerdas", "Malas", "Sigap", "Aktif"], a: 1, hint: "'Rajin' dan 'malas' adalah kata yang memiliki makna berlawanan (antonim)." }
   ],
-  sejarah: [
-    { q: "Siapakah proklamator kemerdekaan Republik Indonesia?", o: ["Soeharto dan Adam Malik", "Soekarno dan Hatta", "Sutan Sjahrir dan Tan Malaka", "Agus Salim dan Wahid Hasyim"], a: 1, hint: "Ir. Soekarno dan Drs. Mohammad Hatta memproklamirkan kemerdekaan pada 17 Agustus 1945." },
-    { q: "Rempah paling terkenal dari Maluku Utara, terutama dari Ternate dan Tidore, adalah...", o: ["Merica", "Kayu Manis", "Cengkih", "Kunyit"], a: 2, hint: "Cengkih adalah komoditas rempah utama yang membuat Maluku Utara terkenal di dunia sejak abad pertengahan." },
-    { q: "Siapakah pahlawan nasional dari Maluku yang dikenal sebagai Kapitan Pattimura?", o: ["Sultan Baab Ullah", "Thomas Matulessy", "Silas Papare", "Martha Christina Tiahahu"], a: 1, hint: "Kapitan Pattimura adalah nama Thomas Matulessy, pahlawan Maluku yang berjuang melawan penjajah Belanda." }
+  literasi: [
+    { q: "Andi membaca 12 halaman buku per hari. Berapa halaman yang ia baca dalam 5 hari?", o: ["50 halaman", "55 halaman", "60 halaman", "65 halaman"], a: 2, hint: "Gunakan perkalian: 12 × 5 = 60 halaman." },
+    { q: "Kalimat manakah yang menggunakan ejaan yang benar?", o: ["Saya mau pergi ke-sekolah.", "Saya mau pergi kesekolah.", "Saya mau pergi ke sekolah.", "saya mau pergi ke sekolah."], a: 2, hint: "'Ke sekolah' ditulis terpisah karena 'ke' adalah kata depan (preposisi), bukan awalan." },
+    { q: "Sebuah toko memiliki 48 buku. Jika 1/4 buku terjual, berapa buku yang tersisa?", o: ["12 buku", "24 buku", "36 buku", "40 buku"], a: 2, hint: "1/4 dari 48 = 12 buku terjual. Sisa: 48 − 12 = 36 buku." }
   ]
 };
 
@@ -84,7 +84,7 @@ Panduan pembuatan soal per kategori:
 - "matematika": Operasi bilangan, pengukuran, geometri dasar, soal cerita kontekstual kehidupan sehari-hari anak SD.
 - "ipa": Organ tubuh manusia, tumbuhan dan hewan, siklus air, cuaca, tata surya, lingkungan dan ekosistem.
 - "bahasa": EYD/PUEBI, jenis kata, kalimat efektif, sinonim/antonim, cerita rakyat, membaca pemahaman.
-- "sejarah": Perjuangan kemerdekaan Indonesia, tokoh-tokoh Maluku Utara, kerajaan Ternate dan Tidore, budaya lokal Maluku.
+- "literasi": Soal cerita membaca pemahaman, ejaan/PUEBI, kosakata, serta soal numerasi kontekstual (pecahan, persentase, perbandingan, pola bilangan) yang menggabungkan kemampuan membaca dan berhitung sekaligus.
 
 Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal sedikit menantang.`;
 
