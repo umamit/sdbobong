@@ -289,20 +289,20 @@
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        background-color: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(229, 231, 235, 0.5);
+        background-color: rgba(18, 165, 184, 0.08); /* Toska transparan tipis */
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(18, 165, 184, 0.15);
         border-radius: var(--radius-md);
-        box-shadow: var(--shadow-lg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         min-width: 200px;
         z-index: 1000;
     }
 
     :global([data-theme='dark']) .dropdownMenu {
-        background-color: rgba(22, 30, 46, 0.95);
-        border-color: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        background-color: rgba(10, 126, 141, 0.12) !important;
+        border-color: rgba(18, 165, 184, 0.2) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     }
     
     .dropdownLink {
