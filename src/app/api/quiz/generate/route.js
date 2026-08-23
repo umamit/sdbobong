@@ -5,13 +5,28 @@ export const dynamic = 'force-dynamic';
 const FALLBACK_QUIZ = {
   umum: [
     { q: "Apa nama ibukota Kabupaten Pulau Taliabu?", o: ["Bobong", "Lede", "Gela", "Tabona"], a: 0, hint: "Ibukota Pulau Taliabu terletak di wilayah kecamatan Taliabu Barat." },
-    { q: "Berapa jumlah warna pada bendera negara Indonesia?", o: ["1 warna", "2 warna", "3 warna", "4 warna"], a: 1, hint: "Bendera kita adalah Merah Putih." },
-    { q: "Hewan apa yang dikenal sebagai lambang negara Indonesia?", o: ["Singa", "Harimau", "Burung Garuda", "Gajah"], a: 2, hint: "Lambang ini memuat perisai Pancasila." }
+    { q: "Berapa jumlah warna pada bendera negara Indonesia?", o: ["1 warna", "2 warna", "3 warna", "4 warna"], a: 1, hint: "Bendera kita adalah Merah Putih — dua warna." },
+    { q: "Hewan apa yang menjadi lambang negara Indonesia?", o: ["Singa", "Harimau", "Burung Garuda", "Gajah"], a: 2, hint: "Lambang negara Garuda Pancasila memuat perisai lima sila." }
   ],
   matematika: [
-    { q: "Berapakah hasil dari 7 ditambah 8?", o: ["13", "14", "15", "16"], a: 2, hint: "Hitung maju setelah angka 8 sebanyak 7 kali." },
-    { q: "Jika kamu punya 3 kotak pensil, masing-masing berisi 5 pensil. Berapa total pensilmu?", o: ["8 pensil", "12 pensil", "15 pensil", "20 pensil"], a: 2, hint: "Gunakan perkalian 3 dikali 5." },
-    { q: "Berapakah hasil dari 20 dikurangi 12?", o: ["6", "7", "8", "9"], a: 2, hint: "Kurangi 20 dengan 10 lalu kurangi lagi dengan 2." }
+    { q: "Berapakah hasil dari 7 ditambah 8?", o: ["13", "14", "15", "16"], a: 2, hint: "Hitung maju setelah angka 8 sebanyak 7 langkah." },
+    { q: "Jika ada 3 kotak pensil, tiap kotak berisi 5 pensil, berapa total pensilnya?", o: ["8", "12", "15", "20"], a: 2, hint: "Gunakan perkalian: 3 × 5 = 15." },
+    { q: "Berapakah hasil dari 20 dikurangi 12?", o: ["6", "7", "8", "9"], a: 2, hint: "Kurangi 20 dengan 10 dulu, lalu kurangi lagi 2." }
+  ],
+  ipa: [
+    { q: "Apa fungsi utama akar pada tumbuhan?", o: ["Membuat makanan", "Menyerap air dan mineral", "Menghasilkan oksigen", "Menyimpan biji"], a: 1, hint: "Akar menyerap air dan unsur hara dari tanah untuk kebutuhan tumbuhan." },
+    { q: "Planet manakah yang paling dekat dengan Matahari?", o: ["Venus", "Bumi", "Merkurius", "Mars"], a: 2, hint: "Merkurius adalah planet pertama (terdekat) dari Matahari dalam tata surya kita." },
+    { q: "Apa yang terjadi pada air saat dipanaskan hingga 100°C?", o: ["Membeku", "Menguap", "Mengembun", "Menyusut"], a: 1, hint: "Air berubah wujud dari cair menjadi gas (uap) pada suhu 100°C — disebut menguap." }
+  ],
+  bahasa: [
+    { q: "Kata yang menyebut nama orang, tempat, atau benda disebut...", o: ["Kata kerja", "Kata sifat", "Kata benda", "Kata keterangan"], a: 2, hint: "Kata benda (nomina) adalah kata yang menyebut nama orang, tempat, atau benda." },
+    { q: "Manakah penulisan kalimat yang benar?", o: ["aku pergi ke sekolah?", "Aku pergi ke sekolah.", "aku Pergi ke Sekolah.", "aku pergi ke sekolah"], a: 1, hint: "Kalimat berita diakhiri tanda titik dan huruf pertama ditulis kapital." },
+    { q: "Apa antonim (lawan kata) dari kata 'rajin'?", o: ["Cerdas", "Malas", "Sigap", "Aktif"], a: 1, hint: "'Rajin' dan 'malas' adalah kata yang memiliki makna berlawanan (antonim)." }
+  ],
+  sejarah: [
+    { q: "Siapakah proklamator kemerdekaan Republik Indonesia?", o: ["Soeharto dan Adam Malik", "Soekarno dan Hatta", "Sutan Sjahrir dan Tan Malaka", "Agus Salim dan Wahid Hasyim"], a: 1, hint: "Ir. Soekarno dan Drs. Mohammad Hatta memproklamirkan kemerdekaan pada 17 Agustus 1945." },
+    { q: "Rempah paling terkenal dari Maluku Utara, terutama dari Ternate dan Tidore, adalah...", o: ["Merica", "Kayu Manis", "Cengkih", "Kunyit"], a: 2, hint: "Cengkih adalah komoditas rempah utama yang membuat Maluku Utara terkenal di dunia sejak abad pertengahan." },
+    { q: "Siapakah pahlawan nasional dari Maluku yang dikenal sebagai Kapitan Pattimura?", o: ["Sultan Baab Ullah", "Thomas Matulessy", "Silas Papare", "Martha Christina Tiahahu"], a: 1, hint: "Kapitan Pattimura adalah nama Thomas Matulessy, pahlawan Maluku yang berjuang melawan penjajah Belanda." }
   ]
 };
 
@@ -67,6 +82,9 @@ Konteks lokal sekolah (gunakan sesekali untuk memperkaya soal pada kategori umum
 Panduan pembuatan soal per kategori:
 - "umum": Wawasan NKRI, geografi Indonesia Timur, budaya Maluku, tokoh nasional, lingkungan hidup, kesehatan.
 - "matematika": Operasi bilangan, pengukuran, geometri dasar, soal cerita kontekstual kehidupan sehari-hari anak SD.
+- "ipa": Organ tubuh manusia, tumbuhan dan hewan, siklus air, cuaca, tata surya, lingkungan dan ekosistem.
+- "bahasa": EYD/PUEBI, jenis kata, kalimat efektif, sinonim/antonim, cerita rakyat, membaca pemahaman.
+- "sejarah": Perjuangan kemerdekaan Indonesia, tokoh-tokoh Maluku Utara, kerajaan Ternate dan Tidore, budaya lokal Maluku.
 
 Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal sedikit menantang.`;
 
