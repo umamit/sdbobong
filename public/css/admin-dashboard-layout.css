@@ -680,6 +680,37 @@ input:checked + .slider:before {
     
     .top-navbar {
         padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+    
+    .header-link-text {
+        display: none !important;
+    }
+    
+    .header-user-name {
+        display: none !important;
+    }
+    
+    .user-info {
+        gap: 0.35rem !important;
+    }
+    
+    .btn-view-presensi, 
+    .btn-view-ajar, 
+    .btn-view-public {
+        padding: 0.5rem !important;
+        border-radius: 50% !important;
+        width: 32px !important;
+        height: 32px !important;
+        justify-content: center !important;
+    }
+    
+    .btn-view-presensi svg, 
+    .btn-view-ajar svg, 
+    .btn-view-public svg {
+        margin: 0 !important;
+        width: 15px !important;
+        height: 15px !important;
     }
     
     .content-body {

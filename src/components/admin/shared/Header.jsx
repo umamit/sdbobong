@@ -36,7 +36,7 @@ export default function Header({ onToggleSidebar }) {
           </button>
           <h1 id="page-title">{getPageTitle()}</h1>
         </div>
-        <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <a
             href="https://presensi.sdnegeribobong.sch.id"
             target="_blank"
@@ -46,7 +46,7 @@ export default function Header({ onToggleSidebar }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.4rem',
-              padding: '0.4rem 0.85rem',
+              padding: '0.45rem 0.85rem',
               borderRadius: '99px',
               fontSize: '0.8rem',
               fontWeight: 600,
@@ -59,7 +59,7 @@ export default function Header({ onToggleSidebar }) {
             title="Buka Portal Presensi Digital di Tab Baru"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><polyline points="9 14 11 16 15 11"/></svg>
-            <span>Presensi ↗</span>
+            <span className="header-link-text">Presensi ↗</span>
           </a>
           <a
             href="https://ajar.sdnegeribobong.sch.id"
@@ -70,7 +70,7 @@ export default function Header({ onToggleSidebar }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.4rem',
-              padding: '0.4rem 0.85rem',
+              padding: '0.45rem 0.85rem',
               borderRadius: '99px',
               fontSize: '0.8rem',
               fontWeight: 600,
@@ -83,7 +83,7 @@ export default function Header({ onToggleSidebar }) {
             title="Buka Portal Perangkat Ajar di Tab Baru"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            <span>Perangkat Ajar ↗</span>
+            <span className="header-link-text">Perangkat Ajar ↗</span>
           </a>
           <a
             href="/"
@@ -94,7 +94,7 @@ export default function Header({ onToggleSidebar }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.4rem',
-              padding: '0.4rem 0.85rem',
+              padding: '0.45rem 0.85rem',
               borderRadius: '99px',
               fontSize: '0.8rem',
               fontWeight: 600,
@@ -111,10 +111,10 @@ export default function Header({ onToggleSidebar }) {
               <polyline points="15 3 21 3 21 9" />
               <line x1="10" y1="14" x2="21" y2="3" />
             </svg>
-            <span>Lihat Website</span>
+            <span className="header-link-text">Lihat Website</span>
           </a>
-          <div className="user-avatar" style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)', color: '#ffffff', fontWeight: 700 }}>A</div>
-          <span style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.9rem' }}>Administrator</span>
+          <div className="user-avatar" style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)', color: '#ffffff', fontWeight: 700, flexShrink: 0 }}>A</div>
+          <span className="header-user-name" style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>Administrator</span>
         </div>
       </header>
 
