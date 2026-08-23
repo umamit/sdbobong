@@ -1,8 +1,8 @@
 /* Header & Glassmorphic Navigation Module */
 .header {
     background-color: rgba(18, 165, 184, 0.08); /* Biru Toska transparan tipis */
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
     position: sticky;
     top: 0;
     z-index: 999;
