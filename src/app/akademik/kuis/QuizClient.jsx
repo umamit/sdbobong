@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import confetti from 'canvas-confetti';
 
 const CATS = [
   { id: 'umum', label: 'Pengetahuan Umum', c: 'var(--primary)' }, { id: 'matematika', label: 'Matematika', c: 'var(--secondary-dark)' },
@@ -82,7 +83,7 @@ export default function QuizClient() {
       stopTimer();
       if (scoreRef.current > best) { setBest(scoreRef.current); localStorage.setItem('quiz_hs', scoreRef.current); }
       setState('result');
-      import('canvas-confetti').then(c => c.default({ particleCount: 120, spread: 80, origin: { y: 0.6 } })).catch(() => {});
+      try { confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } }); } catch (e) {}
     }
   };
 
