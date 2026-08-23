@@ -24,9 +24,19 @@ const FALLBACK_QUIZ = {
     { q: "Apa antonim (lawan kata) dari kata 'rajin'?", o: ["Cerdas", "Malas", "Sigap", "Aktif"], a: 1, hint: "'Rajin' dan 'malas' adalah kata yang memiliki makna berlawanan (antonim)." }
   ],
   literasi: [
-    { q: "Andi membaca 12 halaman buku per hari. Berapa halaman yang ia baca dalam 5 hari?", o: ["50 halaman", "55 halaman", "60 halaman", "65 halaman"], a: 2, hint: "Gunakan perkalian: 12 × 5 = 60 halaman." },
-    { q: "Kalimat manakah yang menggunakan ejaan yang benar?", o: ["Saya mau pergi ke-sekolah.", "Saya mau pergi kesekolah.", "Saya mau pergi ke sekolah.", "saya mau pergi ke sekolah."], a: 2, hint: "'Ke sekolah' ditulis terpisah karena 'ke' adalah kata depan (preposisi), bukan awalan." },
-    { q: "Sebuah toko memiliki 48 buku. Jika 1/4 buku terjual, berapa buku yang tersisa?", o: ["12 buku", "24 buku", "36 buku", "40 buku"], a: 2, hint: "1/4 dari 48 = 12 buku terjual. Sisa: 48 − 12 = 36 buku." }
+    { q: "Mana yang termasuk FAKTA dalam sebuah berita?", o: ["Film ini pasti akan sangat laris.", "Banjir merendam 500 rumah di Kota X pada Senin lalu.", "Menurut saya cuacanya sangat panas.", "Pertandingan itu pasti seru sekali."], a: 1, hint: "Fakta adalah pernyataan yang dapat dibuktikan kebenarannya, seperti data dan kejadian nyata — berbeda dari opini/pendapat." },
+    { q: "Pesan berantai WhatsApp berisi klaim 'Minum air garam menyembuhkan semua penyakit' tanpa sumber jelas disebut...", o: ["Berita faktual", "Hoaks (informasi palsu)", "Literasi digital", "Iklan resmi"], a: 1, hint: "Hoaks adalah informasi palsu yang disebarkan tanpa sumber terpercaya. Selalu cek fakta dari sumber resmi sebelum membagikan." },
+    { q: "Saat membaca teks, informasi yang TIDAK langsung tertulis namun dapat disimpulkan pembaca disebut...", o: ["Informasi tersurat", "Ide pokok", "Informasi tersirat", "Fakta utama"], a: 2, hint: "Informasi tersirat adalah makna tersembunyi yang harus disimpulkan sendiri oleh pembaca dari konteks teks." }
+  ],
+  numerasi: [
+    { q: "Sebuah baju seharga Rp80.000 mendapat diskon 25%. Berapa harga setelah diskon?", o: ["Rp20.000", "Rp55.000", "Rp60.000", "Rp65.000"], a: 2, hint: "Diskon 25% dari Rp80.000 = Rp20.000. Harga setelah diskon: Rp80.000 − Rp20.000 = Rp60.000." },
+    { q: "Keliling persegi panjang dengan panjang 10 cm dan lebar 6 cm adalah...", o: ["60 cm", "32 cm", "16 cm", "30 cm"], a: 1, hint: "Keliling = 2 × (panjang + lebar) = 2 × (10 + 6) = 32 cm." },
+    { q: "Data nilai ulangan: 70, 80, 90, 80, 60. Berapakah nilai rata-rata (mean)?", o: ["75", "76", "80", "82"], a: 1, hint: "Mean = jumlah semua nilai ÷ banyak data = (70+80+90+80+60) ÷ 5 = 380 ÷ 5 = 76." }
+  ],
+  karakter: [
+    { q: "Mana yang termasuk dalam 'Tujuh Kebiasaan Anak Indonesia Hebat'?", o: ["Bangun siang dan main gadget sepuasnya", "Bangun pagi, beribadah, makan sehat bergizi, dan berolahraga", "Belajar hanya saat mau ujian saja", "Tidur larut malam agar punya banyak waktu belajar"], a: 1, hint: "Tujuh kebiasaan: bangun pagi, beribadah, makan sehat bergizi, berolahraga, gemar belajar, bermasyarakat, dan tidur cepat." },
+    { q: "Temanmu diejek dan dipermalukan oleh siswa lain di sekolah. Sikap yang benar adalah...", o: ["Ikut menertawakan agar tidak dikucilkan", "Pura-pura tidak melihat", "Membela korban dan melaporkan ke guru", "Mengajak teman lain untuk menjauh dari korban"], a: 2, hint: "Anti-perundungan (anti-bullying) adalah bagian dari Budaya Sekolah Aman dan Nyaman. Membela dan melapor ke guru adalah sikap yang tepat." },
+    { q: "Saat ulangan, kamu tidak tahu jawaban. Sikap yang mencerminkan nilai KEJUJURAN adalah...", o: ["Mencontek catatan tersembunyi", "Bertanya pelan ke teman sebangku", "Mengerjakan semampunya dengan jujur", "Menyalin jawaban teman dengan cepat"], a: 2, hint: "Kejujuran (anti-contek) adalah karakter utama pelajar. Nilai yang didapat dengan jujur jauh lebih berharga meski tidak sempurna." }
   ]
 };
 
@@ -84,7 +94,9 @@ Panduan pembuatan soal per kategori:
 - "matematika": Operasi bilangan, pengukuran, geometri dasar, soal cerita kontekstual kehidupan sehari-hari anak SD.
 - "ipa": Organ tubuh manusia, tumbuhan dan hewan, siklus air, cuaca, tata surya, lingkungan dan ekosistem.
 - "bahasa": EYD/PUEBI, jenis kata, kalimat efektif, sinonim/antonim, cerita rakyat, membaca pemahaman.
-- "literasi": Soal cerita membaca pemahaman, ejaan/PUEBI, kosakata, serta soal numerasi kontekstual (pecahan, persentase, perbandingan, pola bilangan).
+- "literasi": Literasi Baca Tulis (tersurat/tersirat, fakta vs opini, ide pokok), Literasi Digital (hoaks), Literasi Finansial (struk/diskon/brosur), Literasi Sains (fenomena alam), Literasi Budaya & Kewargaan (Pancasila, keberagaman).
+- "numerasi": Bilangan & Operasi Hitung kontekstual (pecahan, desimal, persentase/diskon, rasio, skala), Geometri & Pengukuran (keliling/luas/volume, estimasi waktu), Data & Ketidakpastian (diagram, mean/median/modus, peluang sederhana), Pemecahan Masalah Kontekstual.
+- "karakter": Tujuh Kebiasaan Anak Indonesia Hebat (bangun pagi, beribadah, makan bergizi, olahraga, gemar belajar, bermasyarakat, tidur cepat), Delapan Dimensi Profil Lulusan (Beriman, Berkebinekaan Global, Gotong Royong, Mandiri, Bernalar Kritis, Kreatif, Sehat, Komunikatif), Budaya Sekolah Aman (jujur/anti-contek, anti-bullying, toleransi, sopan santun, hak & kewajiban murid).
 
 Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal sedikit menantang.`;
 

@@ -3,11 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 
 const CATS = [
-  { id: 'umum', label: 'Pengetahuan Umum', c: 'var(--primary)' },
-  { id: 'matematika', label: 'Matematika', c: 'var(--secondary-dark)' },
-  { id: 'ipa', label: 'IPA', c: 'var(--accent)' },
-  { id: 'bahasa', label: 'Bahasa Indonesia', c: '#0A7E8D' },
-  { id: 'literasi', label: 'Literasi & Numerasi', c: '#B8860B' },
+  { id: 'umum', label: 'Pengetahuan Umum', c: 'var(--primary)' }, { id: 'matematika', label: 'Matematika', c: 'var(--secondary-dark)' },
+  { id: 'ipa', label: 'IPA', c: 'var(--accent)' }, { id: 'bahasa', label: 'Bahasa Indonesia', c: '#0A7E8D' },
+  { id: 'literasi', label: 'Literasi', c: '#B8860B' }, { id: 'numerasi', label: 'Numerasi', c: '#E5A900' }, { id: 'karakter', label: 'Penguatan Karakter', c: '#2A9D5C' },
 ];
 const TIMER = 15;
 
