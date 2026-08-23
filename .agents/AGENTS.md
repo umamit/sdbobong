@@ -140,6 +140,14 @@ Client fetches should use:
   - Untuk navigasi berjejer horizontal (seperti tombol-tombol kapsul header), wajib menyembunyikan deskripsi teks pada resolusi mobile (`@media (max-width: 991px)`) dengan menyisakan ikon bulat SVG yang responsif untuk menghemat ruang dan mencegah tumpang tindih (*overlap*).
   - Wajib menggunakan properti `flex-wrap: wrap` pada wadah menu dinamis agar konten otomatis mengalir ke bawah jika lebar layar menyempit.
 
+- **Desain Glassmorphism (Kaca Bening)**: Setiap pembuatan atau pembaruan kartu/wadah visual bertema efek kaca bening wajib **mengunci nilai keburaman (blur) pada ukuran standar `12px`** guna menjamin konsistensi kebeningan di seluruh halaman:
+  ```css
+  background: rgba(18, 165, 184, 0.04); /* Contoh Biru Toska transparan tipis */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Dukungan Safari Macbook/iOS */
+  border: 1px solid rgba(18, 165, 184, 0.15);
+  ```
+
 Do not rewrite styling unless explicitly requested.
 
 ---
