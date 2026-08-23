@@ -1,20 +1,20 @@
 /* Header & Glassmorphic Navigation Module */
 .header {
-    background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(18, 165, 184, 0.08); /* Biru Toska transparan tipis */
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     position: sticky;
     top: 0;
     z-index: 999;
-    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
-    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid rgba(18, 165, 184, 0.15);
+    box-shadow: 0 4px 30px rgba(18, 165, 184, 0.05);
     transition: var(--transition-fast);
 }
 
 :global([data-theme='dark']) .header {
-    background-color: rgba(11, 15, 23, 0.8);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    background-color: rgba(10, 126, 141, 0.12) !important;
+    border-bottom: 1px solid rgba(18, 165, 184, 0.2) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3) !important;
 }
 
 .navbar {
