@@ -45,13 +45,15 @@ export async function POST(req) {
 Konteks Sekolah: SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara. Kepala Sekolah aktif saat ini adalah "${kepalaSekolah}".
 Sesekali kamu boleh menyisipkan pertanyaan seputar nama sekolah atau nama Kepala Sekolah di atas untuk kategori umum.
 
+PENTING: Indeks jawaban benar ("a") wajib DIACAK secara merata (bisa bernilai 0, 1, 2, atau 3). Dilarang keras meletakkan jawaban benar selalu di indeks 0 (opsi pertama).
+
 Format output WAJIB berupa objek JSON valid dengan struktur:
 {
   "questions": [
     {
       "q": "Pertanyaan yang mudah dipahami anak SD?",
       "o": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"],
-      "a": 0,
+      "a": 2,
       "hint": "Petunjuk belajar singkat, ramah, dan mendidik untuk anak."
     }
   ]
