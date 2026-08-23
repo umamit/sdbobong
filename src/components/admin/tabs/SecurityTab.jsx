@@ -441,11 +441,11 @@ export default function SecurityTab() {
             )}
 
             {/* Interactive Log Table & Search */}
-            <div className="card shadow-lg" style={{ background: 'rgba(30, 41, 59, 0.45)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: 'var(--space-md)' }}>
+            <div className="card shadow-lg" style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '16px', padding: 'var(--space-md)' }}>
               
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)', flexWrap: 'wrap', gap: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>Jurnal Jejak Admin (Audit Logs)</h3>
+                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>Jurnal Jejak Admin (Audit Logs)</h3>
                   <button
                     type="button"
                     onClick={handleRefreshAuditLogs}
@@ -454,7 +454,7 @@ export default function SecurityTab() {
                       border: 'none',
                       cursor: 'pointer',
                       fontSize: '1.1rem',
-                      color: '#60a5fa',
+                      color: 'var(--primary)',
                       display: 'inline-flex',
                       alignItems: 'center',
                       padding: '0.2rem',
@@ -463,7 +463,7 @@ export default function SecurityTab() {
                     }}
                     title="Segarkan Log"
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                   </button>
                 </div>
 
@@ -472,22 +472,21 @@ export default function SecurityTab() {
                     type="text"
                     value={securitySearch}
                     onChange={(e) => setSecuritySearch(e.target.value)}
-                    placeholder="Cari kata kunci, IP, aksi, detail..."
+                    placeholder="Cari kata kunci, IP, aksi..."
                     className="form-control"
-                    style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '180px', borderRadius: '8px', color: 'var(--text-primary)' }}
+                    style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '0.45rem 1rem', fontSize: '0.85rem', width: '220px', borderRadius: '8px', color: 'var(--text-main)' }}
                   />
                   
                   <button
                     type="button"
                     onClick={handleExportCsv}
-                    className="btn-action-view"
+                    className="btn btn-outline"
                     style={{
                       padding: '0.45rem 0.9rem',
                       fontSize: '0.85rem',
-                      fontWeight: 600,
-                      backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                      color: '#60a5fa',
-                      border: '1px solid rgba(59, 130, 246, 0.3)',
+                      fontWeight: 700,
+                      borderColor: 'var(--primary)',
+                      color: 'var(--primary)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       display: 'flex',
@@ -497,21 +496,20 @@ export default function SecurityTab() {
                       margin: 0
                     }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     Ekspor CSV
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setIsPurgeModalOpen(true)}
-                    className="btn-action-delete"
+                    className="btn btn-outline"
                     style={{
                       padding: '0.45rem 0.9rem',
                       fontSize: '0.85rem',
-                      fontWeight: 600,
-                      backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                      fontWeight: 700,
+                      borderColor: '#ef4444',
                       color: '#ef4444',
-                      border: '1px solid rgba(239, 68, 68, 0.3)',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       display: 'flex',
@@ -521,14 +519,14 @@ export default function SecurityTab() {
                       margin: 0
                     }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     Kosongkan Jurnal
                   </button>
                 </div>
               </div>
 
               {/* Sub-Filters Tabs */}
-              <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: 'var(--space-sm)', marginBottom: 'var(--space-md)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+              <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: 'var(--space-sm)', marginBottom: 'var(--space-md)', borderBottom: '1px solid var(--border-color)' }}>
                 {[
                   { id: 'all', label: 'Semua Aktivitas' },
                   { id: 'auth', label: 'Sesi & Login' },
@@ -547,9 +545,9 @@ export default function SecurityTab() {
                       borderRadius: '8px',
                       cursor: 'pointer',
                       border: '1px solid',
-                      borderColor: securityFilter === tab.id ? 'rgba(59, 130, 246, 0.4)' : 'transparent',
-                      background: securityFilter === tab.id ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                      color: securityFilter === tab.id ? '#60a5fa' : 'var(--text-muted)',
+                      borderColor: securityFilter === tab.id ? 'var(--primary)' : 'transparent',
+                      background: securityFilter === tab.id ? 'rgba(18, 165, 184, 0.12)' : '#f1f5f9',
+                      color: securityFilter === tab.id ? 'var(--primary-dark)' : 'var(--text-muted)',
                       whiteSpace: 'nowrap',
                       transition: 'all 0.2s ease'
                     }}
@@ -560,62 +558,61 @@ export default function SecurityTab() {
               </div>
 
               {/* Jurnal Table */}
-              <div className="table-container">
-                <table className="admin-table">
+              <div className="table-container" style={{ background: '#ffffff', borderRadius: '12px' }}>
+                <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr>
-                      <th style={{ width: '170px' }}>Tanggal &amp; Waktu</th>
-                      <th style={{ width: '140px' }}>Pengguna</th>
-                      <th style={{ width: '190px' }}>Jenis Aktivitas</th>
-                      <th>Detail Jejak Log</th>
-                      <th style={{ width: '220px' }}>Asal IP &amp; Perangkat</th>
+                    <tr style={{ borderBottom: '2px solid #e2e8f0', textAlign: 'left' }}>
+                      <th style={{ width: '170px', padding: '12px 8px', fontSize: '0.9rem', color: '#1e293b', fontWeight: 800 }}>Tanggal &amp; Waktu</th>
+                      <th style={{ width: '140px', padding: '12px 8px', fontSize: '0.9rem', color: '#1e293b', fontWeight: 800 }}>Pengguna</th>
+                      <th style={{ width: '190px', padding: '12px 8px', fontSize: '0.9rem', color: '#1e293b', fontWeight: 800 }}>Jenis Aktivitas</th>
+                      <th style={{ padding: '12px 8px', fontSize: '0.9rem', color: '#1e293b', fontWeight: 800 }}>Detail Jejak Log</th>
+                      <th style={{ width: '220px', padding: '12px 8px', fontSize: '0.9rem', color: '#1e293b', fontWeight: 800 }}>Asal IP &amp; Perangkat</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredAuditLogs.length > 0 ? (
                       filteredAuditLogs.map((log) => {
-                        // Determine beautiful badge color & text
-                        let badgeStyle = { backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#94a3b8', border: '1px solid rgba(148, 163, 184, 0.25)' };
+                        let badgeStyle = { backgroundColor: '#f1f5f9', color: '#64748b', border: '1px solid #cbd5e1' };
                         let actionLabel = log.action;
 
                         if (log.action === 'LOGIN') {
-                          badgeStyle = { backgroundColor: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)' };
+                          badgeStyle = { backgroundColor: '#dcfce7', color: '#15803d', border: '1px solid #bbf7d0' };
                           actionLabel = 'LOGIN SUKSES';
                         } else if (log.action === 'FAILED_LOGIN') {
-                          badgeStyle = { backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' };
+                          badgeStyle = { backgroundColor: '#fef3c7', color: '#d97706', border: '1px solid #fde68a' };
                           actionLabel = 'LOGIN GAGAL';
                         } else if (log.action === 'SUSPICIOUS_LOGIN_ATTEMPT') {
-                          badgeStyle = { backgroundColor: 'rgba(251, 146, 60, 0.15)', color: '#fb923c', border: '1px solid rgba(251, 146, 60, 0.3)' };
+                          badgeStyle = { backgroundColor: '#ffedd5', color: '#ea580c', border: '1px solid #fed7aa' };
                           actionLabel = 'MENCURIGAKAN';
                         } else if (log.action === 'SECURITY_IP_BLOCKED') {
-                          badgeStyle = { backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' };
+                          badgeStyle = { backgroundColor: '#fee2e2', color: '#dc2626', border: '1px solid #fecaca' };
                           actionLabel = 'IP TERBLOKIR';
                         } else if (log.action === 'SECURITY_RESOLVE') {
-                          badgeStyle = { backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#a855f7', border: '1px solid rgba(168, 85, 247, 0.3)' };
+                          badgeStyle = { backgroundColor: '#f3e8ff', color: '#7e22ce', border: '1px solid #e9d5ff' };
                           actionLabel = 'ANCAMAN SELESAI';
                         } else if (log.action === 'LOGOUT') {
-                          badgeStyle = { backgroundColor: 'rgba(100, 116, 139, 0.15)', color: '#64748b', border: '1px solid rgba(100, 116, 139, 0.3)' };
+                          badgeStyle = { backgroundColor: '#f1f5f9', color: '#475569', border: '1px solid #cbd5e1' };
                           actionLabel = 'LOGOUT ADMIN';
                         } else if (log.action?.startsWith('CREATE_') || log.action?.includes('PUBLISH')) {
-                          badgeStyle = { backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)' };
+                          badgeStyle = { backgroundColor: '#dbeafe', color: '#1d4ed8', border: '1px solid #bfdbfe' };
                         } else if (log.action?.startsWith('DELETE_')) {
-                          badgeStyle = { backgroundColor: 'rgba(239, 68, 68, 0.12)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.25)' };
+                          badgeStyle = { backgroundColor: '#fee2e2', color: '#b91c1c', border: '1px solid #fecaca' };
                         } else if (log.action?.startsWith('UPDATE_')) {
-                          badgeStyle = { backgroundColor: 'rgba(6, 182, 212, 0.15)', color: '#06b6d4', border: '1px solid rgba(6, 182, 212, 0.3)' };
+                          badgeStyle = { backgroundColor: '#ecfeff', color: '#0e7490', border: '1px solid #cffafe' };
                         }
 
                         return (
-                          <tr key={log.id}>
-                            <td style={{ fontSize: '0.8rem', whiteSpace: 'nowrap', color: 'var(--text-muted)', fontWeight: 500 }}>
+                          <tr key={log.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                            <td style={{ fontSize: '0.85rem', padding: '12px 8px', color: '#475569' }}>
                               {log.timestamp ? new Date(log.timestamp).toLocaleString('id-ID') : '-'}
                             </td>
-                            <td style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.85rem' }}>
+                            <td style={{ fontWeight: 700, color: '#1e293b', fontSize: '0.85rem', padding: '12px 8px' }}>
                               {log.username || 'Sistem'}
                             </td>
-                            <td>
+                            <td style={{ padding: '12px 8px' }}>
                               <span style={{
                                 display: 'inline-block',
-                                padding: '0.2rem 0.5rem',
+                                padding: '4px 8px',
                                 borderRadius: '6px',
                                 fontSize: '0.72rem',
                                 fontWeight: 700,
@@ -624,13 +621,13 @@ export default function SecurityTab() {
                                 {actionLabel}
                               </span>
                             </td>
-                            <td style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 500, lineHeight: '1.4' }}>
+                            <td style={{ fontSize: '0.85rem', color: '#1e293b', padding: '12px 8px', lineHeight: '1.5' }}>
                               {log.details || '-'}
                             </td>
-                            <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
-                                <span style={{ fontWeight: 600, color: '#93c5fd' }}>{log.ip || '127.0.0.1'}</span>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', cursor: 'help' }} title={log.userAgent || ''}>
+                            <td style={{ fontSize: '0.85rem', padding: '12px 8px', color: '#475569' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                <span style={{ fontWeight: 600, color: '#2563eb' }}>{log.ip || '127.0.0.1'}</span>
+                                <span style={{ fontSize: '0.75rem', color: '#64748b', cursor: 'help' }} title={log.userAgent || ''}>
                                   {parseUserAgent(log.userAgent)}
                                 </span>
                               </div>
