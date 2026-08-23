@@ -189,10 +189,10 @@ export default function StatsCounter({ stats = {} }) {
         }
 
         .stats-counter-card {
-          background: rgba(255, 255, 255, 0.06);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(18, 165, 184, 0.04); /* Toska transparan tipis */
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(18, 165, 184, 0.15);
           border-radius: var(--radius-xl, 18px);
           padding: 1.75rem 1.25rem;
           display: flex;
@@ -205,7 +205,7 @@ export default function StatsCounter({ stats = {} }) {
                       border-color 0.35s ease;
           position: relative;
           overflow: hidden;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         /* Specular Shine Overlay on Hover */
