@@ -36,7 +36,7 @@ export default function FacilityMapSvg(props) {
                 <feComposite in="SourceGraphic" in2="glow" operator="over" />
               </filter>
               <filter id="shadow-premium" x="-5%" y="-5%" width="110%" height="110%">
-                <feDropShadow dx="3" dy="6" stdDeviation="5" floodColor="#07253B" floodOpacity="0.15"/>
+                <feDropShadow dx="3" dy="6" stdDeviation="5" floodColor="#06535D" floodOpacity="0.15"/>
               </filter>
             </defs>
 
