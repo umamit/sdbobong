@@ -234,7 +234,7 @@
     padding-top: var(--space-md);
     padding-bottom: var(--space-md);
     font-size: 0.85rem;
-    color: #64748B;
+    color: #CBD5E1;
 }
 
 .footerBottomFlex {
@@ -247,8 +247,8 @@
 
 .developerNote {
     font-weight: 500;
-    color: #9CA3AF;
-    opacity: 0.5;
+    color: #CBD5E1;
+    opacity: 0.85;
     font-size: 0.85rem;
 }
 
