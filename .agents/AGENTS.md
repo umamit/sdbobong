@@ -135,6 +135,10 @@ Client fetches should use:
   - 💛 **Kuning Emas** (`--secondary` / `#E5A900` / `#FFC83B`)
   - 💚 **Hijau Daun** (`--accent` / `#2A9D5C` / `#4CD964`)
   - Hindari penggunaan warna generik/luar (seperti Biru iOS `#007AFF` atau Ungu `#5856D6`) untuk menjaga konsistensi identitas branding sekolah.
+- **Pencegahan Overlap Tata Letak di Mobile**:
+  - Hindari penggunaan lebar tetap pixel (`px`) untuk kontainer yang berisi teks dinamis; selalu gunakan `max-width`, `100%`, `flex`, atau `grid`.
+  - Untuk navigasi berjejer horizontal (seperti tombol-tombol kapsul header), wajib menyembunyikan deskripsi teks pada resolusi mobile (`@media (max-width: 991px)`) dengan menyisakan ikon bulat SVG yang responsif untuk menghemat ruang dan mencegah tumpang tindih (*overlap*).
+  - Wajib menggunakan properti `flex-wrap: wrap` pada wadah menu dinamis agar konten otomatis mengalir ke bawah jika lebar layar menyempit.
 
 Do not rewrite styling unless explicitly requested.
 
