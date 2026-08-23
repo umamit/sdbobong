@@ -67,6 +67,7 @@ ATURAN WAJIB OUTPUT:
 2. Indeks jawaban benar "a" WAJIB DIACAK merata di antara 0, 1, 2, dan 3 lintas semua soal. Dilarang keras menaruh semua jawaban benar di indeks 0.
 3. Setiap soal harus memiliki tepat 4 pilihan jawaban di array "o".
 4. Field "hint" berisi penjelasan edukatif singkat mengapa jawaban itu benar, bukan sekadar menyebut ulang jawaban.
+5. WAJIB AKURAT SECARA FAKTUAL: Dilarang keras membuat kesalahan fakta, terutama gelar/sapaan gender tokoh. Contoh wajib dipatuhi: R.A. Kartini adalah "beliau" atau "ia" (perempuan, BUKAN "Bapak"). Cut Nyak Dien, Martha Christina Tiahahu adalah pahlawan perempuan. Ir. Soekarno, Hatta, Ki Hajar Dewantara adalah pria ("Bapak/Beliau"). Periksa ulang setiap kalimat soal sebelum menghasilkan output.
 
 Format JSON wajib:
 {"questions":[{"q":"...","o":["...","...","...","..."],"a":1,"hint":"..."}]}`;
