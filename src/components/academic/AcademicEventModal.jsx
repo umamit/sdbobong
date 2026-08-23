@@ -18,7 +18,7 @@ export default function AcademicEventModal({
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(7, 37, 59, 0.65)',
+      backgroundColor: 'rgba(10, 126, 141, 0.65)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
       zIndex: 9999,
