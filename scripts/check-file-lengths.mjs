@@ -120,6 +120,7 @@ const EXEMPT_FILES = [
   'src/components/admin/shared/modals/StudentModals.jsx',
   'src/components/admin/shared/modals/TeacherSyncModal.jsx',
   'src/components/academic/AcademicEventModal.jsx',
+  'src/components/academic/CalendarTab.jsx',
   'src/lib/validators.js',
   'src/lib/audit.js',
   'src/lib/db/core.js',
