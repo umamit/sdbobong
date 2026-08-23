@@ -55,12 +55,12 @@
    PPDB Stepper Section (Step-by-Step Enrollment Guide)
    ========================================================================== */
 .stepper-section {
-    background-color: var(--bg-card);
+    background: linear-gradient(135deg, var(--bg-footer, #0A7E8D) 0%, var(--bg-footer-deep, #06535D) 100%);
     margin-top: -2.5rem;
     position: relative;
     z-index: 20;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 12px 40px rgba(6, 83, 93, 0.25);
     padding: var(--space-md);
 }
 
@@ -71,7 +71,7 @@
 
 .stepper-header h2 {
     font-size: 1.35rem;
-    color: var(--primary-dark);
+    color: #ffffff; /* Teks Putih Kontras */
     margin-top: 0;
     margin-bottom: 0.25rem;
     font-family: var(--font-heading);
@@ -79,7 +79,7 @@
 
 .stepper-header p {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.85); /* Teks Putih Lembut Kontras */
     margin: 0;
 }
 
@@ -166,20 +166,20 @@
     font-family: var(--font-heading);
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--primary-dark);
+    color: #ffffff; /* Judul putih */
     margin-top: var(--space-xs);
     margin-bottom: 0.25rem;
 }
 
 .stepper-step-desc {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: #e2e8f0; /* Deskripsi abu-abu terang kontras */
     line-height: 1.5;
     margin: 0;
 }
 
 .stepper-step:hover .stepper-step-title {
-    color: var(--primary-light);
+    color: var(--secondary-light); /* Hover menyala emas muda */
 }
 
 @media (min-width: 576px) {
@@ -205,7 +205,7 @@
         left: 12.5%;
         right: 12.5%;
         height: 2px;
-        background-color: var(--border-color);
+        background-color: rgba(255, 255, 255, 0.15); /* Putih transparan halus */
         z-index: 0;
     }
     
