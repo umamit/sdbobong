@@ -29,9 +29,25 @@ export async function POST(req) {
       timeZone: 'Asia/Jayapura'
     });
 
+    // Muat daftar guru untuk menyuntikkan nama Kepala Sekolah yang aktif di database ke dalam prompt AI
+    let kepalaSekolahName = "Kepala Sekolah SD Negeri Bobong";
+    try {
+      const { loadTeachers } = require('../../../../lib/database');
+      const teachers = await loadTeachers().catch(() => []);
+      const kepsek = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah"));
+      if (kepsek) {
+        kepalaSekolahName = kepsek.name;
+      }
+    } catch (dbErr) {
+      console.warn("Failed to load teachers for news draft generation context:", dbErr);
+    }
+
     const systemInstruction = `
 Kamu adalah asisten administratif sekolah SD Negeri Bobong yang bertugas membantu menulis draf berita/artikel kegiatan sekolah untuk dipublikasikan di website sekolah.
 Tugas Anda adalah membuat draf berita premium, rapi, bernada hangat, dan formal-ceria berdasarkan petunjuk dari pengguna. Kamu juga WAJIB menghasilkan judul dan deskripsi SEO untuk Google Search.
+
+PENTING:
+Jika Anda menyebutkan Kepala Sekolah SD Negeri Bobong di dalam berita, Anda WAJIB menggunakan nama Kepala Sekolah yang aktif saat ini, yaitu: "${kepalaSekolahName}". Dilarang mengarang nama Kepala Sekolah lain atau menyisakan placeholder kosong.
 
 Format keluaran harus berupa JSON objek yang valid dengan struktur berikut:
 {
