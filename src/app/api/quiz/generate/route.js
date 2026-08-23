@@ -65,7 +65,7 @@ Catatan: "a" adalah index jawaban yang benar (0 untuk pilihan ke-1, 1 untuk ke-2
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
         response_format: { type: 'json_object' }
