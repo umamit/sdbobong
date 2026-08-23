@@ -308,7 +308,7 @@
     .dropdownLink {
         display: block;
         padding: 0.6rem 1.25rem;
-        color: var(--text-main);
+        color: #ffffff; /* Putih kontras tinggi */
         font-weight: 600;
         font-size: 0.9rem;
         transition: var(--transition-fast);
@@ -317,8 +317,8 @@
     
     .dropdownLink:hover,
     .dropdownLink.active {
-        background-color: rgba(11, 60, 93, 0.05);
-        color: var(--primary);
+        background-color: rgba(255, 255, 255, 0.1); /* Sorot putih transparan */
+        color: var(--secondary, #FFC83B); /* Kuning emas logo sekolah saat hover */
     }
 
     .hamburger {
