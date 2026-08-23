@@ -27,8 +27,8 @@
     /* Neutrals (Apple Store Minimalis Modern) */
     --bg-main: #F5F5F7; /* Apple's Signature Off-White */
     --bg-card: #FFFFFF;
-    --bg-footer: #122438; /* Dark Navy Logo */
-    --bg-footer-deep: #0A1624;
+    --bg-footer: #0A7E8D; /* Biru Toska Tua Logo */
+    --bg-footer-deep: #06535D; /* Biru Toska Sangat Gelap */
     --text-main: #1D1D1F; /* Apple Primary Label (Jet Black) */
     --text-color: var(--text-main); /* Legacy alias */
     --text-muted: #515154; /* Apple Secondary Label */

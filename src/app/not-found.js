@@ -81,7 +81,7 @@ export default function NotFound() {
         .nf-title {
           font-size: clamp(1.3rem, 3vw, 1.75rem);
           font-weight: 700;
-          color: #122438;
+          color: #0A7E8D;
           letter-spacing: -0.02em;
           margin-bottom: 0.75rem;
           animation: nf-fade-up 0.5s 0.3s cubic-bezier(0.16,1,0.3,1) both;

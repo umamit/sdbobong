@@ -236,12 +236,12 @@
 .form-page span,
 .form-page .form-label,
 .form-page .checkbox-item {
-    color: #122438 !important;
+    color: #0A7E8D !important;
 }
 
 .form-section-title {
     background-color: rgba(18, 165, 184, 0.08) !important;
-    color: #122438 !important;
+    color: #0A7E8D !important;
     padding: 0.3rem var(--space-xs);
     font-weight: 700;
     font-size: 0.8rem;
@@ -263,7 +263,7 @@
     font-weight: 600;
     display: flex;
     align-items: center;
-    color: #122438 !important;
+    color: #0A7E8D !important;
 }
 
 .form-value-line {
