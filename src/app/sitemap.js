@@ -23,6 +23,7 @@ export async function sitemap() {
     { route: '/profil/standar-pelayanan', priority: 0.8, freq: 'monthly' }, // Standar Pelayanan Publik
     { route: '/akademik',               priority: 0.8, freq: 'monthly' }, // Info Akademik
     { route: '/akademik/kalender',      priority: 0.8, freq: 'monthly' }, // Kalender Pendidikan
+    { route: '/akademik/kuis',          priority: 0.8, freq: 'weekly'  }, // Kuis Edukasi (Cerdas Cermat)
     { route: '/kesiswaan',              priority: 0.8, freq: 'monthly' }, // Kesiswaan & Ekstrakurikuler
 
     // ── Konten Dinamis & Informasi ───────────────────────────────────────

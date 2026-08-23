@@ -65,7 +65,8 @@ export default function Header() {
         { href: 'https://presensi.sdnegeribobong.sch.id', label: 'Presensi Online (Kehadiran)', external: true },
         { href: 'https://ajar.sdnegeribobong.sch.id', label: 'Perangkat Ajar (Modul RPP)', external: true },
         { href: '/akademik/nilai', label: 'Portal Cek Rapor' },
-        { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' }
+        { href: '/akademik/kelulusan', label: 'Pengumuman Kelulusan' },
+        { href: '/akademik/kuis', label: 'Kuis Cerdas Cermat' }
       ]
     },
     {
