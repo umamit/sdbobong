@@ -317,7 +317,7 @@
 
 /* Stats Section */
 .stats-section {
-    background-color: #0A7E8D !important; /* Biru Toska Tua Logo */
+    background: linear-gradient(135deg, var(--bg-footer, #0A7E8D) 0%, var(--bg-footer-deep, #06535D) 100%) !important;
     color: #ffffff;
 }
 
