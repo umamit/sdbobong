@@ -82,6 +82,9 @@ ATURAN WAJIB OUTPUT:
 5. AKURASI FAKTUAL & GENDER: Dilarang keras membuat kesalahan fakta. Gunakan gelar/sapaan sesuai gender tokoh. R.A. Kartini, Cut Nyak Dien, Martha Christina Tiahahu adalah pahlawan PEREMPUAN. Ir. Soekarno, Hatta, Ki Hajar Dewantara adalah pria. Periksa ulang setiap kalimat soal.
 6. VALIDASI JAWABAN WAJIB: Sebelum menentukan indeks "a", bacalah ulang soal dan keempat pilihan. Pastikan: (a) tepat SATU jawaban yang benar secara faktual, (b) nilai "a" benar-benar merupakan indeks dari jawaban yang benar tersebut di dalam array "o", (c) tidak ada ambiguitas — ketiga pilihan lain JELAS salah.
 7. KESELARASAN TOTAL (KOHERENSI): Pastikan pertanyaan (q), pilihan jawaban (o), dan penjelasan (hint) terikat dalam satu konteks logika yang sama. Jika pertanyaan menanyakan "langkah tindakan/solusi", maka seluruh pilihan jawaban (o) wajib berupa deskripsi langkah tindakan/solusi (bukan alasan/sebab). Sebaliknya, jika bertanya "alasan/mengapa", pilihan jawaban berupa penjelasan sebab.
+8. CONTOH KONTRAS WAJIB:
+   - SALAH (Dilarang keras): Soal bertanya "Manakah langkah yang paling tepat...?" tetapi pilihan jawabannya berisi alasan "Karena tubuh menjadi segar...".
+   - BENAR (Wajib): Soal bertanya "Manakah langkah yang paling tepat...?" pilihan jawabannya harus berupa langkah tindakan konkret, misalnya: "Mengatur jam alarm dan membuat rutinitas tidur cepat". Serta penjelasan (hint) harus menjelaskan mengapa langkah/pilihan tersebut yang paling efektif.
 
 Format JSON wajib:
 {"questions":[{"q":"...","o":["...","...","...","..."],"a":1,"hint":"..."}]}`;
