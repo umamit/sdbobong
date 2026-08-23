@@ -112,7 +112,7 @@ export default function QuizClient() {
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
             <span>Soal {idx + 1}/{questions.length}</span>
             <span style={{ color: time <= 5 ? '#ef4444' : 'var(--text-muted)', fontWeight: time <= 5 ? 700 : 400, transition: 'color 0.3s' }}>{time}s</span>
-            <span>Skor: {score}</span>
+            <span style={{ color: '#E5A900', fontWeight: 700 }}>Skor: {score}</span>
           </div>
           <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1e293b', marginBottom: '1.25rem' }}>{questions[idx].q}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
