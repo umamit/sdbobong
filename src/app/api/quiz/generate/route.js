@@ -39,27 +39,38 @@ export async function POST(req) {
     return NextResponse.json({ questions: list });
   }
 
-  // 3. Request ke Groq AI dengan instruksi ketat untuk anak SD & profil sekolah
+  // 3. Request ke Groq AI dengan sistem persona pakar pendidikan dasar
+  const systemPrompt = `Kamu adalah Dr. Aisha Rahman, lulusan terbaik Harvard Graduate School of Education dengan spesialisasi Pendidikan Dasar (Elementary Education). Kamu memiliki 15 tahun pengalaman merancang kurikulum dan soal evaluasi berkualitas tinggi untuk siswa Sekolah Dasar di Indonesia Timur.
+
+Keahlianmu:
+- Merancang soal yang menantang namun tetap menyenangkan dan sesuai usia (bloom's taxonomy level 1-3 untuk SD)
+- Memastikan distraktor (pilihan salah) terasa masuk akal namun jelas berbeda dari jawaban benar
+- Menulis petunjuk belajar (hint) yang membimbing, bukan sekadar mengulang jawaban
+- Menyeimbangkan soal berbasis hafalan, pemahaman, dan penerapan
+
+ATURAN WAJIB OUTPUT:
+1. Kembalikan HANYA objek JSON valid (tanpa markdown, tanpa teks tambahan).
+2. Indeks jawaban benar "a" WAJIB DIACAK merata di antara 0, 1, 2, dan 3 lintas semua soal. Dilarang keras menaruh semua jawaban benar di indeks 0.
+3. Setiap soal harus memiliki tepat 4 pilihan jawaban di array "o".
+4. Field "hint" berisi penjelasan edukatif singkat mengapa jawaban itu benar, bukan sekadar menyebut ulang jawaban.
+
+Format JSON wajib:
+{"questions":[{"q":"...","o":["...","...","...","..."],"a":1,"hint":"..."}]}`;
+
+  const userPrompt = `Buatkan 5 soal pilihan ganda berkualitas tinggi untuk siswa SD kategori: "${category}".
+
+Konteks lokal sekolah (gunakan sesekali untuk memperkaya soal pada kategori umum):
+- Nama sekolah: SD Negeri Bobong
+- Lokasi: Desa Bobong, Kecamatan Taliabu Barat, Kabupaten Pulau Taliabu, Maluku Utara
+- Kepala Sekolah saat ini: ${kepalaSekolah}
+
+Panduan pembuatan soal per kategori:
+- "umum": Wawasan NKRI, geografi Indonesia Timur, budaya Maluku, tokoh nasional, lingkungan hidup, kesehatan.
+- "matematika": Operasi bilangan, pengukuran, geometri dasar, soal cerita kontekstual kehidupan sehari-hari anak SD.
+
+Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal sedikit menantang.`;
+
   try {
-    const prompt = `Buat 5 soal pilihan ganda interaktif untuk anak SD kategori: "${category}". 
-Konteks Sekolah: SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara. Kepala Sekolah aktif saat ini adalah "${kepalaSekolah}".
-Sesekali kamu boleh menyisipkan pertanyaan seputar nama sekolah atau nama Kepala Sekolah di atas untuk kategori umum.
-
-PENTING: Indeks jawaban benar ("a") wajib DIACAK secara merata (bisa bernilai 0, 1, 2, atau 3). Dilarang keras meletakkan jawaban benar selalu di indeks 0 (opsi pertama).
-
-Format output WAJIB berupa objek JSON valid dengan struktur:
-{
-  "questions": [
-    {
-      "q": "Pertanyaan yang mudah dipahami anak SD?",
-      "o": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"],
-      "a": 2,
-      "hint": "Petunjuk belajar singkat, ramah, dan mendidik untuk anak."
-    }
-  ]
-}
-Catatan: "a" adalah index jawaban yang benar (0 untuk pilihan ke-1, 1 untuk ke-2, dst). Berikan 4 pilihan jawaban (o).`;
-
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -68,8 +79,11 @@ Catatan: "a" adalah index jawaban yang benar (0 untuk pilihan ke-1, 1 untuk ke-2
       },
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.8,
         response_format: { type: 'json_object' }
       })
     });
