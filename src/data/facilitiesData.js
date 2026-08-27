@@ -154,7 +154,7 @@ export const FACILITIES_DATA = {
 
   // GAZEBO (BERDIRI DI LAHAN RENCANA BARAT)
   gazebo_lahan: {
-    title: "Gazebo Belajar Kreatif",
+    title: "Gazebo Belajar Kreatif 1",
     desc: "Gazebo/saung kayu estetis ramah anak yang berdiri di atas Lahan Rencana Barat (sebelah kiri). Berfungsi sebagai ruang baca luar ruangan (outdoor literacy corner), tempat diskusi kelompok, dan berteduh siswa.",
     stats: {
       kapasitas: "8 - 10 Murid",
@@ -165,6 +165,21 @@ export const FACILITIES_DATA = {
     icon: "gazebo",
     color: "#10B981",
     image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // GAZEBO 2 (BERDIRI DI LAHAN RENCANA TIMUR / KANAN)
+  gazebo_timur: {
+    title: "Gazebo Belajar Kreatif 2",
+    desc: "Gazebo belajar terbuka kedua yang didirikan di atas Lahan Rencana Timur (sebelah kanan lapangan). Berfungsi sebagai tempat diskusi KBM luar ruangan, pojok baca tematik, dan area interaksi sosial siswa yang nyaman.",
+    stats: {
+      kapasitas: "8 - 10 Murid",
+      lokasi: "Berdiri di Lahan Rencana Timur (Sayap Kanan Kompleks)",
+      kondisi: "Sangat Asri & Nyaman",
+      fasilitas: ["Meja Kerja Kayu Bundar", "Bangku Sandar Melingkar", "Atap Rindang Teduh", "Dekat Taman Hijau"]
+    },
+    icon: "gazebo",
+    color: "#10B981",
+    image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   },
 
   // OUTDOOR / LAPANGAN UTAMA
