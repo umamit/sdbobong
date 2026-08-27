@@ -1,147 +1,166 @@
 export const FACILITIES_DATA = {
-  // GEDUNG BARAT (PAVILIUN KIRI - ATAP BIRU)
-  kelas_1_4: {
-    title: "Ruang Kelas 1 & 4 (Gedung Barat Laut)",
-    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 1, dan siang hari digunakan untuk pembelajaran Kelas 4. Ruangan dirancang dengan sirkulasi udara optimal dan alat peraga edukatif interaktif.",
-    stats: {
-      kapasitas: "30 Siswa per Shift",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
-      kondisi: "Sangat Baik & Terawat",
-      fasilitas: ["Meja & Kursi Ergonomis Ukuran Anak", "Papan Tulis Whiteboard Magnetik", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Kipas Angin Dinding"]
-    },
-    icon: "bag",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
-  },
-  kelas_2_5: {
-    title: "Ruang Kelas 2 & 5 (Gedung Barat Laut)",
-    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 2, dan siang hari digunakan untuk pembelajaran Kelas 5. Dilengkapi dengan pajangan apresiasi karya kreatif murid pada dinding kelas.",
-    stats: {
-      kapasitas: "32 Siswa per Shift",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
-      kondisi: "Sangat Baik",
-      fasilitas: ["Papan Tulis Whiteboard", "Pojok Literasi Tematik", "Mading Karya Seni Murid", "Almari Penyimpanan Buku Paket", "Sirkulasi Udara Alami"]
-    },
-    icon: "school",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
-  },
-  kelas_3_6: {
-    title: "Ruang Kelas 3 & 6 (Gedung Barat Laut)",
-    desc: "Satu ruang kelas fisik yang digunakan secara bergantian (shift). Pagi hari digunakan untuk pembelajaran Kelas 3, dan siang hari digunakan untuk pembelajaran Kelas 6 (persiapan ujian kelulusan). Memberikan suasana belajar yang sangat kondusif.",
-    stats: {
-      kapasitas: "30 Siswa per Shift",
-      lokasi: "Gedung Barat Laut, Klaster Utara (Lantai Dasar)",
-      kondisi: "Sangat Kondusif",
-      fasilitas: ["Papan Tulis Whiteboard Besar", "Papan Target Nilai & Kelulusan", "Peta Nusantara & Dunia Dinding", "Loker Arsip Soal Latihan", "Meja Belajar Solid Wood"]
-    },
-    icon: "book",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
-  },
-
   // GEDUNG SELATAN (UTAMA / BAWAH - ATAP MERAH - 2 LANTAI)
-  l1_kantor: {
-    title: "Kantor Guru",
-    desc: "Ruang kerja dewan guru SDN Bobong yang terletak di Gedung Selatan Utama (Lantai 1 - Sisi Kiri). Berfungsi sebagai tempat bimbingan akademik, koordinasi harian guru, dan persiapan mengajar.",
+  l1_guru: {
+    title: "Ruang Guru / Kantor (Lantai 1)",
+    desc: "Ruang kerja dewan guru SDN Bobong yang terletak di Lantai 1 Gedung Utama (sebelah kiri dekat tangga). Berfungsi sebagai pusat koordinasi administrasi sekolah, administrasi akademik, dan pelayanan guru.",
     stats: {
-      kapasitas: "12 Guru & Staff",
-      lokasi: "Gedung Selatan Utama, Lantai 1 (Sayap Kiri)",
-      kondisi: "Sangat Layak & Ber-AC",
-      fasilitas: ["Meja Kerja Guru & Kursi Kerja", "Printer & Scanner Bersama", "Air Conditioner (AC)", "Papan Pengumuman Kurikulum", "Wifi Sekolah"]
+      kapasitas: "14 Guru & Staff",
+      lokasi: "Gedung Utama, Lantai 1 (Sisi Kiri)",
+      kondisi: "Sangat Baik & Nyaman",
+      fasilitas: ["Meja Kerja Guru & Kursi", "Printer & Scanner Bersama", "Papan Pengumuman Kurikulum", "Kipas Angin Dinding", "Akses Wifi Sekolah"]
     },
     icon: "laptop",
     color: "#C53030",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
   },
-  l1_kepsek: {
-    title: "Ruang Kepala Sekolah",
-    desc: "Ruang Kepala Sekolah yang terletak di Gedung Selatan Utama (Lantai 1 - Sisi Tengah). Berfungsi sebagai ruang kerja dinas kepala sekolah, koordinasi manajerial, pelayanan administrasi sekolah, serta ruang pertemuan tamu dinas.",
+  l1_kelas_1a_4a: {
+    title: "Ruang Kelas 1A & 4A (Lantai 1)",
+    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama (bagian tengah) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 1A, dan siang hari untuk pembelajaran Kelas 4A.",
     stats: {
-      kapasitas: "1 Kepala Sekolah & Staf Khusus",
-      lokasi: "Gedung Selatan Utama, Lantai 1 (Bagian Tengah)",
-      kondisi: "Sangat Baik & Ber-AC",
-      fasilitas: ["Meja Kerja & Kursi Pimpinan", "Satu Set Sofa Tamu VIP", "Lemari Arsip Sertifikasi & Prestasi", "Komputer Kerja Kepala Sekolah", "Pendingin Ruangan (AC)"]
+      kapasitas: "30 Siswa per Shift",
+      lokasi: "Gedung Utama, Lantai 1 (Sisi Tengah)",
+      kondisi: "Sangat Kondusif",
+      fasilitas: ["Papan Tulis Whiteboard", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Mading Kelas", "Sirkulasi Udara Optimal"]
     },
-    icon: "crown",
+    icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
   },
-  l1_perpus: {
-    title: "Perpustakaan & Pojok Literasi",
-    desc: "Tempat eksplorasi imajinasi anak di Gedung Selatan Utama (Lantai 1 - Sisi Kanan). Berisi koleksi buku pelajaran lengkap, ensiklopedia edukatif, buku dongeng moral, serta majalah anak yang ramah dibaca di area lesehan berkarpet empuk.",
+  l1_kelas_1b_4b: {
+    title: "Ruang Kelas 1B & 4B (Lantai 1)",
+    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama (bagian kanan) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 1B, dan siang hari untuk pembelajaran Kelas 4B.",
     stats: {
-      koleksi: "600+ Buku Bacaan & Referensi",
-      lokasi: "Gedung Selatan Utama, Lantai 1 (Sayap Kanan)",
-      kondisi: "Tenang, Bersih & Nyaman",
-      fasilitas: ["Rak Buku Klasifikasi Kayu", "Meja Baca Kelompok", "Karpet Puzzle Lesehan", "Pendingin Udara", "Katalog Pencarian Buku Manual"]
+      kapasitas: "30 Siswa per Shift",
+      lokasi: "Gedung Utama, Lantai 1 (Sisi Kanan)",
+      kondisi: "Sangat Baik",
+      fasilitas: ["Papan Tulis Whiteboard", "Alat Peraga Tematik", "Pojok Literasi Tematik", "Almari Penyimpanan Buku Paket", "Mading Apresiasi Karya"]
     },
-    icon: "library",
+    icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
   },
-  l2_toilet: {
-    title: "Toilet Sekolah (Lantai 2)",
-    desc: "Fasilitas toilet bersih untuk siswa dan guru yang terletak di Lantai 2 Gedung Selatan (Sayap Kiri). Dilengkapi dengan sanitasi modern, air bersih mengalir dari sumur bor jetpump, dan dirawat secara higienis setiap hari demi kenyamanan bersama.",
+
+  // GEDUNG SELATAN - LANTAI 2
+  l2_kelas_6a: {
+    title: "Ruang Kelas 6A (Lantai 2)",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (sebelah kiri, dekat akses tangga). Digunakan khusus untuk pembelajaran intensif Kelas 6A dalam persiapan ujian dan kelulusan.",
     stats: {
-      sumber_air: "Sumur Bor Bersih Jetpump",
-      lokasi: "Gedung Selatan Utama, Lantai 2 (Sayap Kiri)",
-      kondisi: "Sangat Bersih & Higienis",
-      fasilitas: ["Wastafel Keramik", "Cermin Dinding", "Sabun Cuci Tangan", "Ventilasi Udara Baik", "Penerangan Terang"]
+      kapasitas: "30 Siswa",
+      lokasi: "Gedung Utama, Lantai 2 (Sisi Kiri)",
+      kondisi: "Sangat Kondusif",
+      fasilitas: ["Papan Tulis Whiteboard", "Mading Persiapan Kelulusan", "Papan Target Nilai", "Peta Dinding Nusantara & Dunia", "Meja Belajar Kayu Solid"]
     },
-    icon: "toilet",
+    icon: "book",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
   },
-  l2_lab: {
-    title: "Laboratorium Komputer",
-    desc: "Ruang praktek teknologi dan asesmen yang terletak di Gedung Selatan Utama (Lantai 2 - Sisi Tengah). Dilengkapi dengan perangkat komputer Chromebook modern yang terhubung internet nirkabel berkecepatan tinggi guna melatih keterampilan literasi digital siswa.",
+  l2_kelas_6b_3b: {
+    title: "Ruang Kelas 6B & 3B (Lantai 2)",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (bagian tengah) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 3B, dan siang hari untuk pembelajaran Kelas 6B.",
     stats: {
-      kapasitas: "25 Chromebook",
-      lokasi: "Gedung Selatan Utama, Lantai 2 (Bagian Tengah)",
-      kondisi: "Modern, Sejuk & Terawat",
-      fasilitas: ["Meja Komputer Bersekat", "Akses Internet Wifi Berkecepatan Tinggi", "Proyektor LCD Presentasi", "Papan Tulis Instruksi Guru", "Kipas Angin Dinding (2 Unit)"]
+      kapasitas: "32 Siswa per Shift",
+      lokasi: "Gedung Utama, Lantai 2 (Sisi Tengah)",
+      kondisi: "Baik & Terawat",
+      fasilitas: ["Papan Tulis Whiteboard", "Almari Arsip Soal Latihan", "Pojok Literasi Kelas", "Kipas Angin Dinding", "Mading Hasil Prakarya"]
     },
-    icon: "laptop",
+    icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
   },
-  l2_uks: {
-    title: "Klinik UKS (Unit Kesehatan Sekolah)",
-    desc: "Ruang pelayanan kesehatan awal bagi siswa yang sakit di sekolah, terletak di Gedung Selatan Utama (Lantai 2 - Sisi Kanan). Menyediakan ranjang istirahat yang bersih, obat-obatan P3K lengkap, dan peralatan medis dasar di bawah pengawasan guru pembina.",
+  l2_kelas_3c_4c: {
+    title: "Ruang Kelas 3C & 4C (Lantai 2)",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (bagian kanan) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 3C, dan siang hari untuk pembelajaran Kelas 4C.",
     stats: {
-      kapasitas: "2 Ranjang Istirahat UKS",
-      lokasi: "Gedung Selatan Utama, Lantai 2 (Sayap Kanan)",
-      kondisi: "Steril, Bersih, dan Tenang",
-      fasilitas: ["Ranjang Pasien (2 Set)", "Timbangan & Pengukur Tinggi Badan", "Kotak Obat P3K & Obat Esensial", "Termometer & Tensi Digital", "Wastafel Cuci Tangan"]
+      kapasitas: "30 Siswa per Shift",
+      lokasi: "Gedung Utama, Lantai 2 (Sisi Kanan)",
+      kondisi: "Sangat Baik",
+      fasilitas: ["Papan Tulis Whiteboard", "Pojok Baca Buku", "Alat Peraga Pembelajaran", "Sirkulasi Udara Alami", "Mading Kreativitas"]
+    },
+    icon: "school",
+    color: "#C53030",
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // GUGUSAN GEDUNG UTARA (TERPISAH)
+  kelas_2a_5a: {
+    title: "Gedung Kelas 2A & 5A",
+    desc: "Gedung kelas terpisah di bagian utara-tengah kompleks sekolah. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 2A, dan siang hari untuk pembelajaran Kelas 5A.",
+    stats: {
+      kapasitas: "32 Siswa per Shift",
+      lokasi: "Sektor Utara-Tengah Kompleks Sekolah",
+      kondisi: "Sangat Baik & Bersih",
+      fasilitas: ["Papan Tulis Whiteboard", "Meja & Kursi Siswa", "Pojok Baca Sederhana", "Kipas Angin", "Pencahayaan Alami Optimal"]
+    },
+    icon: "school",
+    color: "#3B82F6",
+    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
+  },
+  kelas_2b_5b: {
+    title: "Gedung Kelas 2B & 5B",
+    desc: "Gedung kelas terpisah di bagian utara-kanan kompleks sekolah. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 2B, dan siang hari untuk pembelajaran Kelas 5B.",
+    stats: {
+      kapasitas: "32 Siswa per Shift",
+      lokasi: "Sektor Utara-Kanan Kompleks Sekolah",
+      kondisi: "Sangat Baik",
+      fasilitas: ["Papan Tulis Whiteboard", "Meja & Kursi Ergonomis", "Almari Penyimpanan", "Mading Kelas", "Ventilasi Udara Bagus"]
+    },
+    icon: "school",
+    color: "#3B82F6",
+    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+  },
+  uks_gudang: {
+    title: "Gedung UKS & Gudang Sekolah",
+    desc: "Gedung terpisah di sebelah barat gedung Kelas 2A/5A. Sayap kiri digunakan untuk ruang UKS (Unit Kesehatan Sekolah) guna perawatan pertama siswa yang sakit, dan sayap kanan digunakan sebagai gudang penyimpanan inventaris sekolah.",
+    stats: {
+      kapasitas: "2 Ranjang UKS & Area Gudang",
+      lokasi: "Sektor Utara-Barat Laut Kompleks Sekolah",
+      kondisi: "Sangat Terawat & Bersih",
+      fasilitas: ["Ranjang Istirahat UKS", "Peralatan P3K & Obat Dasar", "Timbangan & Pengukur Tinggi", "Lemari Penyimpanan Inventaris", "Alat Tulis Kantor Cadangan"]
     },
     icon: "firstaid",
-    color: "#C53030",
+    color: "#3B82F6",
     image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
   },
 
-  // GEDUNG TIMUR (PAVILIUN KANAN - GAZEBO OUTDOOR)
-  gazebo_utara: {
-    title: "Gazebo Belajar Utara",
-    desc: "Gazebo/saung terbuka ramah anak di sisi timur halaman bagian utara. Berfungsi sebagai area literasi luar ruangan, tempat berdiskusi santai bagi siswa, atau sekadar berteduh menikmati suasana sejuk sekolah.",
+  // WC TOILET (POJOK KIRI BAWAH)
+  wc_toilet: {
+    title: "Toilet Sekolah (WC Guru & Murid)",
+    desc: "Fasilitas toilet terpisah untuk dewan guru dan murid, terletak di sudut kiri bawah dekat selasar belakang. Dilengkapi dengan air bersih yang bersumber dari sumur bor higienis serta dijaga kebersihannya setiap hari.",
     stats: {
-      kapasitas: "8-10 Murid",
-      lokasi: "Halaman Timur (Sisi Utara)",
-      kondisi: "Nyaman, Rindang & Teduh",
-      fasilitas: ["Meja Kayu Bundar", "Tempat Duduk Melingkar", "Atap Rumbia Estetis", "Pojok Tempat Sampah Pilah"]
+      jumlah_ruang: "2 Bilik Toilet Guru & Murid",
+      lokasi: "Pojok Kiri Bawah Kompleks Sekolah",
+      kondisi: "Bersih & Higienis",
+      fasilitas: ["Wastafel Cuci Tangan", "Sabun Cuci Tangan", "Cermin Dinding", "Air Bersih Mengalir", "Ventilasi Udara Baik"]
     },
-    icon: "gazebo",
+    icon: "toilet",
     color: "#10B981",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // LAHAN RENCANA PEMBANGUNAN
+  lahan_rencana: {
+    title: "Lahan Rencana Pembangunan",
+    desc: "Area lahan kosong yang dipersiapkan khusus untuk rencana pembangunan ruang atau gedung fasilitas baru di masa mendatang guna menunjang kapasitas KBM di SD Negeri Bobong.",
+    stats: {
+      status_lahan: "Milik Sekolah (Siap Bangun)",
+      lokasi: "Tersebar di Beberapa Sektor Kompleks Sekolah",
+      kondisi: "Tanah Lapan Bersih",
+      fasilitas: ["Akses Jalan Selasar", "Dekat Saluran Drainase", "Rencana Area Hijau", "Aman dari Banjir"]
+    },
+    icon: "tent",
+    color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
   },
-  gazebo_selatan: {
-    title: "Gazebo Belajar Selatan",
-    desc: "Gazebo/saung kayu estetis di sisi timur halaman bagian selatan, dekat dengan area perpustakaan. Menyediakan lingkungan belajar outdoor yang damai, sangat ideal untuk membaca buku atau kegiatan kelompok kreatif.",
+
+  // GAZEBO (BERDIRI DI LAHAN RENCANA BARAT)
+  gazebo_lahan: {
+    title: "Gazebo Belajar Kreatif",
+    desc: "Gazebo/saung kayu estetis ramah anak yang berdiri di atas Lahan Rencana Barat (sebelah kiri). Berfungsi sebagai ruang baca luar ruangan (outdoor literacy corner), tempat diskusi kelompok, dan berteduh siswa.",
     stats: {
-      kapasitas: "8-10 Murid",
-      lokasi: "Halaman Timur (Sisi Selatan)",
-      kondisi: "Sangat Asri & Nyaman",
-      fasilitas: ["Meja Belajar Kayu", "Bangku Sandar Panjang", "Atap Teduh Anti-Panas", "Dekat Taman Hijau"]
+      kapasitas: "8 - 10 Murid",
+      lokasi: "Berdiri di Lahan Rencana Barat (Sayap Kiri Kompleks)",
+      kondisi: "Asri, Nyaman & Teduh",
+      fasilitas: ["Meja Belajar Kayu", "Tempat Duduk Melingkar", "Atap Rumbia Teduh", "Dekat Taman Hijau Sekolah"]
     },
     icon: "gazebo",
     color: "#10B981",
@@ -150,29 +169,16 @@ export const FACILITIES_DATA = {
 
   // OUTDOOR / LAPANGAN UTAMA
   olahraga: {
-    title: "Lapangan Utama & Area Pramuka",
-    desc: "Halaman terbuka yang luas di bagian tengah kompleks sekolah, dikelilingi oleh bangunan kelas (sebagaimana terlihat nyata dari satelit Google Maps). Berfungsi sebagai pusat upacara bendera, lapangan futsal/voli, area kemah pramuka, serta tempat bermain bebas siswa yang gembira.",
+    title: "Lapangan Utama Sekolah",
+    desc: "Halaman terbuka yang luas di bagian tengah kompleks sekolah. Berfungsi sebagai pusat upacara bendera mingguan, lapangan olahraga (futsal/voli/atletik), serta area KBM outdoor dan bermain bebas siswa saat istirahat.",
     stats: {
-      ukuran: "28 x 22 Meter",
-      lokasi: "Area Courtyard Tengah Kompleks Sekolah",
-      kondisi: "Lapang, Bersih & Alami",
-      fasilitas: ["Tiang Bendera Utama", "Gapura Bambu Pramuka (Pionering)", "Gawang Futsal Mini", "Net Bola Voli & Bulutangkis", "Taman Pojok Hijau Sekolah"]
+      ukuran: "26.85 x 22 Meter",
+      lokasi: "Sektor Tengah Kompleks Sekolah",
+      kondisi: "Lapang & Bersih",
+      fasilitas: ["Tiang Bendera Utama", "Net Bola Voli & Bulutangkis", "Gawang Futsal Mini", "Taman Pojok Hijau Sekolah"]
     },
     icon: "tent",
     color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
-  },
-  bangunan_tk: {
-    title: "Gedung Serba Guna (GSG)",
-    desc: "Gedung serba guna yang terletak di sisi barat daya (kiri bawah) kompleks sekolah. Berfungsi sebagai pusat kegiatan seni, olahraga indoor, rapat komite sekolah, pertemuan wali murid, serta ruang serba guna penunjang KBM.",
-    stats: {
-      kapasitas: "100 - 150 Orang",
-      lokasi: "Sektor Barat Daya Kompleks (Kiri Bawah)",
-      kondisi: "Sangat Baik & Multifungsi",
-      fasilitas: ["Area Hall Luas", "Satu Set Sound System", "Panggung Kegiatan Sekolah", "Kursi Lipat Rapat", "Peralatan Olahraga Indoor"]
-    },
-    icon: "building",
-    color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop"
   }
 };
