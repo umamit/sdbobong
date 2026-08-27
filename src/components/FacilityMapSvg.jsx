@@ -170,13 +170,13 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_timur')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="635,120 667,95 700,120" fill={hoveredRoom === 'gazebo_timur' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="630,120 705,120 695,130 640,130" fill={hoveredRoom === 'gazebo_timur' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="650" y1="130" x2="650" y2="150" stroke="#78350F" strokeWidth="2.5" />
-          <line x1="690" y1="130" x2="690" y2="150" stroke="#78350F" strokeWidth="2.5" />
-          <polygon points="640,150 695,150 685,160 650,160" fill={hoveredRoom === 'gazebo_timur' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
-          <text x="667" y="143" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 2</text>
-          {hoveredRoom === 'gazebo_timur' && <rect x="627" y="92" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+          <polygon points="698,120 730,95 763,120" fill={hoveredRoom === 'gazebo_timur' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
+          <polygon points="693,120 768,120 758,130 703,130" fill={hoveredRoom === 'gazebo_timur' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
+          <line x1="713" y1="130" x2="713" y2="150" stroke="#78350F" strokeWidth="2.5" />
+          <line x1="753" y1="130" x2="753" y2="150" stroke="#78350F" strokeWidth="2.5" />
+          <polygon points="703,150 758,150 748,160 713,160" fill={hoveredRoom === 'gazebo_timur' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          <text x="730" y="143" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 2</text>
+          {hoveredRoom === 'gazebo_timur' && <rect x="690" y="92" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
         </g>
       </g>
 
@@ -188,13 +188,13 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_lahan')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="635,210 667,185 700,210" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="630,210 705,210 695,220 640,220" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="650" y1="220" x2="650" y2="240" stroke="#78350F" strokeWidth="2.5" />
-          <line x1="690" y1="220" x2="690" y2="240" stroke="#78350F" strokeWidth="2.5" />
-          <polygon points="640,240 695,240 685,250 650,250" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
-          <text x="667" y="233" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 1</text>
-          {hoveredRoom === 'gazebo_lahan' && <rect x="627" y="182" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+          <polygon points="698,210 730,185 763,210" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
+          <polygon points="693,210 768,210 758,220 703,220" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
+          <line x1="713" y1="220" x2="713" y2="240" stroke="#78350F" strokeWidth="2.5" />
+          <line x1="753" y1="220" x2="753" y2="240" stroke="#78350F" strokeWidth="2.5" />
+          <polygon points="703,240 758,240 748,250 713,250" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          <text x="730" y="233" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 1</text>
+          {hoveredRoom === 'gazebo_lahan' && <rect x="690" y="182" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
         </g>
       </g>
 
