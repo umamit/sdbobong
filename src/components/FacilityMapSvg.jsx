@@ -43,64 +43,26 @@ export default function FacilityMapSvg(props) {
       {/* PAGAR PEMBATAS */}
       <rect x="15" y="15" width="820" height="510" rx="14" fill="none" stroke="#BACAB3" strokeWidth="2.5" strokeDasharray="6,4" />
 
-      {/* JALUR SELASAR PENGHUBUNG */}
-      <rect x="155" y="55" width="20" height="390" fill="#CBD5E1" opacity="0.8" />
-      <rect x="155" y="365" width="515" height="20" fill="#CBD5E1" opacity="0.8" />
+      {/* GERBANG UTARA (Sisi Atas Tengah-Kanan) */}
+      <g transform="translate(480, 15)">
+        <rect x="0" y="0" width="100" height="20" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="1.5" />
+        <text x="50" y="13" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#1E293B" textAnchor="middle">🚪 GERBANG</text>
+      </g>
 
-      {/* ======================================================== */}
-      {/* 1. LAPANGAN UTAMA (olahraga)                             */}
-      {/* ======================================================== */}
-      <g 
-        style={{ cursor: 'pointer' }}
-        onClick={() => handleRoomClick('olahraga')}
-        onMouseEnter={() => setHoveredRoom('olahraga')}
-        onMouseLeave={() => setHoveredRoom(null)}
-      >
-        <rect 
-          x="300" y="180" width="370" height="170" rx="8"
-          fill={hoveredRoom === 'olahraga' ? '#E9D3C0' : '#EFE3D3'}
-          stroke={hoveredRoom === 'olahraga' ? '#B45309' : '#D6C5B3'}
-          strokeWidth={hoveredRoom === 'olahraga' ? '2.5' : '1.5'}
-          style={{ transition: 'all 0.2s ease' }}
-          filter={hoveredRoom === 'olahraga' ? 'url(#shadow-premium)' : ''}
-        />
-        <rect x="330" y="210" width="310" height="110" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
-        <circle cx="485" cy="265" r="20" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
-        
-        {/* Tiang Bendera */}
-        <g transform="translate(485, 265)">
-          <circle cx="0" cy="0" r="3" fill="#334155" />
-          <line x1="0" y1="0" x2="0" y2="-45" stroke="#334155" strokeWidth="2.5" />
-          <path d="M0,-45 C6,-48 12,-42 18,-45 L18,-39 C12,-36 6,-42 0,-39 Z" fill="#EF4444" />
-          <path d="M0,-39 C6,-42 12,-36 18,-39 L18,-33 C12,-30 6,-36 0,-33 Z" fill="#F9FAFB" stroke="#E2E8F0" strokeWidth="0.5" />
-        </g>
-        
-        <text x="485" y="335" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle">
-          LAPANGAN UTAMA
-        </text>
+      {/* AREA PARKIR (Utara Tengah - Kanan Gerbang) */}
+      <g transform="translate(380, 45)" filter="url(#shadow-premium)">
+        <rect x="0" y="0" width="160" height="65" rx="6" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1.5" />
+        <line x1="30" y1="5" x2="30" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
+        <line x1="70" y1="5" x2="70" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
+        <line x1="110" y1="5" x2="110" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
+        <text x="80" y="55" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">AREA PARKIR</text>
       </g>
 
       {/* ======================================================== */}
-      {/* 2. AREA GERBANG & PARKIR (SISI KANAN / TIMUR)             */}
+      {/* SISI KIRI (BARAT LAUT & BARAT TENGAH)                     */}
       {/* ======================================================== */}
-      {/* Gerbang (Sisi Kanan Atas) */}
-      <g transform="translate(690, 45)">
-        <rect x="0" y="0" width="120" height="40" rx="4" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1.5" />
-        <text x="60" y="24" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">GERBANG</text>
-      </g>
-      {/* Area Parkir (Di bawah Gerbang) */}
-      <g transform="translate(690, 100)">
-        <rect x="0" y="0" width="120" height="70" rx="6" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1.5" />
-        <line x1="20" y1="5" x2="20" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
-        <line x1="50" y1="5" x2="50" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
-        <line x1="80" y1="5" x2="80" y2="40" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2,2" />
-        <text x="60" y="58" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">AREA PARKIR</text>
-      </g>
-
-      {/* ======================================================== */}
-      {/* 3. GUGUSAN GEDUNG UTARA (TERPISAH)                       */}
-      {/* ======================================================== */}
-      {/* Gedung Kelas 2A & 5A (Tengah Utara) */}
+      
+      {/* Gedung Kelas 2A & 5A (Barat Laut / Kiri Atas) */}
       <g filter="url(#shadow-premium)">
         <g 
           style={{ cursor: 'pointer' }}
@@ -108,31 +70,15 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('kelas_2a_5a')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <rect x="390" y="55" width="130" height="90" rx="4" fill={hoveredRoom === 'kelas_2a_5a' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
-          <line x1="390" y1="100" x2="520" y2="100" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
-          <text x="455" y="90" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 2A & 5A</text>
-          <text x="455" y="120" fontFamily="var(--font-body)" fontSize="8.5" fill="#E2E8F0" textAnchor="middle">(Shift Pagi/Siang)</text>
-          {hoveredRoom === 'kelas_2a_5a' && <rect x="392" y="57" width="126" height="86" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+          <rect x="40" y="45" width="125" height="110" rx="4" fill={hoveredRoom === 'kelas_2a_5a' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
+          <line x1="40" y1="100" x2="165" y2="100" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
+          <text x="102" y="90" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 2A & 5A</text>
+          <text x="102" y="125" fontFamily="var(--font-body)" fontSize="8.5" fill="#E2E8F0" textAnchor="middle">(Shift Pagi/Siang)</text>
+          {hoveredRoom === 'kelas_2a_5a' && <rect x="42" y="47" width="121" height="106" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
         </g>
       </g>
 
-      {/* Gedung Kelas 2B & 5B (Kanan Utara) */}
-      <g filter="url(#shadow-premium)">
-        <g 
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleRoomClick('kelas_2b_5b')}
-          onMouseEnter={() => setHoveredRoom('kelas_2b_5b')}
-          onMouseLeave={() => setHoveredRoom(null)}
-        >
-          <rect x="540" y="55" width="130" height="90" rx="4" fill={hoveredRoom === 'kelas_2b_5b' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
-          <line x1="540" y1="100" x2="670" y2="100" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
-          <text x="605" y="90" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 2B & 5B</text>
-          <text x="605" y="120" fontFamily="var(--font-body)" fontSize="8.5" fill="#E2E8F0" textAnchor="middle">(Shift Pagi/Siang)</text>
-          {hoveredRoom === 'kelas_2b_5b' && <rect x="542" y="57" width="126" height="86" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
-        </g>
-      </g>
-
-      {/* Gedung UKS / Gudang (Kiri Utara) */}
+      {/* UKS / Gudang (Di bawah Kelas 2A & 5A) */}
       <g filter="url(#shadow-premium)">
         <g 
           style={{ cursor: 'pointer' }}
@@ -140,18 +86,13 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('uks_gudang')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <rect x="300" y="55" width="75" height="90" rx="4" fill={hoveredRoom === 'uks_gudang' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
-          <line x1="300" y1="100" x2="375" y2="100" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
-          <text x="337" y="90" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">UKS</text>
-          <text x="337" y="115" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#FFFFFF" textAnchor="middle">& GUDANG</text>
-          {hoveredRoom === 'uks_gudang' && <rect x="302" y="57" width="71" height="86" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
+          <rect x="40" y="165" width="125" height="50" rx="4" fill={hoveredRoom === 'uks_gudang' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
+          <text x="102" y="195" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">UKS / GUDANG</text>
+          {hoveredRoom === 'uks_gudang' && <rect x="42" y="167" width="121" height="46" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
         </g>
       </g>
 
-      {/* ======================================================== */}
-      {/* 4. LAHAN RENCANA & GAZEBO (SISI KIRI / BARAT)             */}
-      {/* ======================================================== */}
-      {/* Lahan Rencana Barat (Bekas PAUD) */}
+      {/* Lahan Rencana PAUD (Kiri Bawah / Barat Daya) */}
       <g 
         style={{ cursor: 'pointer' }}
         onClick={() => handleRoomClick('lahan_rencana')}
@@ -159,17 +100,17 @@ export default function FacilityMapSvg(props) {
         onMouseLeave={() => setHoveredRoom(null)}
       >
         <rect 
-          x="35" y="55" width="245" height="230" rx="8"
+          x="40" y="235" width="245" height="235" rx="8"
           fill="none" stroke="#94A3B8" strokeWidth="2" strokeDasharray="6,4"
           style={{ transition: '0.2s' }}
         />
-        <text x="157" y="160" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#64748B" textAnchor="middle">
+        <text x="162" y="340" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#64748B" textAnchor="middle">
           LAHAN RENCANA
         </text>
-        {hoveredRoom === 'lahan_rencana' && <rect x="37" y="57" width="241" height="226" fill="rgba(148,163,184,0.05)" rx="6" />}
+        {hoveredRoom === 'lahan_rencana' && <rect x="42" y="237" width="241" height="231" fill="rgba(148,163,184,0.05)" rx="6" />}
       </g>
 
-      {/* Gazebo di Lahan Rencana Barat */}
+      {/* Gazebo di atas Lahan Rencana Barat */}
       <g filter="url(#shadow-premium)">
         <g 
           style={{ cursor: 'pointer' }}
@@ -177,48 +118,95 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_lahan')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="125,230 157,205 190,230" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="120,230 195,230 185,240 130,240" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="135" y1="240" x2="135" y2="260" stroke="#78350F" strokeWidth="2.5" />
-          <line x1="180" y1="240" x2="180" y2="260" stroke="#78350F" strokeWidth="2.5" />
-          <polygon points="130,260 185,260 175,270 140,270" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
-          <text x="157" y="253" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO</text>
-          {hoveredRoom === 'gazebo_lahan' && <rect x="117" y="202" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+          <polygon points="130,370 162,345 195,370" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
+          <polygon points="125,370 200,370 190,380 135,380" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
+          <line x1="140" y1="380" x2="140" y2="400" stroke="#78350F" strokeWidth="2.5" />
+          <line x1="185" y1="380" x2="185" y2="400" stroke="#78350F" strokeWidth="2.5" />
+          <polygon points="135,400 190,400 180,410 145,410" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          <text x="162" y="393" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO</text>
+          {hoveredRoom === 'gazebo_lahan' && <rect x="122" y="342" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
         </g>
       </g>
 
-      {/* Lahan Rencana Tengah (Antara Kelas 2A & 2B) */}
-      <rect x="525" y="100" width="10" height="45" fill="none" stroke="#94A3B8" strokeWidth="1" strokeDasharray="3,2" />
-
-      {/* Lahan Rencana Kanan Bawah */}
-      <rect x="690" y="180" width="120" height="170" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
-
       {/* ======================================================== */}
-      {/* 5. POJOK KIRI BAWAH (WC & LAHAN RENCANA KECIL)            */}
+      {/* SISI TENGAH & TIMUR (UTARA - TENGAH - KANAN)              */}
       {/* ======================================================== */}
-      {/* WC Guru & Murid */}
+      
+      {/* Gedung Kelas 2B & 5B (Utara Tengah-Kanan) */}
       <g filter="url(#shadow-premium)">
         <g 
           style={{ cursor: 'pointer' }}
-          onClick={() => handleRoomClick('wc_toilet')}
-          onMouseEnter={() => setHoveredRoom('wc_toilet')}
+          onClick={() => handleRoomClick('kelas_2b_5b')}
+          onMouseEnter={() => setHoveredRoom('kelas_2b_5b')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <rect x="180" y="445" width="85" height="40" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
-          <line x1="222" y1="445" x2="222" y2="485" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.6" />
-          <text x="201" y="468" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
-          <text x="243" y="468" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#FFFFFF" textAnchor="middle">WC SISWA</text>
-          {hoveredRoom === 'wc_toilet' && <rect x="182" y="447" width="81" height="36" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="2" filter="url(#glow-blue)" />}
+          <rect x="200" y="45" width="130" height="90" rx="4" fill={hoveredRoom === 'kelas_2b_5b' ? '#60A5FA' : '#3B82F6'} style={{ transition: '0.2s' }} />
+          <line x1="200" y1="90" x2="330" y2="90" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
+          <text x="265" y="80" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill="#FFFFFF" textAnchor="middle">KELAS 2B & 5B</text>
+          <text x="265" y="110" fontFamily="var(--font-body)" fontSize="8.5" fill="#E2E8F0" textAnchor="middle">(Shift Pagi/Siang)</text>
+          {hoveredRoom === 'kelas_2b_5b' && <rect x="202" y="47" width="126" height="86" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-blue)" />}
         </g>
       </g>
 
-      {/* Lahan Rencana Kiri Bawah */}
-      <rect x="35" y="425" width="100" height="60" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
-      <text x="85" y="460" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#64748B" textAnchor="middle">LAHAN RENCANA</text>
+      {/* Lahan Rencana Tengah (Di bawah Kelas 2B & 5B) */}
+      <g 
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleRoomClick('lahan_rencana')}
+        onMouseEnter={() => setHoveredRoom('lahan_rencana')}
+        onMouseLeave={() => setHoveredRoom(null)}
+      >
+        <rect x="185" y="150" width="160" height="110" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
+        <text x="265" y="210" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#64748B" textAnchor="middle">LAHAN RENCANA</text>
+      </g>
+
+      {/* LAPANGAN UTAMA (Tengah) */}
+      <g 
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleRoomClick('olahraga')}
+        onMouseEnter={() => setHoveredRoom('olahraga')}
+        onMouseLeave={() => setHoveredRoom(null)}
+      >
+        <rect 
+          x="360" y="125" width="235" height="175" rx="8"
+          fill={hoveredRoom === 'olahraga' ? '#E9D3C0' : '#EFE3D3'}
+          stroke={hoveredRoom === 'olahraga' ? '#B45309' : '#D6C5B3'}
+          strokeWidth={hoveredRoom === 'olahraga' ? '2.5' : '1.5'}
+          style={{ transition: 'all 0.2s ease' }}
+          filter={hoveredRoom === 'olahraga' ? 'url(#shadow-premium)' : ''}
+        />
+        <rect x="380" y="145" width="195" height="135" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
+        <circle cx="477" cy="212" r="20" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
+        <g transform="translate(477, 212)">
+          <circle cx="0" cy="0" r="3" fill="#334155" />
+          <line x1="0" y1="0" x2="0" y2="-45" stroke="#334155" strokeWidth="2.5" />
+          <path d="M0,-45 C6,-48 12,-42 18,-45 L18,-39 C12,-36 6,-42 0,-39 Z" fill="#EF4444" />
+          <path d="M0,-39 C6,-42 12,-36 18,-39 L18,-33 C12,-30 6,-36 0,-33 Z" fill="#F9FAFB" stroke="#E2E8F0" strokeWidth="0.5" />
+        </g>
+        <text x="477" y="290" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle">
+          LAPANGAN
+        </text>
+      </g>
+
+      {/* Lahan Rencana Besar Kanan (Timur) */}
+      <g 
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleRoomClick('lahan_rencana')}
+        onMouseEnter={() => setHoveredRoom('lahan_rencana')}
+        onMouseLeave={() => setHoveredRoom(null)}
+      >
+        <rect x="615" y="45" width="195" height="365" rx="8" fill="none" stroke="#94A3B8" strokeWidth="2" strokeDasharray="6,4" />
+        <text x="712" y="235" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#64748B" textAnchor="middle">LAHAN RENCANA</text>
+      </g>
 
       {/* ======================================================== */}
-      {/* 6. GEDUNG UTAMA (SELATAN - 2 LANTAI DENGAN TOGGLE)       */}
+      {/* SISI BAWAH (SELATAN - GEDUNG UTAMA & TOILET)               */}
       {/* ======================================================== */}
+      
+      {/* SELASAR GEDUNG UTAMA */}
+      <rect x="350" y="315" width="460" height="20" fill="#CBD5E1" opacity="0.8" />
+      <text x="580" y="329" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9" fill="#475569" textAnchor="middle">SELASAR</text>
+
+      {/* GEDUNG UTAMA (SELATAN - 2 LANTAI DENGAN TOGGLE) */}
       <g filter="url(#shadow-premium)">
         {/* VIEW LANTAI 1 */}
         {southFloor === 1 && (
@@ -230,11 +218,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_guru')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="280,395 390,395 390,435 280,435" fill={hoveredRoom === 'l1_guru' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="280,435 390,435 390,475 280,475" fill={hoveredRoom === 'l1_guru' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="390" y1="395" x2="390" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="335" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KANTOR GURU (L1)</text>
-              {hoveredRoom === 'l1_guru' && <rect x="282" y="397" width="106" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="350,335 460,335 460,375 350,375" fill={hoveredRoom === 'l1_guru' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="350,375 460,375 460,415 350,415" fill={hoveredRoom === 'l1_guru' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="460" y1="335" x2="460" y2="415" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="405" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KANTOR GURU (L1)</text>
+              {hoveredRoom === 'l1_guru' && <rect x="352" y="337" width="106" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L1 - Kelas 1A & 4A (Tengah) */}
@@ -244,11 +232,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_kelas_1a_4a')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="390,395 530,395 530,435 390,435" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="390,435 530,435 530,475 390,475" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="530" y1="395" x2="530" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="460" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KELAS 1A/4A (L1)</text>
-              {hoveredRoom === 'l1_kelas_1a_4a' && <rect x="392" y="397" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="460,335 600,335 600,375 460,375" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="460,375 600,375 600,415 460,415" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="600" y1="335" x2="600" y2="415" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="530" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1A/4A (L1)</text>
+              {hoveredRoom === 'l1_kelas_1a_4a' && <rect x="462" y="337" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L1 - Kelas 1B & 4B (Kanan) */}
@@ -258,10 +246,10 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_kelas_1b_4b')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="530,395 670,395 670,435 530,435" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="530,435 670,435 670,475 530,475" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <text x="600" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KELAS 1B/4B (L1)</text>
-              {hoveredRoom === 'l1_kelas_1b_4b' && <rect x="532" y="397" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="600,335 740,335 740,375 600,375" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="600,375 740,375 740,415 600,415" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <text x="670" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1B/4B (L1)</text>
+              {hoveredRoom === 'l1_kelas_1b_4b' && <rect x="602" y="337" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
           </g>
         )}
@@ -276,11 +264,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_6a')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="280,395 390,395 390,435 280,435" fill={hoveredRoom === 'l2_kelas_6a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="280,435 390,435 390,475 280,475" fill={hoveredRoom === 'l2_kelas_6a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="390" y1="395" x2="390" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="335" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KELAS 6A (L2)</text>
-              {hoveredRoom === 'l2_kelas_6a' && <rect x="282" y="397" width="106" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="350,335 460,335 460,375 350,375" fill={hoveredRoom === 'l2_kelas_6a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="350,375 460,375 460,415 350,415" fill={hoveredRoom === 'l2_kelas_6a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="460" y1="335" x2="460" y2="415" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="405" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6A (L2)</text>
+              {hoveredRoom === 'l2_kelas_6a' && <rect x="352" y="337" width="106" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L2 - Kelas 6B & 3B (Tengah) */}
@@ -290,11 +278,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_6b_3b')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="390,395 530,395 530,435 390,435" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="390,435 530,435 530,475 390,475" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="530" y1="395" x2="530" y2="475" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="460" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KELAS 6B/3B (L2)</text>
-              {hoveredRoom === 'l2_kelas_6b_3b' && <rect x="392" y="397" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="460,335 600,335 600,375 460,375" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="460,375 600,375 600,415 460,415" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="600" y1="335" x2="600" y2="415" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="530" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6B/3B (L2)</text>
+              {hoveredRoom === 'l2_kelas_6b_3b' && <rect x="462" y="337" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L2 - Kelas 3C & 4C (Kanan) */}
@@ -304,37 +292,35 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_3c_4c')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="530,395 670,395 670,435 530,435" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="530,435 670,435 670,475 530,475" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <text x="600" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#FFFFFF" textAnchor="middle">KELAS 3C/4C (L2)</text>
-              {hoveredRoom === 'l2_kelas_3c_4c' && <rect x="532" y="397" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="600,335 740,335 740,375 600,375" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="600,375 740,375 740,415 600,415" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <text x="670" y="380" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 3C/4C (L2)</text>
+              {hoveredRoom === 'l2_kelas_3c_4c' && <rect x="602" y="337" width="136" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
           </g>
         )}
 
-        {/* Tangga Kiri (l1 ke l2) */}
-        <g transform="translate(180, 395)">
-          <rect x="0" y="0" width="100" height="80" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1" />
-          <line x1="0" y1="10" x2="100" y2="10" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="20" x2="100" y2="20" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="30" x2="100" y2="30" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="40" x2="100" y2="40" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="50" x2="100" y2="50" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="60" x2="100" y2="60" stroke="#475569" strokeWidth="1.5" />
-          <line x1="0" y1="70" x2="100" y2="70" stroke="#475569" strokeWidth="1.5" />
-          <text x="50" y="45" fontFamily="var(--font-heading)" fontWeight="800" fontSize="10" fill="#1E293B" textAnchor="middle">TANGGA</text>
+        {/* Tangga Akses Kiri (Sisi Kiri Gedung Utama) */}
+        <g transform="translate(350, 335)">
+          <rect x="0" y="0" width="30" height="80" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1" />
+          <line x1="5" y1="0" x2="5" y2="80" stroke="#475569" strokeWidth="1" />
+          <line x1="10" y1="0" x2="10" y2="80" stroke="#475569" strokeWidth="1" />
+          <line x1="15" y1="0" x2="15" y2="80" stroke="#475569" strokeWidth="1" />
+          <line x1="20" y1="0" x2="20" y2="80" stroke="#475569" strokeWidth="1" />
+          <line x1="25" y1="0" x2="25" y2="80" stroke="#475569" strokeWidth="1" />
+          <text x="15" y="45" fontFamily="var(--font-heading)" fontWeight="900" fontSize="8" fill="#1E293B" textAnchor="middle" transform="rotate(-90 15 45)">TANGGA</text>
         </g>
 
         {/* Ridge Crest Line */}
-        <line x1="180" y1="435" x2="670" y2="435" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.8" />
+        <line x1="350" y1="375" x2="740" y2="375" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.8" />
         
         {/* Toggle Tingkat Gedung Utama */}
-        <rect x="390" y="458" width="80" height="15" rx="3" fill="#1E293B" opacity="0.9" />
-        <text x="430" y="469" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#F8FAFC" textAnchor="middle">
+        <rect x="510" y="425" width="80" height="15" rx="3" fill="#1E293B" opacity="0.9" />
+        <text x="550" y="436" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#F8FAFC" textAnchor="middle">
           {southFloor === 1 ? "MENUJU L2 ➔" : "MENUJU L1 ➔"}
         </text>
         <rect 
-          x="390" y="458" width="80" height="15" rx="3" 
+          x="510" y="425" width="80" height="15" rx="3" 
           fill="#000000"
           fillOpacity="0"
           pointerEvents="all"
@@ -343,14 +329,55 @@ export default function FacilityMapSvg(props) {
         />
       </g>
 
+      {/* WC Guru (Di bawah Tangga Gedung Utama) */}
+      <g filter="url(#shadow-premium)">
+        <g 
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleRoomClick('wc_toilet')}
+          onMouseEnter={() => setHoveredRoom('wc_toilet')}
+          onMouseLeave={() => setHoveredRoom(null)}
+        >
+          <rect x="350" y="430" width="75" height="40" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
+          <line x1="387" y1="430" x2="387" y2="470" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.6" />
+          <text x="368" y="453" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
+          <text x="406" y="453" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
+          {hoveredRoom === 'wc_toilet' && <rect x="352" y="432" width="71" height="36" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="2" filter="url(#glow-blue)" />}
+        </g>
+      </g>
+
+      {/* WC Murid (Kanan Bawah Toilet) */}
+      <g filter="url(#shadow-premium)">
+        <g 
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleRoomClick('wc_toilet')}
+          onMouseEnter={() => setHoveredRoom('wc_toilet')}
+          onMouseLeave={() => setHoveredRoom(null)}
+        >
+          <rect x="520" y="460" width="60" height="25" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
+          <text x="550" y="475" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">WC SISWA</text>
+          {hoveredRoom === 'wc_toilet' && <rect x="522" y="462" width="56" height="21" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="1" filter="url(#glow-blue)" />}
+        </g>
+      </g>
+
+      {/* Lahan Rencana Kecil Kanan Bawah */}
+      <g 
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleRoomClick('lahan_rencana')}
+        onMouseEnter={() => setHoveredRoom('lahan_rencana')}
+        onMouseLeave={() => setHoveredRoom(null)}
+      >
+        <rect x="765" y="425" width="45" height="75" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
+        <text x="787" y="465" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#64748B" textAnchor="middle" transform="rotate(-90 787 465)">LAHAN RENCANA</text>
+      </g>
+
       {/* Kompas Mata Angin */}
-      <g transform="translate(760, 460)" opacity="0.8">
-        <circle cx="0" cy="0" r="24" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="1.5" />
-        <line x1="0" y1="-22" x2="0" y2="22" stroke="#475569" strokeWidth="1" />
-        <line x1="-22" y1="0" x2="22" y2="0" stroke="#475569" strokeWidth="1" />
-        <polygon points="0,-20 3,-5 0,0" fill="#EF4444" />
-        <polygon points="0,-20 -3,-5 0,0" fill="#F87171" />
-        <text x="0" y="-26" fontFamily="var(--font-heading)" fontWeight="900" fontSize="10" fill="#EF4444" textAnchor="middle">U</text>
+      <g transform="translate(800, 30)" opacity="0.8">
+        <circle cx="0" cy="0" r="18" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="1" />
+        <line x1="0" y1="-16" x2="0" y2="16" stroke="#475569" strokeWidth="0.8" />
+        <line x1="-16" y1="0" x2="16" y2="0" stroke="#475569" strokeWidth="0.8" />
+        <polygon points="0,-15 2,-4 0,0" fill="#EF4444" />
+        <polygon points="0,-15 -2,-4 0,0" fill="#F87171" />
+        <text x="0" y="-20" fontFamily="var(--font-heading)" fontWeight="900" fontSize="8" fill="#EF4444" textAnchor="middle">U</text>
       </g>
     </svg>
   );
