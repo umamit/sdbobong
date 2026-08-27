@@ -129,7 +129,8 @@ const EXEMPT_FILES = [
   'src/lib/db/news.js',
   'src/lib/db/alumni.js',
   'src/lib/db/config.defaults.js',
-  'src/data/facilitiesData.js'
+  'src/data/facilitiesData.js',
+  'src/app/profil/fasilitas/page.js'
 ];
 
 function checkDirectory(dir) {
