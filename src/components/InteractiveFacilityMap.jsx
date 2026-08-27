@@ -87,7 +87,7 @@ export default function InteractiveFacilityMap() {
                 boxShadow: southFloor === 1 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
               }}
             >
-              Lantai 1 (Kantor, Kepsek, & Perpus)
+              Lantai 1 (Kantor Guru & Kelas 1)
             </button>
             <button
               onClick={() => setSouthFloor(2)}
@@ -104,7 +104,7 @@ export default function InteractiveFacilityMap() {
                 boxShadow: southFloor === 2 ? '0 4px 10px rgba(11,60,93,0.15)' : 'none'
               }}
             >
-              Lantai 2 (Aula, Lab, & UKS)
+              Lantai 2 (Kelas 6 & Kelas 3/4)
             </button>
           </div>
         </div>

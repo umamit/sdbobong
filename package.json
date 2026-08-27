@@ -1,6 +1,6 @@
 {
   "name": "sdn-bobong-nextjs",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "private": true,
   "scripts": {
     "prebuild": "node scripts/check-print-safety.mjs && node scripts/check-file-lengths.mjs && prisma generate",
@@ -32,6 +32,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^12.42.2",
     "jose": "^6.2.3",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.395.0",
     "next": "^16.2.10",
     "pg": "^8.22.0",
@@ -41,6 +42,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.2.7",
     "react-hook-form": "^7.51.5",
+    "react-leaflet": "^5.0.0",
     "recharts": "^3.0.0",
     "sonner": "^1.4.41",
     "xlsx": "^0.18.5",
