@@ -221,8 +221,8 @@ export default function FacilityMapSvg(props) {
       {/* ======================================================== */}
       
       {/* SELASAR GEDUNG UTAMA */}
-      <rect x="310" y="325" width="500" height="15" fill="#CBD5E1" opacity="0.8" />
-      <text x="560" y="336" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#475569" textAnchor="middle">SELASAR</text>
+      <rect x="310" y="355" width="500" height="15" fill="#CBD5E1" opacity="0.8" />
+      <text x="560" y="366" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#475569" textAnchor="middle">SELASAR</text>
 
       <g filter="url(#shadow-premium)">
         {/* VIEW LANTAI 1 */}
@@ -235,11 +235,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_guru')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="350,340 470,340 470,380 350,380" fill={hoveredRoom === 'l1_guru' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="350,380 470,380 470,420 350,420" fill={hoveredRoom === 'l1_guru' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="470" y1="340" x2="470" y2="420" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="410" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KANTOR GURU (L1)</text>
-              {hoveredRoom === 'l1_guru' && <rect x="352" y="342" width="116" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="350,370 470,370 470,410 350,410" fill={hoveredRoom === 'l1_guru' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="350,410 470,410 470,450 350,450" fill={hoveredRoom === 'l1_guru' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="470" y1="370" x2="470" y2="450" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="410" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KANTOR GURU (L1)</text>
+              {hoveredRoom === 'l1_guru' && <rect x="352" y="372" width="116" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L1 - Kelas 1A & 4A (Tengah) */}
@@ -249,11 +249,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_kelas_1a_4a')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="470,340 625,340 625,380 470,380" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="470,380 625,380 625,420 470,420" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="625" y1="340" x2="625" y2="420" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="547" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1A/4A (L1)</text>
-              {hoveredRoom === 'l1_kelas_1a_4a' && <rect x="472" y="342" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="470,370 625,370 625,410 470,410" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="470,410 625,410 625,450 470,450" fill={hoveredRoom === 'l1_kelas_1a_4a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="625" y1="370" x2="625" y2="450" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="547" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1A/4A (L1)</text>
+              {hoveredRoom === 'l1_kelas_1a_4a' && <rect x="472" y="372" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L1 - Kelas 1B & 4B (Kanan) */}
@@ -263,10 +263,10 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l1_kelas_1b_4b')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="625,340 780,340 780,380 625,380" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="625,380 780,380 780,420 625,420" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <text x="702" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1B/4B (L1)</text>
-              {hoveredRoom === 'l1_kelas_1b_4b' && <rect x="627" y="342" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="625,370 780,370 780,410 625,410" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="625,410 780,410 780,450 625,450" fill={hoveredRoom === 'l1_kelas_1b_4b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <text x="702" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 1B/4B (L1)</text>
+              {hoveredRoom === 'l1_kelas_1b_4b' && <rect x="627" y="372" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
           </g>
         )}
@@ -281,11 +281,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_6a')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="350,340 470,340 470,380 350,380" fill={hoveredRoom === 'l2_kelas_6a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="350,380 470,380 470,420 350,420" fill={hoveredRoom === 'l2_kelas_6a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="470" y1="340" x2="470" y2="420" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="410" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6A (L2)</text>
-              {hoveredRoom === 'l2_kelas_6a' && <rect x="352" y="342" width="116" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="350,370 470,370 470,410 350,410" fill={hoveredRoom === 'l2_kelas_6a' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="350,410 470,410 470,450 350,450" fill={hoveredRoom === 'l2_kelas_6a' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="470" y1="370" x2="470" y2="450" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="410" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6A (L2)</text>
+              {hoveredRoom === 'l2_kelas_6a' && <rect x="352" y="372" width="116" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L2 - Kelas 6B & 3B (Tengah) */}
@@ -295,11 +295,11 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_6b_3b')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="470,340 625,340 625,380 470,380" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="470,380 625,380 625,420 470,420" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <line x1="625" y1="340" x2="625" y2="420" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
-              <text x="547" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6B/3B (L2)</text>
-              {hoveredRoom === 'l2_kelas_6b_3b' && <rect x="472" y="342" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="470,370 625,370 625,410 470,410" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="470,410 625,410 625,450 470,450" fill={hoveredRoom === 'l2_kelas_6b_3b' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <line x1="625" y1="370" x2="625" y2="450" stroke="#7F1D1D" strokeWidth="1.5" opacity="0.4" />
+              <text x="547" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 6B/3B (L2)</text>
+              {hoveredRoom === 'l2_kelas_6b_3b' && <rect x="472" y="372" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
 
             {/* L2 - Kelas 3C & 4C (Kanan) */}
@@ -309,16 +309,16 @@ export default function FacilityMapSvg(props) {
               onMouseEnter={() => setHoveredRoom('l2_kelas_3c_4c')}
               onMouseLeave={() => setHoveredRoom(null)}
             >
-              <polygon points="625,340 780,340 780,380 625,380" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
-              <polygon points="625,380 780,380 780,420 625,420" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
-              <text x="702" y="385" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 3C/4C (L2)</text>
-              {hoveredRoom === 'l2_kelas_3c_4c' && <rect x="627" y="342" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
+              <polygon points="625,370 780,370 780,410 625,410" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#EF4444' : '#C53030'} style={{ transition: '0.2s' }} />
+              <polygon points="625,410 780,410 780,450 625,450" fill={hoveredRoom === 'l2_kelas_3c_4c' ? '#C53030' : '#9B2C2C'} style={{ transition: '0.2s' }} />
+              <text x="702" y="415" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#FFFFFF" textAnchor="middle">KELAS 3C/4C (L2)</text>
+              {hoveredRoom === 'l2_kelas_3c_4c' && <rect x="627" y="372" width="151" height="76" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="2" filter="url(#glow-red)" />}
             </g>
           </g>
         )}
 
         {/* Tangga Akses Kiri (Sisi Kiri Gedung Utama) */}
-        <g transform="translate(310, 340)">
+        <g transform="translate(310, 370)">
           <rect x="0" y="0" width="40" height="80" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1" />
           <line x1="5" y1="0" x2="5" y2="80" stroke="#475569" strokeWidth="1" />
           <line x1="10" y1="0" x2="10" y2="80" stroke="#475569" strokeWidth="1" />
@@ -331,15 +331,15 @@ export default function FacilityMapSvg(props) {
         </g>
 
         {/* Ridge Crest Line */}
-        <line x1="310" y1="380" x2="780" y2="380" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.8" />
+        <line x1="310" y1="410" x2="780" y2="410" stroke="#FFFFFF" strokeWidth="2.5" opacity="0.8" />
         
         {/* Toggle Tingkat Gedung Utama */}
-        <rect x="520" y="430" width="80" height="15" rx="3" fill="#1E293B" opacity="0.9" />
-        <text x="560" y="441" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#F8FAFC" textAnchor="middle">
+        <rect x="520" y="460" width="80" height="15" rx="3" fill="#1E293B" opacity="0.9" />
+        <text x="560" y="471" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#F8FAFC" textAnchor="middle">
           {southFloor === 1 ? "MENUJU L2 ➔" : "MENUJU L1 ➔"}
         </text>
         <rect 
-          x="520" y="430" width="80" height="15" rx="3" 
+          x="520" y="460" width="80" height="15" rx="3" 
           fill="#000000"
           fillOpacity="0"
           pointerEvents="all"
@@ -356,11 +356,11 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('wc_toilet')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <rect x="310" y="430" width="90" height="40" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
-          <line x1="355" y1="430" x2="355" y2="470" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.6" />
-          <text x="332" y="453" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
-          <text x="377" y="453" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
-          {hoveredRoom === 'wc_toilet' && <rect x="312" y="432" width="86" height="36" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="2" filter="url(#glow-blue)" />}
+          <rect x="310" y="460" width="90" height="40" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
+          <line x1="355" y1="460" x2="355" y2="500" stroke="#FFFFFF" strokeWidth="1.5" opacity="0.6" />
+          <text x="332" y="483" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
+          <text x="377" y="483" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#FFFFFF" textAnchor="middle">WC GURU</text>
+          {hoveredRoom === 'wc_toilet' && <rect x="312" y="462" width="86" height="36" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="2" filter="url(#glow-blue)" />}
         </g>
       </g>
 
@@ -372,9 +372,9 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('wc_toilet')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <rect x="520" y="465" width="65" height="25" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
-          <text x="552" y="480" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">WC SISWA</text>
-          {hoveredRoom === 'wc_toilet' && <rect x="522" y="467" width="61" height="21" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="1" filter="url(#glow-blue)" />}
+          <rect x="520" y="485" width="65" height="25" rx="3" fill={hoveredRoom === 'wc_toilet' ? '#34D399' : '#10B981'} style={{ transition: '0.2s' }} />
+          <text x="552" y="500" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">WC SISWA</text>
+          {hoveredRoom === 'wc_toilet' && <rect x="522" y="487" width="61" height="21" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="1" filter="url(#glow-blue)" />}
         </g>
       </g>
 
@@ -385,8 +385,8 @@ export default function FacilityMapSvg(props) {
         onMouseEnter={() => setHoveredRoom('lahan_rencana')}
         onMouseLeave={() => setHoveredRoom(null)}
       >
-        <rect x="800" y="425" width="25" height="75" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
-        <text x="812" y="462" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7.5" fill="#64748B" textAnchor="middle" transform="rotate(-90 812 462)">LAHAN RENCANA</text>
+        <rect x="795" y="370" width="35" height="140" rx="4" fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4,2" />
+        <text x="812" y="440" fontFamily="var(--font-heading)" fontWeight="800" fontSize="9.5" fill="#64748B" textAnchor="middle" transform="rotate(-90 812 440)">LAHAN RENCANA</text>
       </g>
 
       {/* Kompas Mata Angin */}
