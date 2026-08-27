@@ -162,7 +162,7 @@ export default function FacilityMapSvg(props) {
         <text x="670" y="270" fontFamily="var(--font-heading)" fontWeight="800" fontSize="12" fill="#64748B" textAnchor="middle">LAHAN RENCANA</text>
       </g>
 
-      {/* Gazebo 2 di Lahan Rencana Timur */}
+      {/* Gazebo 2 di Lahan Rencana Timur (Atas) */}
       <g filter="url(#shadow-premium)">
         <g 
           style={{ cursor: 'pointer' }}
@@ -170,13 +170,31 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_timur')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="635,170 667,145 700,170" fill={hoveredRoom === 'gazebo_timur' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="630,170 705,170 695,180 640,180" fill={hoveredRoom === 'gazebo_timur' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="650" y1="180" x2="650" y2="200" stroke="#78350F" strokeWidth="2.5" />
-          <line x1="690" y1="180" x2="690" y2="200" stroke="#78350F" strokeWidth="2.5" />
-          <polygon points="640,200 695,200 685,210 650,210" fill={hoveredRoom === 'gazebo_timur' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
-          <text x="667" y="193" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 2</text>
-          {hoveredRoom === 'gazebo_timur' && <rect x="627" y="142" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+          <polygon points="635,120 667,95 700,120" fill={hoveredRoom === 'gazebo_timur' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
+          <polygon points="630,120 705,120 695,130 640,130" fill={hoveredRoom === 'gazebo_timur' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
+          <line x1="650" y1="130" x2="650" y2="150" stroke="#78350F" strokeWidth="2.5" />
+          <line x1="690" y1="130" x2="690" y2="150" stroke="#78350F" strokeWidth="2.5" />
+          <polygon points="640,150 695,150 685,160 650,160" fill={hoveredRoom === 'gazebo_timur' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          <text x="667" y="143" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 2</text>
+          {hoveredRoom === 'gazebo_timur' && <rect x="627" y="92" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
+        </g>
+      </g>
+
+      {/* Gazebo 1 di Lahan Rencana Timur (Bawah) */}
+      <g filter="url(#shadow-premium)">
+        <g 
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleRoomClick('gazebo_lahan')}
+          onMouseEnter={() => setHoveredRoom('gazebo_lahan')}
+          onMouseLeave={() => setHoveredRoom(null)}
+        >
+          <polygon points="635,210 667,185 700,210" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
+          <polygon points="630,210 705,210 695,220 640,220" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
+          <line x1="650" y1="220" x2="650" y2="240" stroke="#78350F" strokeWidth="2.5" />
+          <line x1="690" y1="220" x2="690" y2="240" stroke="#78350F" strokeWidth="2.5" />
+          <polygon points="640,240 695,240 685,250 650,250" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          <text x="667" y="233" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO 1</text>
+          {hoveredRoom === 'gazebo_lahan' && <rect x="627" y="182" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
         </g>
       </g>
 
@@ -196,24 +214,6 @@ export default function FacilityMapSvg(props) {
           LAHAN RENCANA
         </text>
         {hoveredRoom === 'lahan_rencana' && <rect x="42" y="247" width="246" height="256" fill="rgba(148,163,184,0.05)" rx="6" />}
-      </g>
-
-      {/* Gazebo di Lahan Rencana Barat */}
-      <g filter="url(#shadow-premium)">
-        <g 
-          style={{ cursor: 'pointer' }}
-          onClick={() => handleRoomClick('gazebo_lahan')}
-          onMouseEnter={() => setHoveredRoom('gazebo_lahan')}
-          onMouseLeave={() => setHoveredRoom(null)}
-        >
-          <polygon points="135,390 167,365 200,390" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="130,390 205,390 195,400 140,400" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="145" y1="400" x2="145" y2="420" stroke="#78350F" strokeWidth="2.5" />
-          <line x1="190" y1="400" x2="190" y2="420" stroke="#78350F" strokeWidth="2.5" />
-          <polygon points="140,420 195,420 185,430 150,430" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
-          <text x="167" y="413" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#FFFFFF" textAnchor="middle">GAZEBO</text>
-          {hoveredRoom === 'gazebo_lahan' && <rect x="127" y="362" width="81" height="71" fill="none" stroke="#FFFFFF" strokeWidth="2.5" rx="4" filter="url(#glow-blue)" />}
-        </g>
       </g>
 
       {/* ======================================================== */}
