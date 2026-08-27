@@ -118,6 +118,23 @@ export default function useConfigHandlers({
     }
   };
 
+  const handleAiGreetingToggle = async (e) => {
+    const isEnabled = e.target.checked;
+    try {
+      const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action_type: 'toggle_ai_greeting', ai_greeting_enabled: isEnabled }) });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('success', isEnabled ? 'Sapaan Aim AI AKTIF.' : 'Sapaan Aim AI NONAKTIF.');
+        setConfig(prev => ({ ...prev, stats: { ...(prev.stats || {}), ai_greeting_enabled: isEnabled } }));
+        router.refresh();
+      } else {
+        showToast('danger', data.error || 'Gagal mengubah setelan sapaan AI.');
+      }
+    } catch (err) {
+      showToast('danger', 'Terjadi kesalahan: ' + err.message);
+    }
+  };
+
   const handleHeroBgUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -270,6 +287,7 @@ export default function useConfigHandlers({
     handleAnnouncementsUpdate,
     handleMaintenanceModeToggle,
     handleAllowCopyToggle,
+    handleAiGreetingToggle,
     handleHeroBgUpdate,
     handleContactsUpdate,
     handleDbToggle,

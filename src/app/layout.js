@@ -130,7 +130,7 @@ export default async function RootLayout({ children }) {
         )}
         <main>{children}</main>
         {!isPrintableForm && !isDashboardOrAuth && <Footer />}
-        {!isPrintableForm && !isDashboardOrAuth && <ChatWidget />}
+        {!isPrintableForm && !isDashboardOrAuth && <ChatWidget greetingEnabled={config.stats?.ai_greeting_enabled !== false} />}
         {!isPrintableForm && !isDashboardOrAuth && <AnnouncementModal />}
         {!isPrintableForm && !isDashboardOrAuth && <MobileBottomTabBar />}
         <PWAInstallPrompt />

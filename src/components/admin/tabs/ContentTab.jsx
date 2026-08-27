@@ -9,6 +9,7 @@ export default function ContentTab() {
     config,
     setConfig,
     handleAllowCopyToggle,
+    handleAiGreetingToggle,
     handleAnnouncementsUpdate,
     handleMaintenanceModeToggle,
     handleStatsUpdate
@@ -94,6 +95,49 @@ export default function ContentTab() {
                           position: 'absolute',
                           height: '20px', width: '20px',
                           left: config?.stats?.allow_copy ? '26px' : '4px',
+                          bottom: '4px',
+                          backgroundColor: 'white',
+                          transition: '0.4s',
+                          borderRadius: '50%'
+                        }} />
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sapaan Otomatis Aim AI (Auto-Greeting) */}
+              <div className="settings-card" style={{ gridColumn: 'span 2', borderColor: config?.stats?.ai_greeting_enabled ? '#12A5B8' : 'var(--border-color)', transition: 'all 0.3s ease' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
+                  <div style={{ flex: '1', minWidth: '280px' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, color: config?.stats?.ai_greeting_enabled ? '#12A5B8' : 'var(--text-color)', transition: 'color 0.3s' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      Sapaan Otomatis Aim AI
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem', marginBottom: 0 }}>
+                      Jika aktif, Aim AI akan menampilkan gelembung sapaan kepada pengunjung secara otomatis 3 detik setelah membuka website. Isi sapaan disesuaikan dengan waktu kunjungan (pagi, siang, sore, malam).
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <label style={{ display: 'inline-block', position: 'relative', width: '50px', height: '28px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={!!config?.stats?.ai_greeting_enabled}
+                        onChange={handleAiGreetingToggle}
+                        style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
+                      />
+                      <span style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: config?.stats?.ai_greeting_enabled ? '#12A5B8' : '#ccc',
+                        transition: '0.4s',
+                        borderRadius: '34px',
+                        boxShadow: config?.stats?.ai_greeting_enabled ? '0 0 10px rgba(18, 165, 184, 0.4)' : 'none'
+                      }}>
+                        <span style={{
+                          position: 'absolute',
+                          height: '20px', width: '20px',
+                          left: config?.stats?.ai_greeting_enabled ? '26px' : '4px',
                           bottom: '4px',
                           backgroundColor: 'white',
                           transition: '0.4s',

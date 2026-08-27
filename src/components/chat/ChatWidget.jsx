@@ -12,9 +12,18 @@ import ChatMessages from './ChatMessages';
 import QuickPrompts from './QuickPrompts';
 import ChatInput from './ChatInput';
 
-export default function ChatWidget() {
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) return 'Selamat pagi! Ada yang bisa Aim bantu hari ini?';
+  if (h >= 12 && h < 15) return 'Selamat siang! Ada yang ingin kamu tanyakan?';
+  if (h >= 15 && h < 18) return 'Selamat sore! Ada info sekolah yang ingin kamu cari?';
+  return 'Selamat malam! Ada yang bisa Aim bantu?';
+}
+
+export default function ChatWidget({ greetingEnabled = true }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showBadge, setShowBadge] = useState(true);
+  const [showGreeting, setShowGreeting] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -50,6 +59,20 @@ export default function ChatWidget() {
       stopSpeaking(setActiveSpeakingIndex);
     };
   }, []);
+
+  // Tampilkan gelembung sapaan setelah 3 detik (hanya jika greetingEnabled & badge masih muncul)
+  useEffect(() => {
+    if (!greetingEnabled || !showBadge) return;
+    const t = setTimeout(() => setShowGreeting(true), 3000);
+    return () => clearTimeout(t);
+  }, [greetingEnabled, showBadge]);
+
+  // Auto-sembunyikan gelembung sapaan setelah 8 detik
+  useEffect(() => {
+    if (!showGreeting) return;
+    const t = setTimeout(() => setShowGreeting(false), 8000);
+    return () => clearTimeout(t);
+  }, [showGreeting]);
 
   // Memutar suara otomatis jika sound diaktifkan
   useEffect(() => {
@@ -131,7 +154,14 @@ export default function ChatWidget() {
 
   return (
     <div className={`${styles.aimAiContainer} no-print`}>
-      <ChatToggle isOpen={isOpen} toggleChat={toggleChat} showBadge={showBadge} />
+      <ChatToggle
+        isOpen={isOpen}
+        toggleChat={toggleChat}
+        showBadge={showBadge}
+        showGreeting={showGreeting && !isOpen}
+        greetingText={getGreeting()}
+        onGreetingClick={() => { setShowGreeting(false); toggleChat(); }}
+      />
       <ChatWindow isOpen={isOpen}>
         <ChatHeader 
           isSoundEnabled={isSoundEnabled} 

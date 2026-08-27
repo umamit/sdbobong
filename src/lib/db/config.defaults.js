@@ -81,6 +81,7 @@ export const DEFAULT_STATS = {
   hero_background: '',       // URL gambar/video hero (kosong = gradient default)
   allow_copy: false,         // Izinkan copy-paste konten publik
   maintenance_mode: false,   // Mode pemeliharaan
+  ai_greeting_enabled: true, // Sapaan otomatis Aim AI saat halaman dibuka
   marquee_speed: 40,         // Kecepatan teks berjalan (detik)
   visitor_count: 345,        // Counter pengunjung default (tertinggi)
 

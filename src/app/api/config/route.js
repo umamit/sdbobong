@@ -24,6 +24,7 @@ export async function POST(request) {
     let force_local_cache;
     let maintenance_mode;
     let allow_copy;
+    let ai_greeting_enabled;
     let nama_humas, wa_humas, jabatan_humas, nip_humas;
     let nama_operator, wa_operator, jabatan_operator, nip_operator;
     let wa_floating, email_sekolah;
@@ -48,6 +49,7 @@ export async function POST(request) {
       force_local_cache = body.force_local_cache;
       maintenance_mode = body.maintenance_mode;
       allow_copy = body.allow_copy;
+      ai_greeting_enabled = body.ai_greeting_enabled;
       
       nama_humas = body.nama_humas;
       wa_humas = body.wa_humas;
@@ -136,6 +138,9 @@ export async function POST(request) {
     } else if (actionType === 'toggle_allow_copy') {
       if (!config.stats) config.stats = {};
       config.stats.allow_copy = allow_copy === true;
+    } else if (actionType === 'toggle_ai_greeting') {
+      if (!config.stats) config.stats = {};
+      config.stats.ai_greeting_enabled = ai_greeting_enabled === true;
     } else if (actionType === 'popup_announcement') {
       const popup = parsedJsonBody.popup_announcement || {};
       config.popup_announcement = {
