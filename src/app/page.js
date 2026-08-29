@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { loadNews, loadWebConfig, loadTeachers } from '../lib/database';
+import { loadNews, loadWebConfig, loadTeachers, loadStudents } from '../lib/database';
 import NewsCard from '../components/NewsCard';
 import StatsCounter from '../components/StatsCounter';
 import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../components/FramerReveal';
@@ -11,15 +11,16 @@ export const revalidate = 0; // Disable compile-time cache to fetch fresh conten
 
 export default async function Home() {
   noStore(); // Force dynamic fetching and bypass any cached render
-  const [allNews, config, teachers] = await Promise.all([
+  const [allNews, config, teachers, students] = await Promise.all([
     loadNews().catch(err => { console.error("Error loadNews in Home:", err); return []; }),
     loadWebConfig().catch(err => { console.error("Error loadWebConfig in Home:", err); return {}; }),
-    loadTeachers().catch(err => { console.error("Error loadTeachers in Home:", err); return []; })
+    loadTeachers().catch(err => { console.error("Error loadTeachers in Home:", err); return []; }),
+    loadStudents().catch(err => { console.error("Error loadStudents in Home:", err); return []; })
   ]);
   const newsList = (allNews || []).slice(0, 3);
   const defaultStats = {
-    siswa_aktif: 205,
-    guru_staf: 14,
+    siswa_aktif: students.length || 286,
+    guru_staf: teachers.filter(t => t.status === 'Aktif' || !t.status).length || 14,
     ruang_kelas: 9,
     akreditasi: "B",
     rombel: 6,
@@ -30,7 +31,8 @@ export default async function Home() {
   };
   const stats = {
     ...defaultStats,
-    ...(config.stats || {})
+    ...(config.stats || {}),
+    siswa_aktif: students.length || config.stats?.siswa_aktif || 286 // Selalu prioritaskan jumlah baris siswa riil
   };
   const contacts = config.ppdb_contacts || {};
   const operatorPhone = (contacts.wa_operator || "").replace(/[^0-9]/g, '') || "6281234567890";
