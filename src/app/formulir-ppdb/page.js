@@ -71,7 +71,7 @@ export default function FormulirPPDBPrint() {
  
         <div style={{ textAlign: 'center', marginBottom: '0.3rem' }}>
           <h2 style={{ fontSize: '1.05rem', fontFamily: 'var(--font-heading)', textDecoration: 'underline', margin: '0 0 2px 0' }}>FORMULIR PENDAFTARAN PESERTA DIDIK BARU (PPDB)</h2>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: 600, margin: 0 }}>Tahun Ajaran 2026/2027</p>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-main)', fontWeight: 600, margin: 0 }}>Tahun Ajaran {new Date().getFullYear()}/{new Date().getFullYear() + 1}</p>
         </div>
  
         {/* Section 1: Data Calon Siswa */}
@@ -158,7 +158,7 @@ export default function FormulirPPDBPrint() {
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Panitia PPDB SDN Bobong</div>
           </div>
           <div className="sig-box">
-            <div>Bobong, .................................... 2026</div>
+            <div>Bobong, .................................... {new Date().getFullYear()}</div>
             <div style={{ fontWeight: 'bold', textDecoration: 'underline', marginBottom: '2px' }}>.............................................</div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Orang Tua / Wali Calon Siswa</div>
           </div>
