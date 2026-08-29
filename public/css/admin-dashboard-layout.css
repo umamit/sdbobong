@@ -404,30 +404,7 @@
 .overview-card.rose:hover {
     border-color: rgba(244, 63, 94, 0.25);
 }
-.overview-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
-}
-.overview-card.accent::after {
-    background: linear-gradient(180deg, var(--emerald) 0%, #059669 100%);
-}
-.overview-card.warning::after {
-    background: linear-gradient(180deg, var(--accent) 0%, #d97706 100%);
-}
-.overview-card.purple::after {
-    background: linear-gradient(180deg, var(--violet) 0%, #7c3aed 100%);
-}
-.overview-card.cyan::after {
-    background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
-}
-.overview-card.rose::after {
-    background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
-}
+
 .overview-card-title {
     font-size: 0.75rem;
     font-weight: 700;
