@@ -63,9 +63,12 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
 
   const ppdbConfig = config?.stats?.page_contents?.ppdb || {};
 
-  const banner_title = ppdbConfig.banner_title || "PPDB TA 2026/2027";
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+
+  const banner_title = ppdbConfig.banner_title || `PPDB TA ${currentYear}/${nextYear}`;
   const banner_text = ppdbConfig.banner_text || "Portal resmi Penerimaan Peserta Didik Baru SD Negeri Bobong secara daring dan transparan.";
-  const syarat_usia = ppdbConfig.syarat_usia || "Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli 2026. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.";
+  const syarat_usia = ppdbConfig.syarat_usia || `Calon peserta didik baru harus berusia minimal 6 (enam) tahun pada tanggal 1 Juli ${currentYear}. Anak berusia 7 tahun akan diprioritaskan dalam penerimaan kuota utama sesuai instruksi Dinas Pendidikan Kabupaten Pulau Taliabu.`;
   
   const syarat_berkas = ppdbConfig.syarat_berkas || [
     "Scan Akta Kelahiran asli (Format PDF, 150KB - 350KB) *",
@@ -82,8 +85,8 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
 
   const faqData = ppdbConfig.faq || [
     {
-      q: "Bagaimana jika anak belum berusia 6 tahun pada 1 Juli 2026?",
-      a: "Calon siswa yang berusia kurang dari 6 tahun (minimal 5 tahun 6 bulan) dapat dipertimbangkan jika memiliki potensi kecerdasan istimewa atau kesiapan psikologis, yang dibuktikan dengan rekomendasi psikolog profesional atau surat keterangan dari dewan guru sekolah asal."
+      q: `Bagaimana jika anak belum berusia 6 tahun pada 1 Juli ${currentYear}?`,
+      a: `Calon siswa yang berusia kurang dari 6 tahun (minimal 5 tahun 6 bulan) dapat dipertimbangkan jika memiliki potensi kecerdasan istimewa atau kesiapan psikologis, yang dibuktikan dengan rekomendasi psikolog profesional atau surat keterangan dari dewan guru sekolah asal.`
     },
     {
       q: "Apakah ada pungutan biaya pendaftaran PPDB di SD Negeri Bobong?",
@@ -95,15 +98,15 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
     },
     {
       q: "Kapan pengumuman hasil seleksi diumumkan?",
-      a: "Hasil seleksi PPDB SD Negeri Bobong akan diumumkan secara resmi pada tanggal 06 Juli 2026. Pengumuman akan ditempel di gerbang sekolah, dikirim ke grup koordinasi wali murid baru, serta diinfokan di halaman berita website ini."
+      a: `Hasil seleksi PPDB SD Negeri Bobong akan diumumkan secara resmi pada tanggal 06 Juli ${currentYear}. Pengumuman akan ditempel di gerbang sekolah, dikirim ke grup koordinasi wali murid baru, serta diinfokan di halaman berita website ini.`
     }
   ];
 
   const jadwal = ppdbConfig.jadwal || [
-    { activity: "Pendaftaran Online/Offline", dates: "01 Juni - 30 Juni 2026" },
-    { activity: "Verifikasi Berkas & Wawancara", dates: "01 Juli - 03 Juli 2026 (08.00 - 12.00 WIT)" },
-    { activity: "Pengumuman Hasil Seleksi", dates: "06 Juli 2026" },
-    { activity: "Daftar Ulang Siswa Baru", dates: "07 Juli - 10 Juli 2026" }
+    { activity: "Pendaftaran Online/Offline", dates: `01 Juni - 30 Juni ${currentYear}` },
+    { activity: "Verifikasi Berkas & Wawancara", dates: `01 Juli - 03 Juli ${currentYear} (08.00 - 12.00 WIT)` },
+    { activity: "Pengumuman Hasil Seleksi", dates: `06 Juli ${currentYear}` },
+    { activity: "Daftar Ulang Siswa Baru", dates: `07 Juli - 10 Juli ${currentYear}` }
   ];
 
   return (
