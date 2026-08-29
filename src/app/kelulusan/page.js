@@ -9,6 +9,7 @@ export const metadata = {
 };
 
 export default function GraduationPage() {
+  const currentYear = new Date().getFullYear();
   return (
     <>
       {/* Page Header */}
@@ -16,7 +17,7 @@ export default function GraduationPage() {
         <div className="container hero-content">
           <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Portal Kelulusan Siswa</h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>
-            Halaman resmi pengumuman hasil kelulusan siswa-siswi Kelas VI SD Negeri Bobong Tahun Pelajaran 2025/2026.
+            Halaman resmi pengumuman hasil kelulusan siswa-siswi Kelas VI SD Negeri Bobong Tahun Pelajaran {currentYear - 1}/{currentYear}.
           </p>
         </div>
       </section>

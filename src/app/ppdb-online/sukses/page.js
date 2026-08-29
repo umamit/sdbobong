@@ -140,7 +140,7 @@ export default function PPDBSukses() {
                 <div className="receipt-row" style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.5rem' }}>
                   <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Tahun Ajaran</span>
                   <span style={{ fontSize: '0.8rem', color: '#0f172a', fontWeight: 600 }}>
-                    {receipt?.tahun_ajaran || '2026/2027'}
+                    {receipt?.tahun_ajaran || `${new Date().getFullYear()}/${new Date().getFullYear() + 1}`}
                   </span>
                 </div>
 

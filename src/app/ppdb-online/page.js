@@ -238,7 +238,7 @@ export default function PPDBOnlineForm() {
               FORMULIR PENDAFTARAN PPDB ONLINE
             </h2>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, fontWeight: 500 }}>
-              SD NEGERI BOBONG | TAHUN AJARAN 2026/2027
+              SD NEGERI BOBONG | TAHUN AJARAN {new Date().getFullYear()}/{new Date().getFullYear() + 1}
             </p>
             <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem' }}>
               Silakan isi data calon siswa baru dengan lengkap dan benar sesuai dengan berkas Kartu Keluarga asli.

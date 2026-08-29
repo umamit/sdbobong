@@ -214,7 +214,7 @@ export default function GraduationClient() {
 
               {/* Letter Opener */}
               <p style={{ color: '#333', lineHeight: '1.6', marginBottom: 'var(--space-sm)' }}>
-                Kepala Sekolah, SD Negeri Bobong, berdasarkan kriteria kelulusan dan hasil rapat dewan pendidik tentang penentuan kelulusan siswa kelas VI Tahun Ajaran 2025/2026 tanggal 15 Juni 2026, menetapkan bahwa:
+                Kepala Sekolah, SD Negeri Bobong, berdasarkan kriteria kelulusan dan hasil rapat dewan pendidik tentang penentuan kelulusan siswa kelas VI Tahun Ajaran {new Date().getFullYear() - 1}/{new Date().getFullYear()} tanggal 15 Juni {new Date().getFullYear()}, menetapkan bahwa:
               </p>
 
               {/* Student Details Box */}
@@ -271,14 +271,14 @@ export default function GraduationClient() {
               >
                 <p style={{ margin: '0 0 4px', fontSize: '1.1rem', fontWeight: 'bold', color: '#047857' }}>DINYATAKAN:</p>
                 <h1 style={{ margin: '0', fontSize: '2.5rem', color: '#047857', fontWeight: '800', letterSpacing: '1.5px' }}>LULUS</h1>
-                <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: '#065f46' }}>Dari Satuan Pendidikan SD Negeri Bobong Tahun Ajaran 2025/2026</p>
+                <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: '#065f46' }}>Dari Satuan Pendidikan SD Negeri Bobong Tahun Ajaran {new Date().getFullYear() - 1}/{new Date().getFullYear()}</p>
               </div>
 
               {/* Letter Footer/Signatures */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginTop: 'var(--space-lg)' }}>
                 <div />
                 <div style={{ textAlign: 'center', fontSize: '0.95rem', color: '#111' }}>
-                  <p style={{ margin: '0' }}>Bobong, 15 Juni 2026</p>
+                  <p style={{ margin: '0' }}>Bobong, 15 Juni {new Date().getFullYear()}</p>
                   <p style={{ margin: '0 0 60px' }}><strong>Kepala Sekolah, SD Negeri Bobong,</strong></p>
                   <p style={{ margin: '0', textDecoration: 'underline' }}><strong>KASMUDIN, S.Pd.SD</strong></p>
                   <p style={{ margin: '0', fontSize: '0.85rem', color: '#444' }}>NIP. 19780112 200801 1 015</p>

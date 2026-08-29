@@ -21,7 +21,7 @@ export async function POST(req) {
 
     // --- Step 1: Programmatic rule-based detection (always runs) ---
     const flagged = [];
-    const REGISTRATION_YEAR = 2026;
+    const REGISTRATION_YEAR = new Date().getFullYear();
 
     for (const r of records) {
       const issues = [];

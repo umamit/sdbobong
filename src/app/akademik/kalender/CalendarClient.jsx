@@ -27,12 +27,15 @@ export default function CalendarClient({ initialCalendar = [], kepalaSekolah, ni
     { year: 2027, monthIndex: 4, label: "Mei 2027" }, { year: 2027, monthIndex: 5, label: "Juni 2027" }
   ];
 
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+
   return (
     <>
       <section className="hero no-print" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
           <h1 className="hero-title" style={{ fontSize: '2.5rem' }}>Kalender Pendidikan</h1>
-          <p className="hero-text" style={{ marginBottom: 0 }}>Tahun Ajaran 2026/2027 — Rincian KBM dan Analisis Pekan Efektif SDN Bobong.</p>
+          <p className="hero-text" style={{ marginBottom: 0 }}>Tahun Ajaran {currentYear}/{nextYear} — Rincian KBM dan Analisis Pekan Efektif SDN Bobong.</p>
         </div>
       </section>
 
@@ -63,13 +66,13 @@ export default function CalendarClient({ initialCalendar = [], kepalaSekolah, ni
 
           <div className="print-only" style={{ display: 'none', textAlign: 'center', marginBottom: '20px' }}>
             <h2 style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 700, textTransform: 'uppercase' }}>KALENDER PENDIDIKAN & RINCIAN PEKAN EFEKTIF (RPE)</h2>
-            <h3 style={{ margin: 0, fontSize: '12px', fontWeight: 600 }}>TAHUN AJARAN 2026/2027</h3>
+            <h3 style={{ margin: 0, fontSize: '12px', fontWeight: 600 }}>TAHUN AJARAN {currentYear}/{nextYear}</h3>
           </div>
 
           <div className="no-print" style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
             <div style={{ display: 'inline-flex', background: 'rgba(18, 165, 184, 0.08)', padding: '4px', borderRadius: '9999px', gap: '4px' }}>
-              <button onClick={() => setSemester('ganjil')} style={{ padding: '0.5rem 1.5rem', borderRadius: '9999px', border: 'none', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', backgroundColor: semester === 'ganjil' ? 'var(--primary)' : 'transparent', color: semester === 'ganjil' ? '#ffffff' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>Ganjil (2026)</button>
-              <button onClick={() => setSemester('genap')} style={{ padding: '0.5rem 1.5rem', borderRadius: '9999px', border: 'none', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', backgroundColor: semester === 'genap' ? 'var(--primary)' : 'transparent', color: semester === 'genap' ? '#ffffff' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>Genap (2027)</button>
+              <button onClick={() => setSemester('ganjil')} style={{ padding: '0.5rem 1.5rem', borderRadius: '9999px', border: 'none', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', backgroundColor: semester === 'ganjil' ? 'var(--primary)' : 'transparent', color: semester === 'ganjil' ? '#ffffff' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>Ganjil ({currentYear})</button>
+              <button onClick={() => setSemester('genap')} style={{ padding: '0.5rem 1.5rem', borderRadius: '9999px', border: 'none', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', backgroundColor: semester === 'genap' ? 'var(--primary)' : 'transparent', color: semester === 'genap' ? '#ffffff' : 'var(--primary-dark)', transition: 'all 0.3s ease' }}>Genap ({nextYear})</button>
             </div>
           </div>
 
