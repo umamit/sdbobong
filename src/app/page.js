@@ -94,7 +94,7 @@ export default async function Home() {
         "telephone": `+${operatorPhone}`,
         "npsn": "60200589",
         "accreditationRating": stats.akreditasi || "B",
-        "numberOfStudents": stats.siswa_aktif || 316,
+        "numberOfStudents": stats.siswa_aktif || 286,
         "numberOfEmployees": stats.guru_staf || 23
       },
       {
