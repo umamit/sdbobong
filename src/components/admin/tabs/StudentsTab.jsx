@@ -41,46 +41,46 @@ export default function StudentsTab() {
             <div className="admin-table">
               
               {/* Premium Stat Cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
-                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#dcfce7', color: '#15803d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                  <div className="bg-green-100 text-green-700 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Total Siswa Aktif</h4>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.status === 'Aktif').length} Siswa</p>
+                    <h4 className="m-0 text-xs text-slate-500 font-semibold">Total Siswa Aktif</h4>
+                    <p className="m-0 text-xl font-extrabold text-slate-900">{students.filter(s => s.status === 'Aktif').length} Siswa</p>
                   </div>
                 </div>
 
-                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#e0f2fe', color: '#0369a1', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                  <div className="bg-sky-100 text-sky-700 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Laki-laki (Aktif)</h4>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Laki-laki' && s.status === 'Aktif').length} Siswa</p>
+                    <h4 className="m-0 text-xs text-slate-500 font-semibold">Laki-laki (Aktif)</h4>
+                    <p className="m-0 text-xl font-extrabold text-slate-900">{students.filter(s => (s.gender === 'Laki-laki' || s.gender?.toLowerCase()?.trim() === 'l') && s.status === 'Aktif').length} Siswa</p>
                   </div>
                 </div>
 
-                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#fce7f3', color: '#be185d', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                  <div className="bg-pink-100 text-pink-700 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Perempuan (Aktif)</h4>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>{students.filter(s => s.gender === 'Perempuan' && s.status === 'Aktif').length} Siswa</p>
+                    <h4 className="m-0 text-xs text-slate-500 font-semibold">Perempuan (Aktif)</h4>
+                    <p className="m-0 text-xl font-extrabold text-slate-900">{students.filter(s => (s.gender === 'Perempuan' || s.gender?.toLowerCase()?.trim() === 'p') && s.status === 'Aktif').length} Siswa</p>
                   </div>
                 </div>
 
-                <div style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ backgroundColor: '#f1f5f9', color: '#475569', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                  <div className="bg-slate-100 text-slate-600 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                   </div>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Sebaran Kelas</h4>
-                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px', fontSize: '0.7rem', fontWeight: 700 }}>
+                    <h4 className="m-0 text-xs text-slate-500 font-semibold">Sebaran Kelas</h4>
+                    <div className="flex gap-1 flex-wrap mt-1.5 text-[0.7rem] font-bold">
                       {[1, 2, 3, 4, 5, 6].map(cls => (
-                        <span key={cls} title={`Kelas ${cls}`} style={{ display: 'inline-block', padding: '2px 4px', borderRadius: '4px', backgroundColor: '#f1f5f9', color: '#334155' }}>
+                        <span key={cls} title={`Kelas ${cls}`} className="inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
                           K{cls}:{students.filter(s => s.class?.startsWith(String(cls)) && s.status === 'Aktif').length}
                         </span>
                       ))}
