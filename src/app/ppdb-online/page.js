@@ -226,8 +226,7 @@ export default function PPDBOnlineForm() {
           background: '#ffffff',
           borderRadius: '16px',
           boxShadow: 'var(--shadow-lg)',
-          border: '1px solid var(--border-color)',
-          borderTop: '6px solid var(--formal-blue)'
+          border: '1px solid var(--border-color)'
         }}>
           <div className="form-title-section" style={{
             textAlign: 'center',
