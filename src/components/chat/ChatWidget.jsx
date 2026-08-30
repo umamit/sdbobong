@@ -39,6 +39,28 @@ export default function ChatWidget({ greetingEnabled = true }) {
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Pulihkan riwayat obrolan dari sessionStorage jika tersedia (Aman SSR)
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('aim_ai_chat_history');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+        }
+      }
+    } catch (e) {}
+  }, []);
+
+  // Simpan riwayat obrolan ke sessionStorage setiap kali ada pesan baru
+  useEffect(() => {
+    try {
+      if (messages.length > 1) {
+        sessionStorage.setItem('aim_ai_chat_history', JSON.stringify(messages));
+      }
+    } catch (e) {}
+  }, [messages]);
+
   // Auto-scroll ke pesan terbaru
   useEffect(() => {
     if (chatEndRef.current) {

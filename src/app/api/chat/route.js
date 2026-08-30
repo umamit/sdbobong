@@ -283,8 +283,8 @@ export async function POST(req) {
     // 4. Susun System Instruction secara dinamis menggunakan RAG (Retrieval-Augmented Generation) Lokal
     const queryLower = latestMessage.toLowerCase();
 
-    // Dapatkan history 3 pesan terakhir dari pengguna untuk pendeteksian konteks multi-turn
-    const userHistoryMessages = messages.filter(m => m.role === 'user').slice(-3);
+    // Dapatkan history 8 pesan terakhir dari pengguna untuk pendeteksian konteks multi-turn yang lebih mendalam
+    const userHistoryMessages = messages.filter(m => m.role === 'user').slice(-8);
     const queryForRag = userHistoryMessages.map(m => m.content).join(" ").toLowerCase();
 
     // Rambu-rambu apakah user menyapa secara umum
@@ -498,10 +498,11 @@ Selalu gunakan tanggal hari ini sebagai referensi untuk menentukan apakah suatu 
 - Jika pengguna menanyakan hal di luar topik sekolah (politik praktis, hal-hal sensitif, teknologi tingkat lanjut yang tidak ada hubungannya, pemrograman rumit, dll.), arahkan kembali ke topik sekolah dengan sopan dan humoris/ramah. Contoh: "Wah, pertanyaan yang menarik! Tapi sebagai Aim AI, saya lebih jago menceritakan serunya belajar di SD Negeri Bobong atau info pendaftaran PPDB nih. Apakah Bapak/Ibu ingin tahu syarat pendaftaran PPDB kita?"
 `;
 
-    // 5. Kirim ke Groq dengan streaming
+    // 5. Kirim ke Groq dengan streaming (Sliding Window 12 dialog pesan aktif terakhir)
+    const recentMessages = messages.slice(-12);
     const formattedMessages = [
       { role: "system", content: systemInstruction },
-      ...messages.map(m => ({
+      ...recentMessages.map(m => ({
         role: m.role === 'assistant' ? 'assistant' : 'user',
         content: m.content
       }))
