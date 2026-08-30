@@ -291,6 +291,10 @@ export async function POST(req) {
     const isGenericGreeting = queryForRag.trim().length < 8 || 
       ['halo', 'hei', 'hy', 'hi', 'pagi', 'siang', 'sore', 'malam', 'assalamualaikum', 'salam', 'tanya', 'ask'].some(kw => queryForRag.includes(kw));
 
+    // Identifikasi data Kepala Sekolah secara presisi dari database dewan guru
+    const kepalaSekolahObj = teachersList.find(t => t.role?.toLowerCase()?.includes('kepala sekolah')) || null;
+    const namaKepalaSekolah = kepalaSekolahObj ? `${kepalaSekolahObj.name}${kepalaSekolahObj.nip ? ` (NIP: ${kepalaSekolahObj.nip})` : ''}` : "Belum diisi di database";
+
     // Base System Instruction (Selalu disertakan)
     let systemInstruction = `
 Kamu adalah "Aim AI", asisten virtual pintar dan ramah yang mewakili SD Negeri Bobong, Kabupaten Pulau Taliabu, Maluku Utara.
@@ -313,6 +317,7 @@ Tugas utamamu adalah membantu pengunjung (khususnya wali murid, calon siswa, dan
 === PENGETAHUAN RESMI SEKOLAH (DINAMIS DARI DATABASE) ===
 1. Profil & Kontak Ringkas Sekolah:
    - Nama Resmi Sekolah: SD Negeri Bobong
+   - Kepala Sekolah Saat Ini: **${namaKepalaSekolah}**
    - NPSN: ${npsn}
    - Status Sekolah: ${statusSekolah}
    - Akreditasi: ${akreditasi}

@@ -87,6 +87,23 @@ Sekolah kami memiliki berbagai fasilitas penunjang KBM yang memadai:
 - **Pojok Baca:** Tempat literasi membaca harian murid.`;
   }
 
+  if (q.includes("kepala sekolah") || q.includes("kepsek") || q.includes("guru") || q.includes("pengajar") || q.includes("staf") || q.includes("pendidik")) {
+    const beranda = schoolData.beranda || {};
+    const sambutanTitle = beranda.welcome_title || "Mendidik dengan Hati dan Budaya Taliabu";
+    const sambutanQuote = beranda.welcome_quote || "Pendidikan bukan sekadar mengisi wadah yang kosong, melainkan menyalakan lentera karakter anak...";
+
+    return `${welcomeMessage}
+
+**Informasi Pimpinan & Dewan Guru SD Negeri Bobong:**
+- **Kepala Sekolah:** SD Negeri Bobong dipimpin oleh Kepala Sekolah bersama dewan guru yang berdedikasi tinggi.
+- **Pesan & Sambutan Kepala Sekolah:**
+  *"${sambutanTitle}"*
+  "${sambutanQuote}"
+- **Tenaga Pendidik:** Sekolah kami memiliki ${stats.guru_staf || 14} tenaga pendidik dan staf profesional yang siap membimbing siswa-siswi.
+
+Anda juga dapat melihat profil dan sambutan lengkap beliau di halaman utama website kami. Ada hal lain yang ingin Anda ketahui?`;
+  }
+
   if (q.includes("visi") || q.includes("misi") || q.includes("tujuan")) {
     const visiVal = profil.visi || `"Terwujudnya peserta didik yang Cerdas dalam berpikir, Kokoh dalam Karakter akhlak mulia, serta luhur dalam Menjaga Nilai Budaya bangsa di era global."`;
     const misiList = profil.misi || [
