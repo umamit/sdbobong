@@ -14,54 +14,31 @@ export const metadata = {
 export default async function Berita() {
   const newsList = (await loadNews().catch(err => { console.error("Error loadNews in Berita:", err); return []; })) || [];
 
-  // Generate schemas for all news articles to enable advanced search indexing
-  const newsSchemas = newsList.map(n => {
-    const images = n.images && n.images.length > 0 ? n.images : [n.image || 'https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png'];
-    const plainText = n.content ? n.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
-    
-    let publishDate = new Date();
-    if (n.date) {
-      const parsed = new Date(n.date);
-      if (!isNaN(parsed.getTime())) {
-        publishDate = parsed;
-      }
-    }
-    const isoDateStr = publishDate.toISOString();
-    
-    return {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "@id": `https://www.sdnegeribobong.sch.id/berita/${n.id}`,
-      "headline": n.title,
-      "image": images,
-      "datePublished": isoDateStr,
-      "dateModified": isoDateStr,
-      "author": {
-        "@type": "Organization",
-        "name": "SD Negeri Bobong",
-        "url": "https://www.sdnegeribobong.sch.id"
-      },
-      "publisher": {
-        "@type": "School",
-        "name": "SD Negeri Bobong",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png"
-        }
-      },
-      "description": plainText || n.title
-    };
-  });
+  // Generate ItemList schema for news index page to enable search console indexing
+  const origin = 'https://www.sdnegeribobong.sch.id';
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "numberOfItems": newsList.length,
+    "itemListElement": newsList.map((n, idx) => {
+      const rawImage = n.image || '/images/logo_sekolah_512.png';
+      const imageUrl = rawImage.startsWith('http') ? rawImage : `${origin}${rawImage}`;
+      return {
+        "@type": "ListItem",
+        "position": idx + 1,
+        "url": `${origin}/berita/${n.id}`,
+        "name": n.title,
+        "image": imageUrl
+      };
+    })
+  };
 
   return (
     <>
-      {newsSchemas.map((schema, idx) => (
-        <script
-          key={idx}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       {/* Page Banner */}
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
