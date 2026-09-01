@@ -373,3 +373,9 @@
     font-size: 1.35rem !important;
   }
 }
+
+/* Force high contrast text on PPDB info cards during Dark Mode / Mode Malam */
+.grid-2 > div p,
+.grid-2 > div .misi-list li {
+  color: #334155 !important;
+}

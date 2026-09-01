@@ -141,7 +141,7 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               </div>
               <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary-dark)' }}>Batas Usia Anak</h3>
-              <p style={{ fontSize: '0.95rem', marginBottom: 0 }}>{syarat_usia}</p>
+              <p style={{ fontSize: '0.95rem', marginBottom: 0, color: '#334155' }}>{syarat_usia}</p>
             </motion.div>
 
             {/* Dokumen */}
@@ -157,9 +157,9 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
                 <svg className="icon-svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
                 Dokumen yang Harus Disiapkan
               </h3>
-              <ul className="misi-list" style={{ fontSize: '0.95rem' }}>
+              <ul className="misi-list" style={{ fontSize: '0.95rem', color: '#334155' }}>
                 {syarat_berkas.map((berkas, idx) => (
-                  <li key={idx}>{berkas}</li>
+                  <li key={idx} style={{ color: '#334155' }}>{berkas}</li>
                 ))}
               </ul>
             </motion.div>
