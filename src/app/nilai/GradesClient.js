@@ -114,15 +114,15 @@ export default function GradesClient() {
           backdropFilter: 'blur(10px)'
         }}
       >
-        <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '8px' }}>Cek Nilai Rapor Digital</h2>
-        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+        <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-dark)', marginBottom: '8px' }}>Cek Nilai Rapor Digital</h2>
+        <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: 'var(--space-md)' }}>
           Masukkan Nomor Induk Siswa Nasional (NISN) dan Tanggal Lahir untuk memverifikasi dan melihat rapor belajar siswa.
         </p>
 
         <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'stretch' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', textAlign: 'left' }}>
             <div>
-              <label htmlFor="nisn" style={{ display: 'block', marginBottom: '6px', fontSize: '0.8rem', fontWeight: 'bold', color: '#444' }}>NISN Siswa (10 digit)</label>
+              <label htmlFor="nisn" style={{ display: 'block', marginBottom: '6px', fontSize: '0.8rem', fontWeight: 'bold', color: '#334155' }}>NISN Siswa (10 digit)</label>
               <input
                 id="nisn"
                 type="text"
@@ -143,7 +143,7 @@ export default function GradesClient() {
               />
             </div>
             <div>
-              <label htmlFor="birthDate" style={{ display: 'block', marginBottom: '6px', fontSize: '0.8rem', fontWeight: 'bold', color: '#444' }}>Tanggal Lahir Siswa</label>
+              <label htmlFor="birthDate" style={{ display: 'block', marginBottom: '6px', fontSize: '0.8rem', fontWeight: 'bold', color: '#334155' }}>Tanggal Lahir Siswa</label>
               <input
                 id="birthDate"
                 type="date"

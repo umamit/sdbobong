@@ -123,6 +123,18 @@ export default function CalendarTab({ initialCalendar, currentMonth, countdowns,
           width: 100% !important;
           border: none !important;
           font-family: var(--font-heading) !important;
+          color: #1e293b !important;
+        }
+        .react-calendar__navigation button {
+          color: #0f172a !important;
+          font-weight: 700;
+        }
+        .react-calendar__month-view__weekdays__weekday {
+          color: #475569 !important;
+          font-weight: 700;
+        }
+        .react-calendar__tile {
+          color: #1e293b !important;
         }
         .react-calendar__tile--now {
           background: rgba(229, 169, 0, 0.15) !important; /* Kuning Emas Muted */
