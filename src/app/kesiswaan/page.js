@@ -1,8 +1,7 @@
 import { loadWebConfig } from '../../lib/database';
 import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../../components/FramerReveal';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
 export default async function Kesiswaan() {
   const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Kesiswaan:", err); return {}; })) || {};

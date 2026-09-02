@@ -3,8 +3,7 @@ import BeritaSearchClient from '../BeritaSearchClient';
 import { FramerWordReveal } from '../../../components/FramerReveal';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

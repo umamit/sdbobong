@@ -2,8 +2,7 @@ import { loadWebConfig } from '../../lib/database';
 import GalleryClient from './GalleryClient';
 import { FramerWordReveal } from '../../components/FramerReveal';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
 export const metadata = {
   title: 'Galeri Foto & Video Kegiatan Sekolah - SD Negeri Bobong',

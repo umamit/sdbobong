@@ -3,8 +3,7 @@ import Link from 'next/link';
 import BeritaSearchClient from './BeritaSearchClient';
 import { FramerWordReveal } from '../../components/FramerReveal';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0; // Fresh load
+export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
 export const metadata = {
   title: 'Berita, Artikel & Pengumuman Terbaru - SD Negeri Bobong',

@@ -6,11 +6,9 @@ import StatsCounter from '../components/StatsCounter';
 import { FramerRevealContainer, FramerRevealItem, FramerWordReveal, FramerReveal } from '../components/FramerReveal';
 import { unstable_noStore as noStore } from 'next/cache';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0; // Disable compile-time cache to fetch fresh content
+export const revalidate = 60; // Cache 60 detik untuk efisiensi Fluid CPU Vercel
 
 export default async function Home() {
-  noStore(); // Force dynamic fetching and bypass any cached render
   const [allNews, config, teachers, students] = await Promise.all([
     loadNews().catch(err => { console.error("Error loadNews in Home:", err); return []; }),
     loadWebConfig().catch(err => { console.error("Error loadWebConfig in Home:", err); return {}; }),
