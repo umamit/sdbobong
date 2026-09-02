@@ -51,6 +51,30 @@ export default function NaunganMarquee() {
       alt: "Logo Kurikulum Merdeka",
       text: "Kurikulum Merdeka",
       isLink: false
+    },
+    {
+      href: null,
+      title: "BerAKHLAK - Core Values ASN & Pelayanan Publik",
+      imgSrc: "/images/badge_berakhlak.png",
+      alt: "Logo BerAKHLAK",
+      text: "BerAKHLAK",
+      isLink: false
+    },
+    {
+      href: null,
+      title: "#bangga melayani bangsa - Slogan Pelayanan Publik",
+      imgSrc: "/images/badge_bangga_melayani.png",
+      alt: "Logo Bangga Melayani Bangsa",
+      text: "#bangga melayani bangsa",
+      isLink: false
+    },
+    {
+      href: null,
+      title: "Bangga Buatan Indonesia - Gerakan Nasional BBI",
+      imgSrc: "/images/badge_bangga_buatan_indonesia.png",
+      alt: "Logo Bangga Buatan Indonesia",
+      text: "Bangga Buatan Indonesia",
+      isLink: false
     }
   ];
 
