@@ -1,0 +1,60 @@
+.switcherWrapper {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(18, 165, 184, 0.08);
+  border: 1px solid rgba(18, 165, 184, 0.2);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  margin-right: 0.5rem;
+}
+
+.langBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted, #4b5563);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.langBtn:hover {
+  color: var(--primary, #12A5B8);
+}
+
+.langBtn.active {
+  background: var(--primary, #12A5B8);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(18, 165, 184, 0.3);
+}
+
+.flagIcon {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.langLabel {
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+/* Hide Google Translate top banner & widget elements */
+:global(.goog-te-banner-frame.skiptranslate),
+:global(.goog-te-banner-frame),
+:global(#google_translate_element),
+:global(.goog-te-balloon-frame) {
+  display: none !important;
+}
+
+:global(body) {
+  top: 0px !important;
+}
