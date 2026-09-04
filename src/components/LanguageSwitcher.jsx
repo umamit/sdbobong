@@ -28,7 +28,7 @@ export default function LanguageSwitcher() {
       };
 
       const script = document.createElement('script');
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
       document.body.appendChild(script);
     }
@@ -38,11 +38,19 @@ export default function LanguageSwitcher() {
     setLang(targetLang);
     localStorage.setItem('site_lang', targetLang);
 
+    // Set cookies for Google Translate
     const domain = window.location.hostname;
     document.cookie = `googtrans=/id/${targetLang}; path=/; domain=${domain}`;
     document.cookie = `googtrans=/id/${targetLang}; path=/;`;
 
-    window.location.reload();
+    // Try triggering Google Translate select combo directly
+    const selectEl = document.querySelector('.goog-te-combo');
+    if (selectEl) {
+      selectEl.value = targetLang;
+      selectEl.dispatchEvent(new Event('change'));
+    } else {
+      window.location.reload();
+    }
   };
 
   if (!mounted) return null;
