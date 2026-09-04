@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Header.module.css';
-import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -225,9 +224,6 @@ export default function Header() {
             })}
           </ul>
         </nav>
-
-        {/* Language Switcher (ID / EN) */}
-        <LanguageSwitcher />
 
         {/* Dark Mode Toggle */}
         <button

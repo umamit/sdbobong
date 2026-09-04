@@ -137,7 +137,6 @@ export default async function RootLayout({ children }) {
         <Analytics />
         <SpeedInsights />
         <WebVitals />
-        <div id="google_translate_element" style={{ display: 'none' }} />
       </body>
     </html>
   );
