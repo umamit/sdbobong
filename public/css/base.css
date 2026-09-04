@@ -156,10 +156,17 @@ img {
 
 .text-center { text-align: center; }
 
-/* Custom Typography & Readability Utilities */
 .text-justify {
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: left; /* Rata Kiri di mobile agar spasi kata tidak merenggang */
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+@media (min-width: 768px) {
+    .text-justify {
+        text-align: justify;
+        text-justify: inter-word;
+    }
 }
 
 .text-balance {
