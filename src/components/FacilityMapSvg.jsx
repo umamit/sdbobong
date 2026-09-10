@@ -44,9 +44,35 @@ export default function FacilityMapSvg(props) {
       <rect x="15" y="15" width="820" height="510" rx="14" fill="none" stroke="#BACAB3" strokeWidth="2.5" strokeDasharray="6,4" />
 
       {/* GERBANG UTARA (Sisi Atas Tengah-Kanan / Timur Area Parkir) */}
-      <g transform="translate(460, 15)">
-        <rect x="0" y="0" width="70" height="15" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="1" />
-        <text x="35" y="11" fontFamily="var(--font-heading)" fontWeight="800" fontSize="8" fill="#1E293B" textAnchor="middle">GERBANG</text>
+      <g 
+        transform="translate(460, 15)"
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleRoomClick('gerbang')}
+        onMouseEnter={() => setHoveredRoom('gerbang')}
+        onMouseLeave={() => setHoveredRoom(null)}
+      >
+        <rect 
+          x="0" 
+          y="0" 
+          width="70" 
+          height="16" 
+          rx="3"
+          fill={hoveredRoom === 'gerbang' ? '#FEF08A' : '#CBD5E1'} 
+          stroke={hoveredRoom === 'gerbang' ? '#E5A900' : '#94A3B8'} 
+          strokeWidth={hoveredRoom === 'gerbang' ? '2' : '1'} 
+          style={{ transition: 'all 0.2s ease' }}
+        />
+        <text 
+          x="35" 
+          y="11" 
+          fontFamily="var(--font-heading)" 
+          fontWeight="800" 
+          fontSize="8" 
+          fill={hoveredRoom === 'gerbang' ? '#854D0E' : '#1E293B'} 
+          textAnchor="middle"
+        >
+          GERBANG
+        </text>
       </g>
 
       {/* ======================================================== */}

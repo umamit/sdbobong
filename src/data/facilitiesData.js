@@ -195,5 +195,20 @@ export const FACILITIES_DATA = {
     icon: "tent",
     color: "#EAD8B1",
     image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+  },
+
+  // GERBANG UTAMA SEKOLAH
+  gerbang: {
+    title: "Gerbang Utama Sekolah",
+    desc: "Pintu gerbang dan akses masuk utama SD Negeri Bobong bercat khas kuning dan hijau dengan papan nama sekolah 'SD NEGERI BOBONG'. Dilengkapi pintu pagar besi dorong yang kokoh serta tempat penampungan sampah tertata di samping gerbang demi menjaga kebersihan lingkungan sekolah.",
+    stats: {
+      konstruksi: "Pilar Beton Kokoh & Pagar Besi",
+      lokasi: "Akses Masuk Utama (Sektor Utara Kompleks)",
+      kondisi: "Kokoh, Bersih & Terawat",
+      fasilitas: ["Pilar Gerbang Berwarna Khas Sekolah", "Plang Identitas SD Negeri Bobong", "Pagar Besi Pengaman Geser", "Tong Sampah Pilah", "Akses Langsung Jalan Raya & Lapangan"]
+    },
+    icon: "school",
+    color: "#E5A900",
+    image: "/images/facilities/gerbang_utama.webp"
   }
 };
