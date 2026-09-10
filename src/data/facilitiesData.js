@@ -155,31 +155,31 @@ export const FACILITIES_DATA = {
   // GAZEBO 1 (BERDIRI DI LAHAN RENCANA TIMUR / KANAN)
   gazebo_lahan: {
     title: "Gazebo Belajar Kreatif 1",
-    desc: "Gazebo/saung kayu estetis ramah anak pertama yang didirikan di atas Lahan Rencana Timur (sebelah kanan lapangan). Berfungsi sebagai ruang baca luar ruangan (outdoor literacy corner), tempat diskusi kelompok, dan berteduh siswa.",
+    desc: "Gazebo/saung panggung kayu terbuka dengan atap seng biru serta balutan warna kuning dan hijau khas sekolah di area timur lapangan. Berfungsi sebagai sarana pojok baca luar ruangan, ruang interaksi dan diskusi kelompok belajar siswa, serta tempat berteduh santai saat istirahat.",
     stats: {
-      kapasitas: "8 - 10 Murid",
-      lokasi: "Berdiri di Lahan Rencana Timur (Sayap Kanan Kompleks)",
-      kondisi: "Asri, Nyaman & Teduh",
-      fasilitas: ["Meja Belajar Kayu", "Tempat Duduk Melingkar", "Atap Rumbia Teduh", "Dekat Taman Hijau Sekolah"]
+      kapasitas: "8 - 12 Siswa",
+      lokasi: "Lahan Terbuka Sayap Timur Kompleks Sekolah",
+      kondisi: "Kokoh, Nyaman & Terawat",
+      fasilitas: ["Konstruksi Panggung Kayu Halus", "Atap Seng Warna Biru", "Tiang & Lis Nuansa Hijau-Kuning", "Pencahayaan & Sirkulasi Alami", "Akses Langsung ke Lapangan"]
     },
     icon: "gazebo",
     color: "#10B981",
-    image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gazebo_sekolah.webp"
   },
 
   // GAZEBO 2 (BERDIRI DI LAHAN RENCANA TIMUR / KANAN)
   gazebo_timur: {
     title: "Gazebo Belajar Kreatif 2",
-    desc: "Gazebo belajar terbuka kedua yang didirikan di atas Lahan Rencana Timur (sebelah kanan lapangan). Berfungsi sebagai tempat diskusi KBM luar ruangan, pojok baca tematik, dan area interaksi sosial siswa yang nyaman.",
+    desc: "Gazebo panggung kayu kedua yang berdampingan di sisi timur lapangan dengan atap seng biru dan nuansa hijau-kuning khas sekolah. Digunakan oleh para murid untuk belajar kelompok santai, kegiatan literasi mandiri, dan kegiatan kebersamaan di luar kelas.",
     stats: {
-      kapasitas: "8 - 10 Murid",
-      lokasi: "Berdiri di Lahan Rencana Timur (Sayap Kanan Kompleks)",
-      kondisi: "Sangat Asri & Nyaman",
-      fasilitas: ["Meja Kerja Kayu Bundar", "Bangku Sandar Melingkar", "Atap Rindang Teduh", "Dekat Taman Hijau"]
+      kapasitas: "8 - 12 Siswa",
+      lokasi: "Lahan Terbuka Sayap Timur Kompleks Sekolah",
+      kondisi: "Kokoh, Asri & Nyaman",
+      fasilitas: ["Lantai Panggung Kayu Luas", "Atap Seng Warna Biru Teduh", "Aksen Warna Hijau & Kuning", "Area Terbuka Ramah Anak", "Dekat Gedung Utama & Lapangan"]
     },
     icon: "gazebo",
     color: "#10B981",
-    image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gazebo_sekolah.webp"
   },
 
   // OUTDOOR / LAPANGAN UTAMA

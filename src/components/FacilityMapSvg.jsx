@@ -196,11 +196,14 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_timur')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="695,120 720,98 745,120" fill={hoveredRoom === 'gazebo_timur' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="691,120 749,120 741,128 699,128" fill={hoveredRoom === 'gazebo_timur' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="707" y1="128" x2="707" y2="146" stroke="#78350F" strokeWidth="2" />
-          <line x1="733" y1="128" x2="733" y2="146" stroke="#78350F" strokeWidth="2" />
-          <polygon points="699,146 741,146 733,154 707,154" fill={hoveredRoom === 'gazebo_timur' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          {/* Atap Seng Biru */}
+          <polygon points="695,120 720,98 745,120" fill={hoveredRoom === 'gazebo_timur' ? '#60A5FA' : '#2563EB'} style={{ transition: '0.2s' }} />
+          <polygon points="691,120 749,120 741,128 699,128" fill={hoveredRoom === 'gazebo_timur' ? '#3B82F6' : '#1D4ED8'} style={{ transition: '0.2s' }} />
+          {/* Tiang Kayu Hijau */}
+          <line x1="707" y1="128" x2="707" y2="146" stroke="#15803D" strokeWidth="2.5" />
+          <line x1="733" y1="128" x2="733" y2="146" stroke="#15803D" strokeWidth="2.5" />
+          {/* Lantai Panggung & Lis Kuning */}
+          <polygon points="699,146 741,146 733,154 707,154" fill={hoveredRoom === 'gazebo_timur' ? '#FDE047' : '#EAB308'} style={{ transition: '0.2s' }} />
           <text x="720" y="140" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7" fill="#FFFFFF" textAnchor="middle">GAZEBO 2</text>
           {hoveredRoom === 'gazebo_timur' && <rect x="688" y="95" width="64" height="62" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="3" filter="url(#glow-blue)" />}
         </g>
@@ -214,11 +217,14 @@ export default function FacilityMapSvg(props) {
           onMouseEnter={() => setHoveredRoom('gazebo_lahan')}
           onMouseLeave={() => setHoveredRoom(null)}
         >
-          <polygon points="695,200 720,178 745,200" fill={hoveredRoom === 'gazebo_lahan' ? '#34D399' : '#059669'} style={{ transition: '0.2s' }} />
-          <polygon points="691,200 749,200 741,208 699,208" fill={hoveredRoom === 'gazebo_lahan' ? '#059669' : '#047857'} style={{ transition: '0.2s' }} />
-          <line x1="707" y1="208" x2="707" y2="226" stroke="#78350F" strokeWidth="2" />
-          <line x1="733" y1="208" x2="733" y2="226" stroke="#78350F" strokeWidth="2" />
-          <polygon points="699,226 741,226 733,234 707,234" fill={hoveredRoom === 'gazebo_lahan' ? '#F59E0B' : '#D97706'} style={{ transition: '0.2s' }} />
+          {/* Atap Seng Biru */}
+          <polygon points="695,200 720,178 745,200" fill={hoveredRoom === 'gazebo_lahan' ? '#60A5FA' : '#2563EB'} style={{ transition: '0.2s' }} />
+          <polygon points="691,200 749,200 741,208 699,208" fill={hoveredRoom === 'gazebo_lahan' ? '#3B82F6' : '#1D4ED8'} style={{ transition: '0.2s' }} />
+          {/* Tiang Kayu Hijau */}
+          <line x1="707" y1="208" x2="707" y2="226" stroke="#15803D" strokeWidth="2.5" />
+          <line x1="733" y1="208" x2="733" y2="226" stroke="#15803D" strokeWidth="2.5" />
+          {/* Lantai Panggung & Lis Kuning */}
+          <polygon points="699,226 741,226 733,234 707,234" fill={hoveredRoom === 'gazebo_lahan' ? '#FDE047' : '#EAB308'} style={{ transition: '0.2s' }} />
           <text x="720" y="220" fontFamily="var(--font-heading)" fontWeight="800" fontSize="7" fill="#FFFFFF" textAnchor="middle">GAZEBO 1</text>
           {hoveredRoom === 'gazebo_lahan' && <rect x="688" y="175" width="64" height="62" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="3" filter="url(#glow-blue)" />}
         </g>
