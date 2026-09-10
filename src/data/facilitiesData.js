@@ -125,31 +125,31 @@ export const FACILITIES_DATA = {
   // WC TOILET (POJOK KIRI BAWAH)
   wc_toilet: {
     title: "Toilet Sekolah (WC Guru & Murid)",
-    desc: "Fasilitas toilet terpisah untuk dewan guru dan murid, terletak di sudut kiri bawah dekat selasar belakang. Dilengkapi dengan air bersih yang bersumber dari sumur bor higienis serta dijaga kebersihannya setiap hari.",
+    desc: "Fasilitas sanitasi toilet terpisah untuk dewan guru dan murid di kompleks SD Negeri Bobong. Dilengkapi dengan air bersih yang bersumber dari sumur bor higienis serta dijaga kebersihannya setiap hari untuk kenyamanan seluruh warga sekolah.",
     stats: {
       jumlah_ruang: "2 Bilik Toilet Guru & Murid",
-      lokasi: "Pojok Kiri Bawah Kompleks Sekolah",
+      lokasi: "Pojok Kiri Bawah Dekat Selasar Sekolah",
       kondisi: "Bersih & Higienis",
       fasilitas: ["Wastafel Cuci Tangan", "Sabun Cuci Tangan", "Cermin Dinding", "Air Bersih Mengalir", "Ventilasi Udara Baik"]
     },
     icon: "toilet",
     color: "#10B981",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
 
   // LAHAN RENCANA PEMBANGUNAN
   lahan_rencana: {
     title: "Lahan Rencana Pembangunan",
-    desc: "Area lahan kosong yang dipersiapkan khusus untuk rencana pembangunan ruang atau gedung fasilitas baru di masa mendatang guna menunjang kapasitas KBM di SD Negeri Bobong.",
+    desc: "Area lahan terbuka milik sekolah yang dipersiapkan khusus untuk rencana pengembangan fasilitas dan ruang baru di masa mendatang guna menunjang kapasitas KBM dan sarana penunjang di SD Negeri Bobong.",
     stats: {
       status_lahan: "Milik Sekolah (Siap Bangun)",
       lokasi: "Tersebar di Beberapa Sektor Kompleks Sekolah",
-      kondisi: "Tanah Lapan Bersih",
+      kondisi: "Tanah Lapang Bersih",
       fasilitas: ["Akses Jalan Selasar", "Dekat Saluran Drainase", "Rencana Area Hijau", "Aman dari Banjir"]
     },
     icon: "tent",
     color: "#EAD8B1",
-    image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
 
   // GAZEBO 1 (BERDIRI DI LAHAN RENCANA TIMUR / KANAN)
