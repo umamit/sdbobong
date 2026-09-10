@@ -185,16 +185,16 @@ export const FACILITIES_DATA = {
   // OUTDOOR / LAPANGAN UTAMA
   olahraga: {
     title: "Lapangan Utama Sekolah",
-    desc: "Halaman terbuka yang luas di bagian tengah kompleks sekolah. Berfungsi sebagai pusat upacara bendera mingguan, lapangan olahraga (futsal/voli/atletik), serta area KBM outdoor dan bermain bebas siswa saat istirahat.",
+    desc: "Halaman terbuka yang luas dan bersih di pusat kompleks SD Negeri Bobong dengan tiang bendera Merah Putih di bagian tengah. Berfungsi sebagai area upacara bendera, senam pagi bersama, KBM olahraga luar ruangan, serta arena bermain siswa yang menghubungkan Gedung Utama 2 Lantai dengan deretan ruang kelas lainnya.",
     stats: {
       ukuran: "26.85 x 22 Meter",
-      lokasi: "Sektor Tengah Kompleks Sekolah",
-      kondisi: "Lapang & Bersih",
-      fasilitas: ["Tiang Bendera Utama", "Net Bola Voli & Bulutangkis", "Gawang Futsal Mini", "Taman Pojok Hijau Sekolah"]
+      lokasi: "Pusat Kompleks (Antara Gedung Selatan & Utara)",
+      kondisi: "Lapang, Bersih & Terawat",
+      fasilitas: ["Tiang Bendera Merah Putih Permanen", "Podium Upacara", "Pagar Pembatas Hijau-Kuning Khas Sekolah", "Area Terbuka Pasir Bersih", "Akses Langsung ke Seluruh Gedung Kelas"]
     },
     icon: "tent",
     color: "#EAD8B1",
-    image: "https://images.unsplash.com/photo-1544698310-74ea9d1c8258?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/lapangan_utama.webp"
   },
 
   // GERBANG UTAMA SEKOLAH
