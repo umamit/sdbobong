@@ -84,42 +84,42 @@ export const FACILITIES_DATA = {
   // GUGUSAN GEDUNG UTARA (TERPISAH)
   kelas_2a_5a: {
     title: "Gedung Kelas 2A & 5A",
-    desc: "Gedung kelas terpisah di bagian utara-tengah kompleks sekolah. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 2A, dan siang hari untuk pembelajaran Kelas 5A.",
+    desc: "Gedung kelas terpisah 1 lantai beratap seng biru dengan dinding kuning dan lis hijau khas sekolah di sisi utara halaman. Dilengkapi teras panggung dan halaman semen bersih, digunakan secara bergantian (shift): Pagi hari untuk Kelas 2A, dan siang hari untuk Kelas 5A.",
     stats: {
       kapasitas: "32 Siswa per Shift",
-      lokasi: "Sektor Utara-Tengah Kompleks Sekolah",
-      kondisi: "Sangat Baik & Bersih",
-      fasilitas: ["Papan Tulis Whiteboard", "Meja & Kursi Siswa", "Pojok Baca Sederhana", "Kipas Angin", "Pencahayaan Alami Optimal"]
+      lokasi: "Sektor Utara Kompleks Sekolah (Gedung Kiri)",
+      kondisi: "Kokoh, Asri, Bersih & Terawat",
+      fasilitas: ["Papan Tulis Whiteboard", "Teras Depan Semen Luas", "Atap Seng Biru Teduh", "Pencahayaan & Ventilasi Alami", "Akses Langsung ke Halaman Sekolah"]
     },
     icon: "school",
     color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utara_kelas_uks.webp"
   },
   kelas_2b_5b: {
     title: "Gedung Kelas 2B & 5B",
-    desc: "Gedung kelas terpisah di bagian utara-kanan kompleks sekolah. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 2B, dan siang hari untuk pembelajaran Kelas 5B.",
+    desc: "Gedung ruang kelas beratap seng biru dengan aksen cat kuning-hijau dan kanopi pelindung di sektor utara. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 2B, dan siang hari untuk pembelajaran Kelas 5B.",
     stats: {
       kapasitas: "32 Siswa per Shift",
-      lokasi: "Sektor Utara-Kanan Kompleks Sekolah",
-      kondisi: "Sangat Baik",
-      fasilitas: ["Papan Tulis Whiteboard", "Meja & Kursi Ergonomis", "Almari Penyimpanan", "Mading Kelas", "Ventilasi Udara Bagus"]
+      lokasi: "Sektor Utara Kompleks Sekolah (Gedung Kanan)",
+      kondisi: "Sangat Baik & Nyaman",
+      fasilitas: ["Papan Tulis Whiteboard", "Pintu & Jendela Ventilasi Kayu", "Pagar Hias Pelindung", "Kanopi Peneduh Samping", "Akses Cepat ke Halaman & Parkir"]
     },
     icon: "school",
     color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utara_kelas_uks.webp"
   },
   uks_gudang: {
     title: "Gedung UKS & Gudang Sekolah",
-    desc: "Gedung terpisah di sebelah barat gedung Kelas 2A/5A. Sayap kiri digunakan untuk ruang UKS (Unit Kesehatan Sekolah) guna perawatan pertama siswa yang sakit, dan sayap kanan digunakan sebagai gudang penyimpanan inventaris sekolah.",
+    desc: "Gedung terpadu beratap seng biru di gugusan utara yang difungsikan untuk ruang Unit Kesehatan Sekolah (UKS) guna perawatan pertolongan pertama siswa, serta gudang tertutup untuk penyimpanan inventaris dan sarana sekolah.",
     stats: {
       kapasitas: "2 Ranjang UKS & Area Gudang",
       lokasi: "Sektor Utara-Barat Laut Kompleks Sekolah",
-      kondisi: "Sangat Terawat & Bersih",
-      fasilitas: ["Ranjang Istirahat UKS", "Peralatan P3K & Obat Dasar", "Timbangan & Pengukur Tinggi", "Lemari Penyimpanan Inventaris", "Alat Tulis Kantor Cadangan"]
+      kondisi: "Bersih, Rapi & Terawat",
+      fasilitas: ["Ranjang Istirahat UKS", "Peralatan P3K & Obat Dasar", "Timbangan & Pengukur Tinggi", "Lemari Arsip & Inventaris", "Teras Semen Teduh"]
     },
     icon: "firstaid",
     color: "#3B82F6",
-    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utara_kelas_uks.webp"
   },
 
   // WC TOILET (POJOK KIRI BAWAH)
