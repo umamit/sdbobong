@@ -1,84 +1,84 @@
 export const FACILITIES_DATA = {
-  // GEDUNG SELATAN (UTAMA / BAWAH - ATAP MERAH - 2 LANTAI)
+  // GEDUNG SELATAN (UTAMA / BAWAH - 2 LANTAI)
   l1_guru: {
     title: "Ruang Guru / Kantor (Lantai 1)",
-    desc: "Ruang kerja dewan guru SDN Bobong yang terletak di Lantai 1 Gedung Utama (sebelah kiri dekat tangga). Berfungsi sebagai pusat koordinasi administrasi sekolah, administrasi akademik, dan pelayanan guru.",
+    desc: "Ruang kerja dewan guru SDN Bobong yang terletak di Lantai 1 Gedung Utama Selatan (sebelah kiri dekat akses tangga). Gedung megah bertingkat 2 dengan pilar kuning dan lis hijau ini berfungsi sebagai pusat koordinasi administrasi sekolah, KBM, dan pelayanan guru.",
     stats: {
       kapasitas: "14 Guru & Staff",
-      lokasi: "Gedung Utama, Lantai 1 (Sisi Kiri)",
-      kondisi: "Sangat Baik & Nyaman",
+      lokasi: "Gedung Utama 2 Lantai, Lantai 1 (Sisi Kiri)",
+      kondisi: "Sangat Baik, Bersih & Nyaman",
       fasilitas: ["Meja Kerja Guru & Kursi", "Printer & Scanner Bersama", "Papan Pengumuman Kurikulum", "Kipas Angin Dinding", "Akses Wifi Sekolah"]
     },
     icon: "laptop",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
   l1_kelas_1a_4a: {
     title: "Ruang Kelas 1A & 4A (Lantai 1)",
-    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama (bagian tengah) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 1A, dan siang hari untuk pembelajaran Kelas 4A.",
+    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama Selatan (bagian tengah) dengan balkon selasar teduh. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 1A, dan siang hari untuk pembelajaran Kelas 4A.",
     stats: {
       kapasitas: "30 Siswa per Shift",
-      lokasi: "Gedung Utama, Lantai 1 (Sisi Tengah)",
-      kondisi: "Sangat Kondusif",
-      fasilitas: ["Papan Tulis Whiteboard", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Mading Kelas", "Sirkulasi Udara Optimal"]
+      lokasi: "Gedung Utama 2 Lantai, Lantai 1 (Sisi Tengah)",
+      kondisi: "Sangat Kondusif & Terawat",
+      fasilitas: ["Papan Tulis Whiteboard", "Pojok Baca Buku", "Alat Peraga Matematika & IPA", "Mading Kelas", "Sirkulasi Udara Alami Optimal"]
     },
     icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
   l1_kelas_1b_4b: {
     title: "Ruang Kelas 1B & 4B (Lantai 1)",
-    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama (bagian kanan) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 1B, dan siang hari untuk pembelajaran Kelas 4B.",
+    desc: "Ruang kelas fisik di Lantai 1 Gedung Utama Selatan (bagian kanan) berstruktur beton bertingkat dengan selasar lantai keramik. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 1B, dan siang hari untuk pembelajaran Kelas 4B.",
     stats: {
       kapasitas: "30 Siswa per Shift",
-      lokasi: "Gedung Utama, Lantai 1 (Sisi Kanan)",
-      kondisi: "Sangat Baik",
+      lokasi: "Gedung Utama 2 Lantai, Lantai 1 (Sisi Kanan)",
+      kondisi: "Sangat Baik & Bersih",
       fasilitas: ["Papan Tulis Whiteboard", "Alat Peraga Tematik", "Pojok Literasi Tematik", "Almari Penyimpanan Buku Paket", "Mading Apresiasi Karya"]
     },
     icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
 
   // GEDUNG SELATAN - LANTAI 2
   l2_kelas_6a: {
     title: "Ruang Kelas 6A (Lantai 2)",
-    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (sebelah kiri, dekat akses tangga). Digunakan khusus untuk pembelajaran intensif Kelas 6A dalam persiapan ujian dan kelulusan.",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama Selatan (sebelah kiri, dekat akses tangga) dengan pemandangan langsung ke halaman dan lapangan sekolah. Digunakan khusus untuk pembelajaran intensif Kelas 6A dalam persiapan ujian dan kelulusan.",
     stats: {
       kapasitas: "30 Siswa",
-      lokasi: "Gedung Utama, Lantai 2 (Sisi Kiri)",
-      kondisi: "Sangat Kondusif",
+      lokasi: "Gedung Utama 2 Lantai, Lantai 2 (Sisi Kiri)",
+      kondisi: "Sangat Kondusif & Terang",
       fasilitas: ["Papan Tulis Whiteboard", "Mading Persiapan Kelulusan", "Papan Target Nilai", "Peta Dinding Nusantara & Dunia", "Meja Belajar Kayu Solid"]
     },
     icon: "book",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
   l2_kelas_6b_3b: {
     title: "Ruang Kelas 6B & 3B (Lantai 2)",
-    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (bagian tengah) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 3B, dan siang hari untuk pembelajaran Kelas 6B.",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama Selatan (bagian tengah) dengan deretan jendela luas dan pagar pembatas hijau. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 3B, dan siang hari untuk pembelajaran Kelas 6B.",
     stats: {
       kapasitas: "32 Siswa per Shift",
-      lokasi: "Gedung Utama, Lantai 2 (Sisi Tengah)",
-      kondisi: "Baik & Terawat",
+      lokasi: "Gedung Utama 2 Lantai, Lantai 2 (Sisi Tengah)",
+      kondisi: "Baik, Bersih & Terawat",
       fasilitas: ["Papan Tulis Whiteboard", "Almari Arsip Soal Latihan", "Pojok Literasi Kelas", "Kipas Angin Dinding", "Mading Hasil Prakarya"]
     },
     icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
   l2_kelas_3c_4c: {
     title: "Ruang Kelas 3C & 4C (Lantai 2)",
-    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama (bagian kanan) yang digunakan secara bergantian (shift). Pagi hari untuk pembelajaran Kelas 3C, dan siang hari untuk pembelajaran Kelas 4C.",
+    desc: "Ruang kelas fisik di Lantai 2 Gedung Utama Selatan (bagian kanan) di gedung bertingkat 2. Digunakan secara bergantian (shift): Pagi hari untuk pembelajaran Kelas 3C, dan siang hari untuk pembelajaran Kelas 4C.",
     stats: {
       kapasitas: "30 Siswa per Shift",
-      lokasi: "Gedung Utama, Lantai 2 (Sisi Kanan)",
-      kondisi: "Sangat Baik",
+      lokasi: "Gedung Utama 2 Lantai, Lantai 2 (Sisi Kanan)",
+      kondisi: "Sangat Baik & Asri",
       fasilitas: ["Papan Tulis Whiteboard", "Pojok Baca Buku", "Alat Peraga Pembelajaran", "Sirkulasi Udara Alami", "Mading Kreativitas"]
     },
     icon: "school",
     color: "#C53030",
-    image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop"
+    image: "/images/facilities/gedung_utama_selatan.webp"
   },
 
   // GUGUSAN GEDUNG UTARA (TERPISAH)
