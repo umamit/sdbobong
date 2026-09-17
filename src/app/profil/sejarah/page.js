@@ -9,20 +9,22 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Sejarah Sekolah & Identitas Resmi - SD Negeri Bobong',
   description: 'Sejarah berdirinya SD Negeri Bobong sejak tahun 1971, beserta data pokok pendidikan (NPSN, akreditasi, status lahan, dan kurikulum).',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/profil/sejarah' }
 };
 
 export default async function Sejarah() {
   noStore();
   const config = await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Sejarah:", err); return {}; });
   const profil = config.stats?.page_contents?.profil || {};
-
-  const namaResmi = profil.nama_resmi || "SD Negeri Bobong";
-  const npsn = profil.npsn || "60200589";
-  const statusSekolah = profil.status_sekolah || "Negeri";
-  const skPendirian = profil.sk_pendirian || "04 Oktober 1971 (SK: 420/04/10/1971)";
-  const akreditasi = profil.akreditasi || "B (Baik)";
-  const kurikulum = profil.kurikulum_operasional || "Kurikulum Merdeka";
-  const alamat = profil.alamat_lengkap || "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791";
+  const {
+    nama_resmi: namaResmi = "SD Negeri Bobong",
+    npsn = "60200589",
+    status_sekolah: statusSekolah = "Negeri",
+    sk_pendirian: skPendirian = "04 Oktober 1971 (SK: 420/04/10/1971)",
+    akreditasi = "B (Baik)",
+    kurikulum_operasional: kurikulum = "Kurikulum Merdeka",
+    alamat_lengkap: alamat = "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"
+  } = profil;
   const lahan = profil.kepemilikan_lahan || "Pemerintah Daerah Kabupaten Pulau Taliabu";
 
   return (
@@ -46,22 +48,11 @@ export default async function Sejarah() {
             <FramerReveal direction="left">
               <span className="welcome-badge">{profil.sejarah_badge || "Sejarah Sekolah"}</span>
               <h2 style={{ marginBottom: 'var(--space-sm)' }}>{profil.sejarah_title || "Perjalanan SD Negeri Bobong"}</h2>
-              <p className="text-justify" style={{ maxWidth: '75ch' }}>
-                {profil.sejarah_p1 || "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara."}
-              </p>
-              <p className="text-justify" style={{ maxWidth: '75ch' }}>
-                {profil.sejarah_p2 || "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten."}
-              </p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p1 || "SD Negeri Bobong didirikan secara resmi pada tanggal 04 Oktober 1971 berdasarkan Surat Keputusan (SK) Pendirian Nomor 420/04/10/1971. Sekolah ini merupakan institusi pendidikan dasar tertua di jantung ibukota Kabupaten Pulau Taliabu, Maluku Utara."}</p>
+              <p className="text-justify" style={{ maxWidth: '75ch' }}>{profil.sejarah_p2 || "Selama lebih dari lima dekade, sekolah ini telah mengabdi mendidik anak-anak di Taliabu Barat. Sejak pemekaran Kabupaten Pulau Taliabu pada tahun 2013, SD Negeri Bobong terus memperbarui kurikulum dan sarana prasarana guna mempertahankan posisinya sebagai sekolah negeri rujukan di pusat kabupaten."}</p>
             </FramerReveal>
             <FramerReveal direction="right" delay={0.15} style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '4px solid white' }}>
-              <Image 
-                src={profil.sejarah_image || "/images/profil_sekolah.svg"} 
-                alt="Gedung SD Negeri Bobong" 
-                width={640}
-                height={320}
-                style={{ width: '100%', height: '320px', objectFit: 'cover' }} 
-                loading="lazy" 
-              />
+              <Image src={profil.sejarah_image || "/images/profil_sekolah.svg"} alt="Gedung SD Negeri Bobong" width={640} height={320} style={{ width: '100%', height: '320px', objectFit: 'cover' }} loading="lazy" />
             </FramerReveal>
           </div>
         </div>

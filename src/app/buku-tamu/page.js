@@ -7,6 +7,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Buku Tamu Pengunjung & Kotak Saran - SD Negeri Bobong',
   description: 'Halaman pengisian buku tamu kunjungan resmi atau pengiriman kotak saran masukan privat demi kemajuan pelayanan pendidikan SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/buku-tamu' }
 };
 
 export default async function BukuTamuPage() {

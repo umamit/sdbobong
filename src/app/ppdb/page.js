@@ -8,6 +8,9 @@ export const revalidate = 0; // Dynamic server page
 export const metadata = {
   title: 'Penerimaan Peserta Didik Baru (PPDB) - SD Negeri Bobong',
   description: 'Informasi pendaftaran siswa baru SD Negeri Bobong: syarat usia minimal, alur pendaftaran daring/luring, jadwal penting kegiatan seleksi, dan FAQ.',
+  alternates: {
+    canonical: 'https://www.sdnegeribobong.sch.id/ppdb'
+  }
 };
 
 export default async function PPDBPage() {

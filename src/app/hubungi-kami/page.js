@@ -7,6 +7,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Hubungi Kami & Lokasi Peta Sekolah - SD Negeri Bobong',
   description: 'Hubungi sekolah resmi SD Negeri Bobong. Dapatkan peta navigasi alamat, alamat surat elektronik (email), dan kontak WhatsApp layanan operator humas.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/hubungi-kami' }
 };
 
 export default async function HubungiKamiPage() {

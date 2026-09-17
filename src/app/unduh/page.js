@@ -7,6 +7,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Pusat Unduhan Berkas & Dokumen - SD Negeri Bobong',
   description: 'Akses katalog berkas resmi sekolah: brosur informasi, formulir pendaftaran PPDB offline, tata tertib siswa, dan dokumen administrasi lainnya.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/unduh' }
 };
 
 export default async function UnduhPage() {

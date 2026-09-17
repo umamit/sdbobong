@@ -9,6 +9,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Struktur Organisasi & Pendidik & Tenaga Kependidikan - SD Negeri Bobong',
   description: 'Bagan organisasi kepengurusan komite, tata usaha, bendahara, serta daftar lengkap Pendidik dan Tenaga Kependidikan (PTK) SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/profil/struktur' }
 };
 
 export default async function StrukturOrganisasi() {

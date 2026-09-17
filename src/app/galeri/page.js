@@ -7,6 +7,7 @@ export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 export const metadata = {
   title: 'Galeri Foto & Video Kegiatan Sekolah - SD Negeri Bobong',
   description: 'Dokumentasi visual rangkaian kegiatan siswa, upacara bendera, perlombaan, proyek P5, dan momen prestasi di lingkungan SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/galeri' }
 };
 
 export default async function GaleriPage() {

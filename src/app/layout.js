@@ -48,8 +48,8 @@ export default async function RootLayout({ children }) {
     return <MaintenanceView schoolNpsn={schoolNpsn} operatorPhone={operatorPhone} />;
   }
 
-  const isAdminPath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname.startsWith('/ppdb-online/sukses');
-  const robotsContent = isAdminPath ? "noindex, nofollow" : "index, follow";
+  const isPrivatePath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname === '/login' || pathname.startsWith('/ppdb-online/sukses') || pathname.startsWith('/ppdb/daftar/sukses');
+  const robotsContent = isPrivatePath ? "noindex, nofollow" : "index, follow";
   const htmlClassNames = isBypassPath ? "allow-select" : "";
 
   return (

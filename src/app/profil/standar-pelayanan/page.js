@@ -10,6 +10,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Standar Pelayanan Publik - SD Negeri Bobong',
   description: 'Maklumat dan infografis standar pelayanan publik resmi SD Negeri Bobong, Kabupaten Pulau Taliabu.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/profil/standar-pelayanan' }
 };
 
 export default async function StandarPelayananPage() {

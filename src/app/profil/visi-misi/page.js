@@ -8,6 +8,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Visi & Misi Sekolah - SD Negeri Bobong',
   description: 'Visi, misi, dan tujuan dasar pendidikan di SD Negeri Bobong dalam mencetak generasi berkarakter luhur.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/profil/visi-misi' }
 };
 
 export default async function VisiMisi() {

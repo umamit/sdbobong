@@ -9,6 +9,9 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Informasi Akademik & Kurikulum Merdeka - SD Negeri Bobong',
   description: 'Informasi program pembelajaran Kurikulum Merdeka, jadwal kegiatan belajar mengajar (KBM), program Projek Penguatan Profil Pelajar Pancasila (P5), dan daftar ekstrakurikuler.',
+  alternates: {
+    canonical: 'https://www.sdnegeribobong.sch.id/akademik'
+  }
 };
 
 export default async function Akademik() {

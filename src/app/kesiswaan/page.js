@@ -3,6 +3,12 @@ import { FramerRevealContainer, FramerRevealItem, FramerWordReveal } from '../..
 
 export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
+export const metadata = {
+  title: 'Kesiswaan, Ekstrakurikuler & Prestasi - SD Negeri Bobong',
+  description: 'Program ekstrakurikuler kepramukaan, UKS, seni tari Maluku Utara, dan panggung prestasi peserta didik SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/kesiswaan' }
+};
+
 export default async function Kesiswaan() {
   const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in Kesiswaan:", err); return {}; })) || {};
 
@@ -82,18 +88,13 @@ export default async function Kesiswaan() {
 
           <FramerRevealContainer className="grid-3">
             {kesiswaan.prestasi && kesiswaan.prestasi.map((pres, idx) => {
-              const isFirst = pres.rank === '1st';
-              const isSecond = pres.rank === '2nd';
-              const isH1 = pres.rank === 'H1' || (!isFirst && !isSecond);
-              
+              const isFirst = pres.rank === '1st', isSecond = pres.rank === '2nd';
               const badgeBg = isFirst ? '#FFF8E6' : isSecond ? '#F3F4F6' : 'var(--accent-bg)';
               const badgeColor = isFirst ? 'var(--secondary-dark)' : isSecond ? 'var(--text-muted)' : 'var(--accent)';
-              const borderCol = 'var(--border-color)';
               const ribbonBg = isFirst ? 'var(--secondary)' : isSecond ? '#94a3b8' : 'var(--accent)';
-              
               return (
                 <FramerRevealItem key={idx}>
-                  <div className="prestasi-card" style={{ border: `1px solid ${borderCol}`, height: '100%' }}>
+                  <div className="prestasi-card" style={{ border: '1px solid var(--border-color)', height: '100%' }}>
                     <div className="prestasi-ribbon" style={{ backgroundColor: ribbonBg }}>
                       <span>{pres.rank}</span>
                     </div>
@@ -121,9 +122,8 @@ export default async function Kesiswaan() {
           <p className="text-center" style={{ maxWidth: '600px', margin: '0 auto var(--space-md) auto' }}>Apresiasi terhadap hasil karya seni, kerajinan tangan, dan proyek pembelajaran (P5) siswa-siswi SD Negeri Bobong.</p>
           <FramerRevealContainer className="grid-3">
             {kesiswaan.karya && kesiswaan.karya.map((item, idx) => {
-              const karyaIcon = item.icon === 'art' ? '/images/animated/art.png' :
-                                item.icon === 'crafts' ? '/images/animated/crafts.png' :
-                                item.icon === 'poetry' ? '/images/animated/poetry.png' : null;
+              const kMap = { art: '/images/animated/art.png', crafts: '/images/animated/crafts.png', poetry: '/images/animated/poetry.png' };
+              const karyaIcon = kMap[item.icon] || null;
               return (
                 <FramerRevealItem key={idx}>
                   <div className="karya-card" style={{ height: '100%' }}>

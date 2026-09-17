@@ -7,6 +7,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Portal Alumni Resmi - SD Negeri Bobong',
   description: 'Direktori resmi alumni, formulir pendaftaran angkatan lulusan, dan testimoni alumni SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/alumni' }
 };
 
 export default async function AlumniPage() {

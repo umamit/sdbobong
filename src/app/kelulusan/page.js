@@ -6,6 +6,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Pengumuman Kelulusan Kelas 6 - SD Negeri Bobong',
   description: 'Portal resmi pengumuman kelulusan siswa-siswi kelas 6 SD Negeri Bobong tahun ajaran terbaru menggunakan pencarian nomor ujian.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/kelulusan' }
 };
 
 export default function GraduationPage() {

@@ -8,6 +8,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Kalender Pendidikan & RPE - SD Negeri Bobong',
   description: 'Informasi kalender akademik resmi, rekapitulasi pekan efektif (RPE), hari libur nasional, dan masa ujian di SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/akademik/kalender' }
 };
 
 export default async function KalenderPendidikanPage() {

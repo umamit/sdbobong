@@ -6,6 +6,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Portal Cek Rapor Digital Siswa - SD Negeri Bobong',
   description: 'Portal resmi bagi wali murid untuk memeriksa nilai rapor digital siswa SD Negeri Bobong secara online menggunakan pencarian NISN siswa.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/nilai' }
 };
 
 export default function GradesPage() {

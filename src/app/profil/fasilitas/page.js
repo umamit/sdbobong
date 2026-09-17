@@ -7,6 +7,7 @@ export const revalidate = 0;
 export const metadata = {
   title: 'Fasilitas & Denah Sekolah - SD Negeri Bobong',
   description: 'Eksplorasi denah kelas, sarana sanitasi, gudang, pojok baca, dan sarana prasarana penunjang KBM di SD Negeri Bobong.',
+  alternates: { canonical: 'https://www.sdnegeribobong.sch.id/profil/fasilitas' }
 };
 
 export default function Fasilitas() {
