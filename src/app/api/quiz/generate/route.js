@@ -76,18 +76,14 @@ Keahlianmu:
 
 ATURAN WAJIB OUTPUT:
 1. Kembalikan HANYA objek JSON valid (tanpa markdown, tanpa teks tambahan).
-2. Indeks jawaban benar "a" WAJIB DIACAK merata di antara 0, 1, 2, dan 3 lintas semua soal. Dilarang keras menaruh semua jawaban benar di indeks 0.
-3. Setiap soal harus memiliki tepat 4 pilihan jawaban di array "o".
-4. Field "hint" berisi penjelasan edukatif yang membimbing proses berpikir, bukan sekadar menyebut ulang jawaban.
-5. AKURASI FAKTUAL & GENDER: Dilarang keras membuat kesalahan fakta. Gunakan gelar/sapaan sesuai gender tokoh. R.A. Kartini, Cut Nyak Dien, Martha Christina Tiahahu adalah pahlawan PEREMPUAN. Ir. Soekarno, Hatta, Ki Hajar Dewantara adalah pria. Periksa ulang setiap kalimat soal.
-6. VALIDASI JAWABAN WAJIB: Sebelum menentukan indeks "a", bacalah ulang soal dan keempat pilihan. Pastikan: (a) tepat SATU jawaban yang benar secara faktual, (b) nilai "a" benar-benar merupakan indeks dari jawaban yang benar tersebut di dalam array "o", (c) tidak ada ambiguitas — ketiga pilihan lain JELAS salah.
-7. KESELARASAN TOTAL (KOHERENSI): Pastikan pertanyaan (q), pilihan jawaban (o), dan penjelasan (hint) terikat dalam satu konteks logika yang sama. Jika pertanyaan menanyakan "langkah tindakan/solusi", maka seluruh pilihan jawaban (o) wajib berupa deskripsi langkah tindakan/solusi (bukan alasan/sebab). Sebaliknya, jika bertanya "alasan/mengapa", pilihan jawaban berupa penjelasan sebab.
-8. CONTOH KONTRAS WAJIB:
-   - SALAH (Dilarang keras): Soal bertanya "Manakah langkah yang paling tepat...?" tetapi pilihan jawabannya berisi alasan "Karena tubuh menjadi segar...".
-   - BENAR (Wajib): Soal bertanya "Manakah langkah yang paling tepat...?" pilihan jawabannya harus berupa langkah tindakan konkret, misalnya: "Mengatur jam alarm dan membuat rutinitas tidur cepat". Serta penjelasan (hint) harus menjelaskan mengapa langkah/pilihan tersebut yang paling efektif.
+2. Setiap soal harus memiliki tepat 4 pilihan jawaban di array "o".
+3. Tentukan teks jawaban benar yang paling tepat pada field "correct_answer_text". Teks ini WAJIB persis sama dengan salah satu pilihan di dalam array "o".
+4. Field "hint" berisi penjelasan edukatif yang membimbing proses berpikir dan menerangkan mengapa "correct_answer_text" adalah jawaban yang tepat.
+5. AKURASI FAKTUAL: Pastikan hanya ada tepat SATU jawaban yang benar dan masuk akal. Tiga pilihan lain adalah pengecoh (distraktor) yang jelas salah atau tidak relevan.
+6. KESELARASAN LOGIKA: Pertanyaan (q), pilihan (o), teks jawaban (correct_answer_text), dan penjelasan (hint) harus selaras total secara logika.
 
 Format JSON wajib:
-{"questions":[{"q":"...","o":["...","...","...","..."],"a":1,"hint":"..."}]}`;
+{"questions":[{"q":"...","o":["...","...","...","..."],"correct_answer_text":"...","hint":"..."}]}`;
 
   const userPrompt = `Buatkan 5 soal pilihan ganda HOTS (penalaran tingkat tinggi) untuk siswa SD kategori: "${category}".
 
@@ -120,7 +116,7 @@ Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal menan
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.8,
+        temperature: 0.4,
         response_format: { type: 'json_object' }
       })
     });
@@ -130,8 +126,18 @@ Pastikan tingkat kesulitan bervariasi: 2 soal mudah, 2 soal sedang, 1 soal menan
     const result = await response.json();
     const content = JSON.parse(result.choices[0].message.content);
     
-    if (content && Array.isArray(content.questions)) {
-      return NextResponse.json(content);
+    if (content && Array.isArray(content.questions) && content.questions.length > 0) {
+      const validated = content.questions.map((q) => {
+        if (!Array.isArray(q.o) || q.o.length === 0) return null;
+        let cIdx = -1;
+        if (q.correct_answer_text) {
+          const t = q.correct_answer_text.trim().toLowerCase();
+          cIdx = q.o.findIndex(opt => opt.trim().toLowerCase() === t || opt.trim().toLowerCase().includes(t) || t.includes(opt.trim().toLowerCase()));
+        }
+        if (cIdx === -1 && typeof q.a === 'number' && q.a >= 0 && q.a < q.o.length) cIdx = q.a;
+        return { q: q.q, o: q.o, a: cIdx !== -1 ? cIdx : 0, hint: q.hint || '' };
+      }).filter(Boolean);
+      if (validated.length > 0) return NextResponse.json({ questions: validated });
     }
     throw new Error('Invalid quiz format from AI');
   } catch (error) {
