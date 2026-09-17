@@ -8,6 +8,9 @@ export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 export const metadata = {
   title: 'Berita, Artikel & Pengumuman Terbaru - SD Negeri Bobong',
   description: 'Kumpulan informasi berita terkini, artikel edukatif dewan guru, dan pengumuman resmi dari manajemen SD Negeri Bobong.',
+  alternates: {
+    canonical: 'https://www.sdnegeribobong.sch.id/berita'
+  }
 };
 
 export default async function Berita() {

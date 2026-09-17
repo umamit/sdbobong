@@ -24,6 +24,9 @@ export async function generateMetadata({ params }) {
   return {
     title: `${article.title} - SD Negeri Bobong`,
     description: plainText || article.title,
+    alternates: {
+      canonical: `${origin}/berita/${article.id}`
+    },
     openGraph: {
       title: article.title,
       description: plainText || article.title,

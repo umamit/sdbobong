@@ -32,6 +32,8 @@ export default async function robots() {
           '/api/',
           '/ppdb-online/sukses',
           '/ppdb/daftar/sukses',
+          '/*?search=*',
+          '/*?q=*',
           '/_next/'
         ],
       },

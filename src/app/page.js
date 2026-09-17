@@ -105,11 +105,6 @@ export default async function Home() {
         "alternateName": "SDN Bobong",
         "publisher": {
           "@id": "https://www.sdnegeribobong.sch.id/#school"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://www.sdnegeribobong.sch.id/berita?search={search_term_string}",
-          "query-input": "required name=search_term_string"
         }
       }
     ]
