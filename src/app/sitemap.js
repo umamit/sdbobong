@@ -51,12 +51,13 @@ export async function sitemap() {
     lastModified: now,
     changeFrequency: freq,
     priority,
+    images: [`${baseUrl}/images/logo_sekolah_512.png`]
   }));
 
-  // Fetch dynamic news articles for sitemap
+  // Fetch dynamic news articles for sitemap with images
   let newsEntries = [];
   try {
-    const newsList = await prisma.news.findMany({ select: { id: true, date: true } });
+    const newsList = await prisma.news.findMany({ select: { id: true, date: true, image: true } });
     newsEntries = newsList.map(n => {
       let mDate = now;
       if (n.date) {
@@ -65,11 +66,19 @@ export async function sitemap() {
           mDate = parsed;
         }
       }
+      const itemImages = [];
+      if (n.image && !n.image.startsWith('data:')) {
+        itemImages.push(n.image.startsWith('http') ? n.image : `${baseUrl}${n.image}`);
+      } else {
+        itemImages.push(`${baseUrl}/images/logo_sekolah_512.png`);
+      }
+
       return {
         url: `${baseUrl}/berita/${n.id}`,
         lastModified: mDate,
         changeFrequency: 'monthly',
         priority: 0.7,
+        images: itemImages
       };
     });
   } catch (e) {

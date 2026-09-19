@@ -1,6 +1,7 @@
 import { supabase, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, anonymizeName, cleanAddress, formatWaktuDaftar, loadWebConfig, loadTeachers } from '../../lib/database';
 import fs from 'fs';
 import PPDBPortal from '../../components/PPDBPortal';
+import { generateFaqSchema } from '../../lib/seo-schemas';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Dynamic server page
@@ -97,6 +98,22 @@ export default async function PPDBPage() {
 
   const config = (await loadWebConfig().catch(err => { console.error("Error loadWebConfig in PPDB page:", err); return {}; })) || {};
   const teachers = (await loadTeachers().catch(err => { console.error("Error loadTeachers in PPDB page:", err); return []; })) || [];
+  const faqList = config.stats?.page_contents?.ppdb?.faq || [
+    { q: 'Berapa usia minimal calon peserta didik baru?', a: 'Usia prioritas adalah 7 tahun. Usia paling rendah 6 tahun per 1 Juli tahun berjalan dapat diterima dengan pertimbangan kesiapan fisik dan psikis.' },
+    { q: 'Berapa biaya pendaftaran PPDB di SD Negeri Bobong?', a: 'Pendaftaran PPDB di SD Negeri Bobong 100% GRATIS dan bebas dari segala bentuk pungutan liar karena telah didukung penuh oleh dana BOS.' },
+    { q: 'Apa saja dokumen persyaratan yang harus disiapkan?', a: 'Fotokopi Akta Kelahiran, Kartu Keluarga (KK), KTP orang tua/wali, dan pas foto calon siswa ukuran 3x4.' }
+  ];
+  const faqSchema = generateFaqSchema(faqList);
 
-  return <PPDBPortal pendaftarList={pendaftarList} config={config} teachers={teachers} />;
+  return (
+    <>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      <PPDBPortal pendaftarList={pendaftarList} config={config} teachers={teachers} />
+    </>
+  );
 }

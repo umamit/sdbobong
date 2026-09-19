@@ -16,6 +16,7 @@ import { headers } from 'next/headers';
 import MaintenanceView from '../components/MaintenanceView';
 import WebMcpShim from '../components/WebMcpShim';
 import BreadcrumbJsonLd from '../components/BreadcrumbJsonLd';
+import SchoolKnowledgeJsonLd from '../components/SchoolKnowledgeJsonLd';
 import { siteMetadata } from '../data/metadata';
 
 export const dynamic = 'force-dynamic';
@@ -60,21 +61,8 @@ export default async function RootLayout({ children }) {
         <meta name="robots" content={robotsContent} />
         <meta name="googlebot" content={robotsContent} />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#4f46e5" />
-        
-        {/* Google Official Site Name Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "SD Negeri Bobong",
-              "alternateName": ["SDN Bobong", "SD Negeri Bobong Taliabu", "SDN Bobong Taliabu"],
-              "url": "https://www.sdnegeribobong.sch.id"
-            })
-          }}
-        />
+        <meta name="theme-color" content="#12A5B8" />
+        <SchoolKnowledgeJsonLd config={config} />
         <BreadcrumbJsonLd pathname={pathname} />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
