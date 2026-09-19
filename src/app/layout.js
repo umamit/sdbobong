@@ -15,7 +15,7 @@ import Script from 'next/script';
 import { headers } from 'next/headers';
 import MaintenanceView from '../components/MaintenanceView';
 import WebMcpShim from '../components/WebMcpShim';
-
+import BreadcrumbJsonLd from '../components/BreadcrumbJsonLd';
 import { siteMetadata } from '../data/metadata';
 
 export const dynamic = 'force-dynamic';
@@ -75,6 +75,7 @@ export default async function RootLayout({ children }) {
             })
           }}
         />
+        <BreadcrumbJsonLd pathname={pathname} />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

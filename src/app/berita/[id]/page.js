@@ -2,6 +2,7 @@ import { loadNews } from '../../../lib/database';
 import BeritaSearchClient from '../BeritaSearchClient';
 import { FramerWordReveal } from '../../../components/FramerReveal';
 import { notFound } from 'next/navigation';
+import { generateBreadcrumbSchema } from '../../../lib/breadcrumbs';
 
 export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
@@ -91,11 +92,17 @@ export default async function BeritaDetailPage({ params }) {
     "description": plainText || article.title
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema(`/berita/${article.id}`, { name: article.title });
+  const graphSchema = {
+    "@context": "https://schema.org",
+    "@graph": [articleSchema, breadcrumbSchema]
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(graphSchema) }}
       />
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
