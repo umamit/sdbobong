@@ -166,8 +166,8 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
     padding: '6px 14px',
     borderRadius: '20px',
     border: isActive ? '1px solid var(--primary-dark)' : '1px solid var(--border-color)',
-    backgroundColor: isActive ? 'var(--primary)' : 'white',
-    color: isActive ? 'white' : 'var(--text-muted)',
+    backgroundColor: isActive ? 'var(--primary)' : 'var(--bg-main)',
+    color: isActive ? '#ffffff' : 'var(--text-main)',
     fontSize: '0.85rem',
     fontWeight: 600,
     cursor: 'pointer',
@@ -184,30 +184,21 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '8px' }}>
             <button
               onClick={handleClearHash}
+              className="nav-btn-secondary"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 20px',
                 borderRadius: '12px',
-                backgroundColor: 'white',
+                backgroundColor: 'var(--bg-card)',
                 border: '1px solid var(--border-color)',
-                color: 'var(--text-color)',
+                color: 'var(--text-main)',
                 fontWeight: 600,
                 fontSize: '0.9rem',
                 cursor: 'pointer',
                 transition: 'all 0.25s ease',
                 boxShadow: 'var(--shadow-sm)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--primary)';
-                e.currentTarget.style.backgroundColor = 'var(--bg-light)';
-                e.currentTarget.style.transform = 'translateX(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-color)';
-                e.currentTarget.style.backgroundColor = 'white';
-                e.currentTarget.style.transform = 'translateX(0)';
               }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -232,8 +223,9 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
 
       {/* Filter Panel */}
       <div
+        className="search-filter-panel"
         style={{
-          background: '#ffffff',
+          background: 'var(--bg-card)',
           border: '1px solid var(--border-color)',
           borderRadius: '16px',
           padding: 'var(--space-md)',
@@ -264,7 +256,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
               style={{
                 width: '100%', padding: '12px 16px 12px 42px', borderRadius: '12px',
                 border: '2px solid var(--border-color)', fontSize: '0.95rem',
-                color: 'var(--text-color)', outline: 'none',
+                color: 'var(--text-main)', background: 'var(--bg-main)', outline: 'none',
                 transition: 'border-color 0.25s, box-shadow 0.25s', boxSizing: 'border-box',
               }}
               onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(18, 165, 184, 0.15)'; }}
@@ -288,7 +280,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
             onChange={(e) => handleFilterChange(setSortOrder)(e.target.value)}
             style={{
               padding: '12px 14px', borderRadius: '12px', border: '2px solid var(--border-color)',
-              fontSize: '0.9rem', color: 'var(--text-color)', background: 'white',
+              fontSize: '0.9rem', color: 'var(--text-main)', background: 'var(--bg-main)',
               cursor: 'pointer', outline: 'none', fontWeight: 600,
             }}
           >
@@ -299,13 +291,14 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
 
         {/* Category Pills */}
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', marginRight: '4px' }}>
+          <span className="filter-panel-label" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)', marginRight: '4px' }}>
             Kategori:
           </span>
           {categories.map((cat) => (
             <button
               key={cat}
               type="button"
+              className={selectedCategory === cat ? 'filter-pill-active' : 'filter-pill-inactive'}
               onClick={() => handleFilterChange(setSelectedCategory)(cat)}
               style={pillStyle(selectedCategory === cat)}
             >
@@ -317,13 +310,14 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
         {/* Year Pills */}
         {years.length > 2 && (
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', marginRight: '4px' }}>
+            <span className="filter-panel-label" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)', marginRight: '4px' }}>
               Tahun:
             </span>
             {years.map((year) => (
               <button
                 key={year}
                 type="button"
+                className={selectedYear === year ? 'filter-pill-active' : 'filter-pill-inactive'}
                 onClick={() => handleFilterChange(setSelectedYear)(year)}
                 style={pillStyle(selectedYear === year)}
               >
@@ -334,7 +328,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
         )}
 
         {/* Results count */}
-        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+        <p className="filter-panel-count" style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
           Menampilkan <strong>{filteredNews.length}</strong> dari <strong>{newsList.length}</strong> berita
           {selectedCategory !== 'Semua' && ` · Kategori: ${selectedCategory}`}
           {selectedYear !== 'Semua' && ` · Tahun: ${selectedYear}`}
@@ -372,8 +366,9 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
         </motion.div>
       ) : (
         <div
+          className="card"
           style={{
-            textAlign: 'center', padding: '4rem 2rem', background: 'white',
+            textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-card)',
             borderRadius: '16px', border: '1px solid var(--border-color)',
             color: 'var(--text-muted)', marginBottom: 'var(--space-lg)',
             boxShadow: 'var(--shadow-sm)',
@@ -402,12 +397,14 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
+            className="nav-btn-secondary"
             style={{
               padding: '8px 16px', borderRadius: '10px', border: '1px solid var(--border-color)',
-              background: currentPage === 1 ? '#f9fafb' : 'white',
-              color: currentPage === 1 ? 'var(--text-muted)' : 'var(--text-color)',
+              background: 'var(--bg-card)',
+              color: 'var(--text-main)',
               cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
               fontWeight: 600, fontSize: '0.9rem',
+              opacity: currentPage === 1 ? 0.5 : 1
             }}
           >
             ← Sebelumnya
@@ -420,8 +417,8 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
               style={{
                 width: '38px', height: '38px', borderRadius: '10px',
                 border: page === currentPage ? '1px solid var(--primary-dark)' : '1px solid var(--border-color)',
-                background: page === currentPage ? 'var(--primary)' : 'white',
-                color: page === currentPage ? 'white' : 'var(--text-color)',
+                background: page === currentPage ? 'var(--primary)' : 'var(--bg-card)',
+                color: page === currentPage ? '#ffffff' : 'var(--text-main)',
                 cursor: 'pointer', fontWeight: 700, fontSize: '0.9rem',
               }}
             >
@@ -432,12 +429,14 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           <button
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
+            className="nav-btn-secondary"
             style={{
               padding: '8px 16px', borderRadius: '10px', border: '1px solid var(--border-color)',
-              background: currentPage === totalPages ? '#f9fafb' : 'white',
-              color: currentPage === totalPages ? 'var(--text-muted)' : 'var(--text-color)',
+              background: 'var(--bg-card)',
+              color: 'var(--text-main)',
               cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
               fontWeight: 600, fontSize: '0.9rem',
+              opacity: currentPage === totalPages ? 0.5 : 1
             }}
           >
             Berikutnya →
