@@ -35,7 +35,7 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
           <h3 style={{ margin: 0, border: 'none', padding: 0, fontSize: '1.25rem', fontWeight: 800, color: '#f8fafc', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '8px' }}>
             Asisten Draf Berita AI <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#3b82f6', background: 'rgba(59, 130, 246, 0.15)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>BETA</span>
           </h3>
-          <p style={{ margin: 0, fontSize: '0.85rem', color: '#94a3b8', marginTop: '2px' }}>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: '#e2e8f0', marginTop: '4px', lineHeight: 1.5 }}>
             Tulis topik pendek atau pilih template kegiatan di bawah untuk membuat draf berita lengkap dengan bantuan kecerdasan buatan.
           </p>
         </div>
@@ -48,9 +48,9 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
             key={idx}
             type="button"
             onClick={() => setAiPrompt(item.prompt)}
-            style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '20px', padding: '6px 14px', fontSize: '0.78rem', color: '#cbd5e1', cursor: 'pointer', transition: 'all 0.2s ease', outline: 'none' }}
-            onMouseEnter={(e) => { e.target.style.background = 'rgba(59, 130, 246, 0.1)'; e.target.style.borderColor = 'rgba(59, 130, 246, 0.3)'; e.target.style.color = '#3b82f6'; }}
-            onMouseLeave={(e) => { e.target.style.background = 'rgba(255, 255, 255, 0.05)'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.color = '#cbd5e1'; }}
+            style={{ background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '20px', padding: '7px 15px', fontSize: '0.8rem', fontWeight: 600, color: '#f1f5f9', cursor: 'pointer', transition: 'all 0.2s ease', outline: 'none' }}
+            onMouseEnter={(e) => { e.target.style.background = 'rgba(59, 130, 246, 0.2)'; e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)'; e.target.style.color = '#93c5fd'; }}
+            onMouseLeave={(e) => { e.target.style.background = 'rgba(255, 255, 255, 0.1)'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'; e.target.style.color = '#f1f5f9'; }}
           >
             {item.label}
           </button>
@@ -63,9 +63,10 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
           value={aiPrompt}
           onChange={(e) => setAiPrompt(e.target.value)}
           placeholder="Tulis topik atau poin berita di sini (misal: Rapat komite membahas pengembangan laboratorium komputer baru)..."
-          style={{ width: '100%', minHeight: '80px', padding: '12px 16px', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', color: '#f8fafc', fontSize: '0.9rem', outline: 'none', resize: 'vertical', boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.2)', transition: 'border-color 0.2s', fontFamily: 'inherit' }}
-          onFocus={(e) => e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)'}
-          onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+          className="ai-prompt-input"
+          style={{ width: '100%', minHeight: '84px', padding: '14px 16px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '10px', color: '#ffffff', fontSize: '0.92rem', outline: 'none', resize: 'vertical', boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.3)', transition: 'border-color 0.2s', fontFamily: 'inherit' }}
+          onFocus={(e) => e.target.style.borderColor = '#60a5fa'}
+          onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'}
         />
       </div>
 
@@ -95,6 +96,10 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
       </div>
 
       <style jsx>{`
+        .ai-prompt-input::placeholder {
+          color: #94a3b8 !important;
+          opacity: 1;
+        }
         @keyframes float {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-4px); }
