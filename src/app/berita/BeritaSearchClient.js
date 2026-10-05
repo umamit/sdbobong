@@ -31,6 +31,7 @@ const cardVariants = {
 };
 
 export default function BeritaSearchClient({ newsList = [], initialIsolatedId = null }) {
+  const containerRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [selectedYear, setSelectedYear] = useState('Semua');
@@ -161,6 +162,13 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
     setCurrentPage(1);
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    if (typeof window !== 'undefined' && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   // Pill button style helper
   const pillStyle = (isActive) => ({
     padding: '6px 14px',
@@ -219,7 +227,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+    <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
 
       {/* Filter Panel */}
       <div
@@ -395,7 +403,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           }}
         >
           <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
             className="nav-btn-secondary"
             style={{
@@ -413,7 +421,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
               key={page}
-              onClick={() => setCurrentPage(page)}
+              onClick={() => handlePageChange(page)}
               style={{
                 width: '38px', height: '38px', borderRadius: '10px',
                 border: page === currentPage ? '1px solid var(--primary-dark)' : '1px solid var(--border-color)',
@@ -427,7 +435,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
           ))}
 
           <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
             className="nav-btn-secondary"
             style={{
