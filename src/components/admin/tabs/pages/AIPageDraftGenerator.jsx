@@ -14,6 +14,8 @@ const PAGE_TEMPLATES = {
     { label: 'Tata Tertib Pembelajaran', prompt: 'Susun poin tata tertib kehadiran, kerapian seragam, dan kedisiplinan siswa di kelas.' }
   ],
   kesiswaan: [
+    { label: 'Karya Siswa & Proyek P5', prompt: 'Buatkan draf karya siswa baru: Miniatur Perahu Tradisional Taliabu, Proyek P5 Kearifan Lokal Kelas 4, dibuat dari anyaman pelepah sagu dan bambu.' },
+    { label: 'Prestasi Juara Lomba Murid', prompt: 'Catat prestasi murid baru: Juara 1 Lomba Pidato Bahasa Indonesia Tingkat Kabupaten Pulau Taliabu Tahun 2026 yang diraih oleh siswa kelas 5.' },
     { label: 'Ekskul Klub Robotik & AI', prompt: 'Buatkan profil kegiatan ekskul baru: Klub Robotik & Komputer Cilik, jadwal latihan Jumat sore, melatih logika dasar.' },
     { label: 'Ekskul Seni Tari Daerah', prompt: 'Buatkan profil ekskul Seni Tari Tradisional Maluku Utara untuk melestarikan tarian khas daerah Pulau Taliabu.' }
   ],

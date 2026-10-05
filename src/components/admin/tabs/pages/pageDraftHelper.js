@@ -19,7 +19,26 @@ export function applyPageDraft(draft, tab, handleFieldChange, pageContents) {
     if (draft.kurikulum_p2) handleFieldChange('akademik', 'kurikulum_p2', draft.kurikulum_p2);
     if (Array.isArray(draft.tata_tertib)) handleFieldChange('akademik', 'tata_tertib', draft.tata_tertib);
   } else if (tab === 'kesiswaan') {
-    if (draft.nama) {
+    if (draft.mode === 'prestasi' || draft.rank) {
+      const curPres = pageContents.kesiswaan?.prestasi || [];
+      const newPres = {
+        rank: draft.rank || '1st',
+        title: draft.title || 'Juara Lomba Siswa',
+        level: draft.level || 'Tingkat Kabupaten',
+        desc: draft.desc || '',
+        icon: draft.icon || 'trophy'
+      };
+      handleFieldChange('kesiswaan', 'prestasi', [...curPres, newPres]);
+    } else if (draft.mode === 'karya' || (draft.category && draft.title && !draft.rank)) {
+      const curKarya = pageContents.kesiswaan?.karya || [];
+      const newKarya = {
+        icon: draft.icon || 'crafts',
+        title: draft.title || 'Karya Siswa',
+        category: draft.category || 'Proyek P5',
+        desc: draft.desc || ''
+      };
+      handleFieldChange('kesiswaan', 'karya', [...curKarya, newKarya]);
+    } else if (draft.nama) {
       const cur = pageContents.kesiswaan?.ekstrakurikuler || [];
       const newEk = {
         id: 'ekskul_' + Date.now(),

@@ -1,4 +1,4 @@
-'use client';
+import { renderKesiswaanPreview } from './AIPageDraftKesiswaanPreview';
 
 export default function AIPageDraftModal({ subTab, generatedDraft, onClose, onApply }) {
   if (!generatedDraft) return null;
@@ -8,18 +8,18 @@ export default function AIPageDraftModal({ subTab, generatedDraft, onClose, onAp
       <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', width: '100%', maxWidth: '750px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', overflow: 'hidden' }}>
         
         {/* Header */}
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc' }}>
+        <div style={{ padding: '14px 20px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc' }}>
           <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
             Draf Konten AI ({subTab.toUpperCase()})
           </h3>
           <button type="button" onClick={onClose} style={{ border: 'none', background: 'none', fontSize: '1.5rem', color: '#64748b', cursor: 'pointer', lineHeight: '1' }}>&times;</button>
         </div>
 
         {/* Body */}
-        <div style={{ padding: '20px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '14px', color: '#1e293b' }}>
+        <div style={{ padding: '18px 20px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px', color: '#1e293b' }}>
           <div style={{ padding: '10px 14px', background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '8px', fontSize: '0.82rem', color: '#0369a1' }}>
-            Tinjau draf hasil rumusan AI di bawah. Klik <strong>&quot;Terapkan ke Form Ini&quot;</strong> untuk memasukkan teks ke form halaman yang aktif.
+            Tinjau draf hasil rumusan AI di bawah. Klik <strong>&quot;Terapkan ke Form Ini&quot;</strong> untuk memasukkan data ke form halaman yang aktif.
           </div>
 
           {/* Sub-tab Specific Previews */}
@@ -82,30 +82,7 @@ export default function AIPageDraftModal({ subTab, generatedDraft, onClose, onAp
 
           {subTab === 'kesiswaan' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {generatedDraft.nama ? (
-                <>
-                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '10px' }}>
-                    <div>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Nama Ekskul Baru</label>
-                      <div style={{ padding: '8px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', fontWeight: 700 }}>{generatedDraft.nama}</div>
-                    </div>
-                    <div>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Jadwal Latihan</label>
-                      <div style={{ padding: '8px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', fontWeight: 600 }}>{generatedDraft.jadwal}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Deskripsi Kegiatan</label>
-                    <div style={{ padding: '10px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.88rem', lineHeight: 1.5 }}>{generatedDraft.deskripsi}</div>
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Banner Kesiswaan</label>
-                  <div style={{ padding: '8px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', fontWeight: 600 }}>{generatedDraft.banner_title}</div>
-                  <div style={{ padding: '8px 12px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', marginTop: '6px', fontSize: '0.88rem' }}>{generatedDraft.banner_text}</div>
-                </div>
-              )}
+              {renderKesiswaanPreview(generatedDraft)}
             </div>
           )}
 
@@ -119,7 +96,7 @@ export default function AIPageDraftModal({ subTab, generatedDraft, onClose, onAp
               {Array.isArray(generatedDraft.syarat_berkas) && (
                 <div>
                   <label style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Syarat Berkas</label>
-                  <ul style={{ margin: 0, paddingLeft: '20px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '10px 20px', fontSize: '0.88rem' }}>
+                  <ul style={{ margin: 0, paddingLeft: '20px', background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '8px 18px', fontSize: '0.88rem' }}>
                     {generatedDraft.syarat_berkas.map((s, i) => <li key={i}>{s}</li>)}
                   </ul>
                 </div>

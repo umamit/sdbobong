@@ -4,20 +4,13 @@ import { checkAuth } from '../../../../lib/auth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
-  if (!(await checkAuth())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
+  if (!(await checkAuth())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const groqApiKey = process.env.GROQ_API_KEY;
-  if (!groqApiKey) {
-    return NextResponse.json({ error: 'Groq API Key tidak terkonfigurasi di server.' }, { status: 500 });
-  }
+  if (!groqApiKey) return NextResponse.json({ error: 'Groq API Key tidak terkonfigurasi di server.' }, { status: 500 });
 
   try {
     const { subTab, prompt } = await req.json();
-    if (!prompt || prompt.trim() === '') {
-      return NextResponse.json({ error: 'Prompt instruksi konten wajib diisi.' }, { status: 400 });
-    }
+    if (!prompt || !prompt.trim()) return NextResponse.json({ error: 'Prompt wajib diisi.' }, { status: 400 });
 
     let kepsekName = 'Kepala Sekolah SD Negeri Bobong';
     try {
@@ -25,8 +18,8 @@ export async function POST(req) {
       const teachers = await loadTeachers().catch(() => []);
       const kepsek = teachers.find(t => (t.role || '').toLowerCase().includes('kepala sekolah'));
       if (kepsek) kepsekName = kepsek.name;
-    } catch (err) {
-      console.warn('Gagal memuat konteks kepsek:', err);
+    } catch {
+      // fallback
     }
 
     const systemInstruction = `
@@ -71,14 +64,36 @@ Sesuaikan struktur JSON dengan parameter subTab:
 }
 
 4. Jika subTab == "kesiswaan":
+Jika instruksi admin menyebutkan lomba, juara, piala, peringkat, medali, FLS2N, O2SN, atau prestasi murid:
 {
-  "mode": "ekskul" atau "umum",
-  "nama": "Nama Ekstrakurikuler Baru (jika ekskul)",
+  "mode": "prestasi",
+  "rank": "Peringkat juara (misal: 1st, 2nd, 3rd, atau Harapan 1)",
+  "title": "Nama Juara / Lomba (misal: Juara 1 Lomba Pidato Bahasa Indonesia)",
+  "level": "Tingkat perlombaan (misal: Tingkat Kabupaten, Tingkat Provinsi, atau Tingkat Kecamatan)",
+  "desc": "Detail lengkap prestasi, nama siswa peraih juara, dan momen kegiatan",
+  "icon": "trophy" (bisa trophy, medal, atau award)
+}
+Jika instruksi mengenai karya siswa, kerajinan, lukisan, poster, puisi, atau proyek P5:
+{
+  "mode": "karya",
+  "title": "Nama Judul Karya Siswa",
+  "category": "Kategori / Tema P5 (misal: Proyek P5 - Kearifan Lokal Kelas 4)",
+  "desc": "Penjelasan ringkas tentang karya seni/kerajinan buatan siswa",
+  "icon": "crafts" (bisa crafts, art, poetry, atau book)
+}
+Jika instruksi mengenai ekstrakurikuler:
+{
+  "mode": "ekskul",
+  "nama": "Nama Ekstrakurikuler Baru",
   "jadwal": "Jadwal Latihan (misal: Jumat, 15.00 - 17.00 WIT)",
   "deskripsi": "Deskripsi lengkap dan tujuan aktivitas kegiatan ekskul",
-  "is_wajib": false,
-  "banner_title": "Judul Banner Kesiswaan (jika umum)",
-  "banner_text": "Deskripsi Banner Kesiswaan (jika umum)"
+  "is_wajib": false
+}
+Jika umum:
+{
+  "mode": "umum",
+  "banner_title": "Judul Banner Kesiswaan",
+  "banner_text": "Deskripsi Banner Kesiswaan"
 }
 
 5. Jika subTab == "ppdb":
