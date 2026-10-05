@@ -84,13 +84,45 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
     }
   };
 
-  const categories = ['Semua', 'Pengumuman', 'Kegiatan', 'Artikel'];
+  const categories = useMemo(() => {
+    const cats = new Set(newsList.map(n => n.category).filter(Boolean));
+    return ['Semua', ...Array.from(cats)];
+  }, [newsList]);
+
+  // Helper untuk parsing tanggal format Indonesia (contoh: '3 Okt 2026', '26 September 2026')
+  const parseIndoDate = (dateStr) => {
+    if (!dateStr) return 0;
+    try {
+      if (dateStr.includes('-')) {
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+          return parts[0].length === 4
+            ? new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).getTime()
+            : new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0])).getTime();
+        }
+      }
+      const monthsMap = {
+        "jan":0,"feb":1,"mar":2,"apr":3,"mei":4,"jun":5,"jul":6,"agu":7,"sep":8,"okt":9,"nov":10,"des":11,
+        "januari":0,"februari":1,"maret":2,"april":3,"juni":5,"juli":6,"agustus":7,"september":8,"oktober":9,"november":10,"desember":11
+      };
+      const parts = dateStr.toLowerCase().replace(/,/g,'').split(/\s+/);
+      if (parts.length === 3) {
+        const m = monthsMap[parts[1]] ?? 0;
+        return new Date(parseInt(parts[2]), m, parseInt(parts[0])).getTime();
+      }
+    } catch (e) {}
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+  };
 
   // Extract unique years from news list
   const years = useMemo(() => {
     const yearSet = new Set(
       newsList
-        .map(n => n.date ? new Date(n.date).getFullYear() : null)
+        .map(n => {
+          const ts = parseIndoDate(n.date);
+          return ts ? new Date(ts).getFullYear() : null;
+        })
         .filter(Boolean)
     );
     return ['Semua', ...Array.from(yearSet).sort((a, b) => b - a)];
@@ -107,7 +139,8 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
         selectedCategory === 'Semua' ||
         (news.category || '').toLowerCase() === selectedCategory.toLowerCase();
 
-      const newsYear = news.date ? new Date(news.date).getFullYear().toString() : null;
+      const ts = parseIndoDate(news.date);
+      const newsYear = ts ? new Date(ts).getFullYear().toString() : null;
       const matchesYear =
         selectedYear === 'Semua' || newsYear === selectedYear.toString();
 
@@ -115,8 +148,8 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
     });
 
     return result.sort((a, b) => {
-      const dateA = a.date ? new Date(a.date) : new Date(0);
-      const dateB = b.date ? new Date(b.date) : new Date(0);
+      const dateA = parseIndoDate(a.date);
+      const dateB = parseIndoDate(b.date);
       return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
     });
   }, [newsList, searchQuery, selectedCategory, selectedYear, sortOrder]);
@@ -346,13 +379,12 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
       {/* News Grid with Framer Motion AnimatePresence */}
       {paginatedNews.length > 0 ? (
         <motion.div
+          key={`page-${currentPage}`}
           className="grid-3"
           style={{ marginBottom: 'var(--space-lg)', gap: '1.25rem' }}
           variants={gridVariants}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.05 }}
-          layout
+          animate="show"
         >
           <AnimatePresence mode="popLayout">
             {paginatedNews.map((news, idx) => (
