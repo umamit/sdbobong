@@ -1,6 +1,10 @@
 'use client';
 
-
+const TONE_OPTIONS = [
+  { id: 'formal', label: 'Resmi & Kedinasan' },
+  { id: 'inspiratif', label: 'Inspiratif & Prestasi' },
+  { id: 'santai', label: 'Liputan Ceria & Santai' },
+];
 
 const SUGGESTION_PROMPTS = [
   { label: 'Kerja Bakti / Sabtu Bersih', prompt: 'Kegiatan gotong royong kerja bakti Sabtu Bersih oleh siswa-siswi dan guru untuk membersihkan lingkungan sekolah dan kelas.' },
@@ -9,7 +13,7 @@ const SUGGESTION_PROMPTS = [
   { label: 'Program Imunisasi BIAS', prompt: 'Pelaksanaan kegiatan imunisasi Bulan Imunisasi Anak Sekolah (BIAS) bekerja sama dengan Puskesmas setempat.' },
 ];
 
-export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, onGenerate }) {
+export default function AIDraftGenerator({ aiPrompt, setAiPrompt, tone = 'formal', setTone, isGenerating, onGenerate }) {
   return (
     <div style={{
       background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.3) 100%)',
@@ -42,19 +46,49 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, isGenerating, 
       </div>
 
       {/* Suggestion tags/pills */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
         {SUGGESTION_PROMPTS.map((item, idx) => (
           <button
             key={idx}
             type="button"
             onClick={() => setAiPrompt(item.prompt)}
-            style={{ background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '20px', padding: '7px 15px', fontSize: '0.8rem', fontWeight: 600, color: '#f1f5f9', cursor: 'pointer', transition: 'all 0.2s ease', outline: 'none' }}
+            style={{ background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '20px', padding: '6px 14px', fontSize: '0.8rem', fontWeight: 600, color: '#f1f5f9', cursor: 'pointer', transition: 'all 0.2s ease', outline: 'none' }}
             onMouseEnter={(e) => { e.target.style.background = 'rgba(59, 130, 246, 0.2)'; e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)'; e.target.style.color = '#93c5fd'; }}
             onMouseLeave={(e) => { e.target.style.background = 'rgba(255, 255, 255, 0.1)'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'; e.target.style.color = '#f1f5f9'; }}
           >
             {item.label}
           </button>
         ))}
+      </div>
+
+      {/* Tone / Gaya Bahasa selector */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', letterSpacing: '0.02em' }}>
+          Gaya Bahasa:
+        </span>
+        {TONE_OPTIONS.map((opt) => {
+          const active = tone === opt.id;
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => setTone && setTone(opt.id)}
+              style={{
+                background: active ? 'rgba(37, 99, 235, 0.35)' : 'rgba(15, 23, 42, 0.6)',
+                border: active ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.15)',
+                color: active ? '#93c5fd' : '#94a3b8',
+                borderRadius: '8px',
+                padding: '4px 12px',
+                fontSize: '0.78rem',
+                fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Prompt Area */}

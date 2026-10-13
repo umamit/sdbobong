@@ -25,6 +25,7 @@ export default function NewsTab() {
   } = useAdminDashboard();
 
   const [aiPrompt, setAiPrompt] = useState('');
+  const [aiTone, setAiTone] = useState('formal');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedDraft, setGeneratedDraft] = useState(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -36,7 +37,7 @@ export default function NewsTab() {
       const res = await fetch('/api/admin/generate-news-draft', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: aiPrompt }),
+        body: JSON.stringify({ prompt: aiPrompt, tone: aiTone }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Gagal menghasilkan draf berita.');
@@ -89,6 +90,8 @@ export default function NewsTab() {
           <AIDraftGenerator
             aiPrompt={aiPrompt}
             setAiPrompt={setAiPrompt}
+            tone={aiTone}
+            setTone={setAiTone}
             isGenerating={isGenerating}
             onGenerate={handleGenerateDraft}
           />

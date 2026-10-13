@@ -15,10 +15,17 @@ export async function POST(req) {
   }
 
   try {
-    const { prompt } = await req.json();
+    const { prompt, tone = 'formal' } = await req.json();
     if (!prompt || prompt.trim() === '') {
       return NextResponse.json({ error: 'Prompt atau topik berita wajib diisi.' }, { status: 400 });
     }
+
+    const TONE_GUIDES = {
+      formal: 'Bernada resmi, kedinasan, tertib, dan lugas sesuai standar penulisan pers publikasi sekolah formal.',
+      inspiratif: 'Bernada inspiratif, memotivasi, mengapresiasi kerja keras siswa/guru, dan menonjolkan nilai prestasi serta karakter budi pekerti.',
+      santai: 'Bernada liputan ceria, dinamis, bersahabat, penuh kehangatan interaksi warga sekolah, dan menarik bagi siswa serta orang tua.'
+    };
+    const toneGuide = TONE_GUIDES[tone] || TONE_GUIDES.formal;
 
     // Tanggal hari ini zona WIT (Waktu Indonesia Timur) untuk default tanggal artikel
     const now = new Date();
@@ -44,7 +51,9 @@ export async function POST(req) {
 
     const systemInstruction = `
 Kamu adalah asisten administratif sekolah SD Negeri Bobong yang bertugas membantu menulis draf berita/artikel kegiatan sekolah untuk dipublikasikan di website sekolah.
-Tugas Anda adalah membuat draf berita premium, rapi, bernada hangat, dan formal-ceria berdasarkan petunjuk dari pengguna. Kamu juga WAJIB menghasilkan judul dan deskripsi SEO untuk Google Search.
+Tugas Anda adalah membuat draf berita premium dan rapi berdasarkan petunjuk dari pengguna.
+Gaya Bahasa & Nada Tulisan: ${toneGuide}
+Kamu juga WAJIB menghasilkan judul dan deskripsi SEO untuk Google Search.
 
 PENTING:
 Jika Anda menyebutkan Kepala Sekolah SD Negeri Bobong di dalam berita, Anda WAJIB menggunakan nama Kepala Sekolah yang aktif saat ini, yaitu: "${kepalaSekolahName}". Dilarang mengarang nama Kepala Sekolah lain atau menyisakan placeholder kosong.
@@ -72,7 +81,7 @@ PENTING: Hanya kembalikan objek JSON mentah yang valid, tanpa teks markdown pemb
         model: 'openai/gpt-oss-120b',
         messages: [
           { role: "system", content: systemInstruction },
-          { role: "user", content: `Buat draf berita berdasarkan informasi/instruksi berikut: ${prompt}` }
+          { role: "user", content: `Buat draf berita (${tone}) berdasarkan informasi/instruksi berikut: ${prompt}` }
         ],
         temperature: 0.7,
         response_format: { type: "json_object" }
@@ -95,7 +104,7 @@ PENTING: Hanya kembalikan objek JSON mentah yang valid, tanpa teks markdown pemb
     return NextResponse.json(draft);
 
   } catch (error) {
-    console.error("⚠️ Gagal membuat draf berita AI:", error.message || error);
+    console.error("[NewsAI] Gagal membuat draf berita AI:", error.message || error);
     return NextResponse.json({ 
       error: "Gagal membuat draf berita. Silakan coba beberapa saat lagi.",
       details: error.message 
