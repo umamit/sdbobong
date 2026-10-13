@@ -80,7 +80,20 @@ export default function PagesTab() {
         {activePageSubTab === 'beranda' && <BerandaSubTab {...adminDashboardProps} />}
         {activePageSubTab === 'profil' && <ProfilSubTab {...adminDashboardProps} />}
         {activePageSubTab === 'akademik' && <AkademikSubTab {...adminDashboardProps} />}
-        {activePageSubTab === 'kesiswaan' && <KesiswaanSubTab {...adminDashboardProps} />}
+        {activePageSubTab === 'kesiswaan' && (
+          <KesiswaanSubTab
+            {...adminDashboardProps}
+            onQuickAiPrompt={(type) => {
+              const promptMap = {
+                prestasi: 'Catat prestasi murid baru: Juara 1 Lomba Pidato Bahasa Indonesia Tingkat Kabupaten Pulau Taliabu Tahun 2026 yang diraih oleh siswa kelas 5.',
+                karya: 'Buatkan draf karya siswa baru: Miniatur Perahu Tradisional Taliabu, Proyek P5 Kearifan Lokal Kelas 4, dibuat dari anyaman pelepah sagu dan bambu.'
+              };
+              setAiPrompt(promptMap[type] || '');
+              const el = document.getElementById('ai-page-draft-generator');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }}
+          />
+        )}
         {activePageSubTab === 'ppdb' && <PpdbSubTab {...adminDashboardProps} />}
 
         {/* Sticky Save Footer */}

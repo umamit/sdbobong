@@ -16,7 +16,8 @@ export default function KesiswaanSubTab(props) {
     handleRemoveKesiswaanPrestasi,
     handleAddKarya,
     handleUpdateKarya,
-    handleRemoveKarya
+    handleRemoveKarya,
+    onQuickAiPrompt
   } = props;
 
   return (
@@ -166,10 +167,18 @@ export default function KesiswaanSubTab(props) {
                         <h3 style={{ margin: 0 }}>Daftar Prestasi Hebat Murid</h3>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Daftar raihan kejuaraan murid yang dipajang di halaman Kesiswaan.</p>
                       </div>
-                      <button type="button" onClick={handleAddKesiswaanPrestasi} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Tambah Prestasi Murid
-                      </button>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {onQuickAiPrompt && (
+                          <button type="button" onClick={() => onQuickAiPrompt('prestasi')} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe' }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+                            Buat via AI
+                          </button>
+                        )}
+                        <button type="button" onClick={handleAddKesiswaanPrestasi} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                          Tambah Prestasi Murid
+                        </button>
+                      </div>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
@@ -249,10 +258,18 @@ export default function KesiswaanSubTab(props) {
                         <h3 style={{ margin: 0 }}>Galeri Karya Kreatif Kreasi Murid</h3>
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Etalase pameran kreasi seni, budaya, kerajinan tangan, atau puisi murid.</p>
                       </div>
-                      <button type="button" onClick={handleAddKarya} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Tambah Karya Murid
-                      </button>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {onQuickAiPrompt && (
+                          <button type="button" onClick={() => onQuickAiPrompt('karya')} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe' }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+                            Buat via AI
+                          </button>
+                        )}
+                        <button type="button" onClick={handleAddKarya} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                          Tambah Karya Murid
+                        </button>
+                      </div>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>

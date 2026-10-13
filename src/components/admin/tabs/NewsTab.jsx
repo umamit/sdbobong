@@ -80,6 +80,15 @@ export default function NewsTab() {
     }, 100);
   };
 
+  const getTodayWitDate = () => {
+    return new Date().toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'Asia/Jayapura'
+    });
+  };
+
   return (
     <section id="tab-news" className={`tab-pane ${activeTab === 'news' ? 'active' : ''}`}>
       <div className="news-cms-grid news-stacked-layout">
@@ -122,7 +131,7 @@ export default function NewsTab() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
               <div className="form-group">
                 <label htmlFor="news_date" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Tanggal Publikasi *</label>
-                <input type="text" id="news_date" name="date" className="form-control" placeholder="Contoh: 20 Jun 2026" defaultValue={editingNews ? editingNews.date : ''} style={{ width: '100%' }} required />
+                <input type="text" id="news_date" name="date" className="form-control" placeholder="Contoh: 20 Jun 2026" defaultValue={editingNews ? editingNews.date : getTodayWitDate()} style={{ width: '100%' }} required />
               </div>
               <div className="form-group">
                 <label htmlFor="news_category" style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>Kategori *</label>

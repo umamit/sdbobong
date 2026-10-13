@@ -1,9 +1,15 @@
-'use client';
-
-
+import { useState } from 'react';
 
 export default function AIDraftModal({ generatedDraft, onClose, onApply }) {
+  const [copiedKey, setCopiedKey] = useState(null);
   if (!generatedDraft) return null;
+
+  const handleCopy = (text, key) => {
+    if (!text) return;
+    navigator.clipboard?.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px', boxSizing: 'border-box', animation: 'modalFadeIn 0.3s ease-out' }}>
@@ -61,9 +67,14 @@ export default function AIDraftModal({ generatedDraft, onClose, onApply }) {
                 <div style={{ marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                     <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>SEO Title</span>
-                    <span style={{ fontSize: '0.68rem', fontWeight: 700, color: generatedDraft.seo_title.length <= 60 ? '#15803d' : '#b45309', background: generatedDraft.seo_title.length <= 60 ? '#dcfce7' : '#fef3c7', padding: '2px 8px', borderRadius: '10px', border: generatedDraft.seo_title.length <= 60 ? '1px solid #86efac' : '1px solid #fde68a' }}>
-                      {generatedDraft.seo_title.length}/60
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button type="button" onClick={() => handleCopy(generatedDraft.seo_title, 'title')} style={{ background: copiedKey === 'title' ? '#dcfce7' : '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '2px 8px', fontSize: '0.7rem', color: copiedKey === 'title' ? '#15803d' : '#475569', cursor: 'pointer', fontWeight: 600 }}>
+                        {copiedKey === 'title' ? 'Tersalin' : 'Salin'}
+                      </button>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: generatedDraft.seo_title.length <= 60 ? '#15803d' : '#b45309', background: generatedDraft.seo_title.length <= 60 ? '#dcfce7' : '#fef3c7', padding: '2px 8px', borderRadius: '10px', border: generatedDraft.seo_title.length <= 60 ? '1px solid #86efac' : '1px solid #fde68a' }}>
+                        {generatedDraft.seo_title.length}/60
+                      </span>
+                    </div>
                   </div>
                   <div style={{ padding: '10px 14px', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '6px', color: '#1d4ed8', fontWeight: 700, fontSize: '0.92rem' }}>
                     {generatedDraft.seo_title}
@@ -74,9 +85,14 @@ export default function AIDraftModal({ generatedDraft, onClose, onApply }) {
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                     <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Meta Description</span>
-                    <span style={{ fontSize: '0.68rem', fontWeight: 700, color: generatedDraft.seo_description.length <= 160 ? '#15803d' : '#b45309', background: generatedDraft.seo_description.length <= 160 ? '#dcfce7' : '#fef3c7', padding: '2px 8px', borderRadius: '10px', border: generatedDraft.seo_description.length <= 160 ? '1px solid #86efac' : '1px solid #fde68a' }}>
-                      {generatedDraft.seo_description.length}/160
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button type="button" onClick={() => handleCopy(generatedDraft.seo_description, 'desc')} style={{ background: copiedKey === 'desc' ? '#dcfce7' : '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px', padding: '2px 8px', fontSize: '0.7rem', color: copiedKey === 'desc' ? '#15803d' : '#475569', cursor: 'pointer', fontWeight: 600 }}>
+                        {copiedKey === 'desc' ? 'Tersalin' : 'Salin'}
+                      </button>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: generatedDraft.seo_description.length <= 160 ? '#15803d' : '#b45309', background: generatedDraft.seo_description.length <= 160 ? '#dcfce7' : '#fef3c7', padding: '2px 8px', borderRadius: '10px', border: generatedDraft.seo_description.length <= 160 ? '1px solid #86efac' : '1px solid #fde68a' }}>
+                        {generatedDraft.seo_description.length}/160
+                      </span>
+                    </div>
                   </div>
                   <div style={{ padding: '10px 14px', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '6px', color: '#334155', fontSize: '0.85rem', lineHeight: '1.5', fontWeight: 500 }}>
                     {generatedDraft.seo_description}

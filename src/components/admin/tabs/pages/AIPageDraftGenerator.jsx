@@ -29,7 +29,7 @@ export default function AIPageDraftGenerator({ subTab, aiPrompt, setAiPrompt, is
   const templates = PAGE_TEMPLATES[subTab] || PAGE_TEMPLATES.beranda;
 
   return (
-    <div style={{
+    <div id="ai-page-draft-generator" style={{
       background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.5) 100%)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
