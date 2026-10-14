@@ -28,24 +28,42 @@ export default function InteractiveFacilityMap() {
         gap: 'var(--space-sm)',
         marginBottom: 'var(--space-xs)'
       }}>
-        <p style={{ 
-          display: 'inline-flex', 
-          alignItems: 'center', 
-          gap: '6px', 
-          backgroundColor: 'var(--accent-bg)', 
-          color: 'var(--primary-dark)', 
-          padding: '8px 16px', 
-          borderRadius: 'var(--radius-full)', 
-          fontSize: '0.85rem', 
-          fontWeight: 600, 
-          margin: 0, 
-          border: '1px solid var(--accent-light)',
-          textAlign: 'center',
-          boxShadow: 'var(--shadow-sm)'
-        }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-          <span>Arahkan kursor atau ketuk bangunan pada denah satelit di bawah ini untuk melihat detail fasilitas!</span>
-        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+          <p style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '6px', 
+            backgroundColor: 'var(--accent-bg)', 
+            color: 'var(--primary-dark)', 
+            padding: '8px 16px', 
+            borderRadius: 'var(--radius-full)', 
+            fontSize: '0.85rem', 
+            fontWeight: 600, 
+            margin: 0, 
+            border: '1px solid var(--accent-light)',
+            textAlign: 'center',
+            boxShadow: 'var(--shadow-sm)'
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>Arahkan kursor atau ketuk bangunan pada denah satelit di bawah ini untuk melihat detail fasilitas!</span>
+          </p>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            backgroundColor: 'rgba(18, 165, 184, 0.08)',
+            color: 'var(--primary)',
+            padding: '8px 16px',
+            borderRadius: 'var(--radius-full)',
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            border: '1px solid rgba(18, 165, 184, 0.25)',
+            boxShadow: 'var(--shadow-sm)'
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Seluruh Area Terpantau CCTV 24 Jam</span>
+          </span>
+        </div>
 
         {/* Dynamic Floor Switcher (Khusus untuk Gedung Selatan Atap Merah yang memiliki 2 Lantai) */}
         <div style={{
@@ -192,6 +210,15 @@ export default function InteractiveFacilityMap() {
             <div style={{ background: 'white', border: '1px solid var(--border-color)', padding: '12px', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'var(--shadow-sm)' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Gedung Utama</span>
               <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--accent)', fontFamily: 'var(--font-heading)', marginTop: '2px', textAlign: 'center' }}>Struktur 2 Lantai</span>
+            </div>
+            <div style={{ gridColumn: 'span 2', background: 'white', border: '1px solid rgba(18, 165, 184, 0.25)', padding: '10px 14px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '10px', boxShadow: 'var(--shadow-sm)' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(18, 165, 184, 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--primary-dark)' }}>Sistem Keamanan Terpadu</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Seluruh sudut koridor, ruang kelas, dan gerbang sekolah terpantau kamera CCTV 24 Jam.</div>
+              </div>
             </div>
           </div>
         </div>

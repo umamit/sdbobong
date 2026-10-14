@@ -188,6 +188,15 @@ export default async function Profil() {
               <span className="dapodik-bento-label">Status Lahan</span>
               <span className="dapodik-bento-value">{profil.kepemilikan_lahan || "Pemerintah Daerah"}</span>
             </FramerRevealItem>
+
+            {/* Card 9: Sistem Keamanan & CCTV */}
+            <FramerRevealItem className="dapodik-bento-card">
+              <div className="dapodik-bento-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <span className="dapodik-bento-label">Pemantauan Keamanan</span>
+              <span className="dapodik-bento-value" style={{ color: 'var(--primary-dark)', fontWeight: 700 }}>CCTV Aktif 24 Jam</span>
+            </FramerRevealItem>
           </FramerRevealContainer>
         </div>
       </section>

@@ -7,7 +7,7 @@ export const FACILITIES_DATA = {
       kapasitas: "14 Guru & Staff",
       lokasi: "Gedung Utama 2 Lantai, Lantai 1 (Sisi Kiri)",
       kondisi: "Sangat Baik, Bersih & Nyaman",
-      fasilitas: ["Meja Kerja Guru & Kursi", "Printer & Scanner Bersama", "Papan Pengumuman Kurikulum", "Kipas Angin Dinding", "Akses Wifi Sekolah"]
+      fasilitas: ["Meja Kerja Guru & Kursi", "Monitor Pemantau CCTV 24 Jam", "Printer & Scanner Bersama", "Papan Pengumuman Kurikulum", "Akses Wifi Sekolah"]
     },
     icon: "laptop",
     color: "#C53030",
@@ -205,7 +205,7 @@ export const FACILITIES_DATA = {
       konstruksi: "Pilar Beton Kokoh & Pagar Besi",
       lokasi: "Akses Masuk Utama (Sektor Utara Kompleks)",
       kondisi: "Kokoh, Bersih & Terawat",
-      fasilitas: ["Pilar Gerbang Berwarna Khas Sekolah", "Plang Identitas SD Negeri Bobong", "Pagar Besi Pengaman Geser", "Tong Sampah Pilah", "Akses Langsung Jalan Raya & Lapangan"]
+      fasilitas: ["Pilar Gerbang Berwarna Khas Sekolah", "Kamera CCTV Pengawas Akses Masuk", "Plang Identitas SD Negeri Bobong", "Pagar Besi Pengaman Geser", "Tong Sampah Pilah"]
     },
     icon: "school",
     color: "#E5A900",

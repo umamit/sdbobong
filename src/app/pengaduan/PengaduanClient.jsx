@@ -56,7 +56,7 @@ export default function PengaduanClient() {
             Layanan Pengaduan &amp; Aspirasi
           </h1>
           <p style={{ fontSize: '1.05rem', lineHeight: 1.6, opacity: 0.95, margin: 0 }}>
-            Ruang komunikasi aman dan rahasia bagi murid dan orang tua untuk menyampaikan kendala belajar, sarana, atau pencegahan perundungan di lingkungan sekolah.
+            Ruang komunikasi aman dan rahasia bagi murid dan orang tua untuk menyampaikan kendala belajar, sarana, atau pencegahan perundungan di lingkungan sekolah. Seluruh area sekolah terpantau kamera CCTV aktif 24 jam demi menjamin rasa aman dan perlindungan siswa.
           </p>
         </div>
       </section>

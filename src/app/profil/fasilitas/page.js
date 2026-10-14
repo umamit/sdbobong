@@ -20,7 +20,7 @@ export default function Fasilitas() {
             <FramerWordReveal text="Fasilitas & Denah" />
           </h1>
           <p className="hero-text" style={{ marginBottom: 0 }}>
-            Eksplorasi peta interaktif sarana prasarana sekolah dan tata ruang SD Negeri Bobong.
+            Eksplorasi peta interaktif sarana prasarana sekolah dan tata ruang SD Negeri Bobong. Seluruh area sekolah terpantau kamera CCTV 24 Jam demi keselamatan dan kenyamanan warga sekolah.
           </p>
         </div>
       </section>

@@ -479,39 +479,17 @@ export default async function Home() {
                 ),
               },
               {
-                label: 'Website Sekolah',
-                value: 'Aktif',
-                color: '#FFC83B',
-                bgGlow: 'rgba(255, 200, 59, 0.2)',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
-                    <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                  </svg>
-                ),
-              },
-              {
-                label: 'Presensi Online',
-                value: 'Aktif',
+                label: 'CCTV Pengawas 24 Jam',
+                value: 'Seluruh Area',
                 color: '#12A5B8',
                 bgGlow: 'rgba(18, 165, 184, 0.2)',
                 icon: (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
-                    <path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
                   </svg>
                 ),
               },
-              {
-                label: 'Perangkat Ajar Digital',
-                value: 'Aktif',
-                color: '#4CD964',
-                bgGlow: 'rgba(76, 217, 100, 0.2)',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px' }}>
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                  </svg>
-                ),
-              },
-            ].slice(0, 6).map((f) => (
+            ].map((f) => (
               <FramerRevealItem
                 key={f.label}
                 className="sarpras-bento-card"
