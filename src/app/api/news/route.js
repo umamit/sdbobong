@@ -140,9 +140,23 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Berita tidak ditemukan." }, { status: 404 });
     }
 
+    // Parse existing images if provided (from image manager)
+    let preservedImages = [];
+    const existingImagesRaw = formData.get('existingImages')?.toString();
+    if (existingImagesRaw) {
+      try {
+        const parsed = JSON.parse(existingImagesRaw);
+        if (Array.isArray(parsed)) preservedImages = parsed;
+      } catch (e) {
+        preservedImages = [];
+      }
+    } else {
+      preservedImages = newsList[newsIndex].images || [newsList[newsIndex].image].filter(Boolean);
+    }
+
     // Process multiple photo uploads
     const photoFiles = formData.getAll('photos');
-    let images = [];
+    let newlyUploadedImages = [];
 
     if (photoFiles && photoFiles.length > 0) {
       for (const file of photoFiles) {
@@ -153,19 +167,21 @@ export async function PUT(request) {
           } else if (uploadedUrl === 'ERROR') {
             return NextResponse.json({ error: "Gagal mengunggah salah satu foto." }, { status: 500 });
           } else if (uploadedUrl && uploadedUrl !== 'NO_FILE') {
-            images.push(uploadedUrl);
+            newlyUploadedImages.push(uploadedUrl);
           }
         }
       }
     }
 
-    // Set the cover image to the first uploaded photo if we have any new ones
-    if (images.length > 0) {
-      image = images[0];
+    // Combine preserved existing images with newly uploaded images
+    const combinedImages = [...preservedImages, ...newlyUploadedImages];
+
+    if (combinedImages.length > 0) {
+      image = combinedImages[0];
+      images = combinedImages;
     } else {
-      // If no new images uploaded, keep current ones
-      image = image || newsList[newsIndex].image;
-      images = newsList[newsIndex].images || [image];
+      image = image || newsList[newsIndex].image || '/images/news_hari_guru.svg';
+      images = [image];
     }
 
     newsList[newsIndex].title = title;

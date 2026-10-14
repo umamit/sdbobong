@@ -6,17 +6,20 @@ import RichTextEditor from '../../../components/RichTextEditor';
 import AIContentRecommendations from '../../admin/ai/AIContentRecommendations';
 import AIDraftGenerator from './news/AIDraftGenerator';
 import AIDraftModal from './news/AIDraftModal';
+import ExistingPhotosManager from './news/ExistingPhotosManager';
 
 export default function NewsTab() {
   const {
     activeTab,
     editingNews,
+    existingImages,
     handleNewsAdd,
     handleNewsCancelEdit,
     handleNewsDelete,
     handleNewsEditClick,
     handleNewsPhotosChange,
     handleNewsUpdate,
+    handleRemoveExistingImage,
     handleRemoveNewsPhoto,
     newsEditorKey,
     newsList,
@@ -151,12 +154,20 @@ export default function NewsTab() {
                 <option value="/images/news_rapat_komite.svg">Musyawarah / Komite (Biru/Orange)</option>
               </select>
               <div style={{ marginTop: '10px' }}>
-                <label htmlFor="news_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1.5MB per berkas):</label>
+                {editingNews && (
+                  <ExistingPhotosManager
+                    existingImages={existingImages}
+                    onRemoveImage={handleRemoveExistingImage}
+                  />
+                )}
+                <label htmlFor="news_photo" style={{ display: 'block', marginBottom: '4px', fontWeight: 500, fontSize: '0.9rem' }}>
+                  {editingNews ? 'Tambah Foto Baru ke Galeri (.png, .jpg, .jpeg, maks 1.5MB per berkas):' : 'Atau Unggah Foto Baru (.png, .jpg, .jpeg, maks 1.5MB per berkas):'}
+                </label>
                 <input type="file" id="news_photo" name="photos" multiple className="form-control" accept="image/png, image/jpeg, image/jpg" onChange={handleNewsPhotosChange} style={{ width: '100%' }} />
                 {editingNews ? (
                   <p style={{ fontSize: '0.75rem', color: '#0284c7', marginTop: '6px', marginBottom: '10px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                    <span><strong>Foto Saat Ini:</strong> Berita ini sudah memiliki {editingNews.images ? editingNews.images.length : 1} foto. Mengunggah foto baru di atas akan menggantikan galeri foto saat ini.</span>
+                    <span><strong>Tambah Foto:</strong> Foto yang Anda unggah di atas akan langsung ditambahkan ke galeri foto berita ini (foto lama tidak terhapus).</span>
                   </p>
                 ) : (
                   <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '6px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>

@@ -18,6 +18,7 @@ export default function useNewsHandlers({
   const [newsEditorKey, setNewsEditorKey] = useState(0);
   const [newsPhotos, setNewsPhotos] = useState([]);
   const [newsPhotoPreviews, setNewsPhotoPreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
 
   const handleNewsAdd = async (e) => {
     e.preventDefault();
@@ -73,6 +74,8 @@ export default function useNewsHandlers({
   
   const handleNewsEditClick = (article) => {
     setEditingNews(article);
+    const existing = article.images && article.images.length > 0 ? article.images : (article.image ? [article.image] : []);
+    setExistingImages(existing);
     setNewsEditorKey(prev => prev + 1);
     setNewsPhotos([]);
     newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
@@ -88,10 +91,15 @@ export default function useNewsHandlers({
 
   const handleNewsCancelEdit = () => {
     setEditingNews(null);
+    setExistingImages([]);
     setNewsEditorKey(prev => prev + 1);
     setNewsPhotos([]);
     newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
     setNewsPhotoPreviews([]);
+  };
+
+  const handleRemoveExistingImage = (index) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleNewsUpdate = async (e) => {
@@ -107,6 +115,7 @@ export default function useNewsHandlers({
 
     formData.delete('photo');
     formData.delete('photos');
+    formData.append('existingImages', JSON.stringify(existingImages));
 
     try {
       if (newsPhotos.length > 0) {
@@ -132,6 +141,7 @@ export default function useNewsHandlers({
         showToast('success', 'Perubahan berita berhasil disimpan!');
         setNewsList(prev => prev.map(n => n.id === editingNews.id ? data.article : n));
         setEditingNews(null);
+        setExistingImages([]);
         form.reset();
 
         setNewsPhotos([]);
@@ -230,6 +240,9 @@ export default function useNewsHandlers({
     setNewsPhotos,
     newsPhotoPreviews,
     setNewsPhotoPreviews,
+    existingImages,
+    setExistingImages,
+    handleRemoveExistingImage,
     handleNewsAdd,
     handleNewsEditClick,
     handleNewsCancelEdit,
