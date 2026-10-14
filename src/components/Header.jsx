@@ -81,6 +81,7 @@ export default function Header() {
       label: 'Informasi',
       dropdown: [
         { href: '/berita', label: 'Berita & Kegiatan' },
+        { href: '/prestasi', label: 'Prestasi Siswa' },
         { href: '/kesiswaan', label: 'Kesiswaan & Ekskul' },
         { href: '/alumni', label: 'Portal Alumni' },
         { href: '/galeri', label: 'Galeri Sekolah' },
