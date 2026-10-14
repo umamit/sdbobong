@@ -15,14 +15,14 @@ const SUGGESTION_PROMPTS = [
 
 export default function AIDraftGenerator({ aiPrompt, setAiPrompt, tone = 'formal', setTone, isGenerating, onGenerate }) {
   return (
-    <div style={{
-      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.3) 100%)',
+    <div id="ai_draft_generator_section" style={{
+      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.65) 100%)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      border: '1px solid rgba(255, 255, 255, 0.18)',
       borderRadius: '16px',
       padding: '24px',
-      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.2)',
+      boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.25)',
       transition: 'all 0.3s ease',
       position: 'relative',
       overflow: 'hidden'
@@ -37,9 +37,9 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, tone = 'formal
         </span>
         <div>
           <h3 style={{ margin: 0, border: 'none', padding: 0, fontSize: '1.25rem', fontWeight: 800, color: '#f8fafc', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Asisten Draf Berita AI <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#3b82f6', background: 'rgba(59, 130, 246, 0.15)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>BETA</span>
+            Asisten Draf Berita AI <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#60a5fa', background: 'rgba(59, 130, 246, 0.2)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.3)' }}>BETA</span>
           </h3>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: '#e2e8f0', marginTop: '4px', lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: '#f1f5f9', marginTop: '4px', lineHeight: 1.5, opacity: 0.9 }}>
             Tulis topik pendek atau pilih template kegiatan di bawah untuk membuat draf berita lengkap dengan bantuan kecerdasan buatan.
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, tone = 'formal
 
       {/* Tone / Gaya Bahasa selector */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#cbd5e1', letterSpacing: '0.02em' }}>
+        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#e2e8f0', letterSpacing: '0.02em' }}>
           Gaya Bahasa:
         </span>
         {TONE_OPTIONS.map((opt) => {
@@ -74,15 +74,16 @@ export default function AIDraftGenerator({ aiPrompt, setAiPrompt, tone = 'formal
               type="button"
               onClick={() => setTone && setTone(opt.id)}
               style={{
-                background: active ? 'rgba(37, 99, 235, 0.35)' : 'rgba(15, 23, 42, 0.6)',
-                border: active ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.15)',
-                color: active ? '#93c5fd' : '#94a3b8',
+                background: active ? '#2563eb' : 'rgba(15, 23, 42, 0.75)',
+                border: active ? '1px solid #60a5fa' : '1px solid rgba(255, 255, 255, 0.25)',
+                color: active ? '#ffffff' : '#cbd5e1',
                 borderRadius: '8px',
-                padding: '4px 12px',
+                padding: '5px 14px',
                 fontSize: '0.78rem',
-                fontWeight: active ? 700 : 500,
+                fontWeight: active ? 700 : 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                boxShadow: active ? '0 2px 8px rgba(37, 99, 235, 0.4)' : 'none'
               }}
             >
               {opt.label}

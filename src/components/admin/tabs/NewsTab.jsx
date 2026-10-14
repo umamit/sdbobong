@@ -95,7 +95,11 @@ export default function NewsTab() {
   return (
     <section id="tab-news" className={`tab-pane ${activeTab === 'news' ? 'active' : ''}`}>
       <div className="news-cms-grid news-stacked-layout">
-        <AIContentRecommendations />
+        <AIContentRecommendations onSelectRecommendation={(prompt) => {
+          setAiPrompt(prompt);
+          const el = document.getElementById('ai_draft_generator_section');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }} />
 
         {/* Asisten AI Pembuat Draf Berita */}
         {!editingNews && (
