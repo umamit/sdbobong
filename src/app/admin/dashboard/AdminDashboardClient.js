@@ -84,6 +84,10 @@ const MessagesTab = dynamic(() => import('../../../components/admin/tabs/Message
   ssr: false, 
   loading: () => <TabLoadingSpinner /> 
 });
+const ComplaintsTab = dynamic(() => import('../../../components/admin/tabs/ComplaintsTab'), { 
+  ssr: false, 
+  loading: () => <TabLoadingSpinner /> 
+});
 const GraduationTab = dynamic(() => import('../../../components/admin/tabs/GraduationTab'), { 
   ssr: false, 
   loading: () => <TabLoadingSpinner /> 
@@ -106,7 +110,7 @@ const AlumniTab = dynamic(() => import('../../../components/admin/tabs/AlumniTab
 });
 
 function AdminDashboardShell() {
-  const { activeTab, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab } = useAdminDashboard();
+  const { activeTab, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab, complaints, handleUpdateComplaintStatus, handleDeleteComplaint } = useAdminDashboard();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
@@ -155,6 +159,13 @@ function AdminDashboardShell() {
           {activeTab === 'faqs' && <FaqsTab />}
           {activeTab === 'gallery' && <GalleryTab />}
           {activeTab === 'messages' && <MessagesTab />}
+          {activeTab === 'complaints' && (
+            <ComplaintsTab
+              complaints={complaints}
+              onUpdateStatus={handleUpdateComplaintStatus}
+              onDeleteComplaint={handleDeleteComplaint}
+            />
+          )}
           {activeTab === 'graduation' && <GraduationTab />}
           {activeTab === 'students' && <StudentsTab />}
           {activeTab === 'security' && <SecurityTab />}

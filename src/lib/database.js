@@ -92,6 +92,7 @@ export {
 export {
   loadComplaints,
   saveComplaint,
+  deleteComplaint,
 } from './db/complaints.js';
 
 // Sync & PPDB column detection

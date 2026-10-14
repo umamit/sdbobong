@@ -1,5 +1,5 @@
 import AdminDashboardClient from './AdminDashboardClient';
-import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadGraduation, loadStudents, unpackBerkasFromAlamat } from '../../../lib/database';
+import { loadWebConfig, loadNews, loadTeachers, loadAchievements, syncLocalToSupabase, loadLocalStatuses, PENDAFTARAN_JSON, supabase, isSupabaseEnabled, getStorageUsage, loadMessages, loadComplaints, loadGraduation, loadStudents, unpackBerkasFromAlamat } from '../../../lib/database';
 import { loadAuditLogs } from '../../../lib/audit';
 import { prisma } from '../../../lib/prisma';
 import fs from 'fs';
@@ -11,14 +11,15 @@ export default async function AdminDashboardPage() {
     // 1. Run local to Supabase sync in the background (non-blocking) to optimize load speed
     syncLocalToSupabase().catch(err => console.error("Error in background database sync on dashboard access:", err));
 
-    // 2. Fetch config, news, teachers, achievements, storage, messages, graduation, students, and audit logs in parallel safely
-    const [config, newsList, teachers, achievements, storageInfo, messagesList, graduationList, auditLogs, studentsList] = await Promise.all([
+    // 2. Fetch config, news, teachers, achievements, storage, messages, complaints, graduation, students, and audit logs in parallel safely
+    const [config, newsList, teachers, achievements, storageInfo, messagesList, complaintsList, graduationList, auditLogs, studentsList] = await Promise.all([
       loadWebConfig(true).catch(e => { console.error("loadWebConfig failed:", e); return {}; }),
       loadNews(true).catch(e => { console.error("loadNews failed:", e); return []; }),
       loadTeachers(false, true).catch(e => { console.error("loadTeachers failed:", e); return []; }),
       loadAchievements().catch(e => { console.error("loadAchievements failed:", e); return []; }),
       getStorageUsage().catch(e => { console.error("getStorageUsage failed:", e); return null; }),
       loadMessages().catch(e => { console.error("loadMessages failed:", e); return []; }),
+      loadComplaints().catch(e => { console.error("loadComplaints failed:", e); return []; }),
       loadGraduation().catch(e => { console.error("loadGraduation failed:", e); return []; }),
       loadAuditLogs().catch(e => { console.error("loadAuditLogs failed:", e); return []; }),
       loadStudents().catch(e => { console.error("loadStudents failed:", e); return []; })
@@ -142,6 +143,7 @@ export default async function AdminDashboardPage() {
         dbStatus={dbStatus || 'disabled'}
         initialStorageInfo={storageInfo || null}
         initialMessages={messagesList || []}
+        initialComplaints={complaintsList || []}
         initialGraduation={graduationList || []}
         initialAuditLogs={auditLogs || []}
         initialStudents={studentsList || []}
@@ -159,6 +161,7 @@ export default async function AdminDashboardPage() {
         dbStatus="disabled"
         initialStorageInfo={null}
         initialMessages={[]}
+        initialComplaints={[]}
         initialGraduation={[]}
         initialAuditLogs={[]}
         initialStudents={[]}

@@ -84,3 +84,50 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Gagal mengirim pengaduan: ' + err.message }, { status: 500 });
   }
 }
+
+export async function PUT(request) {
+  try {
+    const body = await request.json();
+    const { id, status, response } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID pengaduan wajib disertakan.' }, { status: 400 });
+    }
+
+    const complaints = await loadComplaints();
+    const existing = complaints.find(c => c.id === id || c.ticket_code === id);
+    if (!existing) {
+      return NextResponse.json({ error: 'Pengaduan tidak ditemukan.' }, { status: 404 });
+    }
+
+    const updated = {
+      ...existing,
+      status: status || existing.status,
+      response: response !== undefined ? response : existing.response,
+      updated_at: new Date().toISOString()
+    };
+
+    await saveComplaint(updated);
+    return NextResponse.json({ success: true, complaint: updated });
+  } catch (err) {
+    return NextResponse.json({ error: 'Gagal memperbarui status pengaduan: ' + err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID pengaduan wajib disertakan.' }, { status: 400 });
+    }
+
+    const { deleteComplaint } = await import('../../../lib/database');
+    await deleteComplaint(id);
+
+    return NextResponse.json({ success: true, message: 'Tiket pengaduan berhasil dihapus.' });
+  } catch (err) {
+    return NextResponse.json({ error: 'Gagal menghapus pengaduan: ' + err.message }, { status: 500 });
+  }
+}

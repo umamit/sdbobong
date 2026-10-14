@@ -20,6 +20,7 @@ import useEventHandlers from './hooks/useEventHandlers';
 import useAchievementHandlers from './hooks/useAchievementHandlers';
 import useContentUtilityHandlers from './hooks/useContentUtilityHandlers';
 import useSystemHandlers from './hooks/useSystemHandlers';
+import useComplaintHandlers from './hooks/useComplaintHandlers';
 
 export const AdminDashboardContext = createContext(null);
 
@@ -44,6 +45,7 @@ export function AdminDashboardProvider({
   initialGraduation = [],
   initialAuditLogs = [],
   initialStudents = [],
+  initialComplaints = [],
 }) {
   const router = useRouter();
 
@@ -57,6 +59,7 @@ export function AdminDashboardProvider({
   const safeGraduation = Array.isArray(initialGraduation) ? initialGraduation : [];
   const safeAuditLogs = Array.isArray(initialAuditLogs) ? initialAuditLogs : [];
   const safeStudents = Array.isArray(initialStudents) ? initialStudents : [];
+  const safeComplaints = Array.isArray(initialComplaints) ? initialComplaints : [];
 
   // Shared Core List States
   const [config, setConfig] = useState(safeConfig);
@@ -293,7 +296,15 @@ export function AdminDashboardProvider({
     alertDialog
   });
 
-  // 11. System Handlers Hook (Audit logs, password, backups, session, active tab)
+  // 11. Complaints Handlers Hook
+  const complaintStuff = useComplaintHandlers({
+    initialComplaints: safeComplaints,
+    fetch: customFetch,
+    showToast,
+    confirmDialog
+  });
+
+  // 12. System Handlers Hook (Audit logs, password, backups, session, active tab)
   const systemStuff = useSystemHandlers({
     config,
     setConfig,
@@ -430,6 +441,7 @@ export function AdminDashboardProvider({
       faqs: 'Manajemen FAQ & Hubungi',
       gallery: 'Manajemen Galeri Kegiatan',
       messages: 'Moderasi Kotak Masuk & Buku Tamu',
+      complaints: 'Layanan Pengaduan & Aspirasi',
       graduation: 'Kelola Portal Kelulusan Siswa',
       students: 'Manajemen Data Siswa',
       security: 'Jejak Audit & Keamanan Sistem'
@@ -492,6 +504,9 @@ export function AdminDashboardProvider({
 
     // Content Utilities outputs
     ...contentUtilityStuff,
+
+    // Complaints Hook outputs
+    ...complaintStuff,
 
     // System outputs
     ...systemStuff
