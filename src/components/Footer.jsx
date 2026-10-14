@@ -39,6 +39,7 @@ export default async function Footer() {
             <li><Link href="/">Beranda</Link></li>
             <li><Link href="/profil">Profil Sekolah</Link></li>
             <li><Link href="/akademik">Informasi Akademik</Link></li>
+            <li><Link href="/perpustakaan">Perpustakaan Digital</Link></li>
             <li><a href="https://presensi.sdnegeribobong.sch.id" target="_blank" rel="noreferrer">Presensi Online (Kehadiran) ↗</a></li>
             <li><a href="https://ajar.sdnegeribobong.sch.id" target="_blank" rel="noreferrer">Perangkat Ajar (Modul RPP) ↗</a></li>
             <li><Link href="/akademik/nilai">Portal Cek Rapor</Link></li>
@@ -49,6 +50,7 @@ export default async function Footer() {
             <li><Link href="/ppdb/cetak">Formulir PPDB Offline</Link></li>
             <li><Link href="/berita">Berita Sekolah</Link></li>
             <li><Link href="/alumni">Portal Alumni</Link></li>
+            <li><Link href="/pengaduan">Pengaduan &amp; Aspirasi</Link></li>
             <li><Link href="/kontak">Hubungi Kami</Link></li>
           </ul>
         </div>
@@ -88,7 +90,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v4.6.0</span>
+            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v4.6.1</span>
           </p>
         </div>
       </div>

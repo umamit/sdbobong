@@ -177,3 +177,19 @@ model Alumni {
 
   @@map("alumni_sdn_bobong")
 }
+
+model Complaint {
+  id             String  @id
+  ticket_code    String  @unique
+  category       String
+  message        String
+  photo_url      String?
+  is_anonymous   Boolean @default(false)
+  reporter_name  String?
+  reporter_phone String?
+  status         String  @default("Menunggu")
+  response       String?
+  created_at     String
+
+  @@map("complaints_sdn_bobong")
+}

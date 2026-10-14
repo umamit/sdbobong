@@ -61,6 +61,7 @@ export default function Header() {
       label: 'Akademik',
       dropdown: [
         { href: '/akademik', label: 'Informasi Akademik' },
+        { href: '/perpustakaan', label: 'Perpustakaan Digital' },
         { href: '/akademik/kalender', label: 'Kalender Pendidikan' },
         { href: 'https://presensi.sdnegeribobong.sch.id', label: 'Presensi Online (Kehadiran)', external: true },
         { href: 'https://ajar.sdnegeribobong.sch.id', label: 'Perangkat Ajar (Modul RPP)', external: true },
@@ -92,6 +93,7 @@ export default function Header() {
       label: 'Kontak',
       dropdown: [
         { href: '/kontak', label: 'Hubungi Kami' },
+        { href: '/pengaduan', label: 'Pengaduan & Aspirasi' },
         { href: '/kontak/buku-tamu', label: 'Buku Tamu' }
       ]
     },

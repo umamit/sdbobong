@@ -88,6 +88,12 @@ export {
   invalidateAlumniCache,
 } from './db/alumni.js';
 
+// Complaints
+export {
+  loadComplaints,
+  saveComplaint,
+} from './db/complaints.js';
+
 // Sync & PPDB column detection
 export {
   syncLocalToSupabase,
