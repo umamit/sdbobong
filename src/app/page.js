@@ -479,8 +479,8 @@ export default async function Home() {
                 ),
               },
               {
-                label: 'CCTV Pengawas 24 Jam',
-                value: 'Seluruh Area',
+                label: 'CCTV Area Strategis',
+                value: 'Aktif 24 Jam',
                 color: '#12A5B8',
                 bgGlow: 'rgba(18, 165, 184, 0.2)',
                 icon: (
