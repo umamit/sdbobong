@@ -39,11 +39,14 @@ export async function sitemap() {
     // ── Layanan Akademik Siswa & Orang Tua ────────────────────────────────
     { route: '/nilai',                  priority: 0.7, freq: 'monthly' }, // Portal Cek Rapor
     { route: '/kelulusan',              priority: 0.7, freq: 'yearly'  }, // Pengumuman Kelulusan
+    { route: '/perpustakaan',           priority: 0.8, freq: 'weekly'  }, // Perpustakaan Digital & Buku SIBI
+    { route: '/prestasi',               priority: 0.8, freq: 'monthly' }, // Papan Prestasi Siswa
     { route: '/unduh',                  priority: 0.7, freq: 'monthly' }, // Pusat Unduhan Berkas
 
     // ── Kontak & Interaksi ────────────────────────────────────────────────
     { route: '/hubungi-kami',           priority: 0.7, freq: 'yearly'  }, // Kontak & Lokasi
     { route: '/buku-tamu',              priority: 0.7, freq: 'weekly'  }, // Buku Tamu Digital
+    { route: '/pengaduan',              priority: 0.7, freq: 'monthly' }, // Layanan Pengaduan & Aspirasi
   ];
 
   const staticEntries = pages.map(({ route, priority, freq }) => ({
