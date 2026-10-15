@@ -178,6 +178,11 @@ export async function POST(request) {
         message_template_verified: message_template_verified || '',
         message_template_rejected: message_template_rejected || ''
       };
+    } else if (actionType === 'piket_schedule') {
+      const schedule = parsedJsonBody?.piket_schedule || [];
+      if (Array.isArray(schedule)) {
+        config.piket_schedule = schedule;
+      }
     } else if (actionType === 'contacts') {
       config.ppdb_contacts = {
         nama_humas: nama_humas || '',
@@ -585,6 +590,8 @@ export async function POST(request) {
       revalidatePath('/galeri');
       revalidatePath('/unduh');
       revalidatePath('/alumni');
+      revalidatePath('/hubungi-kami');
+      revalidatePath('/pengaduan');
       revalidatePath('/admin/dashboard');
     } catch (cacheErr) {
       console.error("Cache revalidation failed in config route:", cacheErr);

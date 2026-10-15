@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { JADWAL_PIKET_DATA, getPiketHariIni } from '../../data/piketData';
 
-export default function PiketHarianWidget({ operatorPhone = '+6282292111638' }) {
+export default function PiketHarianWidget({ operatorPhone = '+6282292111638', piketSchedule = [] }) {
   const [piketToday, setPiketToday] = useState(null);
   const [activeTab, setActiveTab] = useState('today');
 
+  const scheduleList = (Array.isArray(piketSchedule) && piketSchedule.length > 0) ? piketSchedule : JADWAL_PIKET_DATA;
+
   useEffect(() => {
-    setPiketToday(getPiketHariIni());
-  }, []);
+    setPiketToday(getPiketHariIni(piketSchedule));
+  }, [piketSchedule]);
 
   const cleanPhone = operatorPhone.replace(/[^0-9]/g, '');
 
@@ -19,55 +21,18 @@ export default function PiketHarianWidget({ operatorPhone = '+6282292111638' }) 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(18, 165, 184, 0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--primary-dark)', fontWeight: 800 }}>
-              Guru Piket &amp; Layanan Sekolah
-            </h3>
+            <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--primary-dark)', fontWeight: 800 }}>Guru Piket &amp; Layanan Sekolah</h3>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Penyambutan tamu, surat izin, dan penanganan darurat</span>
           </div>
         </div>
 
         {/* Tab switcher: Hari Ini vs Sepekan */}
         <div style={{ display: 'flex', background: '#f1f5f9', padding: '3px', borderRadius: '8px', gap: '3px' }}>
-          <button
-            type="button"
-            onClick={() => setActiveTab('today')}
-            style={{
-              padding: '4px 10px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              background: activeTab === 'today' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'today' ? '#ffffff' : '#64748b'
-            }}
-          >
-            Hari Ini
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('week')}
-            style={{
-              padding: '4px 10px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              background: activeTab === 'week' ? 'var(--primary)' : 'transparent',
-              color: activeTab === 'week' ? '#ffffff' : '#64748b'
-            }}
-          >
-            Jadwal Sepekan
-          </button>
+          <button type="button" onClick={() => setActiveTab('today')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'today' ? 'var(--primary)' : 'transparent', color: activeTab === 'today' ? '#ffffff' : '#64748b' }}>Hari Ini</button>
+          <button type="button" onClick={() => setActiveTab('week')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'week' ? 'var(--primary)' : 'transparent', color: activeTab === 'week' ? '#ffffff' : '#64748b' }}>Jadwal Sepekan</button>
         </div>
       </div>
 
@@ -133,13 +98,13 @@ export default function PiketHarianWidget({ operatorPhone = '+6282292111638' }) 
       {/* Tab Jadwal Sepekan */}
       {activeTab === 'week' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '220px', overflowY: 'auto' }}>
-          {JADWAL_PIKET_DATA.map((p) => (
+          {scheduleList.map((p) => (
             <div key={p.hari} style={{ padding: '8px 10px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.78rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--primary-dark)', marginBottom: '2px' }}>
                 <span>{p.hari} ({p.jam})</span>
                 <span style={{ color: 'var(--primary)' }}>{p.koordinator}</span>
               </div>
-              <div style={{ color: '#64748b' }}>Anggota: {p.anggota.join(', ')}</div>
+              <div style={{ color: '#64748b' }}>Anggota: {(p.anggota || []).join(', ')}</div>
             </div>
           ))}
         </div>

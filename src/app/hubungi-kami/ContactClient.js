@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { generateCaptchaChallenge } from '../../lib/captcha';
 import PiketHarianWidget from './PiketHarianWidget';
 
-export default function ContactClient({ initialFaqs, contacts = {} }) {
+export default function ContactClient({ initialFaqs, contacts = {}, piketSchedule = [] }) {
   const schoolEmail = contacts.email_sekolah || "admin@sdnegeribobong.sch.id";
   const operatorPhone = contacts.wa_operator ? `+${contacts.wa_operator}` : "+62 822-9211-1638";
   const operatorName = contacts.nama_operator || "Operator Humas";
@@ -241,7 +241,7 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
           
           {/* Widget Guru Piket Harian & Layanan Tamu */}
-          <PiketHarianWidget operatorPhone={operatorPhone} />
+          <PiketHarianWidget operatorPhone={operatorPhone} piketSchedule={piketSchedule} />
 
           {/* Map Frame Card */}
           <div className="card-custom" style={{ padding: '8px', overflow: 'hidden', background: 'white' }}>

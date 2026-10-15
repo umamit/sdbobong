@@ -27,7 +27,11 @@ export default async function HubungiKamiPage() {
       </section>
 
       {/* Main FAQ, Contact Form & Google Maps Section */}
-      <ContactClient initialFaqs={initialFaqs} contacts={config.ppdb_contacts || {}} />
+      <ContactClient
+        initialFaqs={initialFaqs}
+        contacts={config.ppdb_contacts || {}}
+        piketSchedule={config.piket_schedule || []}
+      />
     </>
   );
 }

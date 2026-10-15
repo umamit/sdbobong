@@ -137,6 +137,7 @@ export const DEFAULT_CONFIG = {
     email_sekolah: 'admin@sdnegeribobong.sch.id',
   },
   downloads: DEFAULT_DOWNLOADS,
+  piket_schedule: [],
   faqs: [],
   gallery: [],
   popup_announcement: {

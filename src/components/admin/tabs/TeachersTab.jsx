@@ -4,11 +4,15 @@
 import { useState } from 'react';
 import { useAdminDashboard } from '../../../app/admin/dashboard/AdminDashboardContext';
 import TeacherSyncModal from '../shared/modals/TeacherSyncModal';
+import PiketScheduleModal from '../shared/modals/PiketScheduleModal';
 
 export default function TeachersTab() {
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+  const [isPiketModalOpen, setIsPiketModalOpen] = useState(false);
   const {
     activeTab,
+    config,
+    setConfig,
     handleMakeContact,
     handleTeacherDelete,
     handleTeacherEditClick,
@@ -28,7 +32,21 @@ export default function TeachersTab() {
                       Daftar pendidik yang terbit di halaman profil publik. Klik tombol **Edit** untuk memuat datanya.
                     </p>
                   </div>
-                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => setIsPiketModalOpen(true)}
+                      className="btn btn-secondary"
+                      style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#f0fdfa', color: 'var(--primary-dark)', border: '1px solid var(--primary)', fontWeight: 600 }}
+                    >
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                      Jadwal Piket Guru
+                    </button>
                     <button
                       type="button"
                       onClick={() => setIsSyncModalOpen(true)}
@@ -164,6 +182,18 @@ export default function TeachersTab() {
               onClose={() => setIsSyncModalOpen(false)}
               onSyncSuccess={() => {
                 window.location.reload();
+              }}
+            />
+
+            <PiketScheduleModal
+              isOpen={isPiketModalOpen}
+              onClose={() => setIsPiketModalOpen(false)}
+              config={config}
+              teachers={teachers}
+              onSaveSuccess={(newSchedule) => {
+                if (setConfig) {
+                  setConfig(prev => ({ ...prev, piket_schedule: newSchedule }));
+                }
               }}
             />
           </section>

@@ -55,7 +55,7 @@ export const JADWAL_PIKET_DATA = [
   }
 ];
 
-export function getPiketHariIni() {
+export function getPiketHariIni(customSchedule = null) {
   const now = new Date();
   const dayIndex = now.getDay(); // 0 = Minggu, 1 = Senin, ... 6 = Sabtu
   if (dayIndex === 0) {
@@ -65,7 +65,10 @@ export function getPiketHariIni() {
       pesan: 'Hari Minggu adalah hari libur kegiatan belajar mengajar (KBM). Layanan kantor kembali aktif hari Senin pukul 07.15 WIT.'
     };
   }
-  const match = JADWAL_PIKET_DATA.find(p => p.hariIndex === dayIndex);
+  const scheduleList = (Array.isArray(customSchedule) && customSchedule.length > 0)
+    ? customSchedule
+    : JADWAL_PIKET_DATA;
+  const match = scheduleList.find(p => p.hariIndex === dayIndex) || JADWAL_PIKET_DATA.find(p => p.hariIndex === dayIndex);
   return {
     isLibur: false,
     ...match
