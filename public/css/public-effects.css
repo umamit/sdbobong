@@ -89,7 +89,7 @@
     --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.7);
 }
 
-/* Headings Dark Mode Contrast Override */
+/* Headings & Text Dark Mode Contrast Override */
 [data-theme='dark'] h1, 
 [data-theme='dark'] h2, 
 [data-theme='dark'] h3, 
@@ -97,6 +97,16 @@
 [data-theme='dark'] h5, 
 [data-theme='dark'] h6 {
     color: var(--text-main) !important;
+}
+
+[data-theme='dark'] p {
+    color: var(--text-muted);
+}
+
+[data-theme='dark'] .welcome-badge {
+    background-color: var(--accent-bg) !important;
+    color: var(--accent-light) !important;
+    border: 1px solid rgba(76, 217, 100, 0.25) !important;
 }
 
 /* Sticky Header Glassmorphism in Light & Dark Mode */
