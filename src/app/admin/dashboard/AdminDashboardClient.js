@@ -110,7 +110,7 @@ const AlumniTab = dynamic(() => import('../../../components/admin/tabs/AlumniTab
 });
 
 function AdminDashboardShell() {
-  const { activeTab, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab, complaints, handleUpdateComplaintStatus, handleDeleteComplaint } = useAdminDashboard();
+  const { activeTab, config, isDetailModalOpen, isProcessing, processingMessage, activeThreats, setActiveTab, complaints, handleUpdateComplaintStatus, handleDeleteComplaint } = useAdminDashboard();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   return (
@@ -162,6 +162,7 @@ function AdminDashboardShell() {
           {activeTab === 'complaints' && (
             <ComplaintsTab
               complaints={complaints}
+              config={config}
               onUpdateStatus={handleUpdateComplaintStatus}
               onDeleteComplaint={handleDeleteComplaint}
             />

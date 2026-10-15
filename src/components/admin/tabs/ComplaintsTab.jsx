@@ -3,12 +3,16 @@
 import { useState } from 'react';
 import ComplaintsTable from './complaints/ComplaintsTable';
 import ComplaintDetailModal from './complaints/ComplaintDetailModal';
+import PrintableComplaintSlip from './complaints/PrintableComplaintSlip';
+import PrintableComplaintsRecap from './complaints/PrintableComplaintsRecap';
 
-export default function ComplaintsTab({ complaints = [], onUpdateStatus, onDeleteComplaint }) {
+export default function ComplaintsTab({ complaints = [], config = {}, onUpdateStatus, onDeleteComplaint }) {
   const [filterCategory, setFilterCategory] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [printComplaint, setPrintComplaint] = useState(null);
+  const [showRecapPrint, setShowRecapPrint] = useState(false);
   const [responseText, setResponseText] = useState('');
   const [newStatus, setNewStatus] = useState('Diproses');
   const [isSaving, setIsSaving] = useState(false);
@@ -54,6 +58,16 @@ export default function ComplaintsTab({ complaints = [], onUpdateStatus, onDelet
           <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
             Pantau dan tindak lanjuti laporan murid/orang tua secara rahasia dan aman (Total: {complaints.length} laporan).
           </p>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowRecapPrint(true)}
+            style={{ padding: '8px 16px', background: '#ffffff', color: 'var(--primary-dark)', border: '1px solid var(--primary)', borderRadius: '8px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Cetak Rekap Aduan (PDF)
+          </button>
         </div>
       </div>
 
@@ -108,7 +122,28 @@ export default function ComplaintsTab({ complaints = [], onUpdateStatus, onDelet
         isSaving={isSaving}
         onClose={() => setSelectedComplaint(null)}
         onSave={handleSaveResponse}
+        onPrint={() => setPrintComplaint(selectedComplaint)}
       />
+
+      {/* Printable Single Slip Modal */}
+      {printComplaint && (
+        <PrintableComplaintSlip
+          complaint={printComplaint}
+          config={config}
+          onClose={() => setPrintComplaint(null)}
+        />
+      )}
+
+      {/* Printable Batch Recap Modal */}
+      {showRecapPrint && (
+        <PrintableComplaintsRecap
+          complaints={filtered}
+          config={config}
+          filterCategory={filterCategory}
+          filterStatus={filterStatus}
+          onClose={() => setShowRecapPrint(false)}
+        />
+      )}
     </div>
   );
 }
