@@ -3,8 +3,8 @@ export const JADWAL_PIKET_DATA = [
     hari: 'Senin',
     hariIndex: 1,
     jam: '07.00 - 12.45 WIT',
-    koordinator: 'RINI LAILA, S.Pd., Gr',
-    anggota: ['DJAYANI A.GAFAR, A.Ma', 'KRISMAN'],
+    koordinator: 'DJAYANI A. GAFAR, A.Ma',
+    anggota: ['RINI LAILA, S.Pd., Gr', 'Jumraeni La Mbone', 'KRISMAN'],
     posLayanan: 'Pintu Gerbang Utama & Ruang Guru Lantai 1',
     tugas: 'Penyambutan siswa pagi, penertiban upacara bendera, dan penerimaan tamu wali murid.'
   },
@@ -12,8 +12,8 @@ export const JADWAL_PIKET_DATA = [
     hari: 'Selasa',
     hariIndex: 2,
     jam: '07.15 - 12.30 WIT',
-    koordinator: 'AYU LESTARI, S.Pd.,Gr',
-    anggota: ['MARDIANA, S.Pd', 'Jumraeni La Mbone'],
+    koordinator: 'SUKMA ANI, S.Pd., Gr',
+    anggota: ['AYU LESTARI, S.Pd., Gr', 'YUSNIAR, S.Pd., Gr.'],
     posLayanan: 'Ruang Kantor / Administrasi Lantai 1',
     tugas: 'Pemeriksaan presensi harian, penanganan kesehatan dasar UKS, dan layanan tamu dinas/umum.'
   },
@@ -21,8 +21,8 @@ export const JADWAL_PIKET_DATA = [
     hari: 'Rabu',
     hariIndex: 3,
     jam: '07.15 - 12.30 WIT',
-    koordinator: 'FITRI HAMZA, S.Pd.,Gr',
-    anggota: ['SUKMA ANI, S.Pd., Gr', 'Surahmi Wambes, S.Pd'],
+    koordinator: 'MARDIANA, S.Pd',
+    anggota: ['WA ODE SAMRIDA', 'Surahmi Wambes, S.Pd'],
     posLayanan: 'Lobi Masuk Gedung Utama',
     tugas: 'Pengawasan disiplin jam istirahat, literasi baca saung, dan informasi administrasi siswa.'
   },
@@ -30,8 +30,8 @@ export const JADWAL_PIKET_DATA = [
     hari: 'Kamis',
     hariIndex: 4,
     jam: '07.15 - 12.30 WIT',
-    koordinator: 'MAHARUDIN, S.Pd., Gr',
-    anggota: ['SURYANI NARIA, Ma.Pd', 'WA ODE SAMRIDA'],
+    koordinator: 'Wa Sutini Idris',
+    anggota: ['SURYANI NARIA, Ma.Pd', 'MAHARUDIN, S.Pd., Gr'],
     posLayanan: 'Selasar Gedung & Meja Informasi',
     tugas: 'Pengawasan KBM luar kelas, pemantauan ketertiban sarana, dan pengurusan surat izin siswa.'
   },
@@ -39,8 +39,8 @@ export const JADWAL_PIKET_DATA = [
     hari: 'Jumat',
     hariIndex: 5,
     jam: '07.00 - 11.30 WIT',
-    koordinator: 'Abdul Kadir, S.Pd.I.,Gr.,M.Pd',
-    anggota: ['SUKMAWATI ARSAN, S.Pd.I', 'Wa Sutini Idris'],
+    koordinator: 'Siti Rahmatia',
+    anggota: ['SISKA ANDAYANI, S.Pd', 'RADIA MANOMPO, S.Pd.'],
     posLayanan: 'Lapangan Sekolah & Ruang Guru',
     tugas: 'Koordinasi senam/kebersihan pagi, ibadah Jumat, serta penyampaian aspirasi orang tua.'
   },
@@ -49,7 +49,7 @@ export const JADWAL_PIKET_DATA = [
     hariIndex: 6,
     jam: '07.15 - 12.00 WIT',
     koordinator: 'Hasnia La Kepe',
-    anggota: ['SISKA ANDAYANI, S.Pd', 'Siti Rahmatia'],
+    anggota: ['SUKMAWATI ARSAN, S.Pd.I'],
     posLayanan: 'Pusat Layanan Kesiswaan & Ekstrakurikuler',
     tugas: 'Pendampingan kegiatan ekstrakurikuler Pramuka/Seni, koordinasi kepulangan, dan piket berkala.'
   }
