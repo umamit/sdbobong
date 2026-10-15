@@ -9,19 +9,20 @@ export default function PrestasiCard({ item }) {
   const badgeColor = isFirst ? '#b45309' : isSecond ? '#475569' : '#0369a1';
 
   return (
-    <div style={{
-      position: 'relative',
-      background: '#ffffff',
-      border: '1px solid #e2e8f0',
-      borderRadius: '16px',
-      padding: '24px 20px',
-      boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      transition: 'transform 0.2s, box-shadow 0.2s',
-      overflow: 'hidden'
-    }}>
+    <div
+      className="card prestasi-card"
+      style={{
+        position: 'relative',
+        borderRadius: '16px',
+        padding: '24px 20px',
+        border: '1px solid var(--border-color)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        overflow: 'hidden'
+      }}
+    >
       {/* Ribbon Rank */}
       <div style={{
         position: 'absolute',
@@ -69,18 +70,18 @@ export default function PrestasiCard({ item }) {
           {item.level}
         </span>
 
-        <h3 style={{ margin: '0 0 10px 0', fontSize: '1.15rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.4 }}>
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.4 }}>
           {item.title}
         </h3>
 
-        <p style={{ margin: 0, fontSize: '0.88rem', color: '#64748b', lineHeight: 1.6 }}>
+        <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
           {item.desc}
         </p>
       </div>
 
-      <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 500 }}>Tahun Capaian</span>
-        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155', background: '#f8fafc', padding: '2px 8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+      <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: '0.78rem', color: 'var(--text-light)', fontWeight: 500 }}>Tahun Capaian</span>
+        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', background: 'var(--bg-main)', padding: '2px 8px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
           {item.year}
         </span>
       </div>

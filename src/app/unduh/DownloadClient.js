@@ -164,7 +164,7 @@ export default function DownloadClient({ initialDownloads }) {
             {/* Class Sub-Filter (Active for Semua or Buku SIBI) */}
             {(selectedCategory === 'Semua' || selectedCategory === 'Buku SIBI') && (
               <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px', paddingTop: '6px', borderTop: '1px dashed rgba(0,0,0,0.1)' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#64748b', marginRight: '4px' }}>Filter Kelas:</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', marginRight: '4px' }}>Filter Kelas:</span>
                 {kelasOptions.map((kls) => (
                   <button
                     key={kls}
@@ -255,7 +255,7 @@ export default function DownloadClient({ initialDownloads }) {
                 </h3>
                 
                 {/* File Meta */}
-                <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
                   Diupload pada: {formatTanggal(doc.date)}
                 </p>
               </div>

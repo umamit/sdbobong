@@ -6,7 +6,7 @@ export default function RpeTable({ activeRpe, semester, totalJm, totalMte, total
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
         <div>
           <h3 style={{ margin: 0, color: 'var(--primary-dark)' }}>Analisis Rincian Pekan Efektif (RPE)</h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: '#64748b' }}>
+          <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
             Rekapitulasi perhitungan alokasi waktu efektif belajar mengajar untuk {semester === 'ganjil' ? 'Semester Ganjil' : 'Semester Genap'}.
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function RpeTable({ activeRpe, semester, totalJm, totalMte, total
                 <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.jm} Minggu</td>
                 <td style={{ textAlign: 'center', color: item.mte > 0 ? '#b91c1c' : '#64748b', fontWeight: 600 }}>{item.mte} Minggu</td>
                 <td style={{ textAlign: 'center', color: 'var(--success-color)', fontWeight: 700 }}>{item.me} Minggu</td>
-                <td style={{ fontSize: '0.85rem', color: '#475569' }}>{item.ket}</td>
+                <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{item.ket}</td>
               </tr>
             ))}
             <tr style={{ backgroundColor: '#f8fafc', fontWeight: 700 }}>

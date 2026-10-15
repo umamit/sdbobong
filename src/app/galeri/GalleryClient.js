@@ -514,12 +514,12 @@ export default function GalleryClient({ initialGallery }) {
                 <div 
                   style={{
                     padding: '12px 14px',
-                    background: '#ffffff',
-                    borderTop: '1px solid rgba(226, 232, 240, 0.6)'
+                    background: 'var(--card-bg)',
+                    borderTop: '1px solid var(--border-color)'
                   }}
                 >
                   <p style={{ margin: '0', fontWeight: '700', fontSize: '0.85rem', color: 'var(--primary-color)', lineHeight: '1.4' }}>{item.title}</p>
-                  <p style={{ margin: '4px 0 0 0', fontSize: '0.72rem', color: '#64748b', fontWeight: '500' }}>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: '500' }}>
                     {formatTanggalPendek(item.date)}
                   </p>
                 </div>
@@ -529,9 +529,9 @@ export default function GalleryClient({ initialGallery }) {
           </AnimatePresence>
         </motion.div>
       ) : (
-        <div className="card-custom animate-fadeIn" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#64748b', background: '#ffffff', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
+        <div className="card-custom animate-fadeIn" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--card-bg)', border: '1px solid var(--border-color)' }}>
           <p style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>Tidak ada media ditemukan</p>
-          <p style={{ fontSize: '0.9rem', marginTop: '4px' }}>Coba ubah filter kategori, tipe format, atau kata kunci pencarian Anda.</p>
+          <p style={{ fontSize: '0.9rem', marginTop: '4px', color: 'var(--text-muted)' }}>Coba ubah filter kategori, tipe format, atau kata kunci pencarian Anda.</p>
         </div>
       )}
 

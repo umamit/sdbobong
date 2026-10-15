@@ -42,7 +42,7 @@ export default function CalendarClient({ initialCalendar = [], kepalaSekolah, ni
       <section className="section-padding">
         <div className="container">
           <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
-            <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 500 }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500 }}>
               <Link href="/" style={{ color: 'var(--primary)' }}>Beranda</Link><span style={{ margin: '0 8px' }}>/</span>
               <Link href="/akademik" style={{ color: 'var(--primary)' }}>Akademik</Link><span style={{ margin: '0 8px' }}>/</span>
               <span style={{ color: 'var(--text-muted)' }}>Kalender Pendidikan</span>

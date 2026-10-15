@@ -223,7 +223,7 @@ export default function PPDBOnlineForm() {
         <div className="form-container" style={{
           maxWidth: '850px',
           margin: 'var(--space-md) auto',
-          background: '#ffffff',
+          background: 'var(--card-bg)',
           borderRadius: '16px',
           boxShadow: 'var(--shadow-lg)',
           border: '1px solid var(--border-color)'
@@ -240,7 +240,7 @@ export default function PPDBOnlineForm() {
             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 0, fontWeight: 500 }}>
               SD NEGERI BOBONG | TAHUN AJARAN {new Date().getFullYear()}/{new Date().getFullYear() + 1}
             </p>
-            <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
               Silakan isi data calon siswa baru dengan lengkap dan benar sesuai dengan berkas Kartu Keluarga asli.
             </p>
           </div>

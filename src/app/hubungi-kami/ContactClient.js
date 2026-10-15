@@ -127,7 +127,7 @@ export default function ContactClient({ initialFaqs, contacts = {}, piketSchedul
                       backgroundColor: 'rgba(0, 0, 0, 0.01)'
                     }}
                   >
-                    <div style={{ padding: 'var(--space-md)', fontSize: '0.95rem', color: '#555', lineHeight: '1.6' }}>
+                    <div style={{ padding: 'var(--space-md)', fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
                       {faq.answer}
                     </div>
                   </div>
@@ -146,7 +146,7 @@ export default function ContactClient({ initialFaqs, contacts = {}, piketSchedul
         {/* Left Column: Glassmorphic Contact Form */}
         <div className="card-custom" style={{ padding: 'var(--space-md)', background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(10px)' }}>
           <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '4px' }}>Hubungi Humas Kami</h2>
-          <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
             Kirim pertanyaan seputar PPDB, administrasi, kerjasama, atau kritik perbaikan secara langsung ke tim humas sekolah.
           </p>
 
@@ -267,7 +267,7 @@ export default function ContactClient({ initialFaqs, contacts = {}, piketSchedul
                 </span>
                 <div>
                   <strong>Alamat Fisik Sekolah:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>
+                  <p style={{ margin: 0, color: 'var(--text-muted)' }}>
                     {contacts.alamat_lengkap && !contacts.alamat_lengkap.includes("Jalan Raya Bobong") && !contacts.alamat_lengkap.includes("Desa Bobong")
                       ? contacts.alamat_lengkap
                       : "Jl. Mansur Sou, Desa Wayo, Kec. Taliabu Barat, Kab. Pulau Taliabu, Provinsi Maluku Utara, 97791"}
@@ -281,7 +281,7 @@ export default function ContactClient({ initialFaqs, contacts = {}, piketSchedul
                 </span>
                 <div>
                   <strong>Telepon / Whatsapp:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>{operatorPhone} ({operatorName})</p>
+                  <p style={{ margin: 0, color: 'var(--text-muted)' }}>{operatorPhone} ({operatorName})</p>
                 </div>
               </div>
 
@@ -291,7 +291,7 @@ export default function ContactClient({ initialFaqs, contacts = {}, piketSchedul
                 </span>
                 <div>
                   <strong>Email Resmi:</strong>
-                  <p style={{ margin: 0, color: '#555' }}>{schoolEmail}</p>
+                  <p style={{ margin: 0, color: 'var(--text-muted)' }}>{schoolEmail}</p>
                 </div>
               </div>
             </div>

@@ -424,7 +424,7 @@ export default function GradesClient() {
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
               <h2 style={{ color: '#d97706', marginBottom: '8px' }}>Rapor Belum Dipublikasikan</h2>
-              <p style={{ color: '#555', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto' }}>
+              <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto' }}>
                 Halo <strong>{student.name}</strong>, nilai rapor Anda belum dimasukkan atau belum dipublikasikan oleh administrator sekolah. Silakan hubungi wali kelas Anda untuk informasi hasil belajar secara manual.
               </p>
             </div>

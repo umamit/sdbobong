@@ -114,15 +114,15 @@ export default function QuizClient() {
             <span style={{ color: time <= 5 ? '#ef4444' : 'var(--text-muted)', fontWeight: time <= 5 ? 700 : 400, transition: 'color 0.3s' }}>{time}s</span>
             <span style={{ color: '#E5A900', fontWeight: 700 }}>Skor: {score}</span>
           </div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1e293b', marginBottom: '1.25rem' }}>{questions[idx].q}</h3>
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '1.25rem' }}>{questions[idx].q}</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
             {questions[idx].o.map((opt, i) => {
-              let bg = '#f8fafc', border = '1px solid #e2e8f0';
+              let bg = 'var(--bg-main)', border = '1px solid var(--border-color)';
               if (ans !== null) {
                 if (i === questions[idx].a) { bg = '#d1fae5'; border = '1px solid #10b981'; }
                 else if (i === ans) { bg = '#fee2e2'; border = '1px solid #ef4444'; }
               }
-              return <button key={i} className="btn" style={{ background: bg, border, color: '#334155', padding: '0.85rem 1rem', width: '100%', justifyContent: 'flex-start', fontSize: '0.9rem', textAlign: 'left' }} onClick={() => onAnswer(i)} disabled={ans !== null}>{opt}</button>;
+              return <button key={i} className="btn" style={{ background: bg, border, color: 'var(--text-main)', padding: '0.85rem 1rem', width: '100%', justifyContent: 'flex-start', fontSize: '0.9rem', textAlign: 'left' }} onClick={() => onAnswer(i)} disabled={ans !== null}>{opt}</button>;
             })}
           </div>
           {explain && (

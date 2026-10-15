@@ -90,8 +90,8 @@ export default function PrestasiClient({ initialAchievements }) {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', color: '#64748b' }}>
-              <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600 }}>Tidak ada prestasi yang cocok dengan kriteria filter.</p>
+            <div className="card-custom" style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--card-bg)', borderRadius: '16px', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
+              <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-main)' }}>Tidak ada prestasi yang cocok dengan kriteria filter.</p>
             </div>
           )}
         </div>

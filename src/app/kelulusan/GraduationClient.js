@@ -105,7 +105,7 @@ export default function GraduationClient() {
         }}
       >
         <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '8px' }}>Cek Status Kelulusan Anda</h2>
-        <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
           Masukkan Nomor Induk Siswa Nasional (NISN) atau Nomor Peserta Ujian Anda untuk melihat hasil kelulusan resmi.
         </p>
 
@@ -301,7 +301,7 @@ export default function GraduationClient() {
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
               <h2 style={{ color: '#d97706', marginBottom: '8px' }}>Status Belum Dipublikasikan</h2>
-              <p style={{ color: '#555', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto var(--space-md)' }}>
+              <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto var(--space-md)' }}>
                 Halo <strong>{student.name}</strong>, status kelulusan Anda saat ini belum dipublikasikan secara mandiri di portal website. Silakan hubungi wali kelas Anda atau datang langsung ke sekolah untuk mendapatkan informasi kelulusan resmi.
               </p>
             </div>

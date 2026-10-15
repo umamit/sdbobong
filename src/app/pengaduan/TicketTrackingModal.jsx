@@ -28,11 +28,11 @@ export default function TicketTrackingModal({ onClose }) {
   };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px', boxSizing: 'border-box' }}>
-      <div style={{ background: '#ffffff', borderRadius: '16px', maxWidth: '520px', width: '100%', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0', boxSizing: 'border-box' }}>
+    <div className="modal-fade-in" style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px', boxSizing: 'border-box' }}>
+      <div className="card card-custom" style={{ borderRadius: '16px', maxWidth: '520px', width: '100%', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', border: '1px solid var(--border-color)', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: '#0f172a' }}>Lacak Status Pengaduan</h3>
-          <button type="button" onClick={onClose} style={{ border: 'none', background: 'none', fontSize: '1.4rem', color: '#64748b', cursor: 'pointer' }}>&times;</button>
+          <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)' }}>Lacak Status Pengaduan</h3>
+          <button type="button" onClick={onClose} style={{ border: 'none', background: 'none', fontSize: '1.4rem', color: 'var(--text-muted)', cursor: 'pointer' }}>&times;</button>
         </div>
 
         <form onSubmit={handleTrack} style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
@@ -56,17 +56,17 @@ export default function TicketTrackingModal({ onClose }) {
         )}
 
         {result && (
-          <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', border: '1px solid #e2e8f0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ background: 'var(--bg-main, #f8fafc)', borderRadius: '10px', padding: '16px', border: '1px solid var(--border-color)', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 600, color: '#64748b' }}>Nomor Tiket:</span>
-              <strong style={{ color: '#0f172a', letterSpacing: '0.05em' }}>{result.ticket_code}</strong>
+              <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>Nomor Tiket:</span>
+              <strong style={{ color: 'var(--text-main)', letterSpacing: '0.05em' }}>{result.ticket_code}</strong>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 600, color: '#64748b' }}>Kategori:</span>
-              <span style={{ color: '#334155', fontWeight: 500 }}>{result.category}</span>
+              <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>Kategori:</span>
+              <span style={{ color: 'var(--text-main)', fontWeight: 500 }}>{result.category}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 600, color: '#64748b' }}>Status:</span>
+              <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>Status:</span>
               <span style={{
                 padding: '3px 10px',
                 borderRadius: '12px',
@@ -79,9 +79,9 @@ export default function TicketTrackingModal({ onClose }) {
               </span>
             </div>
             {result.response && (
-              <div style={{ marginTop: '8px', paddingTop: '10px', borderTop: '1px solid #e2e8f0' }}>
-                <span style={{ display: 'block', fontWeight: 700, color: '#0f172a', marginBottom: '4px' }}>Tanggapan Sekolah:</span>
-                <p style={{ margin: 0, color: '#334155', lineHeight: 1.5, background: '#ffffff', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+              <div style={{ marginTop: '8px', paddingTop: '10px', borderTop: '1px solid var(--border-color)' }}>
+                <span style={{ display: 'block', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>Tanggapan Sekolah:</span>
+                <p style={{ margin: 0, color: 'var(--text-main)', lineHeight: 1.5, background: 'var(--bg-card, #ffffff)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
                   {result.response}
                 </p>
               </div>

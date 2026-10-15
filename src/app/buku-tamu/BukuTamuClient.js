@@ -169,7 +169,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
           {activeTab === 'buku-tamu' && (
             <div className="card-custom" style={{ padding: 'var(--space-md)', background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(10px)' }}>
               <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '4px' }}>Tulis Kesan & Pesan</h2>
-              <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
                 Bagikan pengalaman, kenangan, atau pesan motivasi Anda untuk guru, siswa, dan kerabat SDN Bobong.
               </p>
 
@@ -272,7 +272,7 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
           {activeTab === 'saran' && (
             <div className="card-custom" style={{ padding: 'var(--space-md)', background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(10px)' }}>
               <h2 style={{ fontSize: '1.4rem', color: 'var(--primary-color)', marginBottom: '4px' }}>Kotak Saran Privat</h2>
-              <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: 'var(--space-md)' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
                 Kirimkan saran, kritik, atau aduan langsung ke manajemen SDN Bobong secara privat (hanya bisa dibaca oleh admin/sekolah).
               </p>
 
@@ -424,9 +424,9 @@ export default function BukuTamuClient({ initialApprovedMessages }) {
               ))}
             </div>
           ) : (
-            <div className="card-custom" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: '#666', background: 'white' }}>
-              <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>Buku tamu masih kosong</p>
-              <p style={{ fontSize: '0.9rem' }}>Jadilah yang pertama menuliskan kesan & pesan Anda tentang SD Negeri Bobong!</p>
+            <div className="card-custom" style={{ padding: 'var(--space-xl)', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--card-bg)' }}>
+              <p style={{ fontSize: '1.1rem', fontWeight: '500', color: 'var(--text-main)' }}>Buku tamu masih kosong</p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Jadilah yang pertama menuliskan kesan & pesan Anda tentang SD Negeri Bobong!</p>
             </div>
           )}
         </div>

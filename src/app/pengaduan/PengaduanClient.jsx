@@ -62,8 +62,8 @@ export default function PengaduanClient() {
       </section>
 
       <div style={{ maxWidth: '780px', margin: '-30px auto 0 auto', padding: '0 20px' }}>
-        <div style={{ background: '#ffffff', borderRadius: '16px', padding: '28px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06)', border: '1px solid #e2e8f0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #e2e8f0' }}>
+        <div className="card card-custom" style={{ borderRadius: '16px', padding: '28px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06)', border: '1px solid var(--border-color)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid var(--border-color)' }}>
             <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Formulir Laporan / Aspirasi</h2>
             <button type="button" onClick={() => setShowTrackModal(true)} style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '6px 14px', fontSize: '0.82rem', fontWeight: 700, color: '#334155', cursor: 'pointer' }}>
               Lacak Nomor Tiket ↗
@@ -103,20 +103,20 @@ export default function PengaduanClient() {
                 <textarea rows="5" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Tuliskan secara jelas kejadian, tempat, atau aspirasi Anda..." style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box', resize: 'vertical' }} />
               </div>
 
-              <div style={{ background: '#f8fafc', padding: '14px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', cursor: 'pointer' }}>
+              <div style={{ background: 'var(--bg-main)', padding: '14px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', cursor: 'pointer' }}>
                   <input type="checkbox" checked={isAnonymous} onChange={(e) => setIsAnonymous(e.target.checked)} style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
                   Kirim sebagai Anonim (Identitas Dirahasiakan)
                 </label>
                 {!isAnonymous && (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '12px' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>Nama Lengkap Pelapor</label>
-                      <input type="text" value={reporterName} onChange={(e) => setReporterName(e.target.value)} placeholder="Contoh: Budi Santoso" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px' }}>Nama Lengkap Pelapor</label>
+                      <input type="text" value={reporterName} onChange={(e) => setReporterName(e.target.value)} placeholder="Contoh: Budi Santoso" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', fontSize: '0.85rem' }} />
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>Nomor WhatsApp</label>
-                      <input type="text" value={reporterPhone} onChange={(e) => setReporterPhone(e.target.value)} placeholder="Contoh: 0812xxxx" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }} />
+                      <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px' }}>Nomor WhatsApp</label>
+                      <input type="text" value={reporterPhone} onChange={(e) => setReporterPhone(e.target.value)} placeholder="Contoh: 0812xxxx" style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', fontSize: '0.85rem' }} />
                     </div>
                   </div>
                 )}
@@ -133,11 +133,11 @@ export default function PengaduanClient() {
               </button>
             </form>
           )}
-          <div style={{ marginTop: '16px', padding: '12px 14px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem' }}>
-            <span style={{ color: '#475569' }}>
+          <div style={{ marginTop: '16px', padding: '12px 14px', background: 'var(--bg-main)', borderRadius: '10px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>
               Membutuhkan bantuan darurat tatap muka? Guru Piket bertugas di Kantor/Gerbang hari ini.
             </span>
-            <a href="/kontak" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none' }}>
+            <a href="/hubungi-kami" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none' }}>
               Lihat Jadwal Piket &rarr;
             </a>
           </div>

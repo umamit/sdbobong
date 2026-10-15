@@ -311,7 +311,7 @@ export default async function Home() {
               <div style={{ marginTop: 'var(--space-sm)', marginBottom: 'var(--space-sm)' }}>
                 <h4 style={{ margin: 0, color: 'var(--primary-dark)', fontWeight: 700 }}>{kepalaSekolah.name}</h4>
                 {kepalaSekolah.nip && /^\d+$/.test(kepalaSekolah.nip.toString().replace(/\s+/g, '')) && (
-                  <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#64748b', fontWeight: '600' }}>NIP. {kepalaSekolah.nip}</p>
+                  <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600' }}>NIP. {kepalaSekolah.nip}</p>
                 )}
                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>{kepalaSekolah.role}, SD Negeri Bobong</p>
               </div>

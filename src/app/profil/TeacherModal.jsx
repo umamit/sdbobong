@@ -34,6 +34,7 @@ export default function TeacherModal({ selectedTeacher, onClose, getStatusBadgeS
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="teacher-modal-card"
             style={{
               background: 'rgba(255, 255, 255, 0.85)',
               backdropFilter: 'blur(20px)',

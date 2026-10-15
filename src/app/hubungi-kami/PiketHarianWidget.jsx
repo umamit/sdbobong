@@ -30,9 +30,9 @@ export default function PiketHarianWidget({ operatorPhone = '+6282292111638', pi
         </div>
 
         {/* Tab switcher: Hari Ini vs Sepekan */}
-        <div style={{ display: 'flex', background: '#f1f5f9', padding: '3px', borderRadius: '8px', gap: '3px' }}>
-          <button type="button" onClick={() => setActiveTab('today')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'today' ? 'var(--primary)' : 'transparent', color: activeTab === 'today' ? '#ffffff' : '#64748b' }}>Hari Ini</button>
-          <button type="button" onClick={() => setActiveTab('week')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'week' ? 'var(--primary)' : 'transparent', color: activeTab === 'week' ? '#ffffff' : '#64748b' }}>Jadwal Sepekan</button>
+        <div style={{ display: 'flex', background: 'var(--bg-main)', padding: '3px', borderRadius: '8px', gap: '3px', border: '1px solid var(--border-color)' }}>
+          <button type="button" onClick={() => setActiveTab('today')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'today' ? 'var(--primary)' : 'transparent', color: activeTab === 'today' ? '#ffffff' : 'var(--text-muted)' }}>Hari Ini</button>
+          <button type="button" onClick={() => setActiveTab('week')} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', cursor: 'pointer', background: activeTab === 'week' ? 'var(--primary)' : 'transparent', color: activeTab === 'week' ? '#ffffff' : 'var(--text-muted)' }}>Jadwal Sepekan</button>
         </div>
       </div>
 
@@ -40,31 +40,31 @@ export default function PiketHarianWidget({ operatorPhone = '+6282292111638', pi
       {activeTab === 'today' && (
         <div>
           {piketToday?.isLibur ? (
-            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px dashed #cbd5e1', textAlign: 'center' }}>
-              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>Hari Minggu — Libur Sekolah</div>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>{piketToday.pesan}</p>
+            <div style={{ background: 'var(--bg-main, #f8fafc)', padding: '16px', borderRadius: '12px', border: '1px dashed var(--border-color)', textAlign: 'center' }}>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>Hari Minggu — Libur Sekolah</div>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{piketToday.pesan}</p>
             </div>
           ) : (
-            <div style={{ background: 'rgba(18, 165, 184, 0.04)', padding: '14px', borderRadius: '12px', border: '1px solid rgba(18, 165, 184, 0.15)' }}>
+            <div style={{ background: 'rgba(18, 165, 184, 0.08)', padding: '14px', borderRadius: '12px', border: '1px solid rgba(18, 165, 184, 0.25)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span style={{ padding: '3px 10px', borderRadius: '12px', background: 'var(--primary)', color: '#ffffff', fontSize: '0.75rem', fontWeight: 700 }}>
                   Piket Hari {piketToday?.hari || 'Ini'}
                 </span>
-                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-dark)' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-light)' }}>
                   {piketToday?.jam}
                 </span>
               </div>
 
               <div style={{ fontSize: '0.88rem', marginBottom: '8px' }}>
-                <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Koordinator Piket:</div>
-                <div style={{ fontWeight: 800, color: '#0f172a' }}>{piketToday?.koordinator}</div>
-                <div style={{ color: '#475569', fontSize: '0.8rem', marginTop: '2px' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Koordinator Piket:</div>
+                <div style={{ fontWeight: 800, color: 'var(--text-main)' }}>{piketToday?.koordinator}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '2px' }}>
                   Anggota: {(piketToday?.anggota || []).join(', ')}
                 </div>
               </div>
 
-              <div style={{ fontSize: '0.78rem', color: '#475569', lineHeight: 1.4, marginBottom: '10px' }}>
-                <strong>Pos Layanan:</strong> {piketToday?.posLayanan}
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.4, marginBottom: '10px' }}>
+                <strong style={{ color: 'var(--text-main)' }}>Pos Layanan:</strong> {piketToday?.posLayanan}
               </div>
 
               <a
@@ -99,12 +99,12 @@ export default function PiketHarianWidget({ operatorPhone = '+6282292111638', pi
       {activeTab === 'week' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '220px', overflowY: 'auto' }}>
           {scheduleList.map((p) => (
-            <div key={p.hari} style={{ padding: '8px 10px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.78rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--primary-dark)', marginBottom: '2px' }}>
+            <div key={p.hari} style={{ padding: '8px 10px', background: 'var(--bg-main, #f8fafc)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.78rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: 'var(--primary-light)', marginBottom: '2px' }}>
                 <span>{p.hari} ({p.jam})</span>
-                <span style={{ color: 'var(--primary)' }}>{p.koordinator}</span>
+                <span style={{ color: 'var(--secondary)' }}>{p.koordinator}</span>
               </div>
-              <div style={{ color: '#64748b' }}>Anggota: {(p.anggota || []).join(', ')}</div>
+              <div style={{ color: 'var(--text-muted)' }}>Anggota: {(p.anggota || []).join(', ')}</div>
             </div>
           ))}
         </div>

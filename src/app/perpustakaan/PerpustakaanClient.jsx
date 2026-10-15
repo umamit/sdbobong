@@ -99,17 +99,17 @@ export default function PerpustakaanClient({ sibiBooks }) {
           {filtered.length > 0 ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
               {filtered.map(book => (
-                <div key={book.id} style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+                <div key={book.id} className="card card-custom" style={{ borderRadius: '14px', padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', border: '1px solid var(--border-color)' }}>
                   <div>
                     <BookCoverVector subject={book.subject} title={book.title} kelas={book.kelas} />
-                    <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0f172a', margin: '14px 0 6px 0', lineHeight: 1.4 }}>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', margin: '14px 0 6px 0', lineHeight: 1.4 }}>
                       {book.title}
                     </h3>
-                    <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748b' }}>
+                    <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                       Mata Pelajaran: <strong>{book.subject || 'Umum'}</strong> • {book.kelas}
                     </p>
                   </div>
-                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f1f5f9' }}>
+                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
                     <a
                       href={book.fileUrl || 'https://buku.kemendikdasmen.go.id/katalog'}
                       target="_blank"
@@ -138,7 +138,7 @@ export default function PerpustakaanClient({ sibiBooks }) {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', color: '#64748b' }}>
+            <div className="card card-custom" style={{ textAlign: 'center', padding: '60px 20px', borderRadius: '16px', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
               <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600 }}>Tidak ada buku yang cocok dengan pencarian.</p>
             </div>
           )}

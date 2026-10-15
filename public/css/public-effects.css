@@ -218,6 +218,44 @@ header {
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
+/* Modal, Floating Card & Label High-Contrast Overrides in Dark Mode */
+[data-theme='dark'] .modal-fade-in > div,
+[data-theme='dark'] .teacher-modal-card {
+    background: rgba(36, 36, 38, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8) !important;
+}
+
+[data-theme='dark'] label {
+    color: var(--text-main) !important;
+}
+
+[data-theme='dark'] .text-muted,
+[data-theme='dark'] small {
+    color: var(--text-muted) !important;
+}
+
+/* Force dark gray text to readable off-white in dark mode */
+[data-theme='dark'] [style*="color: #0f172a"],
+[data-theme='dark'] [style*="color: #1e293b"],
+[data-theme='dark'] [style*="color: #334155"],
+[data-theme='dark'] [style*="color: #475569"],
+[data-theme='dark'] [style*="color: #64748b"],
+[data-theme='dark'] [style*="color: #555"],
+[data-theme='dark'] [style*="color: #666"] {
+    color: var(--text-muted) !important;
+}
+
+/* Force pure white on headings styled with dark slate */
+[data-theme='dark'] h1[style*="color: #0f172a"],
+[data-theme='dark'] h2[style*="color: #0f172a"],
+[data-theme='dark'] h3[style*="color: #0f172a"],
+[data-theme='dark'] h4[style*="color: #0f172a"],
+[data-theme='dark'] strong[style*="color: #0f172a"] {
+    color: var(--text-main) !important;
+}
+
 /* ==========================================================================
    Premium Scroll Reveal Styles
    ========================================================================== */
