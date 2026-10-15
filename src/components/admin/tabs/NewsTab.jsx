@@ -13,6 +13,10 @@ export default function NewsTab() {
     activeTab,
     editingNews,
     existingImages,
+    coverPhotoIndex,
+    setCoverPhotoIndex,
+    selectedCoverUrl,
+    setSelectedCoverUrl,
     handleNewsAdd,
     handleNewsCancelEdit,
     handleNewsDelete,
@@ -161,6 +165,8 @@ export default function NewsTab() {
                 {editingNews && (
                   <ExistingPhotosManager
                     existingImages={existingImages}
+                    selectedCoverUrl={selectedCoverUrl}
+                    onSelectCover={(url) => setSelectedCoverUrl(url)}
                     onRemoveImage={handleRemoveExistingImage}
                   />
                 )}
@@ -183,24 +189,54 @@ export default function NewsTab() {
                 {/* Multi Photo Preview Area */}
                 {newsPhotoPreviews.length > 0 && (
                   <div style={{ marginTop: '12px', padding: '12px', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)' }}>
-                    <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '8px', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                      Foto terpilih ({newsPhotoPreviews.length}):
-                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <p style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        Foto baru terpilih ({newsPhotoPreviews.length}):
+                      </p>
+                      <span style={{ fontSize: '0.7rem', color: '#38bdf8', fontWeight: 600 }}>Klik foto untuk dijadikan Sampul</span>
+                    </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))', gap: '8px' }}>
-                      {newsPhotoPreviews.map((previewUrl, index) => (
-                        <div key={index} style={{ position: 'relative', aspectRatio: '1/1', borderRadius: '6px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.15)', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-                          <img src={previewUrl} alt={`Preview ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveNewsPhoto(index)}
-                            style={{ position: 'absolute', top: '4px', right: '4px', width: '18px', height: '18px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.9)', color: '#ffffff', border: 'none', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', transition: 'background 0.2s, transform 0.2s' }}
-                            onMouseEnter={(e) => { e.target.style.background = '#ef4444'; e.target.style.transform = 'scale(1.1)'; }}
-                            onMouseLeave={(e) => { e.target.style.background = 'rgba(239, 68, 68, 0.9)'; e.target.style.transform = 'none'; }}
-                            title="Hapus foto ini"
-                          >&times;</button>
-                        </div>
-                      ))}
+                      {newsPhotoPreviews.map((previewUrl, index) => {
+                        const isCover = coverPhotoIndex === index;
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              setCoverPhotoIndex(index);
+                              if (editingNews) setSelectedCoverUrl('');
+                            }}
+                            style={{
+                              position: 'relative',
+                              aspectRatio: '1/1',
+                              borderRadius: '6px',
+                              overflow: 'hidden',
+                              border: isCover ? '2px solid var(--primary, #0284c7)' : '1px solid rgba(255, 255, 255, 0.15)',
+                              boxShadow: isCover ? '0 0 0 2px rgba(18, 165, 184, 0.4)' : '0 2px 8px rgba(0,0,0,0.15)',
+                              cursor: 'pointer'
+                            }}
+                            title={isCover ? 'Foto Sampul Terpilih' : 'Klik untuk jadikan foto sampul'}
+                          >
+                            <img src={previewUrl} alt={`Preview ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            {isCover && (
+                              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'var(--primary, #0284c7)', color: '#ffffff', fontSize: '9px', fontWeight: 700, textAlign: 'center', padding: '2px 0', letterSpacing: '0.5px' }}>
+                                SAMPUL
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveNewsPhoto(index);
+                              }}
+                              style={{ position: 'absolute', top: '4px', right: '4px', width: '18px', height: '18px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.9)', color: '#ffffff', border: 'none', fontSize: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', transition: 'background 0.2s, transform 0.2s', zIndex: 2 }}
+                              onMouseEnter={(e) => { e.target.style.background = '#ef4444'; e.target.style.transform = 'scale(1.1)'; }}
+                              onMouseLeave={(e) => { e.target.style.background = 'rgba(239, 68, 68, 0.9)'; e.target.style.transform = 'none'; }}
+                              title="Hapus foto ini"
+                            >&times;</button>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

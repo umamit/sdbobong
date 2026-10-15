@@ -64,8 +64,11 @@ export async function POST(request) {
       }
     }
 
-    // Set the cover image to the first uploaded photo if we have any
-    if (images.length > 0) {
+    // Set the cover image according to selected cover index or fallback to first photo
+    const selectedCoverIndex = parseInt(formData.get('selected_cover_index'), 10);
+    if (!isNaN(selectedCoverIndex) && selectedCoverIndex >= 0 && selectedCoverIndex < images.length) {
+      image = images[selectedCoverIndex];
+    } else if (images.length > 0) {
       image = images[0];
     }
 
@@ -175,9 +178,17 @@ export async function PUT(request) {
 
     // Combine preserved existing images with newly uploaded images
     const combinedImages = [...preservedImages, ...newlyUploadedImages];
+    const selectedCoverImage = formData.get('selected_cover_image')?.toString().trim();
+    const selectedCoverIndex = parseInt(formData.get('selected_cover_index'), 10);
 
     if (combinedImages.length > 0) {
-      image = combinedImages[0];
+      if (selectedCoverImage && combinedImages.includes(selectedCoverImage)) {
+        image = selectedCoverImage;
+      } else if (!isNaN(selectedCoverIndex) && selectedCoverIndex >= 0 && selectedCoverIndex < combinedImages.length) {
+        image = combinedImages[selectedCoverIndex];
+      } else {
+        image = combinedImages[0];
+      }
       images = combinedImages;
     } else {
       image = image || newsList[newsIndex].image || '/images/news_hari_guru.svg';

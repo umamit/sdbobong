@@ -19,6 +19,8 @@ export default function useNewsHandlers({
   const [newsPhotos, setNewsPhotos] = useState([]);
   const [newsPhotoPreviews, setNewsPhotoPreviews] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
+  const [coverPhotoIndex, setCoverPhotoIndex] = useState(0);
+  const [selectedCoverUrl, setSelectedCoverUrl] = useState('');
 
   const handleNewsAdd = async (e) => {
     e.preventDefault();
@@ -30,6 +32,7 @@ export default function useNewsHandlers({
 
     formData.delete('photo');
     formData.delete('photos');
+    formData.append('selected_cover_index', coverPhotoIndex.toString());
 
     try {
       if (newsPhotos.length > 0) {
@@ -59,6 +62,8 @@ export default function useNewsHandlers({
         setNewsPhotos([]);
         newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
         setNewsPhotoPreviews([]);
+        setCoverPhotoIndex(0);
+        setSelectedCoverUrl('');
 
         setNewsEditorKey(prev => prev + 1);
         router.refresh();
@@ -76,6 +81,8 @@ export default function useNewsHandlers({
     setEditingNews(article);
     const existing = article.images && article.images.length > 0 ? article.images : (article.image ? [article.image] : []);
     setExistingImages(existing);
+    setSelectedCoverUrl(article.image || (existing.length > 0 ? existing[0] : ''));
+    setCoverPhotoIndex(0);
     setNewsEditorKey(prev => prev + 1);
     setNewsPhotos([]);
     newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
@@ -92,6 +99,8 @@ export default function useNewsHandlers({
   const handleNewsCancelEdit = () => {
     setEditingNews(null);
     setExistingImages([]);
+    setSelectedCoverUrl('');
+    setCoverPhotoIndex(0);
     setNewsEditorKey(prev => prev + 1);
     setNewsPhotos([]);
     newsPhotoPreviews.forEach(url => URL.revokeObjectURL(url));
@@ -99,7 +108,12 @@ export default function useNewsHandlers({
   };
 
   const handleRemoveExistingImage = (index) => {
-    setExistingImages(prev => prev.filter((_, i) => i !== index));
+    const removedUrl = existingImages[index];
+    const updatedImages = existingImages.filter((_, i) => i !== index);
+    setExistingImages(updatedImages);
+    if (selectedCoverUrl === removedUrl) {
+      setSelectedCoverUrl(updatedImages.length > 0 ? updatedImages[0] : '');
+    }
   };
 
   const handleNewsUpdate = async (e) => {
@@ -116,6 +130,10 @@ export default function useNewsHandlers({
     formData.delete('photo');
     formData.delete('photos');
     formData.append('existingImages', JSON.stringify(existingImages));
+    if (selectedCoverUrl) {
+      formData.append('selected_cover_image', selectedCoverUrl);
+    }
+    formData.append('selected_cover_index', coverPhotoIndex.toString());
 
     try {
       if (newsPhotos.length > 0) {
@@ -142,6 +160,8 @@ export default function useNewsHandlers({
         setNewsList(prev => prev.map(n => n.id === editingNews.id ? data.article : n));
         setEditingNews(null);
         setExistingImages([]);
+        setSelectedCoverUrl('');
+        setCoverPhotoIndex(0);
         form.reset();
 
         setNewsPhotos([]);
@@ -227,6 +247,11 @@ export default function useNewsHandlers({
     }
     setNewsPhotos(prev => prev.filter((_, i) => i !== index));
     setNewsPhotoPreviews(prev => prev.filter((_, i) => i !== index));
+    setCoverPhotoIndex(prev => {
+      if (prev === index) return 0;
+      if (prev > index) return prev - 1;
+      return prev;
+    });
   };
 
   return {
@@ -242,6 +267,10 @@ export default function useNewsHandlers({
     setNewsPhotoPreviews,
     existingImages,
     setExistingImages,
+    coverPhotoIndex,
+    setCoverPhotoIndex,
+    selectedCoverUrl,
+    setSelectedCoverUrl,
     handleRemoveExistingImage,
     handleNewsAdd,
     handleNewsEditClick,
