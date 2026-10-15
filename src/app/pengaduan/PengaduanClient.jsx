@@ -133,6 +133,14 @@ export default function PengaduanClient() {
               </button>
             </form>
           )}
+          <div style={{ marginTop: '16px', padding: '12px 14px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', fontSize: '0.8rem' }}>
+            <span style={{ color: '#475569' }}>
+              Membutuhkan bantuan darurat tatap muka? Guru Piket bertugas di Kantor/Gerbang hari ini.
+            </span>
+            <a href="/kontak" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none' }}>
+              Lihat Jadwal Piket &rarr;
+            </a>
+          </div>
         </div>
       </div>
 

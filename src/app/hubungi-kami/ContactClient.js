@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { generateCaptchaChallenge } from '../../lib/captcha';
+import PiketHarianWidget from './PiketHarianWidget';
 
 export default function ContactClient({ initialFaqs, contacts = {} }) {
   const schoolEmail = contacts.email_sekolah || "admin@sdnegeribobong.sch.id";
@@ -236,9 +237,12 @@ export default function ContactClient({ initialFaqs, contacts = {} }) {
           </form>
         </div>
 
-        {/* Right Column: Google Maps & Physical Address Info */}
+        {/* Right Column: Jadwal Piket Guru & Google Maps */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
           
+          {/* Widget Guru Piket Harian & Layanan Tamu */}
+          <PiketHarianWidget operatorPhone={operatorPhone} />
+
           {/* Map Frame Card */}
           <div className="card-custom" style={{ padding: '8px', overflow: 'hidden', background: 'white' }}>
             <iframe
