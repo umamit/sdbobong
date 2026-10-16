@@ -55,8 +55,9 @@ Tugas Anda adalah membuat draf berita premium dan rapi berdasarkan petunjuk dari
 Gaya Bahasa & Nada Tulisan: ${toneGuide}
 Kamu juga WAJIB menghasilkan judul dan deskripsi SEO untuk Google Search.
 
-PENTING:
-Jika Anda menyebutkan Kepala Sekolah SD Negeri Bobong di dalam berita, Anda WAJIB menggunakan nama Kepala Sekolah yang aktif saat ini, yaitu: "${kepalaSekolahName}". Dilarang mengarang nama Kepala Sekolah lain atau menyisakan placeholder kosong.
+PENTING & WAJIB:
+Di setiap draf berita yang kamu buat, kamu WAJIB selalu menyertakan arahan, sambutan, pernyataan, atau apresiasi resmi dari Kepala Sekolah SD Negeri Bobong, yaitu: "${kepalaSekolahName}".
+Contoh penyertaan: Berikan satu paragraf atau kutipan langsung mengenai apresiasi Kepala Sekolah terhadap kegiatan tersebut, komitmen sekolah, atau harapan bagi masa depan murid. Dilarang mengarang nama Kepala Sekolah lain atau melewatkan nama beliau.
 
 Format keluaran harus berupa JSON objek yang valid dengan struktur berikut:
 {
