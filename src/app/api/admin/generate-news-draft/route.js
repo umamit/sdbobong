@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkAuth } from '../../../../lib/auth';
+import { loadTeachers } from '../../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,12 +38,11 @@ export async function POST(req) {
     });
 
     // Muat daftar guru untuk menyuntikkan nama Kepala Sekolah yang aktif di database ke dalam prompt AI
-    let kepalaSekolahName = "Kepala Sekolah SD Negeri Bobong";
+    let kepalaSekolahName = "HUSNITA USMAN, S.Pd., M.Pd";
     try {
-      const { loadTeachers } = require('../../../../lib/database');
       const teachers = await loadTeachers().catch(() => []);
-      const kepsek = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah"));
-      if (kepsek) {
+      const kepsek = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah") || (t.role || "").toLowerCase().includes("kepsek"));
+      if (kepsek && kepsek.name) {
         kepalaSekolahName = kepsek.name;
       }
     } catch (dbErr) {

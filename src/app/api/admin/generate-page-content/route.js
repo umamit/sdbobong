@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkAuth } from '../../../../lib/auth';
+import { loadTeachers } from '../../../../lib/database';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,12 +13,11 @@ export async function POST(req) {
     const { subTab, prompt } = await req.json();
     if (!prompt || !prompt.trim()) return NextResponse.json({ error: 'Prompt wajib diisi.' }, { status: 400 });
 
-    let kepsekName = 'Kepala Sekolah SD Negeri Bobong';
+    let kepsekName = 'HUSNITA USMAN, S.Pd., M.Pd';
     try {
-      const { loadTeachers } = require('../../../../lib/database');
       const teachers = await loadTeachers().catch(() => []);
-      const kepsek = teachers.find(t => (t.role || '').toLowerCase().includes('kepala sekolah'));
-      if (kepsek) kepsekName = kepsek.name;
+      const kepsek = teachers.find(t => (t.role || '').toLowerCase().includes('kepala sekolah') || (t.role || '').toLowerCase().includes('kepsek'));
+      if (kepsek && kepsek.name) kepsekName = kepsek.name;
     } catch {
       // fallback
     }
