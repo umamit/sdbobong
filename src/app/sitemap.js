@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import { loadNews } from '../lib/database.js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -59,14 +59,25 @@ export async function sitemap() {
 
   // Fetch dynamic news articles for sitemap with images
   let newsEntries = [];
+  const idMonths = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, Mei: 4, Jun: 5, Jul: 6, Agu: 7, Ags: 7, Sep: 8, Okt: 9, Nov: 10, Des: 11 };
   try {
-    const newsList = await prisma.news.findMany({ select: { id: true, date: true, image: true } });
+    const newsList = await loadNews().catch(() => []);
     newsEntries = newsList.map(n => {
       let mDate = now;
       if (n.date) {
         const parsed = new Date(n.date);
         if (!isNaN(parsed.getTime())) {
           mDate = parsed;
+        } else {
+          const parts = String(n.date).trim().split(/\s+/);
+          if (parts.length >= 3) {
+            const d = parseInt(parts[0], 10);
+            const m = idMonths[parts[1]?.substring(0, 3)];
+            const y = parseInt(parts[2], 10);
+            if (!isNaN(d) && !isNaN(y) && m !== undefined) {
+              mDate = new Date(Date.UTC(y, m, d));
+            }
+          }
         }
       }
       const itemImages = [];
@@ -79,8 +90,8 @@ export async function sitemap() {
       return {
         url: `${baseUrl}/berita/${n.id}`,
         lastModified: mDate,
-        changeFrequency: 'monthly',
-        priority: 0.7,
+        changeFrequency: 'weekly',
+        priority: 0.8,
         images: itemImages
       };
     });

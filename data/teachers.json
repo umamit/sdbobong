@@ -5,7 +5,7 @@
         "role": "Plt. Kepala Sekolah",
         "details": "Pendidik Bidang Studi",
         "status": "PNS",
-        "image": "/images/teacher_7.jpg",
+        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1788055359078_onapage_copy.webp",
         "subject": "Bahasa Inggris",
         "education": "S2 Menejemen Pendidikan",
         "motto": "Belajar Seru. Lancar Bicara",
@@ -232,6 +232,19 @@
         "motto": "",
         "bio": "",
         "nip": "198707082015031002"
+    },
+    {
+        "id": "teacher-1791188048",
+        "name": "RADIA MANOMPO, S.Pd.",
+        "role": "Guru",
+        "details": "",
+        "status": "PPPK",
+        "image": "/images/teacher_2.jpg",
+        "subject": "",
+        "education": "",
+        "motto": "",
+        "bio": "",
+        "nip": ""
     },
     {
         "id": "teacher-1781191794",
