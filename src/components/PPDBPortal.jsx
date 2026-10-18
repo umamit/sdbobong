@@ -329,7 +329,7 @@ export default function PPDBPortal({ pendaftarList, config, teachers = [] }) {
             </div>
 
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 'var(--space-sm)', lineHeight: 1.4 }}>
-              *Jika mendaftar secara tatap muka (langsung), harap membawa dokumen asli dan fotokopi ke ruang Panitia PPDB SD Negeri Bobong (Samping Kantor Tata Usaha) pada jam kerja.
+              *Jika mendaftar secara tatap muka (langsung), harap membawa dokumen asli dan fotokopi ke ruang Panitia PPDB SD Negeri Bobong (Samping Ruang Tenaga Kependidikan) pada jam kerja.
             </p>
           </div>
         </div>

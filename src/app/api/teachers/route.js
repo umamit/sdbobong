@@ -87,11 +87,14 @@ export async function POST(request) {
       }
     }
 
-    // Periksa duplikat jabatan Tata Usaha (hanya boleh satu Tata Usaha)
-    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu')) {
-      const duplicateTU = teachersList.find(t => (t.role || "").toLowerCase().includes("tata usaha") || (t.role || "").toLowerCase().includes("koordinator tu"));
+    // Periksa duplikat jabatan Tenaga Kependidikan / Tata Usaha (hanya boleh satu)
+    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu') || role.toLowerCase().includes('tenaga kependidikan') || role.toLowerCase() === 'tas') {
+      const duplicateTU = teachersList.find(t => {
+        const r = (t.role || "").toLowerCase();
+        return r.includes("tata usaha") || r.includes("koordinator tu") || r.includes("tenaga kependidikan") || r === 'tas';
+      });
       if (duplicateTU) {
-        return NextResponse.json({ error: `Jabatan Tata Usaha sudah terdaftar atas nama ${duplicateTU.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
+        return NextResponse.json({ error: `Jabatan Tenaga Kependidikan sudah terdaftar atas nama ${duplicateTU.name}! Hapus atau edit jabatan beliau terlebih dahulu.` }, { status: 400 });
       }
     }
 
@@ -219,11 +222,14 @@ export async function PUT(request) {
       }
     }
 
-    // Periksa duplikat jabatan Tata Usaha dengan ID lain (hanya boleh satu Tata Usaha)
-    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu')) {
-      const duplicateTU = teachersList.find(t => ((t.role || "").toLowerCase().includes("tata usaha") || (t.role || "").toLowerCase().includes("koordinator tu")) && t.id !== id);
+    // Periksa duplikat jabatan Tenaga Kependidikan / Tata Usaha dengan ID lain
+    if (role.toLowerCase().includes('tata usaha') || role.toLowerCase().includes('koordinator tu') || role.toLowerCase().includes('tenaga kependidikan') || role.toLowerCase() === 'tas') {
+      const duplicateTU = teachersList.find(t => {
+        const r = (t.role || "").toLowerCase();
+        return (r.includes("tata usaha") || r.includes("koordinator tu") || r.includes("tenaga kependidikan") || r === 'tas') && t.id !== id;
+      });
       if (duplicateTU) {
-        return NextResponse.json({ error: `Jabatan Tata Usaha sudah terdaftar atas nama ${duplicateTU.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
+        return NextResponse.json({ error: `Jabatan Tenaga Kependidikan sudah terdaftar atas nama ${duplicateTU.name}! Ganti jabatan beliau terlebih dahulu.` }, { status: 400 });
       }
     }
 

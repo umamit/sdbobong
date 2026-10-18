@@ -18,17 +18,17 @@ export default function TeachersSectionClient({ teachers, mode = 'all' }) {
   };
 
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
-  const tataUsaha = teachers.find(t =>
-    (t.role || "").toLowerCase().includes("tata usaha") ||
-    (t.role || "").toLowerCase().includes("koordinator tu")
-  ) || null;
+  const tataUsaha = teachers.find(t => {
+    const r = (t.role || "").toLowerCase();
+    return r.includes("tata usaha") || r.includes("koordinator tu") || r.includes("tenaga kependidikan") || r.includes("tas");
+  }) || null;
   const komite = teachers.find(t => (t.role || "").toLowerCase().includes("komite")) || null;
   const bendahara = teachers.find(t => (t.role || "").toLowerCase().includes("bendahara")) || null;
 
   const nonKomiteTeachers = teachers.filter(t => !(t.role || "").toLowerCase().includes("komite"));
   const dewanGuruList = teachers.filter(t => {
     const r = (t.role || "").toLowerCase();
-    return !r.includes("kepala sekolah") && !r.includes("tata usaha") && !r.includes("koordinator tu") && !r.includes("komite") && !r.includes("bendahara");
+    return !r.includes("kepala sekolah") && !r.includes("tata usaha") && !r.includes("koordinator tu") && !r.includes("tenaga kependidikan") && !r.includes("tas") && !r.includes("komite") && !r.includes("bendahara");
   });
 
   const getStatusBadgeStyle = (status) => {

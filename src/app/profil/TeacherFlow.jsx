@@ -181,7 +181,7 @@ export default function TeacherFlow({
         teacher: tataUsaha,
         isPlaceholder: !tataUsaha,
         isKepalaSekolah: false,
-        label: 'Tata Usaha',
+        label: 'Tenaga Kependidikan',
         hasTarget: true,
         hasSource: false,
         onSelect: onSelectTeacher,

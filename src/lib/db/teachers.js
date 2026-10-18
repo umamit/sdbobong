@@ -7,7 +7,7 @@ function getTeacherSortWeight(teacher) {
   const role = (teacher.role || "").toLowerCase();
   const details = (teacher.details || "").toLowerCase();
   if (role.includes("kepala sekolah")) return { priority: 1, classNum: 0 };
-  if (role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) return { priority: 2, classNum: 0 };
+  if (role.includes("tenaga kependidikan") || role.includes("tas") || role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) return { priority: 2, classNum: 0 };
   if (role.includes("bendahara")) return { priority: 3, classNum: 0 };
   if (role.includes("komite")) return { priority: 4, classNum: 0 };
   const classMatch = role.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i) || details.match(/kelas\s*(1|2|3|4|5|6|iii|ii|i|vi|v|iv)/i);

@@ -58,10 +58,10 @@ export default async function Profil() {
 
   const kepalaSekolah = teachers.find(t => (t.role || "").toLowerCase().includes("kepala sekolah")) || null;
 
-  const tataUsaha = teachers.find(t =>
-    (t.role || "").toLowerCase().includes("tata usaha") ||
-    (t.role || "").toLowerCase().includes("koordinator tu")
-  ) || null;
+  const tataUsaha = teachers.find(t => {
+    const r = (t.role || "").toLowerCase();
+    return r.includes("tata usaha") || r.includes("koordinator tu") || r.includes("tenaga kependidikan") || r.includes("tas");
+  }) || null;
 
   const komite = teachers.find(t =>
     (t.role || "").toLowerCase().includes("komite")

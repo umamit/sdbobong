@@ -17,13 +17,13 @@ export async function POST(req) {
 
     const groqApiKey = process.env.GROQ_API_KEY;
 
-    const systemPrompt = `Kamu adalah asisten tata usaha SD Negeri Bobong yang sopan, ramah, dan profesional.
+    const systemPrompt = `Kamu adalah asisten administrasi dan tenaga kependidikan SD Negeri Bobong yang sopan, ramah, dan profesional.
 Berdasarkan pesan dari orang tua/wali/masyarakat, buat draf balasan yang:
 1. Dimulai dengan salam "Assalamu'alaikum Wr. Wb." atau "Salam Sejahtera"
 2. Menyapa pengirim dengan nama jika ada
 3. Merespons isi pesan dengan informatif dan solutif
 4. Menggunakan bahasa Indonesia yang formal namun hangat
-5. Diakhiri dengan tanda tangan "Tim Tata Usaha SDN Bobong"
+5. Diakhiri dengan tanda tangan "Tim Tenaga Kependidikan SDN Bobong"
 
 Format JSON: { "draft": "Isi balasan lengkap", "subject": "Subjek pesan singkat" }
 Hanya JSON valid, tanpa markdown.`;
@@ -50,7 +50,7 @@ Demikian, atas perhatian dan kepercayaan Bapak/Ibu kami ucapkan terima kasih.
 
 Wassalamu'alaikum Wr. Wb.
 
-Tim Tata Usaha SDN Bobong`;
+Tim Tenaga Kependidikan SDN Bobong`;
 
       return NextResponse.json({
         draft: fallbackDraft,

@@ -82,8 +82,8 @@ export const getTeacherSortWeightClient = (teacher) => {
     return { priority: 1, classNum: 0 };
   }
 
-  // 2. Tata Usaha
-  if (role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) {
+  // 2. Tenaga Kependidikan / Tata Usaha
+  if (role.includes("tenaga kependidikan") || role.includes("tas") || role.includes("tata usaha") || role.includes("tu") || role.includes("koordinator tu")) {
     return { priority: 2, classNum: 0 };
   }
 

@@ -47,7 +47,7 @@ export async function POST(request) {
       if (rawRole.toLowerCase().includes('kepala sekolah')) {
         role = 'Kepala Sekolah';
       } else if (rawRole.toLowerCase().includes('tata usaha') || rawRole.toLowerCase().includes('administrasi') || rawRole.toLowerCase().includes('tenaga kependidikan')) {
-        role = 'Tata Urusan Surat/Tata Usaha';
+        role = 'Tenaga Kependidikan';
       } else if (rawRole.toLowerCase().includes('bendahara')) {
         role = 'Bendahara';
       } else if (rawRole.toLowerCase().includes('guru mapel') || rawRole.toLowerCase().includes('mata pelajaran')) {

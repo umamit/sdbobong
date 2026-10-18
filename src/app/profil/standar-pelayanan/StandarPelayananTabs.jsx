@@ -22,8 +22,8 @@ const DEFAULT_SERVICES = [
     id: 'sp-default-mutasi', title: 'Mutasi Siswa', image: '/images/standar_pelayanan.png', pdf: '/docs/standar_pelayanan.pdf',
     biaya: 'Gratis (Rp 0,-) - Tanpa biaya administrasi.',
     waktu: '3 - 5 Hari Kerja (proses verifikasi data Dapodik).',
-    alur: 'Ajukan surat permohonan mutasi orang tua ke tata usaha, tunggu verifikasi berkas, penerbitan surat mutasi.',
-    kontak: 'Tata Usaha / Operator Dapodik Sekolah.'
+    alur: 'Ajukan surat permohonan mutasi orang tua ke Tenaga Kependidikan / Administrasi Sekolah, tunggu verifikasi berkas, penerbitan surat mutasi.',
+    kontak: 'Tenaga Kependidikan / Operator Dapodik Sekolah.'
   }
 ];
 
