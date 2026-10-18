@@ -199,17 +199,6 @@
         grid-template-columns: repeat(4, 1fr);
     }
     
-    .stepper-grid::before {
-        content: '';
-        position: absolute;
-        top: 35px;
-        left: 12.5%;
-        right: 12.5%;
-        height: 2px;
-        background-color: rgba(255, 255, 255, 0.15); /* Putih transparan halus */
-        z-index: 0;
-    }
-    
     .stepper-step {
         z-index: 1;
     }

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
     : `${origin}/images/logo_sekolah_512.png`;
 
   return {
-    title: `${article.title} - SD Negeri Bobong`,
+    title: article.title,
     description: plainText || article.title,
     alternates: {
       canonical: `${origin}/berita/${article.id}`
