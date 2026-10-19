@@ -47,21 +47,19 @@ export default function PengaduanClient() {
 
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '80vh', paddingBottom: '60px' }}>
-      <section style={{ background: 'linear-gradient(135deg, #0A7E8D 0%, #12A5B8 100%)', color: '#ffffff', padding: '60px 20px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <span style={{ display: 'inline-block', padding: '4px 16px', borderRadius: '20px', background: 'rgba(255,255,255,0.2)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+      <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
+        <div className="container hero-content">
+          <span className="hero-subtitle" style={{ color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Sekolah Ramah Anak &amp; Zona Integritas
           </span>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: 900, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-            Layanan Pengaduan &amp; Aspirasi
-          </h1>
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.6, opacity: 0.95, margin: 0 }}>
+          <h1 className="hero-title">Layanan Pengaduan &amp; Aspirasi</h1>
+          <p className="hero-text" style={{ maxWidth: '800px', margin: '0 auto' }}>
             Ruang komunikasi aman dan rahasia bagi murid dan orang tua untuk menyampaikan kendala belajar, sarana, atau pencegahan perundungan di lingkungan sekolah. Seluruh area sekolah terpantau kamera CCTV aktif 24 jam demi menjamin rasa aman dan perlindungan siswa.
           </p>
         </div>
       </section>
 
-      <div style={{ maxWidth: '780px', margin: '-30px auto 0 auto', padding: '0 20px' }}>
+      <div style={{ maxWidth: '780px', margin: '-24px auto 0 auto', padding: '0 20px', position: 'relative', zIndex: 2 }}>
         <div className="card card-custom" style={{ borderRadius: '16px', padding: '28px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06)', border: '1px solid var(--border-color)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid var(--border-color)' }}>
             <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>Formulir Laporan / Aspirasi</h2>

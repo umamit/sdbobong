@@ -19,22 +19,20 @@ export default function PerpustakaanClient({ sibiBooks }) {
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '80vh', paddingBottom: '60px' }}>
       {/* Hero Banner */}
-      <section style={{ background: 'linear-gradient(135deg, #0A7E8D 0%, #12A5B8 100%)', color: '#ffffff', padding: '60px 20px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <span style={{ display: 'inline-block', padding: '4px 16px', borderRadius: '20px', background: 'rgba(255,255,255,0.2)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+      <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
+        <div className="container hero-content">
+          <span className="hero-subtitle" style={{ color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Gerakan Literasi Sekolah &amp; SIBI
           </span>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: 900, margin: '0 0 16px 0', letterSpacing: '-0.02em' }}>
-            Perpustakaan Digital SD Negeri Bobong
-          </h1>
-          <p style={{ fontSize: '1.05rem', lineHeight: 1.6, opacity: 0.95, margin: 0 }}>
+          <h1 className="hero-title">Perpustakaan Digital SD Negeri Bobong</h1>
+          <p className="hero-text" style={{ maxWidth: '800px', margin: '0 auto' }}>
             Akses bebas buku teks pelajaran resmi Kurikulum Merdeka (SIBI Kemendikbudristek) dan katalog bacaan literasi siswa kelas 1 sampai kelas 6.
           </p>
         </div>
       </section>
 
       {/* Filter and Content Controls */}
-      <div style={{ maxWidth: '1140px', margin: '-30px auto 0 auto', padding: '0 20px' }}>
+      <div style={{ maxWidth: '1140px', margin: '-24px auto 0 auto', padding: '0 20px', position: 'relative', zIndex: 2 }}>
         <div style={{ background: '#ffffff', borderRadius: '16px', padding: '20px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06)', border: '1px solid #e2e8f0', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Kelas Filters */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
