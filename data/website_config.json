@@ -8,8 +8,8 @@
     "marquee_speed": 40,
     "stats": {
         "siswa_aktif": 286,
-        "guru_staf": 23,
-        "ruang_kelas": 8,
+        "guru_staf": 22,
+        "ruang_kelas": 7,
         "akreditasi": "B",
         "rombel": 14,
         "uks": 1,
@@ -19,8 +19,9 @@
         "hero_background": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1785120056503_Video_background_hero_section_202607102024.mp4",
         "allow_copy": false,
         "maintenance_mode": false,
+        "ai_greeting_enabled": true,
         "marquee_speed": 40,
-        "visitor_count": 374,
+        "visitor_count": 702,
         "_downloads_fallback": [
             {
                 "id": "dl-1",
@@ -259,7 +260,27 @@
                 "welcome_title": "Mendidik dengan Hati, Membentuk Generasi Berakhlak Mulia, Cerdas, dan Berbudaya",
                 "welcome_quote": "\"Pendidikan utama adalah menanamkan akhlak mulia dan ketakwaan, diiringi pengembangan kecerdasan berpikir serta pelestarian nilai budaya agar generasi siap bersaing di era global.\"",
                 "welcome_p1": "Assalamu'alaikum Warahmatullahi Wabarakatuh,\nSalam sejahtera untuk kita semua. Selamat datang di website resmi SD Negeri Bobong.",
-                "welcome_p2": "Sebagai sekolah dasar rujukan di ibukota Kabupaten Pulau Taliabu, kami berkomitmen mewujudkan layanan pendidikan yang berkualitas dengan mengutamakan pembentukan karakter siswa yang berakhlak mulia, cerdas dalam berpikir, serta luhur dalam menjaga nilai budaya bangsa. Kehadiran website ini diharapkan mampu mempererat kolaborasi antara sekolah, orang tua, dan masyarakat luas demi kemajuan belajar anak.\nWassalamu'alaikum Warahmatullahi Wabarakatuh."
+                "welcome_p2": "Sebagai sekolah dasar rujukan di ibukota Kabupaten Pulau Taliabu, kami berkomitmen mewujudkan layanan pendidikan yang berkualitas dengan mengutamakan pembentukan karakter siswa yang berakhlak mulia, cerdas dalam berpikir, serta luhur dalam menjaga nilai budaya bangsa. Kehadiran website ini diharapkan mampu mempererat kolaborasi antara sekolah, orang tua, dan masyarakat luas demi kemajuan belajar anak.\nWassalamu'alaikum Warahmatullahi Wabarakatuh.",
+                "inovasi_list": [
+                    {
+                        "id": "inovasi_1787413545132",
+                        "color": "#12A5B8",
+                        "label": "Website Sekolah",
+                        "value": "Aktif"
+                    },
+                    {
+                        "id": "inovasi_1787413611681",
+                        "color": "#12A5B8",
+                        "label": "Perangkat Ajar Online",
+                        "value": "Aktif"
+                    },
+                    {
+                        "id": "inovasi_1787413712655",
+                        "color": "#12A5B8",
+                        "label": "Presensi Guru Online",
+                        "value": "Aktif"
+                    }
+                ]
             },
             "profil": {
                 "banner_title": "Profil Sekolah",
@@ -370,7 +391,7 @@
                         "id": "cal_1783680390967",
                         "desc": "MPLS",
                         "dates": "13 - 17 Juli",
-                        "month": "Juli 2025"
+                        "month": "Juli 2026"
                     }
                 ],
                 "kurikulum_image": "/images/logo_kurikulum_merdeka.png"
@@ -378,8 +399,33 @@
             "kesiswaan": {
                 "banner_title": "Kesiswaan",
                 "banner_text": "Ekstrakurikuler, prestasi, dan karya siswa SD Negeri Bobong.",
-                "ekstrakurikuler": [],
-                "prestasi": [],
+                "ekstrakurikuler": [
+                    {
+                        "id": "ekskul_1791174814553",
+                        "nama": "Pramuka",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1791175043777_WhatsApp_Image_2026-10-02_at_17.22.56__1_.webp",
+                        "jadwal": "2x perbulan. tiap hari Sabtu",
+                        "is_wajib": true,
+                        "deskripsi": "Kegiatan pengenalan pramuka siaga untuk Sekolah Dasar."
+                    },
+                    {
+                        "id": "ekskul_1792162459201",
+                        "nama": "Seni Tari",
+                        "image": "https://cffwfjkvuobpzhtdflkq.supabase.co/storage/v1/object/public/teachers/1792162575849_20261016_172639.webp",
+                        "jadwal": "Jum'at",
+                        "is_wajib": true,
+                        "deskripsi": "Sanggar Tari SD Negeri Bobong"
+                    }
+                ],
+                "prestasi": [
+                    {
+                        "desc": "Tim SD Negeri Bobong meraih juara 1 dalam lomba Gerak Jalan pada peringatan Hari Kemerdekaan. Kegiatan ini melatih koordinasi, kebugaran, dan semangat kebangsaan siswa.",
+                        "icon": "trophy",
+                        "rank": "1",
+                        "level": "Antar Sekolah Dasar",
+                        "title": "Lomba Gerak Jalan 17 Agustus 2026"
+                    }
+                ],
                 "karya": []
             },
             "ppdb": {
@@ -599,6 +645,7 @@
             "category": "Buku SIBI"
         }
     ],
+    "piket_schedule": [],
     "faqs": [
         {
             "id": "faq-1",
@@ -690,6 +737,5 @@
     "force_local_cache": false,
     "suspicious_attempts": [],
     "manual_blacklist": [],
-    "security_settings": {},
-    "visitor_count": 374
+    "security_settings": {}
 }

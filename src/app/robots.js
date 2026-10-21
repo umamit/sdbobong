@@ -34,7 +34,10 @@ export default async function robots() {
           '/ppdb/daftar/sukses',
           '/*?search=*',
           '/*?q=*',
-          '/_next/'
+          '/_next/',
+          '/*.mp4$',
+          '/*.webm$',
+          '/*.ogg$'
         ],
       },
       {

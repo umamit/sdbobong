@@ -50,7 +50,7 @@ export default async function RootLayout({ children }) {
   }
 
   const isPrivatePath = pathname.startsWith('/admin') || pathname.startsWith('/guru') || pathname === '/login' || pathname.startsWith('/ppdb-online/sukses') || pathname.startsWith('/ppdb/daftar/sukses');
-  const robotsContent = isPrivatePath ? "noindex, nofollow" : "index, follow";
+  const robotsContent = isPrivatePath ? "noindex, nofollow" : "index, follow, max-video-preview:0";
   const htmlClassNames = isBypassPath ? "allow-select" : "";
 
   return (

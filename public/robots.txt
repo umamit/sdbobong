@@ -16,6 +16,9 @@ Disallow: /api/
 Disallow: /ppdb-online/sukses
 Disallow: /ppdb/daftar/sukses
 Disallow: /_next/
+Disallow: /*.mp4$
+Disallow: /*.webm$
+Disallow: /*.ogg$
 
 # ── Bot AI Scraper (Blokir Scraping Data yang Tidak Diizinkan) ───────────
 User-agent: GPTBot

@@ -164,20 +164,20 @@ export default async function Home() {
                       v.defaultMuted = true;
                       
                       // Diagnostic console logging
-                      v.addEventListener("play", function() { console.log("▶️ Video background starts playing successfully!"); });
-                      v.addEventListener("pause", function() { console.log("⏸️ Video background paused."); });
-                      v.addEventListener("waiting", function() { console.log("⏳ Video background is buffering/waiting..."); });
-                      v.addEventListener("stalled", function() { console.warn("⚠️ Video background loading has stalled."); });
-                      v.addEventListener("error", function(e) { console.error("❌ Video background load error:", v.error); });
+                      v.addEventListener("play", function() { console.log("[Video] Video background starts playing successfully!"); });
+                      v.addEventListener("pause", function() { console.log("[Video] Video background paused."); });
+                      v.addEventListener("waiting", function() { console.log("[Video] Video background is buffering/waiting..."); });
+                      v.addEventListener("stalled", function() { console.warn("[Video] Video background loading has stalled."); });
+                      v.addEventListener("error", function(e) { console.error("[Video] Video background load error:", v.error); });
                       
                       var attemptPlay = function() {
                         v.play().then(function() {
-                          console.log("✅ Video background autoplay call succeeded!");
+                          console.log("[Video] Video background autoplay call succeeded!");
                         }).catch(function(err) {
-                          console.log("⚠️ Autoplay blocked by browser policy, listening for user interactions...", err);
+                          console.log("[Video] Autoplay blocked by browser policy, listening for user interactions...", err);
                           var playVideo = function() {
                             v.play().then(function() {
-                              console.log("✅ Video background started on user interaction!");
+                              console.log("[Video] Video background started on user interaction!");
                               document.removeEventListener("click", playVideo);
                               document.removeEventListener("touchstart", playVideo);
                             });

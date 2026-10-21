@@ -90,7 +90,7 @@ export default async function Footer() {
             </a>
           </div>
           <p className={styles.copyrightNote}>
-            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v4.7.10</span>
+            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> SD Negeri Bobong. Hak Cipta Dilindungi Undang-Undang. | <Link href="/login" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.85rem' }}>Login</Link> <span style={{ color: '#6B7280', margin: '0 0.5rem' }}>•</span> <span style={{ color: '#9CA3AF', fontSize: '0.85rem' }}>v4.7.11</span>
           </p>
         </div>
       </div>
