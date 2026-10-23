@@ -161,20 +161,20 @@ export default function FacilityMapSvg(props) {
           fill={hoveredRoom === 'olahraga' ? '#E9D3C0' : '#EFE3D3'}
           stroke={hoveredRoom === 'olahraga' ? '#B45309' : '#D6C5B3'}
           strokeWidth={hoveredRoom === 'olahraga' ? '2.5' : '1.5'}
-          style={{ transition: 'all 0.2s ease' }}
-          filter={hoveredRoom === 'olahraga' ? 'url(#shadow-premium)' : ''}
+          style={{ transition: 'fill 0.2s ease, stroke 0.2s ease' }}
         />
-        <rect x="325" y="150" width="170" height="150" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
-        <circle cx="410" cy="225" r="20" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" />
-        <g transform="translate(410, 225)">
+        <rect x="325" y="150" width="170" height="150" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" style={{ pointerEvents: 'none' }} />
+        <circle cx="410" cy="225" r="20" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="4,4" opacity="0.6" style={{ pointerEvents: 'none' }} />
+        <g transform="translate(410, 225)" style={{ pointerEvents: 'none' }}>
           <circle cx="0" cy="0" r="3" fill="#334155" />
           <line x1="0" y1="0" x2="0" y2="-45" stroke="#334155" strokeWidth="2.5" />
           <path d="M0,-45 C6,-48 12,-42 18,-45 L18,-39 C12,-36 6,-42 0,-39 Z" fill="#EF4444" />
           <path d="M0,-39 C6,-42 12,-36 18,-39 L18,-33 C12,-30 6,-36 0,-33 Z" fill="#F9FAFB" stroke="#E2E8F0" strokeWidth="0.5" />
         </g>
-        <text x="410" y="295" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle">
+        <text x="410" y="295" fontFamily="var(--font-heading)" fontWeight="800" fontSize="11" fill={hoveredRoom === 'olahraga' ? '#513725' : '#735745'} textAnchor="middle" style={{ pointerEvents: 'none' }}>
           LAPANGAN
         </text>
+        {hoveredRoom === 'olahraga' && <rect x="312" y="137" width="196" height="176" fill="none" stroke="#FFFFFF" strokeWidth="2" rx="7" filter="url(#glow-blue)" style={{ pointerEvents: 'none' }} />}
       </g>
 
       {/* Lahan Rencana Besar Kanan (Timur) */}

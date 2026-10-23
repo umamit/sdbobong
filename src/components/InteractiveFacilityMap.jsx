@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { FACILITIES_DATA } from '../data/facilitiesData';
 import FacilityMapSvg from './FacilityMapSvg';
+import FacilityIcon from './FacilityIcon';
 
 export default function InteractiveFacilityMap() {
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -173,7 +174,19 @@ export default function InteractiveFacilityMap() {
           }}>
             {hoveredRoom ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', animation: 'fadeIn 0.2s ease-out' }}>
-                <span style={{ fontSize: '2.5rem', alignSelf: 'flex-start' }}>{FACILITIES_DATA[hoveredRoom].icon}</span>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(18, 165, 184, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--primary)',
+                  marginBottom: '4px'
+                }}>
+                  <FacilityIcon name={FACILITIES_DATA[hoveredRoom].icon} size={28} color="var(--primary)" />
+                </div>
                 <h3 style={{ color: 'var(--primary)', fontFamily: 'var(--font-heading)', fontSize: '1.25rem', marginBottom: '2px', fontWeight: 800 }}>
                   {FACILITIES_DATA[hoveredRoom].title}
                 </h3>
@@ -266,9 +279,25 @@ export default function InteractiveFacilityMap() {
                 right: 0,
                 background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)',
                 padding: 'var(--space-md) var(--space-md) var(--space-xs) var(--space-md)',
-                color: 'white'
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
               }}>
-                <span style={{ fontSize: '2.5rem', marginRight: '8px', verticalAlign: 'middle' }}>{selectedRoom.icon}</span>
+                <div style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <FacilityIcon name={selectedRoom.icon} size={24} color="#FFFFFF" />
+                </div>
                 <h2 style={{ display: 'inline-block', color: 'white', fontSize: '1.6rem', margin: 0, fontFamily: 'var(--font-heading)', fontWeight: 800, textShadow: '0 2px 4px rgba(0,0,0,0.6)' }}>
                   {selectedRoom.title}
                 </h2>
