@@ -102,6 +102,8 @@ export async function POST(request) {
       try {
         revalidatePath('/', 'layout');
         revalidatePath('/berita');
+        revalidatePath(`/berita/${newArticle.id}`);
+        revalidatePath('/sitemap.xml');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in news POST:", cacheErr);
       }
@@ -209,6 +211,8 @@ export async function PUT(request) {
       try {
         revalidatePath('/', 'layout');
         revalidatePath('/berita');
+        revalidatePath(`/berita/${id}`);
+        revalidatePath('/sitemap.xml');
       } catch (cacheErr) {
         console.error("Cache revalidation failed in news PUT:", cacheErr);
       }
@@ -238,7 +242,7 @@ export async function DELETE(request) {
       prismaModel: prisma.news,
       auditAction: 'DELETE_NEWS',
       getItemName: (n) => n.title,
-      revalidatePaths: ['/', '/berita', '/admin/dashboard']
+      revalidatePaths: ['/', '/berita', `/berita/${id}`, '/sitemap.xml', '/admin/dashboard']
     });
   } catch (e) {
     return NextResponse.json({ error: "Terjadi kesalahan server: " + e.message }, { status: 500 });

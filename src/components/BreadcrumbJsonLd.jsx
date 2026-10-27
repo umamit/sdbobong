@@ -19,14 +19,15 @@ export default async function BreadcrumbJsonLd({ pathname: manualPathname, custo
     return null;
   }
 
-  // Abaikan area privat/admin/dashboard
+  // Abaikan area privat/admin/dashboard dan halaman detail berita yang sudah punya custom BreadcrumbList
   if (
     cleanPath.startsWith('/admin') ||
     cleanPath.startsWith('/guru') ||
     cleanPath.startsWith('/login') ||
     cleanPath.startsWith('/api') ||
     cleanPath.startsWith('/formulir-ppdb') ||
-    cleanPath.startsWith('/ppdb/cetak')
+    cleanPath.startsWith('/ppdb/cetak') ||
+    (segments[0] === 'berita' && segments.length > 1)
   ) {
     return null;
   }

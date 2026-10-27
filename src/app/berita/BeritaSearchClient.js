@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import NewsCard from '../../components/NewsCard';
 
@@ -223,7 +224,8 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)', maxWidth: '800px', margin: '0 auto' }}>
           {/* Back Button */}
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '8px' }}>
-            <button
+            <Link
+              href="/berita"
               onClick={handleClearHash}
               className="nav-btn-secondary"
               style={{
@@ -238,6 +240,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
                 fontWeight: 600,
                 fontSize: '0.9rem',
                 cursor: 'pointer',
+                textDecoration: 'none',
                 transition: 'all 0.25s ease',
                 boxShadow: 'var(--shadow-sm)'
               }}
@@ -247,7 +250,7 @@ export default function BeritaSearchClient({ newsList = [], initialIsolatedId = 
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
               Kembali ke Semua Berita
-            </button>
+            </Link>
           </div>
 
           {/* Isolated News Card */}

@@ -80,10 +80,11 @@ export async function sitemap() {
           }
         }
       }
-      const itemImages = [];
-      if (n.image && !n.image.startsWith('data:')) {
-        itemImages.push(n.image.startsWith('http') ? n.image : `${baseUrl}${n.image}`);
-      } else {
+      const rawImages = n.images && Array.isArray(n.images) && n.images.length > 0 ? n.images : [n.image];
+      const itemImages = rawImages
+        .filter(img => img && !img.startsWith('data:'))
+        .map(img => img.startsWith('http') ? img : `${baseUrl}${img}`);
+      if (itemImages.length === 0) {
         itemImages.push(`${baseUrl}/images/logo_sekolah_512.png`);
       }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import NewsReactions from './NewsReactions';
 import NewsComments from './NewsComments';
@@ -171,10 +172,6 @@ export default function NewsCard({ news, className = '', priority = false }) {
     }
   };
 
-  // Safe heuristic for content length check
-  const plainText = news.content ? news.content.replace(/<[^>]*>/g, '') : '';
-  const isLong = plainText.length > 300;
-
   return (
     <motion.article
       layout
@@ -307,17 +304,26 @@ export default function NewsCard({ news, className = '', priority = false }) {
           <h3 
             className="card-title" 
             style={{ 
-              fontSize: '1.12rem', 
+              fontSize: isExpanded ? '1.35rem' : '1.12rem', 
               fontWeight: 700,
-              lineHeight: '1.3',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
+              lineHeight: '1.35',
+              display: isExpanded ? 'block' : '-webkit-box',
+              WebkitLineClamp: isExpanded ? 'unset' : 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               margin: '0 0 8px 0'
             }}
           >
-            {news.title}
+            {isOnDetailPage ? (
+              news.title
+            ) : (
+              <Link
+                href={`/berita/${news.id}`}
+                style={{ color: 'inherit', textDecoration: 'none' }}
+              >
+                {news.title}
+              </Link>
+            )}
           </h3>
           
           <div 
@@ -343,14 +349,9 @@ export default function NewsCard({ news, className = '', priority = false }) {
             />
           </div>
 
-          {isLong && !isOnDetailPage && (
-            <button
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.location.href = `/berita/${news.id}`;
-                }
-              }}
-              type="button"
+          {!isOnDetailPage && (
+            <Link
+              href={`/berita/${news.id}`}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -363,6 +364,7 @@ export default function NewsCard({ news, className = '', priority = false }) {
                 cursor: 'pointer',
                 padding: '6px 14px',
                 borderRadius: '20px',
+                textDecoration: 'none',
                 transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 marginTop: '12px',
                 boxShadow: '0 2px 6px rgba(18, 165, 184, 0.05)'
@@ -380,8 +382,12 @@ export default function NewsCard({ news, className = '', priority = false }) {
                 e.currentTarget.style.boxShadow = '0 2px 6px rgba(18, 165, 184, 0.05)';
               }}
             >
-              Baca Selengkapnya <span style={{ transition: 'transform 0.2s', display: 'inline-block' }}>▼</span>
-            </button>
+              Baca Selengkapnya
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </Link>
           )}
         </div>
 

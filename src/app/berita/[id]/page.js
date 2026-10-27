@@ -2,7 +2,7 @@ import { loadNews } from '../../../lib/database';
 import BeritaSearchClient from '../BeritaSearchClient';
 import { FramerWordReveal } from '../../../components/FramerReveal';
 import { notFound } from 'next/navigation';
-import { generateBreadcrumbSchema } from '../../../lib/breadcrumbs';
+import { generateBreadcrumbSchema, parseIndoDateToIso } from '../../../lib/breadcrumbs';
 
 export const revalidate = 60; // Cache 60s untuk efisiensi Fluid CPU Vercel
 
@@ -16,23 +16,43 @@ export async function generateMetadata({ params }) {
     return { title: 'Artikel Tidak Ditemukan - SD Negeri Bobong' };
   }
 
-  const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
+  const cleanTitle = article.title.replace(/\s*\|\s*SD(N| Negeri) Bobong$/i, '').trim();
+  const plainText = article.content
+    ? article.content.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 155)
+    : '';
   const origin = 'https://www.sdnegeribobong.sch.id';
-  const imageUrl = article.image && !article.image.startsWith('data:')
-    ? (article.image.startsWith('http') ? article.image : `${origin}${article.image}`)
-    : `${origin}/images/logo_sekolah_512.png`;
+  const canonicalUrl = `${origin}/berita/${article.id}`;
+  const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
+  const ogImages = rawImages
+    .filter(img => img && !img.startsWith('data:'))
+    .map(img => ({ url: img.startsWith('http') ? img : `${origin}${img}`, alt: cleanTitle }));
+  if (ogImages.length === 0) ogImages.push({ url: `${origin}/images/logo_sekolah_512.png`, alt: cleanTitle });
+  const isoDateStr = parseIndoDateToIso(article.date);
 
   return {
-    title: article.title,
-    description: plainText || article.title,
-    alternates: {
-      canonical: `${origin}/berita/${article.id}`
-    },
+    title: cleanTitle,
+    description: plainText || cleanTitle,
+    keywords: [article.category || 'Berita Sekolah', 'SD Negeri Bobong', 'SDN Bobong', 'Pulau Taliabu', cleanTitle],
+    authors: [{ name: 'SD Negeri Bobong', url: origin }],
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: article.title,
-      description: plainText || article.title,
-      images: [imageUrl],
+      title: cleanTitle,
+      description: plainText || cleanTitle,
+      url: canonicalUrl,
+      siteName: 'SD Negeri Bobong',
+      locale: 'id_ID',
+      images: ogImages,
       type: 'article',
+      publishedTime: isoDateStr,
+      modifiedTime: isoDateStr,
+      section: article.category || 'Kegiatan Sekolah',
+      authors: ['SD Negeri Bobong']
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: cleanTitle,
+      description: plainText || cleanTitle,
+      images: ogImages.map(img => img.url)
     }
   };
 }
@@ -50,6 +70,7 @@ export default async function BeritaDetailPage({ params }) {
 
   // Generate LD+JSON Schema for Google NewsArticle
   const origin = 'https://www.sdnegeribobong.sch.id';
+  const cleanTitle = article.title.replace(/\s*\|\s*SD(N| Negeri) Bobong$/i, '').trim();
   const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
   const images = rawImages
     .filter(img => img && !img.startsWith('data:'))
@@ -57,42 +78,44 @@ export default async function BeritaDetailPage({ params }) {
   if (images.length === 0) {
     images.push(`${origin}/images/logo_sekolah_512.png`);
   }
-  const plainText = article.content ? article.content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').substring(0, 150) : '';
-  
-  let publishDate = new Date();
-  if (article.date) {
-    const parsed = new Date(article.date);
-    if (!isNaN(parsed.getTime())) {
-      publishDate = parsed;
-    }
-  }
-  const isoDateStr = publishDate.toISOString();
+  const fullPlainText = article.content
+    ? article.content.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
+    : '';
+  const plainText = fullPlainText.substring(0, 155);
+  const isoDateStr = parseIndoDateToIso(article.date);
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    "@id": `https://www.sdnegeribobong.sch.id/berita/${article.id}`,
-    "headline": article.title,
+    "@id": `${origin}/berita/${article.id}`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${origin}/berita/${article.id}`
+    },
+    "headline": cleanTitle,
     "image": images,
     "datePublished": isoDateStr,
     "dateModified": isoDateStr,
+    "articleSection": article.category || "Kegiatan",
+    "inLanguage": "id-ID",
     "author": {
       "@type": "Organization",
       "name": "SD Negeri Bobong",
-      "url": "https://www.sdnegeribobong.sch.id"
+      "url": origin
     },
     "publisher": {
       "@type": "School",
       "name": "SD Negeri Bobong",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.sdnegeribobong.sch.id/images/logo_sekolah_512.png"
+        "url": `${origin}/images/logo_sekolah_512.png`
       }
     },
-    "description": plainText || article.title
+    "description": plainText || cleanTitle,
+    "articleBody": fullPlainText || cleanTitle
   };
 
-  const breadcrumbSchema = generateBreadcrumbSchema(`/berita/${article.id}`, { name: article.title });
+  const breadcrumbSchema = generateBreadcrumbSchema(`/berita/${article.id}`, { name: cleanTitle });
   const graphSchema = {
     "@context": "https://schema.org",
     "@graph": [articleSchema, breadcrumbSchema]
@@ -106,7 +129,7 @@ export default async function BeritaDetailPage({ params }) {
       />
       <section className="hero" style={{ padding: 'var(--space-lg) var(--space-sm)', minHeight: 'auto' }}>
         <div className="container hero-content">
-          <h1 className="hero-title" style={{ fontSize: '2.5rem' }}><FramerWordReveal text="Berita Sekolah" /></h1>
+          <div className="hero-title" style={{ fontSize: '2.5rem', fontWeight: 800 }}><FramerWordReveal text="Berita Sekolah" /></div>
           <p className="hero-text" style={{ marginBottom: 0 }}>Kabar terkini dan dokumentasi aktivitas harian keluarga besar SD Negeri Bobong.</p>
         </div>
       </section>
@@ -114,8 +137,8 @@ export default async function BeritaDetailPage({ params }) {
       <section className="section-padding">
         <div className="container">
           <div className="section-header">
-            <span className="section-subtitle">Kabar SD Negeri Bobong</span>
-            <h2>Kabar & Artikel Sekolah</h2>
+            <span className="section-subtitle">{article.category || 'Kabar SD Negeri Bobong'} • {article.date}</span>
+            <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', marginTop: '6px' }}>{cleanTitle}</h1>
           </div>
           <BeritaSearchClient newsList={newsList} initialIsolatedId={article.id} />
         </div>
