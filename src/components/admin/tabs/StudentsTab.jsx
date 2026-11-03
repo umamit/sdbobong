@@ -116,7 +116,7 @@ export default function StudentsTab() {
                       setStudNisn('');
                       setStudNis('');
                       setStudName('');
-                      setStudClass('1');
+                      setStudClass('1A');
                       setStudGender('Laki-laki');
                       setStudBirthPlace('');
                       setStudBirthDate('');
@@ -338,7 +338,7 @@ export default function StudentsTab() {
                                   setStudNisn(stud.nisn || '');
                                   setStudNis(stud.nis || '');
                                   setStudName(stud.name || '');
-                                  setStudClass(stud.class || '1');
+                                  setStudClass(stud.class || '1A');
                                   setStudGender(stud.gender || 'Laki-laki');
                                   setStudBirthPlace(stud.birth_place || '');
                                   setStudBirthDate(stud.birth_date || '');

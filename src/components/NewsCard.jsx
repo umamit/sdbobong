@@ -7,7 +7,10 @@ import NewsReactions from './NewsReactions';
 import NewsComments from './NewsComments';
 
 export default function NewsCard({ news, className = '', priority = false }) {
-  const images = news.images && news.images.length > 0 ? news.images : [news.image || '/images/news_hari_guru.svg'];
+  const rawList = news.images && news.images.length > 0 ? news.images : [];
+  const images = news.image
+    ? [news.image, ...rawList.filter(img => img !== news.image)]
+    : (rawList.length > 0 ? rawList : ['/images/news_hari_guru.svg']);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);

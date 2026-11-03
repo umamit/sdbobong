@@ -80,7 +80,10 @@ export async function sitemap() {
           }
         }
       }
-      const rawImages = n.images && Array.isArray(n.images) && n.images.length > 0 ? n.images : [n.image];
+      const rawList = n.images && Array.isArray(n.images) && n.images.length > 0 ? n.images : [];
+      const rawImages = n.image
+        ? [n.image, ...rawList.filter(img => img !== n.image)]
+        : rawList;
       const itemImages = rawImages
         .filter(img => img && !img.startsWith('data:'))
         .map(img => img.startsWith('http') ? img : `${baseUrl}${img}`);

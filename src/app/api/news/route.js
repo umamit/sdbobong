@@ -68,6 +68,7 @@ export async function POST(request) {
     const selectedCoverIndex = parseInt(formData.get('selected_cover_index'), 10);
     if (!isNaN(selectedCoverIndex) && selectedCoverIndex >= 0 && selectedCoverIndex < images.length) {
       image = images[selectedCoverIndex];
+      images = [image, ...images.filter(img => img !== image)];
     } else if (images.length > 0) {
       image = images[0];
     }
@@ -186,12 +187,14 @@ export async function PUT(request) {
     if (combinedImages.length > 0) {
       if (selectedCoverImage && combinedImages.includes(selectedCoverImage)) {
         image = selectedCoverImage;
+      } else if (!isNaN(selectedCoverIndex) && selectedCoverIndex >= 0 && selectedCoverIndex < newlyUploadedImages.length) {
+        image = newlyUploadedImages[selectedCoverIndex];
       } else if (!isNaN(selectedCoverIndex) && selectedCoverIndex >= 0 && selectedCoverIndex < combinedImages.length) {
         image = combinedImages[selectedCoverIndex];
       } else {
         image = combinedImages[0];
       }
-      images = combinedImages;
+      images = [image, ...combinedImages.filter(img => img !== image)];
     } else {
       image = image || newsList[newsIndex].image || '/images/news_hari_guru.svg';
       images = [image];

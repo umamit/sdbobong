@@ -22,7 +22,10 @@ export async function generateMetadata({ params }) {
     : '';
   const origin = 'https://www.sdnegeribobong.sch.id';
   const canonicalUrl = `${origin}/berita/${article.id}`;
-  const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
+  const rawList = article.images && article.images.length > 0 ? article.images : [];
+  const rawImages = article.image
+    ? [article.image, ...rawList.filter(img => img !== article.image)]
+    : (rawList.length > 0 ? rawList : ['/images/logo_sekolah_512.png']);
   const ogImages = rawImages
     .filter(img => img && !img.startsWith('data:'))
     .map(img => ({ url: img.startsWith('http') ? img : `${origin}${img}`, alt: cleanTitle }));
@@ -64,23 +67,18 @@ export default async function BeritaDetailPage({ params }) {
   const cleanId = id.replace(/^news-/, '');
   const article = newsList.find(n => n.id === id || n.id.replace(/^news-/, '') === cleanId);
 
-  if (!article) {
-    notFound();
-  }
+  if (!article) notFound();
 
   // Generate LD+JSON Schema for Google NewsArticle
   const origin = 'https://www.sdnegeribobong.sch.id';
   const cleanTitle = article.title.replace(/\s*\|\s*SD(N| Negeri) Bobong$/i, '').trim();
-  const rawImages = article.images && article.images.length > 0 ? article.images : [article.image || '/images/logo_sekolah_512.png'];
-  const images = rawImages
-    .filter(img => img && !img.startsWith('data:'))
-    .map(img => img.startsWith('http') ? img : `${origin}${img}`);
-  if (images.length === 0) {
-    images.push(`${origin}/images/logo_sekolah_512.png`);
-  }
-  const fullPlainText = article.content
-    ? article.content.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
-    : '';
+  const rawList = article.images && article.images.length > 0 ? article.images : [];
+  const rawImages = article.image
+    ? [article.image, ...rawList.filter(img => img !== article.image)]
+    : (rawList.length > 0 ? rawList : ['/images/logo_sekolah_512.png']);
+  const images = rawImages.filter(img => img && !img.startsWith('data:')).map(img => img.startsWith('http') ? img : `${origin}${img}`);
+  if (images.length === 0) images.push(`${origin}/images/logo_sekolah_512.png`);
+  const fullPlainText = article.content ? article.content.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim() : '';
   const plainText = fullPlainText.substring(0, 155);
   const isoDateStr = parseIndoDateToIso(article.date);
 
@@ -88,38 +86,25 @@ export default async function BeritaDetailPage({ params }) {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     "@id": `${origin}/berita/${article.id}`,
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${origin}/berita/${article.id}`
-    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `${origin}/berita/${article.id}` },
     "headline": cleanTitle,
     "image": images,
     "datePublished": isoDateStr,
     "dateModified": isoDateStr,
     "articleSection": article.category || "Kegiatan",
     "inLanguage": "id-ID",
-    "author": {
-      "@type": "Organization",
-      "name": "SD Negeri Bobong",
-      "url": origin
-    },
+    "author": { "@type": "Organization", "name": "SD Negeri Bobong", "url": origin },
     "publisher": {
       "@type": "School",
       "name": "SD Negeri Bobong",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${origin}/images/logo_sekolah_512.png`
-      }
+      "logo": { "@type": "ImageObject", "url": `${origin}/images/logo_sekolah_512.png` }
     },
     "description": plainText || cleanTitle,
     "articleBody": fullPlainText || cleanTitle
   };
 
   const breadcrumbSchema = generateBreadcrumbSchema(`/berita/${article.id}`, { name: cleanTitle });
-  const graphSchema = {
-    "@context": "https://schema.org",
-    "@graph": [articleSchema, breadcrumbSchema]
-  };
+  const graphSchema = { "@context": "https://schema.org", "@graph": [articleSchema, breadcrumbSchema] };
 
   return (
     <>
