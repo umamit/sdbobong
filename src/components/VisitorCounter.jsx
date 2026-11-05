@@ -9,8 +9,10 @@ export default function VisitorCounter() {
   useEffect(() => {
     async function updateAndFetchCount() {
       try {
+        const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
+        const isAutomated = (typeof navigator !== 'undefined' && navigator.webdriver === true) || /bot|crawl|spider|googlebot|adsbot|inspectiontool|lighthouse|headlesschrome/i.test(ua);
         const res = await fetch('/api/visitor', {
-          method: 'POST',
+          method: isAutomated ? 'GET' : 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
